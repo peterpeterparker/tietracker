@@ -8,7 +8,9 @@ import {
   IonHeader,
   IonPage,
   IonToolbar,
-  IonSearchbar
+  IonSearchbar,
+  IonBadge,
+  IonButton
 } from '@ionic/react';
 
 import React from 'react';
@@ -19,29 +21,30 @@ import './Home.scss';
 
 const Home: React.FC = () => {
 
-  const { t } = useTranslation();
+  const { t } = useTranslation('home');
 
   return (
     <IonPage>
       <IonContent className="ion-padding">
         <main>
-          <IonHeader><IonToolbar><IonSearchbar></IonSearchbar></IonToolbar></IonHeader>
+          <IonHeader><IonToolbar><IonSearchbar placeholder={t('search.companies')}></IonSearchbar></IonToolbar></IonHeader>
 
-          <h1>{t('Welcome to React')}</h1>
+          <h1 className="ion-padding">{t('week.summary')}</h1>
 
           <IonCard className="welcome-card">
-            <img src="/assets/shapes.svg" alt="" />
             <IonCardHeader>
-              <IonCardSubtitle>Get Started</IonCardSubtitle>
-              <IonCardTitle>Welcome to Ionic</IonCardTitle>
+              <IonCardSubtitle>Hours tracked: 45h</IonCardSubtitle>
+              <IonCardTitle>Billable amount: 1'200 CHF</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              <p>
-                Now that your app has been created, you'll want to start building out features and
-                components. Check out some of the resources below for next steps.
-            </p>
+              <p>Top projects:</p>
+              <IonBadge>Project 1</IonBadge> <IonBadge>Project 2</IonBadge> <IonBadge>Project 3</IonBadge>
             </IonCardContent>
           </IonCard>
+
+          <h1 className="ion-padding">Track</h1>
+
+          <IonButton expand="block">Start</IonButton>
         </main>
       </IonContent>
     </IonPage>
