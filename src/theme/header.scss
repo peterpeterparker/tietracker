@@ -1,0 +1,11 @@
+ion-header[class*="header"] ion-toolbar[class*="in-toolbar"] {
+    --border-width: 0;
+}
+
+ion-header[class*="header"]::after {
+    background-image: none;
+}
+
+ion-header ion-toolbar ion-button {
+    --box-shadow: none;
+}
