@@ -10,24 +10,36 @@ import {
   IonToolbar,
   IonSearchbar,
   IonBadge,
-  IonButton
+  IonButton,
+  IonModal
 } from '@ionic/react';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
 import './Home.scss';
 
+import Company from '../../modals/company/Company';
+
 const Home: React.FC = () => {
 
   const { t } = useTranslation('home');
 
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <IonPage>
       <IonContent className="ion-padding">
+
+        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+          <Company></Company>
+        </IonModal>
+
         <main>
           <IonHeader><IonToolbar><IonSearchbar placeholder={t('search.companies')}></IonSearchbar></IonToolbar></IonHeader>
+
+          <IonButton onClick={() => setShowModal(true)}>New</IonButton>
 
           <h1 className="ion-padding">{t('week.summary')}</h1>
 
