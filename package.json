@@ -40,5 +40,8 @@
       "last 1 safari version"
     ]
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "devDependencies": {
+    "node-sass": "^4.13.0"
+  }
 }
