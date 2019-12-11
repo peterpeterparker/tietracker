@@ -1,25 +1,19 @@
-import React, { RefObject } from 'react';
+import React from 'react';
 import { IonHeader, IonContent, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon } from '@ionic/react';
 
-class Company extends React.Component {
+type CompanyProps = {
+    closeAction: Function;
+}
 
-    headerRef: RefObject<HTMLIonHeaderElement> = React.createRef();
-
-    async closeModal() {
-        if (!this.headerRef || !this.headerRef.current) {
-            return;
-        }
-
-        await (this.headerRef.current.closest('ion-modal') as HTMLIonModalElement).dismiss();
-    }
+class Company extends React.Component<CompanyProps> {
 
     render() {
         return <>
-            <IonHeader ref={this.headerRef}>
+            <IonHeader>
                 <IonToolbar color="primary">
                     <IonTitle></IonTitle>
                     <IonButtons slot="end">
-                        <IonButton onClick={() => this.closeModal()}>
+                        <IonButton onClick={() => this.props.closeAction()}>
                             <IonIcon name="close" slot="icon-only"></IonIcon>
                         </IonButton>
                     </IonButtons>
@@ -33,4 +27,7 @@ class Company extends React.Component {
 
 }
 
-export default Company;
+export default ({ closeAction }: { closeAction: Function }) => (
+    <Company closeAction={closeAction}>
+    </Company>
+)

@@ -28,12 +28,16 @@ const Home: React.FC = () => {
 
   const [showModal, setShowModal] = useState(false);
 
+  async function closeModal() {
+    await setShowModal(false);
+  }
+
   return (
     <IonPage>
       <IonContent className="ion-padding">
 
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-          <Company></Company>
+          <Company closeAction={closeModal}></Company>
         </IonModal>
 
         <main>
