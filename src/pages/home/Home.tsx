@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 
 import './Home.scss';
 
-import ClientModal from '../../modals/client/Client.modal';
+import ClientModal from '../../modals/client/ClientModal';
 
 const Home: React.FC = () => {
 
