@@ -1,11 +1,11 @@
 import React from 'react';
 import { IonHeader, IonContent, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon } from '@ionic/react';
 
-type CompanyProps = {
+type ClientProps = {
     closeAction: Function;
 }
 
-class Company extends React.Component<CompanyProps> {
+class Client extends React.Component<ClientProps> {
 
     render() {
         return <>
@@ -28,6 +28,6 @@ class Company extends React.Component<CompanyProps> {
 }
 
 export default ({ closeAction }: { closeAction: Function }) => (
-    <Company closeAction={closeAction}>
-    </Company>
+    <Client closeAction={closeAction}>
+    </Client>
 )

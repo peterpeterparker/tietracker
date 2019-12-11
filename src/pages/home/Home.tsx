@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 
 import './Home.scss';
 
-import Company from '../../modals/company/Company';
+import Client from '../../modals/client/Client';
 
 const Home: React.FC = () => {
 
@@ -37,7 +37,7 @@ const Home: React.FC = () => {
       <IonContent className="ion-padding">
 
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
-          <Company closeAction={closeModal}></Company>
+          <Client closeAction={closeModal}></Client>
         </IonModal>
 
         <main>
