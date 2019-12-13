@@ -3,6 +3,8 @@ import { IonHeader, IonContent, IonToolbar, IonTitle, IonButtons, IonButton, Ion
 
 import { more } from 'ionicons/icons';
 
+import { get, set, keys } from 'idb-keyval';
+
 type ClientModalProps = {
     closeAction: Function;
 }
@@ -75,7 +77,7 @@ class ClientModal extends React.Component<ClientModalProps, ClientState> {
         }
 
         const client: Client = { ...this.state.client };
-        
+
         if (!client.projects || client.projects.length === 0) {
             client.projects = [];
 
@@ -103,9 +105,25 @@ class ClientModal extends React.Component<ClientModalProps, ClientState> {
             return;
         }
 
-        // `#${Math.floor(Math.random()*16777215).toString(16)}`
+        let clients: Client[] = await get('clients');
 
-        console.log(this.state);
+        if (!clients || clients.length <= 0) {
+            clients = [];
+        }
+
+        const client: Client = this.state.client;
+
+        if (!client.color) {
+            client.color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+        }
+
+        clients.push(client);
+
+        set('clients', clients);
+
+        const keysList = await keys();
+        console.log('Got keys: ', keysList);
+
     }
 
     render() {
@@ -135,7 +153,7 @@ class ClientModal extends React.Component<ClientModalProps, ClientState> {
                             </IonInput>
                         </IonItem>
 
-                        <IonItem  disabled={!this.state.valid.client}>
+                        <IonItem disabled={!this.state.valid.client}>
                             <IonLabel>Color</IonLabel>
                         </IonItem>
 
@@ -145,10 +163,10 @@ class ClientModal extends React.Component<ClientModalProps, ClientState> {
                             </deckgo-color>
                         </IonItem>
 
-                        <IonItem  disabled={!this.state.valid.client}>
+                        <IonItem disabled={!this.state.valid.client}>
                             <IonLabel>Project</IonLabel>
                         </IonItem>
-                        <IonItem  disabled={!this.state.valid.client}>
+                        <IonItem disabled={!this.state.valid.client}>
                             <IonInput debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
                                 onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectNameInput($event)}
                                 onIonChange={() => this.validateProjectName()}>
