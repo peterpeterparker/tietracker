@@ -1,4 +1,10 @@
+interface Project {
+    name: string;
+}
+
 interface Client {
-    name: string | undefined;
-    color: string | undefined;
+    name: string;
+    color?: string;
+
+    projects?: Project[];
 }
