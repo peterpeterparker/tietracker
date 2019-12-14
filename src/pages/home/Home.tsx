@@ -15,6 +15,7 @@ import {
 } from '@ionic/react';
 
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { useTranslation } from 'react-i18next';
 
@@ -22,11 +23,15 @@ import './Home.scss';
 
 import ClientModal from '../../modals/client/ClientModal';
 
+import { RootState } from '../../store/reducers';
+import { Client } from '../../models/client';
+
 const Home: React.FC = () => {
 
   const { t } = useTranslation('home');
 
   const [showModal, setShowModal] = useState(false);
+  const clients: Client[] = useSelector((state: RootState) => state.clients.clients);  
 
   async function closeModal() {
     await setShowModal(false);
@@ -61,6 +66,12 @@ const Home: React.FC = () => {
           <h1 className="ion-padding">Track</h1>
 
           <IonButton expand="block">Start</IonButton>
+
+          {
+            clients.map((client: Client, i: number) => {
+              return <div key={i}>{client.name}</div>
+            })
+          }
         </main>
       </IonContent>
     </IonPage>

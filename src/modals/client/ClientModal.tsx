@@ -1,13 +1,32 @@
 import React, { FormEvent, RefObject, createRef } from 'react';
 import { IonHeader, IonContent, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonInput } from '@ionic/react';
 
+import { connect, ConnectedProps } from 'react-redux';
+
 import { more } from 'ionicons/icons';
 
-import { get, set, keys } from 'idb-keyval';
+import { get, set } from 'idb-keyval';
 
-type ClientModalProps = {
-    closeAction: Function;
-}
+import { Client } from '../../models/client';
+
+import { RootState } from '../../store/reducers/index';
+
+const mapState = (state: RootState) => ({
+    clients: state.clients.clients
+});
+
+const mapDispatch = {
+    addClient: (newClient: Client) => ({ type: 'ADD_CLIENT', payload: newClient })
+};
+
+const connector = connect(
+    mapState,
+    mapDispatch
+);
+
+// The inferred type will look like:
+// {clients: Client[], addClient: (newClient: Client) => void}
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type ClientState = {
     client?: Client;
@@ -17,11 +36,15 @@ type ClientState = {
     }
 }
 
-class ClientModal extends React.Component<ClientModalProps, ClientState> {
+type Props = PropsFromRedux & {
+    closeAction: Function
+}
+
+class ClientModal extends React.Component<Props, ClientState> {
 
     private colorRef: RefObject<any> = createRef();
 
-    constructor(props: { closeAction: Function }) {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -101,6 +124,7 @@ class ClientModal extends React.Component<ClientModalProps, ClientState> {
     private async handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
 
+        // TODO: Plug to redux
         if (this.state.client === undefined) {
             return;
         }
@@ -121,9 +145,7 @@ class ClientModal extends React.Component<ClientModalProps, ClientState> {
 
         set('clients', clients);
 
-        const keysList = await keys();
-        console.log('Got keys: ', keysList);
-
+        this.props.addClient(client);
     }
 
     render() {
@@ -184,7 +206,4 @@ class ClientModal extends React.Component<ClientModalProps, ClientState> {
 
 }
 
-export default ({ closeAction }: { closeAction: Function }) => (
-    <ClientModal closeAction={closeAction}>
-    </ClientModal>
-)
+export default connector(ClientModal);

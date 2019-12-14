@@ -1,8 +1,8 @@
-interface Project {
+export interface Project {
     name: string;
 }
 
-interface Client {
+export interface Client {
     name: string;
     color?: string;
 
