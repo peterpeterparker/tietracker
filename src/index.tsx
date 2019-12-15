@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { rootReducer } from './store/reducers/index';
+
+import reduxThunk from 'redux-thunk';
 
 import { applyPolyfills, defineCustomElements, JSX as LocalJSX } from '@deckdeckgo/color/loader';
 
@@ -33,7 +35,7 @@ applyPolyfills().then(() => {
     defineCustomElements(window);
 });
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, {}, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
     <Provider store={store}>

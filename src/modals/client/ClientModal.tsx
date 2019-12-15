@@ -5,19 +5,19 @@ import { connect, ConnectedProps } from 'react-redux';
 
 import { more } from 'ionicons/icons';
 
-import { get, set } from 'idb-keyval';
-
 import { Client } from '../../models/client';
 
 import { RootState } from '../../store/reducers/index';
+
+import { persistClient, ClientThunkDispatch } from '../../store/actions/clients.actions';
 
 const mapState = (state: RootState) => ({
     clients: state.clients.clients
 });
 
-const mapDispatch = {
-    addClient: (newClient: Client) => ({ type: 'ADD_CLIENT', payload: newClient })
-};
+const mapDispatch = (dispatch: ClientThunkDispatch) => ({
+    persistClient: (newClient: Client) => dispatch(persistClient(newClient))
+});
 
 const connector = connect(
     mapState,
@@ -129,23 +129,19 @@ class ClientModal extends React.Component<Props, ClientState> {
             return;
         }
 
-        let clients: Client[] = await get('clients');
-
-        if (!clients || clients.length <= 0) {
-            clients = [];
-        }
-
         const client: Client = this.state.client;
 
         if (!client.color) {
             client.color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
         }
 
-        clients.push(client);
+        try {
+            await this.props.persistClient(client);
 
-        set('clients', clients);
-
-        this.props.addClient(client);
+            await this.props.closeAction();
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     render() {
