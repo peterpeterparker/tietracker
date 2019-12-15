@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -10,9 +10,11 @@ import {
   IonTabs
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { apps, flash, send } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
+
+import { options, home, send } from 'ionicons/icons';
+
+import Home from './pages/home/Home';
+import Settings from './pages/settings/Settings';
 import Tab3 from './pages/Tab3';
 import Details from './pages/Details';
 
@@ -33,36 +35,58 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
-import './theme/variables.css';
+import './theme/variables.scss';
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route path="/tab1" component={Tab1} exact={true} />
-          <Route path="/tab2" component={Tab2} exact={true} />
-          <Route path="/tab2/details" component={Details} />
-          <Route path="/tab3" component={Tab3} />
-          <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={flash} />
-            <IonLabel>Tab One</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={apps} />
-            <IonLabel>Tab Two</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={send} />
-            <IonLabel>Tab Three</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+import './theme/content.scss';
+import './theme/header.scss';
 
-export default App;
+import './helpers/i18n';
+
+import { clientConnector, ClientsProps } from './store/thunks/clients.thunks';
+
+const App: React.FC<ClientsProps> = (props: ClientsProps) => {
+
+  async function initClientsState() {
+    await props.initClients();
+  }
+
+  useEffect(() => {
+    initClientsState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <Suspense fallback="loading">
+      <IonApp>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route path="/home" component={Home} exact={true} />
+              <Route path="/settings" component={Settings} exact={true} />
+              <Route path="/settings/details" component={Details} />
+              <Route path="/tab3" component={Tab3} />
+              <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
+            </IonRouterOutlet>
+
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="home" href="/home">
+                <IonIcon icon={home} />
+                <IonLabel>Home</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="settings" href="/settings">
+                <IonIcon icon={options} />
+                <IonLabel>Settings</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab3" href="/tab3">
+                <IonIcon icon={send} />
+                <IonLabel>Tab Three</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </IonApp>
+    </Suspense>
+  );
+}
+
+export default clientConnector(App);

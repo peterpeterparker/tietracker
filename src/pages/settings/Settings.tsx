@@ -1,7 +1,7 @@
 import React from 'react';
 import { IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
-const Tab2: React.FC = () => {
+const Settings: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
@@ -11,7 +11,7 @@ const Tab2: React.FC = () => {
       </IonHeader>
       <IonContent>
         <IonList>
-          <IonItem routerLink="/tab2/details">
+          <IonItem routerLink="/settings/details">
             <IonLabel>
               <h2>Go to detail</h2>
             </IonLabel>
@@ -22,4 +22,4 @@ const Tab2: React.FC = () => {
   );
 };
 
-export default Tab2;
+export default Settings;
