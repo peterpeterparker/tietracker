@@ -1,32 +1,11 @@
 import React, { FormEvent, RefObject, createRef } from 'react';
 import { IonHeader, IonContent, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonInput } from '@ionic/react';
 
-import { connect, ConnectedProps } from 'react-redux';
-
 import { more } from 'ionicons/icons';
 
 import { Client } from '../../models/client';
 
-import { RootState } from '../../store/reducers/index';
-
-import { persistClient, ClientThunkDispatch } from '../../store/actions/clients.actions';
-
-const mapState = (state: RootState) => ({
-    clients: state.clients.clients
-});
-
-const mapDispatch = (dispatch: ClientThunkDispatch) => ({
-    persistClient: (newClient: Client) => dispatch(persistClient(newClient))
-});
-
-const connector = connect(
-    mapState,
-    mapDispatch
-);
-
-// The inferred type will look like:
-// {clients: Client[], addClient: (newClient: Client) => void}
-type PropsFromRedux = ConnectedProps<typeof connector>;
+import { ClientsProps, clientConnector } from '../../store/thunks/clients.thunks';
 
 type ClientState = {
     client?: Client;
@@ -36,7 +15,7 @@ type ClientState = {
     }
 }
 
-type Props = PropsFromRedux & {
+type Props = ClientsProps & {
     closeAction: Function
 }
 
@@ -202,4 +181,4 @@ class ClientModal extends React.Component<Props, ClientState> {
 
 }
 
-export default connector(ClientModal);
+export default clientConnector(ClientModal);

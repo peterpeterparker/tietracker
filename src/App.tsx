@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -42,37 +42,51 @@ import './theme/header.scss';
 
 import './helpers/i18n';
 
-const App: React.FC = () => (
-  <Suspense fallback="loading">
-    <IonApp>
-      <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route path="/home" component={Home} exact={true} />
-            <Route path="/settings" component={Settings} exact={true} />
-            <Route path="/settings/details" component={Details} />
-            <Route path="/tab3" component={Tab3} />
-            <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
-          </IonRouterOutlet>
+import { clientConnector, ClientsProps } from './store/thunks/clients.thunks';
 
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="home" href="/home">
-              <IonIcon icon={home} />
-              <IonLabel>Home</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="settings" href="/settings">
-              <IonIcon icon={options} />
-              <IonLabel>Settings</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="tab3" href="/tab3">
-              <IonIcon icon={send} />
-              <IonLabel>Tab Three</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
-    </IonApp>
-  </Suspense>
-);
+const App: React.FC<ClientsProps> = (props: ClientsProps) => {
 
-export default App;
+  async function initClientsState() {
+    await props.initClients();
+  }
+
+  useEffect(() => {
+    initClientsState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <Suspense fallback="loading">
+      <IonApp>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route path="/home" component={Home} exact={true} />
+              <Route path="/settings" component={Settings} exact={true} />
+              <Route path="/settings/details" component={Details} />
+              <Route path="/tab3" component={Tab3} />
+              <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
+            </IonRouterOutlet>
+
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="home" href="/home">
+                <IonIcon icon={home} />
+                <IonLabel>Home</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="settings" href="/settings">
+                <IonIcon icon={options} />
+                <IonLabel>Settings</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="tab3" href="/tab3">
+                <IonIcon icon={send} />
+                <IonLabel>Tab Three</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </IonApp>
+    </Suspense>
+  );
+}
+
+export default clientConnector(App);

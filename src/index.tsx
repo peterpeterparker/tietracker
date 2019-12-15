@@ -35,7 +35,7 @@ applyPolyfills().then(() => {
     defineCustomElements(window);
 });
 
-const store = createStore(rootReducer, {}, applyMiddleware(reduxThunk));
+const store = createStore(rootReducer, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
     <Provider store={store}>
