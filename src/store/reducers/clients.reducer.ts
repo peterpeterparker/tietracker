@@ -17,7 +17,7 @@ export function clientsReducer(state = initialState, action: ClientActionTypes):
             };
         case INIT_CLIENTS:
             return {
-                clients: action.payload
+                clients: action.payload ? action.payload : []
             };
         default:
             return state;
