@@ -3,19 +3,20 @@ import { IonHeader, IonContent, IonToolbar, IonTitle, IonButtons, IonButton, Ion
 
 import { more } from 'ionicons/icons';
 
-import { Client } from '../../models/client';
-
-import { ClientsProps, clientConnector } from '../../store/thunks/clients.thunks';
+import { Client, ClientData } from '../../models/client';
+import { RootProps, rootConnector } from '../../store/thunks/index.thunks';
+import { ProjectData } from '../../models/project';
 
 type ClientState = {
-    client?: Client;
+    clientData?: ClientData;
+    projectData?: ProjectData;
     valid: {
         client: boolean,
         project: boolean
     }
 }
 
-type Props = ClientsProps & {
+type Props = RootProps & {
     closeAction: Function
 }
 
@@ -43,79 +44,80 @@ class ClientModal extends React.Component<Props, ClientState> {
     }
 
     private handleClientNameInput($event: CustomEvent<KeyboardEvent>) {
-        let client: Client;
+        let data: ClientData;
 
-        if (this.state.client) {
-            client = { ...this.state.client };
-            client.name = ($event.target as InputTargetEvent).value;
+        if (this.state.clientData) {
+            data = { ...this.state.clientData };
+            data.name = ($event.target as InputTargetEvent).value;
         } else {
-            client = {
+            data = {
                 name: ($event.target as InputTargetEvent).value
             };
         }
 
-        this.setState({ client });
+        this.setState({ clientData: data });
     }
 
     private validateClientName() {
         const valid = { ...this.state.valid };
-        valid.client = this.state.client !== undefined && this.state.client.name !== undefined && this.state.client.name.length >= 3;
+        valid.client = this.state.clientData !== undefined && this.state.clientData.name !== undefined && this.state.clientData.name.length >= 3;
         this.setState({ valid });
     }
 
     private selectColor = ($event: CustomEvent) => {
-        if (!this.state.client) {
+        if (!this.state.clientData) {
             return;
         }
 
-        const client: Client = { ...this.state.client };
-        client.color = $event.detail.hex;
-        this.setState({ client });
+        const data: ClientData = { ...this.state.clientData };
+        data.color = $event.detail.hex;
+        this.setState({ clientData: data });
     }
 
     private handleProjectNameInput($event: CustomEvent<KeyboardEvent>) {
-        if (!this.state.client) {
+        if (!this.state.clientData) {
             return;
         }
 
-        const client: Client = { ...this.state.client };
+        let data: ProjectData;
 
-        if (!client.projects || client.projects.length === 0) {
-            client.projects = [];
-
-            client.projects.push({
-                name: ($event.target as InputTargetEvent).value
-            });
+        if (this.state.projectData) {
+            data = { ...this.state.projectData };
+            data.name = ($event.target as InputTargetEvent).value;
         } else {
-            client.projects[0].name = ($event.target as InputTargetEvent).value;
+            data = {
+                name: ($event.target as InputTargetEvent).value,
+                from: new Date().getTime()
+            };
         }
 
-        this.setState({ client });
+        this.setState({ projectData: data });
     }
 
     private validateProjectName() {
         const valid = { ...this.state.valid };
-
-        valid.project = this.state.client !== undefined && this.state.client.projects !== undefined && this.state.client.projects.length > 0 && this.state.client.projects[0].name.length >= 3;
+        valid.project = this.state.projectData !== undefined && this.state.projectData.name !== undefined && this.state.projectData.name.length >= 3;
         this.setState({ valid });
     }
 
     private async handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
 
-        // TODO: Plug to redux
-        if (this.state.client === undefined) {
+        if (this.state.clientData === undefined || this.state.projectData === undefined) {
             return;
         }
 
-        const client: Client = this.state.client;
-
-        if (!client.color) {
-            client.color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-        }
-
         try {
-            await this.props.persistClient(client);
+            const persistedClient: Client = await this.props.createClient(this.state.clientData);
+
+            if (!persistedClient || persistedClient === undefined || !persistedClient.id || persistedClient.id === undefined) {
+                // TODO: Error management
+                // And what if client withtout project? duplicated? -> delete whatever function
+                console.error('Client not created');
+                return;
+            }
+
+            await this.props.createProject(persistedClient.id, this.state.projectData);
 
             await this.props.closeAction();
         } catch (err) {
@@ -181,4 +183,4 @@ class ClientModal extends React.Component<Props, ClientState> {
 
 }
 
-export default clientConnector(ClientModal);
+export default rootConnector(ClientModal);

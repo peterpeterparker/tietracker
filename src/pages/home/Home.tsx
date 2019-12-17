@@ -69,7 +69,7 @@ const Home: React.FC = () => {
 
           {
             clients.map((client: Client, i: number) => {
-              return <div key={i}>{client.name}</div>
+              return <div key={i}>{client.data.name}</div>
             })
           }
         </main>
