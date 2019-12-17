@@ -42,16 +42,17 @@ import './theme/header.scss';
 
 import './helpers/i18n';
 
-import { clientConnector, ClientsProps } from './store/thunks/clients.thunks';
+import { RootProps, rootConnector } from './store/thunks/index.thunks';
 
-const App: React.FC<ClientsProps> = (props: ClientsProps) => {
+const App: React.FC<RootProps> = (props: RootProps) => {
 
-  async function initClientsState() {
+  async function initInitialState() {
     await props.initClients();
+    await props.initActiveProjects();
   }
 
   useEffect(() => {
-    initClientsState();
+    initInitialState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -89,4 +90,4 @@ const App: React.FC<ClientsProps> = (props: ClientsProps) => {
   );
 }
 
-export default clientConnector(App);
+export default rootConnector(App);
