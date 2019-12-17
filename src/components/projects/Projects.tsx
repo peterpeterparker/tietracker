@@ -1,18 +1,33 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
-import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonRippleEffect } from '@ionic/react';
-
-import { Project } from '../../models/project';
-import { RootState } from '../../store/reducers';
-
-import styles from './Projects.module.scss';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { playCircle } from 'ionicons/icons';
 
-const Projects: React.FC = () => {
+import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonRippleEffect } from '@ionic/react';
+
+import styles from './Projects.module.scss';
+
+import { Project } from '../../models/project';
+import { Task } from '../../models/task';
+
+import { RootState } from '../../store/reducers';
+import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
+
+const Projects: React.FC<RootProps> = (props: RootProps) => {
+
+    const dispatch = useDispatch();
 
     const projects: Project[] = useSelector((state: RootState) => state.activeProjects.projects);
+    const task: Task | undefined = useSelector((state: RootState) => state.taskInProgress.task);
+
+    async function startStopTask(project: Project) {
+        // TODO catch error
+        if (task && task !== undefined) {
+            await props.stopTask();
+        } else {
+            await props.startTask(project);
+        }
+    }
 
     return (
         <>
@@ -29,7 +44,7 @@ const Projects: React.FC = () => {
         return <div className={styles.projects}>
             {
                 projects.map((project: Project) => {
-                    return <IonCard key={project.id} onClick={() => console.log('click')} className="ion-activatable ion-margin-bottom">
+                    return <IonCard key={project.id} onClick={() => startStopTask(project)} className="ion-activatable ion-margin-bottom">
                         <div style={{ background: project.data.client ? project.data.client.color : undefined }}>
                             <IonIcon icon={playCircle} />
                         </div>
@@ -61,4 +76,4 @@ const Projects: React.FC = () => {
 
 };
 
-export default Projects;
+export default rootConnector(Projects);

@@ -7,9 +7,10 @@ import { RootState } from '../reducers';
 
 import { createClient, initClients } from './clients.thunks';
 import { createProject, initActiveProjects } from './projects.thunks';
+import { startTask, stopTask, initTask } from './tasks.thunks';
 
 import { ClientData, Client } from '../../models/client';
-import { ProjectData } from '../../models/project';
+import { ProjectData, Project } from '../../models/project';
 
 export type RootThunkDispatch = ThunkDispatch<RootState, undefined, Action>;
 
@@ -21,8 +22,13 @@ const mapState = (state: RootState) => ({
 const mapDispatch = (dispatch: RootThunkDispatch) => ({
     createClient: (data: ClientData) => dispatch(createClient(data)),
     initClients: () => dispatch(initClients()),
+
     createProject: (client: Client, data: ProjectData) => dispatch(createProject(client, data)),
-    initActiveProjects: () => dispatch(initActiveProjects())
+    initActiveProjects: () => dispatch(initActiveProjects()),
+
+    startTask: (project: Project) => dispatch(startTask(project)),
+    stopTask: () => dispatch(stopTask()),
+    initTask: () => dispatch(initTask()),
 });
 
 export const rootConnector = connect(

@@ -39,8 +39,10 @@ export class ProjectsService {
                     color: client.data.color as string
                 };
 
-                data.create_at = new Date().getTime();
-                data.updated_at = new Date().getTime();
+                const now: number = new Date().getTime();
+
+                data.created_at = now;
+                data.updated_at = now;
 
                 const project: Project = {
                     id: uuid(),

@@ -28,8 +28,10 @@ export class ClientsService {
                     clients = [];
                 }
             
-                data.create_at = new Date().getTime();
-                data.updated_at = new Date().getTime();
+                const now: number = new Date().getTime();
+
+                data.created_at = now;
+                data.updated_at = now;
 
                 if (!data.color) {
                     data.color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;

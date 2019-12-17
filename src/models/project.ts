@@ -13,7 +13,7 @@ export interface ProjectData {
 
     client?: ProjectClientData;
 
-    create_at?: Date | number;
+    created_at?: Date | number;
     updated_at?: Date | number;
 }
 

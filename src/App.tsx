@@ -47,8 +47,12 @@ import { RootProps, rootConnector } from './store/thunks/index.thunks';
 const App: React.FC<RootProps> = (props: RootProps) => {
 
   async function initInitialState() {
-    await props.initClients();
-    await props.initActiveProjects();
+    const promises = [];
+    promises.push(props.initClients());
+    promises.push(props.initActiveProjects());
+    promises.push(props.initTask());
+
+    await Promise.all(promises);
   }
 
   useEffect(() => {
