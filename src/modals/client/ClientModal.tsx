@@ -117,7 +117,7 @@ class ClientModal extends React.Component<Props, ClientState> {
                 return;
             }
 
-            await this.props.createProject(persistedClient.id, this.state.projectData);
+            await this.props.createProject(persistedClient, this.state.projectData);
 
             await this.props.closeAction();
         } catch (err) {

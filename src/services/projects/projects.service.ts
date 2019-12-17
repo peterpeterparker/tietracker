@@ -7,6 +7,7 @@ import isAfter from 'date-fns/isAfter';
 import { Project, ProjectData } from '../../models/project';
 
 import { toDateObj } from '../../utils/utils';
+import { Client } from '../../models/client';
 
 export class ProjectsService {
 
@@ -23,7 +24,7 @@ export class ProjectsService {
         return ProjectsService.instance;
     }
 
-    create(clientId: string, data: ProjectData): Promise<Project> {
+    create(client: Client, data: ProjectData): Promise<Project> {
         return new Promise<Project>(async (resolve, reject) => {
             try {
                 let projects: Project[] = await get('projects');
@@ -32,7 +33,11 @@ export class ProjectsService {
                     projects = [];
                 }
             
-                data.client_id = clientId;
+                data.client = {
+                    id: client.id as string,
+                    name: client.data.name,
+                    color: client.data.color as string
+                };
 
                 data.create_at = new Date().getTime();
                 data.updated_at = new Date().getTime();

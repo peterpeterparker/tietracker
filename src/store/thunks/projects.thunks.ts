@@ -1,13 +1,15 @@
 import { RootThunkResult } from './types.thunks';
 
 import { Project, ProjectData } from '../../models/project';
+import { Client } from '../../models/client';
+
 import { CREATE_PROJECT, INIT_ACTIVE_PROJECTS } from '../types/projects.types';
 
 import { ProjectsService } from '../../services/projects/projects.service';
 
-export function createProject(clientId: string, data: ProjectData): RootThunkResult<Promise<void>> {
+export function createProject(client: Client, data: ProjectData): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
-        const project: Project = await ProjectsService.getInstance().create(clientId, data);
+        const project: Project = await ProjectsService.getInstance().create(client, data);
 
         dispatch({ type: CREATE_PROJECT, payload: project });
     };

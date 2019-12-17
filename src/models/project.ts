@@ -1,10 +1,17 @@
+// Denormalization
+export interface ProjectClientData {
+    id: string;
+    name: string;
+    color: string;
+}
+
 export interface ProjectData {
     name: string;
 
     from: Date | number;
     to?: Date | number;
 
-    client_id?: string;
+    client?: ProjectClientData;
 
     create_at?: Date | number;
     updated_at?: Date | number;

@@ -1,0 +1,48 @@
+.projects {
+  display: flex;
+
+  width: auto;
+
+  position: relative;
+  overflow-x: scroll;
+
+  -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
+  overscroll-behavior: contain;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  ion-card {
+    user-select: none;
+    cursor: pointer;
+
+    min-width: 12rem;
+
+    div {
+      width: 100%;
+      height: 6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      isolation: isolate;
+
+      ion-icon {
+        font-size: 4rem;
+
+        fill: white;
+        mix-blend-mode: screen;
+      }
+    }
+
+    ion-card-title,
+    ion-card-subtitle {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

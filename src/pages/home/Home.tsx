@@ -25,6 +25,7 @@ import ClientModal from '../../modals/client/ClientModal';
 
 import { RootState } from '../../store/reducers';
 import { Client } from '../../models/client';
+import Projects from '../../components/projects/Projects';
 
 const Home: React.FC = () => {
 
@@ -39,14 +40,14 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding-start ion-padding-bottom ion-padding-top">
 
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
           <ClientModal closeAction={closeModal}></ClientModal>
         </IonModal>
 
         <main>
-          <IonHeader><IonToolbar><IonSearchbar placeholder={t('search.companies')}></IonSearchbar></IonToolbar></IonHeader>
+          <IonHeader className="ion-padding-end"><IonToolbar><IonSearchbar placeholder={t('search.companies')}></IonSearchbar></IonToolbar></IonHeader>
 
           <IonButton onClick={() => setShowModal(true)}>New</IonButton>
 
@@ -63,15 +64,7 @@ const Home: React.FC = () => {
             </IonCardContent>
           </IonCard>
 
-          <h1 className="ion-padding">Track</h1>
-
-          <IonButton expand="block">Start</IonButton>
-
-          {
-            clients.map((client: Client, i: number) => {
-              return <div key={i}>{client.data.name}</div>
-            })
-          }
+          <Projects></Projects>
         </main>
       </IonContent>
     </IonPage>
