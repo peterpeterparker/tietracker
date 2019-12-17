@@ -65,6 +65,14 @@ const Home: React.FC = () => {
           </IonCard>
 
           <Projects></Projects>
+
+          <h1>All Clients</h1>
+
+          {
+            clients.map((client: Client, i: number) => {
+              return <div key={i}>{client.data.name}</div>
+            })
+          }
         </main>
       </IonContent>
     </IonPage>

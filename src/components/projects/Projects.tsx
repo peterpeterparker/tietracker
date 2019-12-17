@@ -23,24 +23,39 @@ const Projects: React.FC = () => {
 
     function renderProjects() {
         if (!projects || projects.length <= 0) {
-            return undefined;
+            return renderDummyProject();
         }
 
         return <div className={styles.projects}>
             {
                 projects.map((project: Project) => {
                     return <IonCard key={project.id} onClick={() => console.log('click')} className="ion-activatable ion-margin-bottom">
-                        <div style={{background: project.data.client ? project.data.client.color : undefined}}>
+                        <div style={{ background: project.data.client ? project.data.client.color : undefined }}>
                             <IonIcon icon={playCircle} />
                         </div>
-                    <IonCardHeader>
-                        <IonCardSubtitle>{project.data.client ? project.data.client.name : ''}</IonCardSubtitle>
-                        <IonCardTitle>{project.data.name}</IonCardTitle>
-                    </IonCardHeader>
-                    <IonRippleEffect></IonRippleEffect>
-                </IonCard>
+                        <IonCardHeader>
+                            <IonCardSubtitle>{project.data.client ? project.data.client.name : ''}</IonCardSubtitle>
+                            <IonCardTitle>{project.data.name}</IonCardTitle>
+                        </IonCardHeader>
+                        <IonRippleEffect></IonRippleEffect>
+                    </IonCard>
                 })
             }
+        </div>
+    }
+
+    function renderDummyProject() {
+        return <div className={styles.projects}>
+            <IonCard className="ion-activatable ion-margin-bottom">
+                <div style={{ background: 'var(--ion-color-primary)' }}>
+                    <IonIcon icon={playCircle} />
+                </div>
+                <IonCardHeader>
+                    <IonCardSubtitle></IonCardSubtitle>
+                    <IonCardTitle>New Client</IonCardTitle>
+                </IonCardHeader>
+                <IonRippleEffect></IonRippleEffect>
+            </IonCard>
         </div>
     }
 
