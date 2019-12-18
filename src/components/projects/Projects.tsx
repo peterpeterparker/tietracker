@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { playCircle } from 'ionicons/icons';
 
@@ -14,8 +14,6 @@ import { RootState } from '../../store/reducers';
 import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
 
 const Projects: React.FC<RootProps> = (props: RootProps) => {
-
-    const dispatch = useDispatch();
 
     const projects: Project[] = useSelector((state: RootState) => state.activeProjects.projects);
     const task: Task | undefined = useSelector((state: RootState) => state.taskInProgress.task);

@@ -11,9 +11,6 @@ const initialState: TaskState = {
 }
 
 export function tasksReducer(state = initialState, action: TaskActionTypes): TaskState {
-
-console.log(action);
-
     switch (action.type) {
         case INIT_TASK:
         case START_TASK:

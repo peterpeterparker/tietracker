@@ -25,6 +25,7 @@ import ClientModal from '../../modals/client/ClientModal';
 
 import { RootState } from '../../store/reducers';
 import { Client } from '../../models/client';
+
 import Projects from '../../components/projects/Projects';
 
 const Home: React.FC = () => {
