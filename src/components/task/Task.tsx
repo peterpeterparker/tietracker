@@ -18,6 +18,7 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
 
     async function stopTask() {
         await props.stopTask();
+        await props.computeSummary();
     }
 
     return (
