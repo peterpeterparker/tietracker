@@ -1,15 +1,9 @@
 import {
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
   IonContent,
   IonHeader,
   IonPage,
   IonToolbar,
   IonSearchbar,
-  IonBadge,
   IonButton,
   IonModal
 } from '@ionic/react';
@@ -27,6 +21,7 @@ import { RootState } from '../../store/reducers';
 import { Client } from '../../models/client';
 
 import Projects from '../../components/projects/Projects';
+import Summary from '../../components/summary/Summary';
 
 const Home: React.FC = () => {
 
@@ -54,16 +49,7 @@ const Home: React.FC = () => {
 
           <h1 className="ion-padding">{t('week.summary')}</h1>
 
-          <IonCard className="welcome-card">
-            <IonCardHeader>
-              <IonCardSubtitle>Hours tracked: 45h</IonCardSubtitle>
-              <IonCardTitle>Billable amount: 1'200 CHF</IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-              <p>Top projects:</p>
-              <IonBadge>Project 1</IonBadge> <IonBadge>Project 2</IonBadge> <IonBadge>Project 3</IonBadge>
-            </IonCardContent>
-          </IonCard>
+          <Summary></Summary>
 
           <Projects></Projects>
 

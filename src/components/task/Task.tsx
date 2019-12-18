@@ -20,8 +20,6 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
         await props.stopTask();
     }
 
-console.log(client); 
-
     return (
         <div className={`${styles.task} ${task !== undefined ? styles.progress : ''}`} style={client !== undefined ? {background: `${client.color}`} : undefined}>
             <button onClick={() => stopTask()}>Stop</button>

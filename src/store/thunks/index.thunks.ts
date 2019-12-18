@@ -11,6 +11,7 @@ import { startTask, stopTask, initTask } from './tasks.thunks';
 
 import { ClientData, Client } from '../../models/client';
 import { ProjectData, Project } from '../../models/project';
+import { computeSummary } from './summary.thunks';
 
 export type RootThunkDispatch = ThunkDispatch<RootState, undefined, Action>;
 
@@ -29,6 +30,8 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
     startTask: (project: Project) => dispatch(startTask(project)),
     stopTask: () => dispatch(stopTask()),
     initTask: () => dispatch(initTask()),
+
+    computeSummary: () => dispatch(computeSummary())
 });
 
 export const rootConnector = connect(
