@@ -17,7 +17,9 @@ export type RootThunkDispatch = ThunkDispatch<RootState, undefined, Action>;
 
 const mapState = (state: RootState) => ({
     clients: state.clients.clients,
-    activeProjects: state.activeProjects.projects
+    activeProjects: state.activeProjects.projects,
+    taskInProgress: state.taskInProgress.task,
+    summary: state.summary.summary
 });
 
 const mapDispatch = (dispatch: RootThunkDispatch) => ({
