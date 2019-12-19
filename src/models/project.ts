@@ -5,11 +5,18 @@ export interface ProjectClientData {
     color: string;
 }
 
+export interface ProjectDataRate {
+    hourly: number;
+    vat: boolean;
+}
+
 export interface ProjectData {
     name: string;
 
     from: Date | number;
     to?: Date | number;
+
+    rate: ProjectDataRate;
 
     client?: ProjectClientData;
 

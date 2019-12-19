@@ -87,16 +87,44 @@ class ClientModal extends React.Component<Props, ClientState> {
         } else {
             data = {
                 name: ($event.target as InputTargetEvent).value,
-                from: new Date().getTime()
+                from: new Date().getTime(),
+                rate: {
+                    hourly: 0,
+                    vat: true
+                }
             };
         }
 
         this.setState({ projectData: data });
     }
 
-    private validateProjectName() {
+    private handleProjectRateInput($event: CustomEvent<KeyboardEvent>) {
+        if (!this.state.clientData) {
+            return;
+        }
+
+        let data: ProjectData;
+
+        if (this.state.projectData) {
+            data = { ...this.state.projectData };
+            data.rate.hourly = parseInt(($event.target as InputTargetEvent).value);
+        } else {
+            data = {
+                name: '',
+                from: new Date().getTime(),
+                rate: {
+                    hourly: parseInt(($event.target as InputTargetEvent).value),
+                    vat: true
+                }
+            };
+        }
+
+        this.setState({ projectData: data });
+    }
+
+    private validateProject() {
         const valid = { ...this.state.valid };
-        valid.project = this.state.projectData !== undefined && this.state.projectData.name !== undefined && this.state.projectData.name.length >= 3;
+        valid.project = this.state.projectData !== undefined && this.state.projectData.name !== undefined && this.state.projectData.name.length >= 3 && this.state.projectData.rate && this.state.projectData.rate.hourly > 0;
         this.setState({ valid });
     }
 
@@ -168,7 +196,17 @@ class ClientModal extends React.Component<Props, ClientState> {
                         <IonItem disabled={!this.state.valid.client}>
                             <IonInput debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
                                 onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectNameInput($event)}
-                                onIonChange={() => this.validateProjectName()}>
+                                onIonChange={() => this.validateProject()}>
+                            </IonInput>
+                        </IonItem>
+
+                        <IonItem disabled={!this.state.valid.client}>
+                            <IonLabel>Hourly rate</IonLabel>
+                        </IonItem>
+                        <IonItem disabled={!this.state.valid.client}>
+                            <IonInput debounce={500} minlength={1} required={true} input-mode="text"
+                            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectRateInput($event)}
+                            onIonChange={() => this.validateProject()}>
                             </IonInput>
                         </IonItem>
                     </IonList>
