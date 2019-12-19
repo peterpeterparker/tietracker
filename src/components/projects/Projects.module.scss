@@ -1,22 +1,19 @@
 .projects {
+  flex: 1;
   display: flex;
-
-  width: auto;
-
-  position: relative;
-  overflow-x: scroll;
-
-  -webkit-overflow-scrolling: touch;
-  will-change: scroll-position;
-  overscroll-behavior: contain;
-
+  overflow: auto;
+    
   ::-webkit-scrollbar {
     display: none;
   }
 
+  > div {
+    display: flex;
+  }
+
   &::after {
-    content: '';
-    border-left: 16px solid transparent; 
+    content: "";
+    border-left: 16px solid transparent;
   }
 
   ion-card {

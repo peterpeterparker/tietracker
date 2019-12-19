@@ -40,20 +40,22 @@ const Projects: React.FC<RootProps> = (props: RootProps) => {
         }
 
         return <div className={styles.projects}>
-            {
-                projects.map((project: Project) => {
-                    return <IonCard key={project.id} onClick={() => startStopTask(project)} className="ion-activatable ion-margin-bottom">
-                        <div style={{ background: project.data.client ? project.data.client.color : undefined }}>
-                            <IonIcon icon={playCircle} />
-                        </div>
-                        <IonCardHeader>
-                            <IonCardSubtitle>{project.data.client ? project.data.client.name : ''}</IonCardSubtitle>
-                            <IonCardTitle>{project.data.name}</IonCardTitle>
-                        </IonCardHeader>
-                        <IonRippleEffect></IonRippleEffect>
-                    </IonCard>
-                })
-            }
+            <div>
+                {
+                    projects.map((project: Project) => {
+                        return <IonCard key={project.id} onClick={() => startStopTask(project)} className="ion-activatable ion-margin-bottom">
+                            <div style={{ background: project.data.client ? project.data.client.color : undefined }}>
+                                <IonIcon icon={playCircle} />
+                            </div>
+                            <IonCardHeader>
+                                <IonCardSubtitle>{project.data.client ? project.data.client.name : ''}</IonCardSubtitle>
+                                <IonCardTitle>{project.data.name}</IonCardTitle>
+                            </IonCardHeader>
+                            <IonRippleEffect></IonRippleEffect>
+                        </IonCard>
+                    })
+                }
+            </div>
         </div>
     }
 
