@@ -9,7 +9,6 @@ import {
 } from '@ionic/react';
 
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { useTranslation } from 'react-i18next';
 
@@ -50,7 +49,7 @@ const Home: React.FC = () => {
 
           <Projects></Projects>
 
-          <h1></h1>
+          <h1>Liste</h1>
 
           <p>Liste des clients à facturer</p>
 

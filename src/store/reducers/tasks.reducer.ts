@@ -1,15 +1,16 @@
 import { TaskActionTypes, START_TASK, STOP_TASK, INIT_TASK, LIST_TASKS, TasksActionTypes } from '../types/tasks.types';
 
-import { Task } from '../../models/task';
+import { TaskItem } from '../interfaces/task.item';
+import { TaskInProgress } from '../interfaces/task.inprogress';
 
 export interface TaskState {
-    task: Task | undefined;
-    tasks: Task[] | [];
+    taskInProgress: TaskInProgress | undefined;
+    taskItems: TaskItem[] | [];
 }
 
 const initialState: TaskState = {
-    task: undefined,
-    tasks: []
+    taskInProgress: undefined,
+    taskItems: []
 }
 
 export function tasksReducer(state = initialState, action: TaskActionTypes | TasksActionTypes): TaskState {
@@ -17,18 +18,18 @@ export function tasksReducer(state = initialState, action: TaskActionTypes | Tas
         case INIT_TASK:
         case START_TASK:
             return {
-                task: action.payload,
-                tasks: state.tasks
+                taskInProgress: action.payload,
+                taskItems: state.taskItems
             };
         case STOP_TASK:
             return {
-                task: undefined,
-                tasks: state.tasks
+                taskInProgress: undefined,
+                taskItems: state.taskItems
             };
         case LIST_TASKS:
             return {
-                task: state.task,
-                tasks: action.payload
+                taskInProgress: state.taskInProgress,
+                taskItems: action.payload
             };
         default:
             return state;

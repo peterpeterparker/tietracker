@@ -16,7 +16,7 @@ import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
 const Projects: React.FC<RootProps> = (props: RootProps) => {
 
     const projects: Project[] = useSelector((state: RootState) => state.activeProjects.projects);
-    const task: Task | undefined = useSelector((state: RootState) => state.tasks.task);
+    const task: Task | undefined = useSelector((state: RootState) => state.tasks.taskInProgress);
 
     async function startStopTask(project: Project) {
         // TODO catch error

@@ -10,25 +10,28 @@ import { checkmarkCircle } from 'ionicons/icons';
 import { RootState } from '../../store/reducers';
 import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
 
-import { Task as TaskModel, TaskInProgressClientData, TaskInProgressData } from '../../models/task';
+import { TaskInProgressClientData, TaskInProgressData } from '../../models/task';
+
+import { TaskInProgress } from '../../store/interfaces/task.inprogress';
 
 import Spinner from '../spinner/Spinner';
+
 import { contrast } from '../../utils/utils.color';
 
 const Task: React.FC<RootProps> = (props: RootProps) => {
 
     const [freeze, setFreeze] = useState<boolean>(false);
 
-    const task: TaskModel | undefined = useSelector((state: RootState) => {
-        return state.tasks.task;
+    const task: TaskInProgress | undefined = useSelector((state: RootState) => {
+        return state.tasks.taskInProgress;
     });
 
     const client: TaskInProgressClientData | undefined = useSelector((state: RootState) => {
-        return state.tasks.task !== undefined && state.tasks.task.data ? (state.tasks.task.data as TaskInProgressData).client : undefined
+        return state.tasks.taskInProgress !== undefined && state.tasks.taskInProgress.data ? (state.tasks.taskInProgress.data as TaskInProgressData).client : undefined
     });
 
     const contrastColor: string = useSelector((state: RootState) => {
-        const client: TaskInProgressClientData | undefined = state.tasks.task !== undefined && state.tasks.task.data ? (state.tasks.task.data as TaskInProgressData).client : undefined;
+        const client: TaskInProgressClientData | undefined = state.tasks.taskInProgress !== undefined && state.tasks.taskInProgress.data ? (state.tasks.taskInProgress.data as TaskInProgressData).client : undefined;
         return contrast(client !== undefined ? client.color : undefined);
     });
 

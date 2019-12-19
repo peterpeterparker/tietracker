@@ -5,14 +5,14 @@ import { IonList, IonItem, IonLabel } from '@ionic/react';
 
 import styles from './Tasks.module.scss';
 
-import { Task, TaskListData } from '../../models/task';
+import { TaskItem } from '../../store/interfaces/task.item';
 
 import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
 import { RootState } from '../../store/reducers';
 
 const Tasks: React.FC<RootProps> = (props: RootProps) => {
 
-    const tasks: Task[] | undefined = useSelector((state: RootState) => state.tasks.tasks);
+    const tasks: TaskItem[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
 
     return (
         <>
@@ -32,16 +32,14 @@ const Tasks: React.FC<RootProps> = (props: RootProps) => {
             return undefined;
         }
 
-        return tasks.map((task: Task) => {
-            const taskItemData: TaskListData = task.data as TaskListData;
-
+        return tasks.map((task: TaskItem) => {
             return <IonItem key={`task-${task.id}`} className={styles.item}>
-                <div slot="start" style={{ 'background': taskItemData.client.color } as CSSProperties}></div>
+                <div slot="start" style={{ 'background': task.data.client.color } as CSSProperties}></div>
 
                 <IonLabel>
-                    <h2>{taskItemData.client.name}</h2>
-                    <h3>{taskItemData.project.name}</h3>
-                    <p>{taskItemData.hours}h | {taskItemData.billable} CHF</p>
+                    <h2>{task.data.client.name}</h2>
+                    <h3>{task.data.project.name}</h3>
+                    <p>{task.data.hours}h | {task.data.billable} CHF</p>
                 </IonLabel>
             </IonItem>
         });

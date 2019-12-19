@@ -42,5 +42,5 @@ export interface TaskListData extends TaskData {
 
 export interface Task {
     id: string;
-    data: TaskData | TaskInProgressData;
+    data: TaskData | TaskInProgressData | TaskListData;
 }

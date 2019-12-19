@@ -7,6 +7,8 @@ import format from 'date-fns/format';
 import { Project } from '../../models/project';
 import { Task, TaskInProgressData } from '../../models/task';
 
+import { TaskInProgress } from '../../store/interfaces/task.inprogress';
+
 export class TasksService {
 
     private static instance: TasksService;
@@ -24,17 +26,17 @@ export class TasksService {
         return TasksService.instance;
     }
 
-    start(project: Project): Promise<Task> {
-        return new Promise<Task>(async (resolve, reject) => {
+    start(project: Project): Promise<TaskInProgress> {
+        return new Promise<TaskInProgress>(async (resolve, reject) => {
             try {
-                const taskInProgress: Task = await get('task-in-progress');
+                const taskInProgress: TaskInProgress = await get('task-in-progress');
 
                 if (taskInProgress) {
                     reject('Only one task at a time.');
                     return;
                 }
 
-                const task: Task = await this.createTask(project);
+                const task: TaskInProgress = await this.createTask(project);
 
                 set('task-in-progress', task);
 
@@ -71,10 +73,10 @@ export class TasksService {
         });
     }
 
-    current(): Promise<Task | undefined> {
-        return new Promise<Task | undefined>(async (resolve, reject) => {
+    current(): Promise<TaskInProgress | undefined> {
+        return new Promise<TaskInProgress | undefined>(async (resolve, reject) => {
             try {
-                const task: Task = await get('task-in-progress');
+                const task: TaskInProgress = await get('task-in-progress');
 
                 resolve(task);
             } catch (err) {
@@ -83,8 +85,8 @@ export class TasksService {
         });
     }
 
-    private createTask(project: Project): Promise<Task> {
-        return new Promise<Task>((resolve, reject) => {
+    private createTask(project: Project): Promise<TaskInProgress> {
+        return new Promise<TaskInProgress>((resolve, reject) => {
             if (!project || !project.data || !project.data.client) {
                 reject('Project is empty.');
                 return;
@@ -92,7 +94,7 @@ export class TasksService {
 
             const now: number = new Date().getTime();
 
-            const task: Task = {
+            const task: TaskInProgress = {
                 id: uuid(),
                 data: {
                     from: now,

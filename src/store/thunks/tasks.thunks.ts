@@ -1,15 +1,16 @@
 import { RootThunkResult } from './types.thunks';
 
 import { Project } from '../../models/project';
-import { Task } from '../../models/task';
 
 import { START_TASK, STOP_TASK, INIT_TASK, LIST_TASKS } from '../types/tasks.types';
 
 import { TasksService } from '../../services/tasks/tasks.service';
+import { TaskInProgress } from '../interfaces/task.inprogress';
+import { TaskItem } from '../interfaces/task.item';
 
 export function startTask(project: Project): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
-        const task: Task = await TasksService.getInstance().start(project);
+        const task: TaskInProgress = await TasksService.getInstance().start(project);
 
         dispatch({ type: START_TASK, payload: task });
     };
@@ -27,7 +28,7 @@ export function stopTask(delayDispatch: number = 0): RootThunkResult<Promise<voi
 
 export function initTask(): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
-        const task: Task | undefined = await TasksService.getInstance().current();
+        const task: TaskInProgress | undefined = await TasksService.getInstance().current();
 
         dispatch({ type: INIT_TASK, payload: task });
     };
@@ -35,7 +36,7 @@ export function initTask(): RootThunkResult<Promise<void>> {
 
 export function listTasks(): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
-        await TasksService.getInstance().list((data: Task[]) => {
+        await TasksService.getInstance().list((data: TaskItem[]) => {
             dispatch({ type: LIST_TASKS, payload: data });
         });
     };
