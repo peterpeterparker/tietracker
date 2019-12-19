@@ -11,6 +11,8 @@ export class TasksService {
 
     private static instance: TasksService;
 
+    private tasksWorker: Worker = new Worker('./workers/tasks.js');
+
     private constructor() {
         // Private constructor, singleton
     }
@@ -142,6 +144,20 @@ export class TasksService {
             } catch (err) {
                 reject(err);
             }
+        });
+    }
+
+    list(updateStateFunction: Function): Promise<void> {
+        return new Promise<void>((resolve) => {
+            this.tasksWorker.onmessage = ($event: MessageEvent) => {
+                if ($event && $event.data) {
+                    updateStateFunction($event.data);
+                }
+            };
+
+            this.tasksWorker.postMessage('listTasks');
+
+            resolve();
         });
     }
 

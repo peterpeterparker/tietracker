@@ -53,7 +53,11 @@ const Home: React.FC = () => {
 
           <Projects></Projects>
 
-          <h1>All Clients</h1>
+          <h1></h1>
+
+          <p>Liste des clients à facturer</p>
+
+          <h1>Todays completed tasks</h1>
 
           {
             clients.map((client: Client, i: number) => {

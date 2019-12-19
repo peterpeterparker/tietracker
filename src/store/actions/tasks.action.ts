@@ -1,4 +1,4 @@
-import { TaskActionTypes, START_TASK, STOP_TASK, INIT_TASK } from '../types/tasks.types';
+import { TaskActionTypes, START_TASK, STOP_TASK, INIT_TASK, TasksActionTypes, LIST_TASKS } from '../types/tasks.types';
 import { Task } from '../../models/task';
 
 export function startTask(task: Task): TaskActionTypes {
@@ -18,5 +18,12 @@ export function initTask(task: Task): TaskActionTypes {
     return {
         type: INIT_TASK,
         payload: task
+    }
+}
+
+export function listTasks(tasks: Task[]): TasksActionTypes {
+    return {
+        type: LIST_TASKS,
+        payload: tasks
     }
 }
