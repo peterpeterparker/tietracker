@@ -6,7 +6,7 @@ import isAfter from 'date-fns/isAfter';
 
 import { Project, ProjectData } from '../../models/project';
 
-import { toDateObj } from '../../utils/utils';
+import { toDateObj } from '../../utils/utils.date';
 import { Client } from '../../models/client';
 
 export class ProjectsService {

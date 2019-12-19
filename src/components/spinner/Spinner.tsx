@@ -8,10 +8,12 @@ import { RootProps, rootConnector } from '../../store/thunks/index.thunks';
 
 interface SpinnerProps extends RootProps {
     color: string | undefined;
+    contrast: string;
+    freeze: boolean;
 }
 
 interface SpinnerState {
-    timeElapsed: string | undefined;
+    timeElapsed: string;
 }
 
 class Spinner extends React.Component<SpinnerProps, SpinnerState> {
@@ -22,13 +24,13 @@ class Spinner extends React.Component<SpinnerProps, SpinnerState> {
         super(props);
 
         this.state = {
-          timeElapsed: undefined
+          timeElapsed: '00:00:00'
         }
       }
 
     componentDidMount() {
         this.progressInterval = window.setInterval(() => {
-            if (this.props.taskInProgress && this.props.taskInProgress.data) {
+            if (this.props.taskInProgress && this.props.taskInProgress.data && !this.props.freeze) {
                 const now: Date = new Date();
 
                 let seconds: number = differenceInSeconds(now, this.props.taskInProgress.data.from);
@@ -48,11 +50,15 @@ class Spinner extends React.Component<SpinnerProps, SpinnerState> {
     }
 
     render() {
-        const inlineStyle = this.props.color !== undefined ? {'--progress-color': this.props.color} as CSSProperties : undefined;
+        const inlineStyle = this.props.color !== undefined ? {
+            '--progress-color': this.props.color,
+            '--progress-color-contrast': this.props.contrast ? this.props.contrast : 'white',
+            '--freeze-progress': `${this.props.freeze ? 'paused' : 'running'}`
+        } as CSSProperties : undefined;
 
         // https://codepen.io/supah/pen/BjYLdW
-        return <div className={styles.container}>
-            <svg className={styles.spinner} style={inlineStyle} viewBox="0 0 50 50">
+        return <div className={styles.container} style={inlineStyle}>
+            <svg className={styles.spinner} viewBox="0 0 50 50">
                 <circle className={styles.background} cx="25" cy="25" r="20"></circle>
                 <circle className={styles.path} cx="25" cy="25" r="20"></circle>
             </svg>

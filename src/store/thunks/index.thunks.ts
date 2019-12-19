@@ -30,7 +30,7 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
     initActiveProjects: () => dispatch(initActiveProjects()),
 
     startTask: (project: Project) => dispatch(startTask(project)),
-    stopTask: () => dispatch(stopTask()),
+    stopTask: (delayDispatch: number = 0) => dispatch(stopTask(delayDispatch)),
     initTask: () => dispatch(initTask()),
 
     computeSummary: () => dispatch(computeSummary())

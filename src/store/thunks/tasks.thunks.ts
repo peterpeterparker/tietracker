@@ -15,11 +15,13 @@ export function startTask(project: Project): RootThunkResult<Promise<void>> {
     };
 }
 
-export function stopTask(): RootThunkResult<Promise<void>> {
+export function stopTask(delayDispatch: number = 0): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
         await TasksService.getInstance().stop();
 
-        dispatch({ type: STOP_TASK });
+        setTimeout(() => {
+            dispatch({ type: STOP_TASK });
+        }, delayDispatch);
     };
 }
 

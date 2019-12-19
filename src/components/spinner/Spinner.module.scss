@@ -9,12 +9,13 @@
     transform: translate(-50%, -50%);
     margin: 0;
 
-    color: white;
-    mix-blend-mode: screen;
+    color: var(--progress-color-contrast);
   }
   
   .spinner {
     animation: rotate 5s linear infinite;
+    animation-play-state: var(--freeze-progress);
+
     width: 10rem;
     height: 10rem;
     mix-blend-mode: screen;
@@ -33,9 +34,12 @@
   }
 
   .path {
-    stroke: white;
+    stroke: var(--progress-color-contrast);
     stroke-linecap: round;
+    
     animation: dash 2s ease-in-out infinite;
+    animation-play-state: var(--freeze-progress);
+
     fill: none;
     stroke-width: 3;
   }
