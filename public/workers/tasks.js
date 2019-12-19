@@ -9,7 +9,7 @@ self.onmessage = async ($event) => {
 
 self.listTasks = async () => {
     const projects = await loadProjects();
-    
+
     if (!projects || projects === undefined) {
         self.postMessage([]);
 
@@ -25,6 +25,13 @@ self.listTasks = async () => {
     }
 
     const tasks = await listTodayTasks(projects, clients);
+
+    if (!tasks || tasks.length <= 0) {
+        self.postMessage([]);
+        return;
+    }
+
+    tasks.sort((a, b) => { return b.data.updated_at - a.data.updated_at });
 
     self.postMessage(tasks);
 };
@@ -62,7 +69,8 @@ function loadProjects() {
         let result = {};
         values.forEach((value) => {
             result[value.id] = {
-                name: value.data.name
+                name: value.data.name,
+                rate: value.data.rate ? value.data.rate : { hourly: 0, vat: false }
             };
         });
 
@@ -82,11 +90,21 @@ function listTodayTasks(projects, clients) {
         const results = [];
 
         tasks.forEach((task) => {
-            let taskInProgress = {...task};
-            taskInProgress.data.client = clients !== undefined ? clients[task.data.client_id] : undefined;
-            taskInProgress.data.project = projects !== undefined ? projects[task.data.project_id] : undefined;
+            let taskItem = { ...task };
+            taskItem.data.client = clients !== undefined ? clients[task.data.client_id] : undefined;
+            taskItem.data.project = projects !== undefined ? projects[task.data.project_id] : undefined;
 
-            results.push(taskInProgress);
+            const milliseconds = dayjs(task.data.to).diff(new Date(task.data.from));
+            const hours = milliseconds > 0 ? milliseconds / (1000 * 60 * 60) : 0;
+
+            taskItem.data.hours = hours;
+
+            const rate = projects[task.data.project_id].rate;
+
+            const billable = rate && rate.hourly > 0 ? hours * rate.hourly : 0;
+            taskItem.data.billable = billable;
+
+            results.push(taskItem);
         });
 
         resolve(results);

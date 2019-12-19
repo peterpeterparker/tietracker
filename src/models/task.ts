@@ -1,3 +1,5 @@
+import { ProjectDataRate } from "./project";
+
 // Denormalization
 export interface TaskInProgressClientData {
     name: string;
@@ -7,6 +9,12 @@ export interface TaskInProgressClientData {
 // Denormalization
 export interface TaskInProgressProjectData {
     name: string;
+}
+
+// Denormalization
+export interface TaskProjectExtendedData {
+    name: string;
+    rate: ProjectDataRate;
 }
 
 export interface TaskData {
@@ -23,6 +31,13 @@ export interface TaskData {
 export interface TaskInProgressData extends TaskData {
     client: TaskInProgressClientData;
     project: TaskInProgressProjectData;
+}
+
+export interface TaskListData extends TaskData {
+    client: TaskInProgressClientData;
+    project: TaskProjectExtendedData;
+    hours: number;
+    billable: number;
 }
 
 export interface Task {

@@ -8,7 +8,7 @@ import { summaryReducer } from './summary.reducer';
 export const rootReducer = combineReducers({
     clients: clientsReducer,
     activeProjects: projectsReducer,
-    taskInProgress: tasksReducer,
+    tasks: tasksReducer,
     summary: summaryReducer
 });
 

@@ -20,15 +20,15 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
     const [freeze, setFreeze] = useState<boolean>(false);
 
     const task: TaskModel | undefined = useSelector((state: RootState) => {
-        return state.taskInProgress.task;
+        return state.tasks.task;
     });
 
     const client: TaskInProgressClientData | undefined = useSelector((state: RootState) => {
-        return state.taskInProgress.task !== undefined && state.taskInProgress.task.data ? (state.taskInProgress.task.data as TaskInProgressData).client : undefined
+        return state.tasks.task !== undefined && state.tasks.task.data ? (state.tasks.task.data as TaskInProgressData).client : undefined
     });
 
     const contrastColor: string = useSelector((state: RootState) => {
-        const client: TaskInProgressClientData | undefined = state.taskInProgress.task !== undefined && state.taskInProgress.task.data ? (state.taskInProgress.task.data as TaskInProgressData).client : undefined;
+        const client: TaskInProgressClientData | undefined = state.tasks.task !== undefined && state.tasks.task.data ? (state.tasks.task.data as TaskInProgressData).client : undefined;
         return contrast(client !== undefined ? client.color : undefined);
     });
 
@@ -36,7 +36,9 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
         setFreeze(true);
 
         await props.stopTask(1500);
+
         await props.computeSummary();
+        await props.listTasks();
 
         setTimeout(() => {
             setFreeze(false);
