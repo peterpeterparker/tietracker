@@ -19,9 +19,6 @@ const Summary: React.FC<RootProps> = (props: RootProps) => {
             <IonCardSubtitle>Hours tracked: {summary !== undefined ? summary.hours : 0.0}</IonCardSubtitle>
             <IonCardTitle>Billable amount: {summary !== undefined ? summary.billable : 0.0} CHF</IonCardTitle>
         </IonCardHeader>
-        <IonCardContent>
-            <p>Top projects:</p>
-        </IonCardContent>
     </IonCard>
     );
 }

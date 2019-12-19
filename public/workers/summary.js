@@ -82,8 +82,8 @@ async function computeSum(projects) {
     }, 0);
 
     return {
-        hours: sumHours,
-        billable: sumBillable
+        hours: Math.round(sumHours * 100) / 100,
+        billable: Math.round(sumBillable * 100) / 100
     };
 }
 
