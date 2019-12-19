@@ -1,5 +1,6 @@
 import { ProjectDataRate } from "../../models/project";
-import { TaskData, TaskInProgressClientData, TaskInProgressProjectData } from "../../models/task";
+import { TaskData } from "../../models/task";
+import { TaskInProgressClientData, TaskInProgressProjectData } from "./task.inprogress";
 
 // Denormalization
 export interface TaskProjectExtendedData {

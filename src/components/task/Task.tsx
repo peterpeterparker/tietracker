@@ -10,9 +10,7 @@ import { checkmarkCircle } from 'ionicons/icons';
 import { RootState } from '../../store/reducers';
 import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
 
-import { TaskInProgressClientData, TaskInProgressData } from '../../models/task';
-
-import { TaskInProgress } from '../../store/interfaces/task.inprogress';
+import { TaskInProgress, TaskInProgressClientData, TaskInProgressData } from '../../store/interfaces/task.inprogress';
 
 import Spinner from '../spinner/Spinner';
 

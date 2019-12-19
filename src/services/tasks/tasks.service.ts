@@ -5,9 +5,9 @@ import uuid from 'uuid/v4';
 import format from 'date-fns/format';
 
 import { Project } from '../../models/project';
-import { Task, TaskInProgressData } from '../../models/task';
+import { Task } from '../../models/task';
 
-import { TaskInProgress } from '../../store/interfaces/task.inprogress';
+import { TaskInProgress, TaskInProgressData } from '../../store/interfaces/task.inprogress';
 
 export class TasksService {
 
