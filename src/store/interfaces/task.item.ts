@@ -17,7 +17,7 @@ export interface TaskInProgressData extends TaskData {
 export interface TaskItemData extends TaskData {
     client: TaskInProgressClientData;
     project: TaskProjectExtendedData;
-    hours: number;
+    milliseconds: number;
     billable: number;
 }
 

@@ -12,7 +12,7 @@ import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
 
 import { TaskInProgress, TaskInProgressClientData, TaskInProgressData } from '../../store/interfaces/task.inprogress';
 
-import Spinner from '../spinner/Spinner';
+import Spinner from '../../components/spinner/Spinner';
 
 import { contrast } from '../../utils/utils.color';
 
@@ -56,7 +56,7 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
 
                 <button onClick={() => stopTask()} aria-label="Stop current task" className="ion-activatable" disabled={freeze} style={{'--color': contrastColor} as CSSProperties}>
                     <IonIcon icon={checkmarkCircle} />
-                    <IonLabel>Stop</IonLabel>
+                    <IonLabel>Done</IonLabel>
                 </button>
             </div>
         </div>

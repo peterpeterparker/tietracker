@@ -11,12 +11,12 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
-import { options, home, send } from 'ionicons/icons';
+import { options, card } from 'ionicons/icons';
 
 import Home from './pages/home/Home';
 import Settings from './pages/settings/Settings';
-import Tab3 from './pages/Tab3';
 import Details from './pages/Details';
+import Invoices from './pages/invoices/Invoices';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -39,12 +39,17 @@ import './theme/variables.scss';
 
 import './theme/content.scss';
 import './theme/header.scss';
+import './theme/input.scss';
+import './theme/button.scss';
+import './theme/modal.scss';
+import './theme/fonts.scss';
+import './theme/card.scss';
 
 import './helpers/i18n';
 
 import { RootProps, rootConnector } from './store/thunks/index.thunks';
 
-import Task from './components/task/Task';
+import Task from './modals/task/Task';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
 
@@ -72,24 +77,24 @@ const App: React.FC<RootProps> = (props: RootProps) => {
           <IonTabs>
             <IonRouterOutlet>
               <Route path="/home" component={Home} exact={true} />
+              <Route path="/invoices" component={Invoices} />
               <Route path="/settings" component={Settings} exact={true} />
               <Route path="/settings/details" component={Details} />
-              <Route path="/tab3" component={Tab3} />
               <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
             </IonRouterOutlet>
 
             <IonTabBar slot="bottom">
               <IonTabButton tab="home" href="/home">
-                <IonIcon icon={home} />
+                <IonIcon src="/assets/icon/gsd-logo.svg" ariaLabel="Get Slick Done logo" />
                 <IonLabel>Home</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="invoices" href="/invoices">
+                <IonIcon icon={card} />
+                <IonLabel>Invoices</IonLabel>
               </IonTabButton>
               <IonTabButton tab="settings" href="/settings">
                 <IonIcon icon={options} />
                 <IonLabel>Settings</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="tab3" href="/tab3">
-                <IonIcon icon={send} />
-                <IonLabel>Tab Three</IonLabel>
               </IonTabButton>
             </IonTabBar>
           </IonTabs>

@@ -12,14 +12,14 @@ import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import './Home.scss';
+import styles from './Home.module.scss';
 
 import ClientModal from '../../modals/client/ClientModal';
 
 import Projects from '../../components/projects/Projects';
 import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
-import Invoices from '../../components/invoices/Invoices';
+import Header from '../../components/header/Header';
 
 const Home: React.FC = () => {
 
@@ -33,24 +33,24 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
+      <Header></Header>
+
       <IonContent className="ion-padding-start ion-padding-bottom ion-padding-top">
 
-        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)} cssClass="fullscreen">
           <ClientModal closeAction={closeModal}></ClientModal>
         </IonModal>
 
         <main>
-          <IonHeader className="ion-padding-end"><IonToolbar><IonSearchbar placeholder={t('search.companies')}></IonSearchbar></IonToolbar></IonHeader>
+          <IonHeader className="ion-padding-end"><IonToolbar><IonSearchbar placeholder={t('search.companies')} className={styles.searchbar}></IonSearchbar></IonToolbar></IonHeader>
 
-          <IonButton onClick={() => setShowModal(true)}>New</IonButton>
-
-          <h1 className="ion-padding">{t('week.summary')}</h1>
+          <div className={styles.addclient}>
+            <IonButton onClick={() => setShowModal(true)} fill="outline" color="medium">Add a new client</IonButton>
+          </div>
 
           <Summary></Summary>
 
-          <Projects></Projects>
-
-          <Invoices></Invoices>
+          <Projects addAction={() => setShowModal(true)}></Projects>
 
           <Tasks></Tasks>
         </main>

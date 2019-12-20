@@ -92,7 +92,7 @@ function buildProject(invoice, projects, clients) {
                     project: projects !== undefined ? projects[task.data.project_id] : undefined,
                     hours: hours,
                     billable: billable
-                }
+                };
 
                 results[task.data.project_id] = project;
             }

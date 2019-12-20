@@ -3,6 +3,8 @@ import { IonHeader, IonContent, IonToolbar, IonTitle, IonButtons, IonButton, Ion
 
 import { more } from 'ionicons/icons';
 
+import styles from './ClientModal.module.scss';
+
 import { Client, ClientData } from '../../models/client';
 import { RootProps, rootConnector } from '../../store/thunks/index.thunks';
 import { ProjectData } from '../../models/project';
@@ -22,7 +24,10 @@ type Props = RootProps & {
 
 class ClientModal extends React.Component<Props, ClientState> {
 
-    private colorRef: RefObject<any> = createRef();
+    private clientNameRef: RefObject<any> = createRef();
+    private clientColorRef: RefObject<any> = createRef();
+    private projectNameRef: RefObject<any> = createRef();
+    private projectRateRef: RefObject<any> = createRef();
 
     constructor(props: Props) {
         super(props);
@@ -36,11 +41,11 @@ class ClientModal extends React.Component<Props, ClientState> {
     }
 
     componentDidMount() {
-        this.colorRef.current.addEventListener('colorChange', this.selectColor, false);
+        this.clientColorRef.current.addEventListener('colorChange', this.selectColor, false);
     }
 
     componentWillUnmount() {
-        this.colorRef.current.removeEventListener('colorChange', this.selectColor, true);
+        this.clientColorRef.current.removeEventListener('colorChange', this.selectColor, true);
     }
 
     private handleClientNameInput($event: CustomEvent<KeyboardEvent>) {
@@ -72,7 +77,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         const data: ClientData = { ...this.state.clientData };
         data.color = $event.detail.hex;
         this.setState({ clientData: data });
-    }
+    };
 
     private handleProjectNameInput($event: CustomEvent<KeyboardEvent>) {
         if (!this.state.clientData) {
@@ -124,7 +129,7 @@ class ClientModal extends React.Component<Props, ClientState> {
 
     private validateProject() {
         const valid = { ...this.state.valid };
-        valid.project = this.state.projectData !== undefined && this.state.projectData.name !== undefined && this.state.projectData.name.length >= 3 && this.state.projectData.rate && this.state.projectData.rate.hourly > 0;
+        valid.project = this.state.projectData !== undefined && this.state.projectData.name !== undefined && this.state.projectData.name.length >= 3 && this.state.projectData.rate && this.state.projectData.rate.hourly >= 0;
         this.setState({ valid });
     }
 
@@ -148,9 +153,28 @@ class ClientModal extends React.Component<Props, ClientState> {
             await this.props.createProject(persistedClient, this.state.projectData);
 
             await this.props.closeAction();
+
+            this.reset();
         } catch (err) {
             console.error(err);
         }
+    }
+
+    private reset() {
+        // Reset state
+        this.setState({
+            valid: {
+                client: false,
+                project: false
+            },
+            clientData: undefined,
+            projectData: undefined
+        });
+
+        this.clientNameRef.current.value = undefined;
+        this.clientColorRef.current.value = undefined;
+        this.projectNameRef.current.value = undefined;
+        this.projectRateRef.current.value = undefined;
     }
 
     render() {
@@ -159,7 +183,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         return <>
             <IonHeader>
                 <IonToolbar color="primary">
-                    <IonTitle>New client</IonTitle>
+                    <IonTitle>Add a new client</IonTitle>
                     <IonButtons slot="end">
                         <IonButton onClick={() => this.props.closeAction()}>
                             <IonIcon name="close" slot="icon-only"></IonIcon>
@@ -168,53 +192,55 @@ class ClientModal extends React.Component<Props, ClientState> {
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-                <form onSubmit={($event: FormEvent<HTMLFormElement>) => this.handleSubmit($event)}>
-                    <IonList>
-                        <IonItem>
-                            <IonLabel>Name</IonLabel>
-                        </IonItem>
-                        <IonItem>
-                            <IonInput debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
-                                onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleClientNameInput($event)}
-                                onIonChange={() => this.validateClientName()}>
-                            </IonInput>
-                        </IonItem>
+                <main>
+                    <form onSubmit={($event: FormEvent<HTMLFormElement>) => this.handleSubmit($event)}>
+                        <IonList className="inputs-list">
+                            <IonItem className="item-title">
+                                <IonLabel>Company</IonLabel>
+                            </IonItem>
+                            <IonItem>
+                                <IonInput ref={this.clientNameRef} debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
+                                          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleClientNameInput($event)}
+                                          onIonChange={() => this.validateClientName()}>
+                                </IonInput>
+                            </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client}>
-                            <IonLabel>Color</IonLabel>
-                        </IonItem>
+                            <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
+                                <IonLabel>Color</IonLabel>
+                            </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client}>
-                            <deckgo-color ref={this.colorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true}>
-                                <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
-                            </deckgo-color>
-                        </IonItem>
+                            <IonItem disabled={!this.state.valid.client} className={styles.color}>
+                                <deckgo-color ref={this.clientColorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true}>
+                                    <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
+                                </deckgo-color>
+                            </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client}>
-                            <IonLabel>Project</IonLabel>
-                        </IonItem>
-                        <IonItem disabled={!this.state.valid.client}>
-                            <IonInput debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
-                                onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectNameInput($event)}
-                                onIonChange={() => this.validateProject()}>
-                            </IonInput>
-                        </IonItem>
+                            <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
+                                <IonLabel>Project</IonLabel>
+                            </IonItem>
+                            <IonItem disabled={!this.state.valid.client}>
+                                <IonInput ref={this.projectNameRef} debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
+                                          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectNameInput($event)}
+                                          onIonChange={() => this.validateProject()}>
+                                </IonInput>
+                            </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client}>
-                            <IonLabel>Hourly rate</IonLabel>
-                        </IonItem>
-                        <IonItem disabled={!this.state.valid.client}>
-                            <IonInput debounce={500} minlength={1} required={true} input-mode="text"
-                            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectRateInput($event)}
-                            onIonChange={() => this.validateProject()}>
-                            </IonInput>
-                        </IonItem>
-                    </IonList>
+                            <IonItem disabled={!this.state.valid.client} className="item-title">
+                                <IonLabel>Hourly rate</IonLabel>
+                            </IonItem>
+                            <IonItem disabled={!this.state.valid.client}>
+                                <IonInput ref={this.projectRateRef} debounce={500} minlength={1} required={true} input-mode="text"
+                                          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectRateInput($event)}
+                                          onIonChange={() => this.validateProject()}>
+                                </IonInput>
+                            </IonItem>
+                        </IonList>
 
-                    <IonButton type="submit" className="ion-margin-top" disabled={!valid}>
-                        <IonLabel>Submit</IonLabel>
-                    </IonButton>
-                </form>
+                        <IonButton type="submit" className="ion-margin-top" disabled={!valid}>
+                            <IonLabel>Submit</IonLabel>
+                        </IonButton>
+                    </form>
+                </main>
             </IonContent>
         </>
     };
