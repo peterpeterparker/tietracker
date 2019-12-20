@@ -1,10 +1,10 @@
 import { Client } from '../../models/client';
 
-export const ADD_CLIENT = 'ADD_CLIENT';
+export const CREATE_CLIENT = 'CREATE_CLIENT';
 export const INIT_CLIENTS = 'INIT_CLIENTS';
 
-interface AddClientAction {
-    type: typeof ADD_CLIENT
+interface CreateClientAction {
+    type: typeof CREATE_CLIENT
     payload: Client
 }
 
@@ -13,4 +13,4 @@ interface InitClientsAction {
     payload: Client[]
 }
 
-export type ClientActionTypes = AddClientAction | InitClientsAction;
+export type ClientActionTypes = CreateClientAction | InitClientsAction;

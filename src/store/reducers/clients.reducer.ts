@@ -1,4 +1,4 @@
-import { ClientActionTypes, ADD_CLIENT, INIT_CLIENTS } from '../types/types';
+import { ClientActionTypes, CREATE_CLIENT, INIT_CLIENTS } from '../types/clients.types';
 import { Client } from '../../models/client';
 
 export interface ClientsState {
@@ -11,7 +11,7 @@ const initialState: ClientsState = {
 
 export function clientsReducer(state = initialState, action: ClientActionTypes): ClientsState {
     switch (action.type) {
-        case ADD_CLIENT:
+        case CREATE_CLIENT:
             return {
                 clients: [...state.clients, action.payload]
             };

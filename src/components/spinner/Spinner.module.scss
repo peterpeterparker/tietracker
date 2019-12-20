@@ -1,0 +1,68 @@
+  .container {
+    position: relative;
+  }
+  
+  .text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+
+    color: var(--progress-color-contrast);
+  }
+  
+  .spinner {
+    animation: rotate 5s linear infinite;
+    animation-play-state: var(--freeze-progress);
+
+    width: 10rem;
+    height: 10rem;
+    mix-blend-mode: screen;
+
+    height: 70vw;
+    max-height: 40vh;
+    width: 70vw;
+    max-width: 40vh;
+  }
+
+  .background {
+    stroke: var(--progress-color);
+    stroke-linecap: round;
+    fill: none;
+    stroke-width: 2.6;
+  }
+
+  .path {
+    stroke: var(--progress-color-contrast);
+    stroke-linecap: round;
+    
+    animation: dash 2s ease-in-out infinite;
+    animation-play-state: var(--freeze-progress);
+
+    fill: none;
+    stroke-width: 3;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 1, 150;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -35;
+    }
+    100% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -124;
+    }
+  }
+  
+  

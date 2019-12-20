@@ -1,47 +1,24 @@
-import { Action } from 'redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { connect, ConnectedProps } from 'react-redux';
+import { RootThunkResult } from './types.thunks';
 
-import { RootState } from '../reducers';
-import { Client } from '../../models/client';
-import { ADD_CLIENT, INIT_CLIENTS } from '../types/types';
+import { Client, ClientData } from '../../models/client';
+import { CREATE_CLIENT, INIT_CLIENTS } from '../types/clients.types';
 
-import { saveClient, loadClients } from '../../services/clients/clients.service';
+import { ClientsService } from '../../services/clients/clients.service';
 
-type ClientThunkDispatch = ThunkDispatch<RootState, undefined, Action>;
-
-type ClientThunkResult<R> = ThunkAction<R, RootState, undefined, Action>;
-
-export function persistClient(newClient: Client): ClientThunkResult<Promise<void>> {
+export function createClient(data: ClientData): RootThunkResult<Promise<Client>> {
     return async (dispatch, getState) => {
-        saveClient(newClient);
+        const client: Client = await ClientsService.getInstance().create(data);
 
-        dispatch({ type: ADD_CLIENT, payload: newClient });
+        dispatch({ type: CREATE_CLIENT, payload: client });
+
+        return client
     };
 }
 
-export function initClients(): ClientThunkResult<Promise<void>> {
+export function initClients(): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
-        const clients: Client[] = await loadClients();
+        const clients: Client[] = await ClientsService.getInstance().list();
 
         dispatch({ type: INIT_CLIENTS, payload: clients });
     };
 }
-
-const mapState = (state: RootState) => ({
-    clients: state.clients.clients
-});
-
-const mapDispatch = (dispatch: ClientThunkDispatch) => ({
-    persistClient: (newClient: Client) => dispatch(persistClient(newClient)),
-    initClients: () => dispatch(initClients())
-});
-
-export const clientConnector = connect(
-    mapState,
-    mapDispatch
-);
-
-// The inferred type will look like:
-// {clients: Client[], addClient: (newClient: Client) => void etc.}
-export type ClientsProps = ConnectedProps<typeof clientConnector>;

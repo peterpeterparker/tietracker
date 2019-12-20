@@ -1,0 +1,84 @@
+.task {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100%;
+
+  z-index: 99;
+
+  visibility: hidden;
+  opacity: 0;
+
+  :global {
+    transition: all 0.15s ease-out;
+  }
+
+  &.progress {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    outline: none;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 32px;
+
+    color: var(--color);
+    background: transparent;
+
+    cursor: pointer;
+    user-select: none;
+
+    overflow: hidden;
+    position: relative;
+
+    min-height: 8rem;
+
+    &[disabled] {
+      ion-icon {
+        animation: animate-button-icon 0.5s cubic-bezier(0.895, 0.03, 0.685, 0.22) forwards;
+      }
+    }
+
+    ion-icon {
+      font-size: 6rem;
+      width: 6rem;
+      height: 6rem;
+    }
+  }
+}
+
+@keyframes animate-button-icon {
+  0% {
+    height: 6rem;
+  }
+  30% {
+    height: 4rem;
+  }
+  100% {
+    height: 6rem;
+  }
+}

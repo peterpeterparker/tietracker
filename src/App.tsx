@@ -42,16 +42,26 @@ import './theme/header.scss';
 
 import './helpers/i18n';
 
-import { clientConnector, ClientsProps } from './store/thunks/clients.thunks';
+import { RootProps, rootConnector } from './store/thunks/index.thunks';
 
-const App: React.FC<ClientsProps> = (props: ClientsProps) => {
+import Task from './components/task/Task';
 
-  async function initClientsState() {
-    await props.initClients();
+const App: React.FC<RootProps> = (props: RootProps) => {
+
+  async function initInitialState() {
+    const promises = [];
+    promises.push(props.initClients());
+    promises.push(props.initActiveProjects());
+    promises.push(props.initTask());
+    promises.push(props.computeSummary());
+    promises.push(props.listTasks());
+    promises.push(props.listProjectsInvoices());
+
+    await Promise.all(promises);
   }
 
   useEffect(() => {
-    initClientsState();
+    initInitialState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -84,9 +94,11 @@ const App: React.FC<ClientsProps> = (props: ClientsProps) => {
             </IonTabBar>
           </IonTabs>
         </IonReactRouter>
+
+        <Task></Task>
       </IonApp>
     </Suspense>
   );
 }
 
-export default clientConnector(App);
+export default rootConnector(App);
