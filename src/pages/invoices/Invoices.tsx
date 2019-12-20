@@ -1,24 +1,40 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import {
+    IonHeader,
+    IonToolbar,
+    IonPage,
+    IonTitle,
+    IonContent,
+    IonCard,
+    IonCardHeader,
+    IonCardSubtitle, IonCardTitle, IonRippleEffect
+} from '@ionic/react';
 
-import { IonCard, IonIcon, IonCardHeader, IonCardSubtitle, IonCardTitle, IonRippleEffect } from '@ionic/react';
+import {useSelector} from 'react-redux';
 
 import styles from './Invoices.module.scss';
 
-import { RootState } from '../../store/reducers';
-import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
+import {RootState} from '../../store/reducers';
+import {Invoice} from '../../store/interfaces/invoice';
 
-import { Invoice } from '../../store/interfaces/invoice';
-
-const Invoices: React.FC<RootProps> = (props: RootProps) => {
+const Invoices: React.FC<RootProps> = (RootProps) => {
 
     const invoices: Invoice[] = useSelector((state: RootState) => state.invoices.invoices);
 
     return (
-        <>
-            <h1>Open Invoices</h1>
-            {renderProjects()}
-        </>
+        <IonPage>
+            <IonHeader>
+                <IonToolbar>
+                    <IonTitle>Open Invoices</IonTitle>
+                </IonToolbar>
+            </IonHeader>
+            <IonContent className="ion-padding">
+                <main>
+                    {renderProjects()}
+                </main>
+            </IonContent>
+        </IonPage>
     );
 
     function renderProjects() {
@@ -43,6 +59,7 @@ const Invoices: React.FC<RootProps> = (props: RootProps) => {
             }
         </div>
     }
+
 };
 
 export default rootConnector(Invoices);

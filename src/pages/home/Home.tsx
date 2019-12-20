@@ -19,7 +19,6 @@ import ClientModal from '../../modals/client/ClientModal';
 import Projects from '../../components/projects/Projects';
 import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
-import Invoices from '../../components/invoices/Invoices';
 
 const Home: React.FC = () => {
 
@@ -49,8 +48,6 @@ const Home: React.FC = () => {
           <Summary></Summary>
 
           <Projects></Projects>
-
-          <Invoices></Invoices>
 
           <Tasks></Tasks>
         </main>
