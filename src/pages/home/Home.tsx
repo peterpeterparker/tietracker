@@ -19,6 +19,7 @@ import ClientModal from '../../modals/client/ClientModal';
 import Projects from '../../components/projects/Projects';
 import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
+import Header from '../../components/header/Header';
 
 const Home: React.FC = () => {
 
@@ -32,6 +33,8 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
+      <Header></Header>
+
       <IonContent className="ion-padding-start ion-padding-bottom ion-padding-top">
 
         <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)} cssClass="fullscreen">

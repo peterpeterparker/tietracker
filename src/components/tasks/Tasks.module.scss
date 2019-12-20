@@ -4,6 +4,7 @@
 
 .item {
   --border-color: transparent;
+  border: 1px solid transparent;
 
   > div {
     width: 2rem;

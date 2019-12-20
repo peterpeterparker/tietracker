@@ -39,7 +39,7 @@ const Tasks: React.FC<RootProps> = (props: RootProps) => {
         }
 
         return tasks.map((task: TaskItem) => {
-            return <IonItem key={`task-${task.id}`} className={styles.item}>
+            return <IonItem key={`task-${task.id}`} className={styles.item} lines="none" detail={false}>
                 <div slot="start" style={{ 'background': task.data.client.color } as CSSProperties}></div>
 
                 <IonLabel>
