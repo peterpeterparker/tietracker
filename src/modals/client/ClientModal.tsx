@@ -24,7 +24,10 @@ type Props = RootProps & {
 
 class ClientModal extends React.Component<Props, ClientState> {
 
-    private colorRef: RefObject<any> = createRef();
+    private clientNameRef: RefObject<any> = createRef();
+    private clientColorRef: RefObject<any> = createRef();
+    private projectNameRef: RefObject<any> = createRef();
+    private projectRateRef: RefObject<any> = createRef();
 
     constructor(props: Props) {
         super(props);
@@ -38,11 +41,11 @@ class ClientModal extends React.Component<Props, ClientState> {
     }
 
     componentDidMount() {
-        this.colorRef.current.addEventListener('colorChange', this.selectColor, false);
+        this.clientColorRef.current.addEventListener('colorChange', this.selectColor, false);
     }
 
     componentWillUnmount() {
-        this.colorRef.current.removeEventListener('colorChange', this.selectColor, true);
+        this.clientColorRef.current.removeEventListener('colorChange', this.selectColor, true);
     }
 
     private handleClientNameInput($event: CustomEvent<KeyboardEvent>) {
@@ -150,9 +153,28 @@ class ClientModal extends React.Component<Props, ClientState> {
             await this.props.createProject(persistedClient, this.state.projectData);
 
             await this.props.closeAction();
+
+            this.reset();
         } catch (err) {
             console.error(err);
         }
+    }
+
+    private reset() {
+        // Reset state
+        this.setState({
+            valid: {
+                client: false,
+                project: false
+            },
+            clientData: undefined,
+            projectData: undefined
+        });
+
+        this.clientNameRef.current.value = undefined;
+        this.clientColorRef.current.value = undefined;
+        this.projectNameRef.current.value = undefined;
+        this.projectRateRef.current.value = undefined;
     }
 
     render() {
@@ -177,7 +199,7 @@ class ClientModal extends React.Component<Props, ClientState> {
                                 <IonLabel>Company</IonLabel>
                             </IonItem>
                             <IonItem>
-                                <IonInput debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
+                                <IonInput ref={this.clientNameRef} debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
                                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleClientNameInput($event)}
                                           onIonChange={() => this.validateClientName()}>
                                 </IonInput>
@@ -188,7 +210,7 @@ class ClientModal extends React.Component<Props, ClientState> {
                             </IonItem>
 
                             <IonItem disabled={!this.state.valid.client} className={styles.color}>
-                                <deckgo-color ref={this.colorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true}>
+                                <deckgo-color ref={this.clientColorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true}>
                                     <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
                                 </deckgo-color>
                             </IonItem>
@@ -197,7 +219,7 @@ class ClientModal extends React.Component<Props, ClientState> {
                                 <IonLabel>Project</IonLabel>
                             </IonItem>
                             <IonItem disabled={!this.state.valid.client}>
-                                <IonInput debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
+                                <IonInput ref={this.projectNameRef} debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
                                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectNameInput($event)}
                                           onIonChange={() => this.validateProject()}>
                                 </IonInput>
@@ -207,7 +229,7 @@ class ClientModal extends React.Component<Props, ClientState> {
                                 <IonLabel>Hourly rate</IonLabel>
                             </IonItem>
                             <IonItem disabled={!this.state.valid.client}>
-                                <IonInput debounce={500} minlength={1} required={true} input-mode="text"
+                                <IonInput ref={this.projectRateRef} debounce={500} minlength={1} required={true} input-mode="text"
                                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectRateInput($event)}
                                           onIonChange={() => this.validateProject()}>
                                 </IonInput>
