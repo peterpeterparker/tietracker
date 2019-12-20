@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { playCircle } from 'ionicons/icons';
+import { playCircle, personAdd } from 'ionicons/icons';
 
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonRippleEffect } from '@ionic/react';
 
@@ -13,7 +13,11 @@ import { Task } from '../../models/task';
 import { RootState } from '../../store/reducers';
 import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
 
-const Projects: React.FC<RootProps> = (props: RootProps) => {
+interface Props extends RootProps {
+    addAction: Function;
+}
+
+const Projects: React.FC<Props> = (props: Props) => {
 
     const projects: Project[] = useSelector((state: RootState) => state.activeProjects.projects);
     const task: Task | undefined = useSelector((state: RootState) => state.tasks.taskInProgress);
@@ -61,13 +65,13 @@ const Projects: React.FC<RootProps> = (props: RootProps) => {
 
     function renderDummyProject() {
         return <div className={styles.projects}>
-            <IonCard className="ion-activatable ion-margin-bottom">
+            <IonCard onClick={() => props.addAction()} className="ion-activatable ion-margin-bottom">
                 <div style={{ background: 'var(--ion-color-primary)' }}>
-                    <IonIcon icon={playCircle} />
+                    <IonIcon icon={personAdd} />
                 </div>
                 <IonCardHeader>
                     <IonCardSubtitle></IonCardSubtitle>
-                    <IonCardTitle>New Client</IonCardTitle>
+                    <IonCardTitle>Add a new client</IonCardTitle>
                 </IonCardHeader>
                 <IonRippleEffect></IonRippleEffect>
             </IonCard>

@@ -47,7 +47,7 @@ const Home: React.FC = () => {
 
           <Summary></Summary>
 
-          <Projects></Projects>
+          <Projects addAction={() => setShowModal(true)}></Projects>
 
           <Tasks></Tasks>
         </main>

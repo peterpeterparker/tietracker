@@ -55,13 +55,14 @@ function listTodayTasks(projects, clients) {
             taskItem.data.project = projects !== undefined ? projects[task.data.project_id] : undefined;
 
             const milliseconds = dayjs(task.data.to).diff(new Date(task.data.from));
-            const hours = milliseconds > 0 ? milliseconds / (1000 * 60 * 60) : 0;
 
-            taskItem.data.milliseconds = hours;
+            taskItem.data.milliseconds = milliseconds;
 
             const rate = projects[task.data.project_id].rate;
 
+            const hours = milliseconds > 0 ? milliseconds / (1000 * 60 * 60) : 0;
             const billable = rate && rate.hourly > 0 ? hours * rate.hourly : 0;
+
             taskItem.data.billable = billable;
 
             results.push(taskItem);

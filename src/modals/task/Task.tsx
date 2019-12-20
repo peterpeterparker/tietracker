@@ -56,7 +56,7 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
 
                 <button onClick={() => stopTask()} aria-label="Stop current task" className="ion-activatable" disabled={freeze} style={{'--color': contrastColor} as CSSProperties}>
                     <IonIcon icon={checkmarkCircle} />
-                    <IonLabel>Stop</IonLabel>
+                    <IonLabel>Done</IonLabel>
                 </button>
             </div>
         </div>
