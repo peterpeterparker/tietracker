@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
-import { options, home, card } from 'ionicons/icons';
+import { options, card } from 'ionicons/icons';
 
 import Home from './pages/home/Home';
 import Settings from './pages/settings/Settings';
