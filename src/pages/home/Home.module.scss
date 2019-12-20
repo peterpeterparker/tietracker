@@ -1,0 +1,9 @@
+.searchbar {
+  padding: 0;
+}
+
+.addclient {
+  &:global(.md) {
+    margin: 4px 7px;
+  }
+}

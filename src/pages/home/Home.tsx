@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import './Home.scss';
+import styles from './Home.module.scss';
 
 import ClientModal from '../../modals/client/ClientModal';
 
@@ -34,14 +34,14 @@ const Home: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding-start ion-padding-bottom ion-padding-top">
 
-        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)}>
+        <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)} cssClass="fullscreen">
           <ClientModal closeAction={closeModal}></ClientModal>
         </IonModal>
 
         <main>
-          <IonHeader className="ion-padding-end"><IonToolbar><IonSearchbar placeholder={t('search.companies')}></IonSearchbar></IonToolbar></IonHeader>
+          <IonHeader className="ion-padding-end"><IonToolbar><IonSearchbar placeholder={t('search.companies')} className={styles.searchbar}></IonSearchbar></IonToolbar></IonHeader>
 
-          <IonButton onClick={() => setShowModal(true)}>Add a new client</IonButton>
+          <IonButton onClick={() => setShowModal(true)} fill="outline" color="medium" className={styles.addclient}>Add a new client</IonButton>
 
           <h1 className="ion-padding">{t('week.summary')}</h1>
 

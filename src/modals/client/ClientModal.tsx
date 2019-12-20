@@ -161,7 +161,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         return <>
             <IonHeader>
                 <IonToolbar color="primary">
-                    <IonTitle>New Client</IonTitle>
+                    <IonTitle>Add a new client</IonTitle>
                     <IonButtons slot="end">
                         <IonButton onClick={() => this.props.closeAction()}>
                             <IonIcon name="close" slot="icon-only"></IonIcon>
@@ -170,53 +170,55 @@ class ClientModal extends React.Component<Props, ClientState> {
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-                <form onSubmit={($event: FormEvent<HTMLFormElement>) => this.handleSubmit($event)}>
-                    <IonList className="inputs-list">
-                        <IonItem className="item-title">
-                            <IonLabel>Name</IonLabel>
-                        </IonItem>
-                        <IonItem>
-                            <IonInput debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
-                                onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleClientNameInput($event)}
-                                onIonChange={() => this.validateClientName()}>
-                            </IonInput>
-                        </IonItem>
+                <main>
+                    <form onSubmit={($event: FormEvent<HTMLFormElement>) => this.handleSubmit($event)}>
+                        <IonList className="inputs-list">
+                            <IonItem className="item-title">
+                                <IonLabel>Company</IonLabel>
+                            </IonItem>
+                            <IonItem>
+                                <IonInput debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
+                                          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleClientNameInput($event)}
+                                          onIonChange={() => this.validateClientName()}>
+                                </IonInput>
+                            </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
-                            <IonLabel>Color</IonLabel>
-                        </IonItem>
+                            <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
+                                <IonLabel>Color</IonLabel>
+                            </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client} className={styles.color}>
-                            <deckgo-color ref={this.colorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true}>
-                                <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
-                            </deckgo-color>
-                        </IonItem>
+                            <IonItem disabled={!this.state.valid.client} className={styles.color}>
+                                <deckgo-color ref={this.colorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true}>
+                                    <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
+                                </deckgo-color>
+                            </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
-                            <IonLabel>Project</IonLabel>
-                        </IonItem>
-                        <IonItem disabled={!this.state.valid.client}>
-                            <IonInput debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
-                                onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectNameInput($event)}
-                                onIonChange={() => this.validateProject()}>
-                            </IonInput>
-                        </IonItem>
+                            <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
+                                <IonLabel>Project</IonLabel>
+                            </IonItem>
+                            <IonItem disabled={!this.state.valid.client}>
+                                <IonInput debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
+                                          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectNameInput($event)}
+                                          onIonChange={() => this.validateProject()}>
+                                </IonInput>
+                            </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client} className="item-title">
-                            <IonLabel>Hourly rate</IonLabel>
-                        </IonItem>
-                        <IonItem disabled={!this.state.valid.client}>
-                            <IonInput debounce={500} minlength={1} required={true} input-mode="text"
-                            onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectRateInput($event)}
-                            onIonChange={() => this.validateProject()}>
-                            </IonInput>
-                        </IonItem>
-                    </IonList>
+                            <IonItem disabled={!this.state.valid.client} className="item-title">
+                                <IonLabel>Hourly rate</IonLabel>
+                            </IonItem>
+                            <IonItem disabled={!this.state.valid.client}>
+                                <IonInput debounce={500} minlength={1} required={true} input-mode="text"
+                                          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectRateInput($event)}
+                                          onIonChange={() => this.validateProject()}>
+                                </IonInput>
+                            </IonItem>
+                        </IonList>
 
-                    <IonButton type="submit" className="ion-margin-top" disabled={!valid}>
-                        <IonLabel>Submit</IonLabel>
-                    </IonButton>
-                </form>
+                        <IonButton type="submit" className="ion-margin-top" disabled={!valid}>
+                            <IonLabel>Submit</IonLabel>
+                        </IonButton>
+                    </form>
+                </main>
             </IonContent>
         </>
     };
