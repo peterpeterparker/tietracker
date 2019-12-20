@@ -1,0 +1,36 @@
+ion-item.item-input {
+  --border-color: transparent;
+  --highlight-color-focused: transparent;
+
+  &:not(.with-padding) {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
+
+  ion-input[class*="sc-ion-input"], ion-textarea[class*="sc-ion-textarea"] {
+    --padding-start: 8px;
+    --background: var(--ion-color-light);
+    background: var(--ion-color-light);
+    border: 1px solid #dedede;
+    border-radius: 4px;
+
+    --placeholder-opacity: 0.33;
+  }
+}
+
+ion-list[class*="list"].inputs-list  {
+  background: transparent;
+
+  ion-item {
+    --background: transparent;
+    --background-focused: transparent;
+
+    &.item-title {
+      height: 38px;
+      --border-color: transparent;
+
+      --padding-start: 0;
+      --inner-padding-end: 0;
+    }
+  }
+}

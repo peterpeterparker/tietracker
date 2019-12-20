@@ -3,6 +3,8 @@ import { IonHeader, IonContent, IonToolbar, IonTitle, IonButtons, IonButton, Ion
 
 import { more } from 'ionicons/icons';
 
+import styles from './ClientModal.module.scss';
+
 import { Client, ClientData } from '../../models/client';
 import { RootProps, rootConnector } from '../../store/thunks/index.thunks';
 import { ProjectData } from '../../models/project';
@@ -124,7 +126,7 @@ class ClientModal extends React.Component<Props, ClientState> {
 
     private validateProject() {
         const valid = { ...this.state.valid };
-        valid.project = this.state.projectData !== undefined && this.state.projectData.name !== undefined && this.state.projectData.name.length >= 3 && this.state.projectData.rate && this.state.projectData.rate.hourly > 0;
+        valid.project = this.state.projectData !== undefined && this.state.projectData.name !== undefined && this.state.projectData.name.length >= 3 && this.state.projectData.rate && this.state.projectData.rate.hourly >= 0;
         this.setState({ valid });
     }
 
@@ -159,7 +161,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         return <>
             <IonHeader>
                 <IonToolbar color="primary">
-                    <IonTitle>New client</IonTitle>
+                    <IonTitle>New Client</IonTitle>
                     <IonButtons slot="end">
                         <IonButton onClick={() => this.props.closeAction()}>
                             <IonIcon name="close" slot="icon-only"></IonIcon>
@@ -169,8 +171,8 @@ class ClientModal extends React.Component<Props, ClientState> {
             </IonHeader>
             <IonContent className="ion-padding">
                 <form onSubmit={($event: FormEvent<HTMLFormElement>) => this.handleSubmit($event)}>
-                    <IonList>
-                        <IonItem>
+                    <IonList className="inputs-list">
+                        <IonItem className="item-title">
                             <IonLabel>Name</IonLabel>
                         </IonItem>
                         <IonItem>
@@ -180,17 +182,17 @@ class ClientModal extends React.Component<Props, ClientState> {
                             </IonInput>
                         </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client}>
+                        <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
                             <IonLabel>Color</IonLabel>
                         </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client}>
+                        <IonItem disabled={!this.state.valid.client} className={styles.color}>
                             <deckgo-color ref={this.colorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true}>
                                 <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
                             </deckgo-color>
                         </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client}>
+                        <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
                             <IonLabel>Project</IonLabel>
                         </IonItem>
                         <IonItem disabled={!this.state.valid.client}>
@@ -200,7 +202,7 @@ class ClientModal extends React.Component<Props, ClientState> {
                             </IonInput>
                         </IonItem>
 
-                        <IonItem disabled={!this.state.valid.client}>
+                        <IonItem disabled={!this.state.valid.client} className="item-title">
                             <IonLabel>Hourly rate</IonLabel>
                         </IonItem>
                         <IonItem disabled={!this.state.valid.client}>
