@@ -47,7 +47,7 @@ import './helpers/i18n';
 
 import { RootProps, rootConnector } from './store/thunks/index.thunks';
 
-import Task from './components/task/Task';
+import Task from './modals/task/Task';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
 

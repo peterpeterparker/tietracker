@@ -1,3 +1,8 @@
+.title {
+  padding-left: 8px;
+  margin-bottom: 0;
+}
+
 .projects {
   flex: 1;
   display: flex;
@@ -21,6 +26,8 @@
     cursor: pointer;
 
     min-width: 12rem;
+
+    margin: 16px 6px;
 
     div {
       width: 100%;

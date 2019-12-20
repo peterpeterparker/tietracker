@@ -28,10 +28,10 @@ const Projects: React.FC<RootProps> = (props: RootProps) => {
     }
 
     return (
-        <>
-            <h1>Projects</h1>
+        <div className="ion-padding-end ion-padding-top">
+            <h1 className={styles.title}>Projects</h1>
             {renderProjects()}
-        </>
+        </div>
     );
 
     function renderProjects() {

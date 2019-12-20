@@ -12,7 +12,7 @@ import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
 
 import { TaskInProgress, TaskInProgressClientData, TaskInProgressData } from '../../store/interfaces/task.inprogress';
 
-import Spinner from '../spinner/Spinner';
+import Spinner from '../../components/spinner/Spinner';
 
 import { contrast } from '../../utils/utils.color';
 

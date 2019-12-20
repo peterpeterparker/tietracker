@@ -41,9 +41,9 @@ const Home: React.FC = () => {
         <main>
           <IonHeader className="ion-padding-end"><IonToolbar><IonSearchbar placeholder={t('search.companies')} className={styles.searchbar}></IonSearchbar></IonToolbar></IonHeader>
 
-          <IonButton onClick={() => setShowModal(true)} fill="outline" color="medium" className={styles.addclient}>Add a new client</IonButton>
-
-          <h1 className="ion-padding">{t('week.summary')}</h1>
+          <div className={styles.addclient}>
+            <IonButton onClick={() => setShowModal(true)} fill="outline" color="medium">Add a new client</IonButton>
+          </div>
 
           <Summary></Summary>
 

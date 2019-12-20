@@ -15,10 +15,10 @@ const Tasks: React.FC<RootProps> = (props: RootProps) => {
     const tasks: TaskItem[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
 
     return (
-        <>
-            <h1>Today's completed tasks</h1>
+        <div className="ion-padding-end ion-padding-top">
+            <h1 className={styles.title}>Today's completed tasks</h1>
             {renderTasks()}
-        </>
+        </div>
     );
 
     function renderTasks() {
