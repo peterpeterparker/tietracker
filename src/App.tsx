@@ -42,6 +42,8 @@ import './theme/header.scss';
 import './theme/input.scss';
 import './theme/button.scss';
 import './theme/modal.scss';
+import './theme/fonts.scss';
+import './theme/card.scss';
 
 import './helpers/i18n';
 

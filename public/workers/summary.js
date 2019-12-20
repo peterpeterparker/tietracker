@@ -12,7 +12,7 @@ self.compute = async () => {
 
     if (!projects || projects === undefined) {
         self.postMessage({
-            hours: 0,
+            milliseconds: 0,
             billable: 0
         });
 
@@ -22,7 +22,7 @@ self.compute = async () => {
     const sum = await computeSum(projects);
 
     self.postMessage({
-        hours: sum.hours,
+        milliseconds: sum.milliseconds,
         billable: sum.billable
     });
 };
@@ -66,15 +66,15 @@ async function computeSum(projects) {
 
     if (!daily || daily.length <= 0) {
         self.postMessage({
-            hours: 0,
+            milliseconds: 0,
             billable: 0
         });
 
         return;
     }
 
-    const sumHours = daily.reduce((a, b) => {
-        return a + b.hours;
+    const sumDuration = daily.reduce((a, b) => {
+        return a + b.milliseconds;
     }, 0);
 
     const sumBillable = daily.reduce((a, b) => {
@@ -82,8 +82,8 @@ async function computeSum(projects) {
     }, 0);
 
     return {
-        hours: Math.round(sumHours * 100) / 100,
-        billable: Math.round(sumBillable * 100) / 100
+        milliseconds: sumDuration,
+        billable:sumBillable
     };
 }
 
@@ -93,7 +93,7 @@ function computeDaySum(day, projects) {
 
         if (!tasks || tasks.length <= 0) {
             resolve({
-                hours: 0,
+                milliseconds: 0,
                 billable: 0
             });
             return;
@@ -107,15 +107,15 @@ function computeDaySum(day, projects) {
         const billable = tasks.reduce((a, b) => {
             const rate = projects[b.data.project_id];
             const milliseconds = dayjs(b.data.to).diff(new Date(b.data.from));
-            const hours = milliseconds > 0 ? milliseconds / (1000 * 60 * 60) : 0;
 
+            const hours = milliseconds > 0 ? milliseconds / (1000 * 60 * 60) : 0;
             const sum = rate && rate.hourly > 0 ? hours * rate.hourly : 0;
 
             return a + sum;
         }, 0);
 
         resolve({
-            hours: milliseconds > 0 ? milliseconds / (1000 * 60 * 60) : 0,
+            milliseconds: milliseconds,
             billable: billable
         });
     });

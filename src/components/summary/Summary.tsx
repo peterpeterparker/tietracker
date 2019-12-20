@@ -10,6 +10,9 @@ import {RootState} from '../../store/reducers';
 
 import {Summary as SummaryData} from '../../store/interfaces/summary';
 
+import {formatCurrency} from '../../utils/utils.currency';
+import {formatTime} from '../../utils/utils.time';
+
 const Summary: React.FC = () => {
 
     const summary: SummaryData | undefined = useSelector((state: RootState) => state.summary.summary);
@@ -18,8 +21,8 @@ const Summary: React.FC = () => {
         <h1 className={styles.title}>Weekly Summary</h1>
         <IonCard className={styles.card}>
             <IonCardHeader>
-                <IonCardSubtitle>Hours tracked: {summary !== undefined ? summary.hours : 0.0}</IonCardSubtitle>
-                <IonCardTitle>Billable amount: {summary !== undefined ? summary.billable : 0.0} CHF</IonCardTitle>
+                <IonCardSubtitle className={styles.subtitle}>Tracked: {formatTime(summary !== undefined ? summary.milliseconds : undefined)}</IonCardSubtitle>
+                <IonCardTitle>Billable: {formatCurrency(summary !== undefined ? summary.billable : undefined)}</IonCardTitle>
             </IonCardHeader>
         </IonCard>
     </div>);

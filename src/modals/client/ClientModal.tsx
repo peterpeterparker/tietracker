@@ -74,7 +74,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         const data: ClientData = { ...this.state.clientData };
         data.color = $event.detail.hex;
         this.setState({ clientData: data });
-    }
+    };
 
     private handleProjectNameInput($event: CustomEvent<KeyboardEvent>) {
         if (!this.state.clientData) {

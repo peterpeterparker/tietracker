@@ -57,7 +57,7 @@ function listTodayTasks(projects, clients) {
             const milliseconds = dayjs(task.data.to).diff(new Date(task.data.from));
             const hours = milliseconds > 0 ? milliseconds / (1000 * 60 * 60) : 0;
 
-            taskItem.data.hours = hours;
+            taskItem.data.milliseconds = hours;
 
             const rate = projects[task.data.project_id].rate;
 

@@ -2,7 +2,7 @@ import { get, set, del } from 'idb-keyval';
 
 import uuid from 'uuid/v4';
 
-import format from 'date-fns/format';
+import lightFormat from 'date-fns/lightFormat';
 
 import { Project } from '../../models/project';
 import { Task } from '../../models/task';
@@ -125,7 +125,7 @@ export class TasksService {
 
     private addTaskToInvoices(): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
-            const today: string = format(new Date(), 'yyyy-MM-dd');
+            const today: string = lightFormat(new Date(), 'yyyy-MM-dd');
 
             let invoices: string[] = await get('invoices');
 
@@ -160,7 +160,7 @@ export class TasksService {
                 delete (taskToPersist.data as TaskInProgressData)['client'];
                 delete (taskToPersist.data as TaskInProgressData)['project'];
 
-                const today: string = format(new Date(), 'yyyy-MM-dd');
+                const today: string = lightFormat(new Date(), 'yyyy-MM-dd');
 
                 let tasks: Task[] = await get(`tasks-${today}`);
 

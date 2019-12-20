@@ -1,4 +1,4 @@
 export interface Summary {
-    hours: number;
+    milliseconds: number;
     billable: number;
 }
