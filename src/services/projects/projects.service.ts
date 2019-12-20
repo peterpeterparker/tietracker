@@ -86,7 +86,16 @@ export class ProjectsService {
                     return isAfter(to, from ? from : new Date());
                 });
 
-                resolve(filteredProjects && filteredProjects.length > 0 ? filteredProjects : []);
+                if (!filteredProjects || filteredProjects.length <= 0) {
+                    resolve([]);
+                    return;
+                }
+
+                const sortedProjects: Project[] = filteredProjects.sort((a: Project, b: Project) => {
+                    return new Date(b.data.updated_at as Date | number).getTime() - new Date(a.data.updated_at as Date | number).getTime();
+                });
+
+                resolve(sortedProjects);
             } catch (err) {
                 reject(err);
             }

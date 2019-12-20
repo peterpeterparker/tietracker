@@ -13,7 +13,7 @@ export function projectsReducer(state = initialState, action: ProjectActionTypes
     switch (action.type) {
         case CREATE_PROJECT:
             return {
-                projects: [...state.projects, action.payload]
+                projects: [action.payload, ...state.projects]
             };
         case INIT_ACTIVE_PROJECTS:
             return {
