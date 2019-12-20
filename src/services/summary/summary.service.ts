@@ -1,8 +1,3 @@
-export interface Summary {
-    hours: number;
-    billable: number;
-}
-
 export class SummaryService {
 
     private static instance: SummaryService;

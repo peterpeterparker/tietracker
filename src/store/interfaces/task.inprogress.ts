@@ -1,4 +1,5 @@
 import { TaskData } from "../../models/task";
+import { ProjectDataRate } from "../../models/project";
 
 // Denormalization
 export interface TaskInProgressClientData {
@@ -9,6 +10,7 @@ export interface TaskInProgressClientData {
 // Denormalization
 export interface TaskInProgressProjectData {
     name: string;
+    rate: ProjectDataRate;
 }
 
 export interface TaskInProgressData extends TaskData {

@@ -1,6 +1,6 @@
 import { COMPUTE_SUMMARY, SummaryActionTypes } from '../types/summary.types';
 
-import { Summary } from '../../services/summary/summary.service';
+import { Summary } from '../interfaces/summary';
 
 export interface SummaryState {
     summary: Summary | undefined;

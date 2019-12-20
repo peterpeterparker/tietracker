@@ -40,6 +40,7 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
 
         await props.computeSummary();
         await props.listTasks();
+        await props.listProjectsInvoices();
 
         setTimeout(() => {
             setFreeze(false);

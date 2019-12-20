@@ -2,7 +2,9 @@ import { RootThunkResult } from './types.thunks';
 
 import { COMPUTE_SUMMARY } from '../types/summary.types';
 
-import { SummaryService, Summary } from '../../services/summary/summary.service';
+import { SummaryService } from '../../services/summary/summary.service';
+
+import { Summary } from '../interfaces/summary';
 
 export function computeSummary(): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {

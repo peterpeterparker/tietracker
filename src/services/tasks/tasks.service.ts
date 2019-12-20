@@ -64,6 +64,8 @@ export class TasksService {
 
                 await this.saveTask(task);
 
+                await this.addTaskToInvoices();
+
                 del('task-in-progress');
 
                 resolve(task);
@@ -94,6 +96,7 @@ export class TasksService {
 
             const now: number = new Date().getTime();
 
+            // We create a TaskInProgress as, furthermore than being persisted, it gonna be added to the root state too
             const task: TaskInProgress = {
                 id: uuid(),
                 data: {
@@ -103,16 +106,43 @@ export class TasksService {
                     created_at: now,
                     updated_at: now,
                     project: {
-                        name: project.data.name
+                        name: project.data.name,
+                        rate: project.data.rate
                     },
                     client: {
                         name: project.data.client.name,
                         color: project.data.client.color
+                    },
+                    invoice: {
+                        status: 'open'
                     }
                 }
             }
 
             resolve(task);
+        });
+    }
+
+    private addTaskToInvoices(): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            const today: string = format(new Date(), 'yyyy-MM-dd');
+
+            let invoices: string[] = await get('invoices');
+
+            if (invoices && invoices.indexOf(today) > -1) {
+                resolve();
+                return;
+            }
+
+            if (!invoices || invoices.length <= 0) {
+                invoices = [];
+            }
+
+            invoices.push(today);
+
+            await set('invoices', invoices);
+
+            resolve();
         });
     }
 
@@ -130,7 +160,7 @@ export class TasksService {
                 delete (taskToPersist.data as TaskInProgressData)['client'];
                 delete (taskToPersist.data as TaskInProgressData)['project'];
 
-                const today: string = format(new Date(), 'yyyy-MM-dd')
+                const today: string = format(new Date(), 'yyyy-MM-dd');
 
                 let tasks: Task[] = await get(`tasks-${today}`);
 

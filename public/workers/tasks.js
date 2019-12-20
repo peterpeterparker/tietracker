@@ -1,6 +1,8 @@
 importScripts('./libs/idb-keyval-iife.min.js');
 importScripts('./libs/dayjs.min.js');
 
+importScripts('./utils/utils.js');
+
 self.onmessage = async ($event) => {
     if ($event && $event.data === 'listTasks') {
         self.listTasks();
@@ -35,48 +37,6 @@ self.listTasks = async () => {
 
     self.postMessage(tasks);
 };
-
-function loadClients() {
-    return new Promise(async (resolve) => {
-        const values = await idbKeyval.get('clients');
-
-        if (!values || values.length <= 0) {
-            resolve(undefined);
-            return;
-        }
-
-        let result = {};
-        values.forEach((value) => {
-            result[value.id] = {
-                name: value.data.name,
-                color: value.data.color
-            };
-        });
-
-        resolve(result);
-    });
-}
-
-function loadProjects() {
-    return new Promise(async (resolve) => {
-        const values = await idbKeyval.get('projects');
-
-        if (!values || values.length <= 0) {
-            resolve(undefined);
-            return;
-        }
-
-        let result = {};
-        values.forEach((value) => {
-            result[value.id] = {
-                name: value.data.name,
-                rate: value.data.rate ? value.data.rate : { hourly: 0, vat: false }
-            };
-        });
-
-        resolve(result);
-    });
-}
 
 function listTodayTasks(projects, clients) {
     return new Promise(async (resolve) => {

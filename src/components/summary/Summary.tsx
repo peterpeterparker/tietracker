@@ -8,7 +8,7 @@ import styles from './Summary.module.scss';
 import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
 import { RootState } from '../../store/reducers';
 
-import { Summary as SummaryData } from '../../services/summary/summary.service';
+import { Summary as SummaryData } from '../../store/interfaces/summary';
 
 const Summary: React.FC<RootProps> = (props: RootProps) => {
 

@@ -1,6 +1,6 @@
 import { SummaryActionTypes, COMPUTE_SUMMARY } from '../types/summary.types';
 
-import { Summary } from '../../services/summary/summary.service';
+import { Summary } from '../interfaces/summary';
 
 export function computeSummary(summary: Summary): SummaryActionTypes {
     return {

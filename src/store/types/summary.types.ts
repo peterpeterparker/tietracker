@@ -1,4 +1,4 @@
-import { Summary } from "../../services/summary/summary.service";
+import { Summary } from "../interfaces/summary";
 
 export const COMPUTE_SUMMARY = 'COMPUTE_SUMMARY';
 
