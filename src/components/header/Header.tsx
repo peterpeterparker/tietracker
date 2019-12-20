@@ -12,12 +12,13 @@ class Header extends React.Component {
         }
 
         return <IonHeader>
-            <IonToolbar color="primary">
+            <IonToolbar>
                 <IonTitle>
                     <div className={styles.title}>
                         <div>
                             <img src="/assets/icon/gsd-logo.svg" alt="Get Slick Done logo" height="18"/>
                         </div>
+                        <span>Get Slick Done</span>
                     </div>
                 </IonTitle>
             </IonToolbar>
