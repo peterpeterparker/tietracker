@@ -14,11 +14,11 @@ import {useSelector} from 'react-redux';
 
 import styles from './Invoices.module.scss';
 
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
+import {rootConnector} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
 import {Invoice} from '../../store/interfaces/invoice';
 
-const Invoices: React.FC<RootProps> = (RootProps) => {
+const Invoices: React.FC = () => {
 
     const invoices: Invoice[] = useSelector((state: RootState) => state.invoices.invoices);
 
