@@ -7,7 +7,7 @@ ion-item.item-input {
     --inner-padding-end: 0;
   }
 
-  ion-input[class*="sc-ion-input"], ion-textarea[class*="sc-ion-textarea"] {
+  ion-input[class*="sc-ion-input"], ion-textarea[class*="sc-ion-textarea"], div.MuiFormControl-root {
     --padding-start: 8px;
     --background: var(--ion-color-light);
     background: var(--ion-color-light);
@@ -15,6 +15,29 @@ ion-item.item-input {
     border-radius: 4px;
 
     --placeholder-opacity: 0.33;
+  }
+
+  div.MuiFormControl-root {
+    width: 100%;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: inherit;
+
+    div.MuiInputBase-root {
+      color: inherit;
+
+      &::before {
+        border: none;
+      }
+
+      &::after {
+        border-bottom: none;
+      }
+
+      input {
+        padding: 10px 8px;
+      }
+    }
   }
 }
 
