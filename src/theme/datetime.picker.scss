@@ -1,0 +1,11 @@
+ion-item.item-input {
+  // see input.scss
+}
+
+div.MuiPickersToolbar-toolbar, button.MuiPickersDay-current {
+  background: var(--ion-color-primary);
+}
+
+button.MuiButton-text {
+  color: var(--ion-color-dark);
+}

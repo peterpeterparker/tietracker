@@ -15,7 +15,6 @@ import { options, card } from 'ionicons/icons';
 
 import Home from './pages/home/Home';
 import Settings from './pages/settings/Settings';
-import Details from './pages/Details';
 import Invoices from './pages/invoices/Invoices';
 
 /* Core CSS required for Ionic components to work properly */
@@ -44,12 +43,14 @@ import './theme/button.scss';
 import './theme/modal.scss';
 import './theme/fonts.scss';
 import './theme/card.scss';
+import './theme/datetime.picker.scss';
 
 import './helpers/i18n';
 
 import { RootProps, rootConnector } from './store/thunks/index.thunks';
 
 import Task from './modals/task/Task';
+import TaskDetails from './pages/details/task/TaskDetails';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
 
@@ -79,7 +80,9 @@ const App: React.FC<RootProps> = (props: RootProps) => {
               <Route path="/home" component={Home} exact={true} />
               <Route path="/invoices" component={Invoices} />
               <Route path="/settings" component={Settings} exact={true} />
-              <Route path="/settings/details" component={Details} />
+
+              <Route path="/task/:day/:id" component={TaskDetails} />
+
               <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
             </IonRouterOutlet>
 

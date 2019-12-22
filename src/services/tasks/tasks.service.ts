@@ -1,13 +1,13 @@
-import { get, set, del } from 'idb-keyval';
+import {get, set, del} from 'idb-keyval';
 
 import uuid from 'uuid/v4';
 
-import lightFormat from 'date-fns/lightFormat';
+import {endOfMinute, startOfMinute, lightFormat} from 'date-fns';
 
-import { Project } from '../../models/project';
-import { Task } from '../../models/task';
+import {Project} from '../../models/project';
+import {Task} from '../../models/task';
 
-import { TaskInProgress, TaskInProgressData } from '../../store/interfaces/task.inprogress';
+import {TaskInProgress, TaskInProgressData} from '../../store/interfaces/task.inprogress';
 
 export class TasksService {
 
@@ -36,9 +36,9 @@ export class TasksService {
                     return;
                 }
 
-                const task: TaskInProgress = await this.createTask(project);
+                const task: TaskInProgress = await this.createTaskInProgress(project);
 
-                set('task-in-progress', task);
+                await set('task-in-progress', task);
 
                 resolve(task);
             } catch (err) {
@@ -57,16 +57,19 @@ export class TasksService {
                     return;
                 }
 
-                const now: number = new Date().getTime();
+                const now: Date = new Date();
 
-                task.data.updated_at = now;
-                task.data.to = now;
+                task.data.updated_at = now.getTime();
+
+                task.data.from = startOfMinute(task.data.from);
+                task.data.to = endOfMinute(now);
 
                 await this.saveTask(task);
 
-                await this.addTaskToInvoices();
+                const dayShort: string = lightFormat(now, 'yyyy-MM-dd');
+                await this.addTaskToInvoices(dayShort);
 
-                del('task-in-progress');
+                await del('task-in-progress');
 
                 resolve(task);
             } catch (err) {
@@ -87,7 +90,7 @@ export class TasksService {
         });
     }
 
-    private createTask(project: Project): Promise<TaskInProgress> {
+    private createTaskInProgress(project: Project): Promise<TaskInProgress> {
         return new Promise<TaskInProgress>((resolve, reject) => {
             if (!project || !project.data || !project.data.client) {
                 reject('Project is empty.');
@@ -117,19 +120,17 @@ export class TasksService {
                         status: 'open'
                     }
                 }
-            }
+            };
 
             resolve(task);
         });
     }
 
-    private addTaskToInvoices(): Promise<void> {
+    private addTaskToInvoices(day: string): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
-            const today: string = lightFormat(new Date(), 'yyyy-MM-dd');
-
             let invoices: string[] = await get('invoices');
 
-            if (invoices && invoices.indexOf(today) > -1) {
+            if (invoices && invoices.indexOf(day) > -1) {
                 resolve();
                 return;
             }
@@ -138,7 +139,7 @@ export class TasksService {
                 invoices = [];
             }
 
-            invoices.push(today);
+            invoices.push(day);
 
             await set('invoices', invoices);
 
@@ -170,7 +171,7 @@ export class TasksService {
 
                 tasks.push(task);
 
-                set(`tasks-${today}`, tasks);
+                await set(`tasks-${today}`, tasks);
 
                 resolve();
             } catch (err) {
@@ -190,6 +191,93 @@ export class TasksService {
             this.tasksWorker.postMessage('listTasks');
 
             resolve();
+        });
+    }
+
+    /**
+     * @param task
+     * @param day The store index, like saved in indexDB tasks-2019-12-19
+     */
+    update(task: Task | undefined, day: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                if (!task || !task.data || !day) {
+                    reject('Task is not defined.');
+                    return;
+                }
+
+                const taskToPersist: Task = {...task};
+
+                // Clean before save
+                delete (taskToPersist.data as TaskInProgressData)['client'];
+                delete (taskToPersist.data as TaskInProgressData)['project'];
+
+                const tasks: Task[] = await this.load(day);
+
+                const index: number = tasks.findIndex((filteredTask: Task) => {
+                    return filteredTask.id === taskToPersist.id;
+                });
+
+                if (index < 0) {
+                    reject('Tasks not found.');
+                    return;
+                }
+
+                taskToPersist.data.updated_at = new Date().getTime();
+
+                tasks[index] = taskToPersist;
+
+                await set(`tasks-${day}`, tasks);
+
+                await this.addTaskToInvoices(day);
+
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    delete(task: Task | undefined, day: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                if (!task || !task.data || !day) {
+                    reject('Task is not defined.');
+                    return;
+                }
+
+                const tasks: Task[] = await this.load(day);
+
+                const index: number = tasks.findIndex((filteredTask: Task) => {
+                    return filteredTask.id === task.id;
+                });
+
+                if (index < 0) {
+                    reject('Tasks not found.');
+                    return;
+                }
+
+                tasks.splice(index, 1);
+
+                await set(`tasks-${day}`, tasks);
+
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    private load(day: string): Promise<Task[]> {
+        return new Promise<Task[]>(async (resolve, reject) => {
+            let tasks: Task[] = await get(`tasks-${day}`);
+
+            if (!tasks || tasks.length <= 0) {
+                reject('No tasks found for the specific day.');
+                return;
+            }
+
+            resolve(tasks);
         });
     }
 

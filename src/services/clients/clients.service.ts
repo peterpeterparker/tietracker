@@ -44,7 +44,7 @@ export class ClientsService {
 
                 clients.push(client);
             
-                set('clients', clients);
+                await set('clients', clients);
 
                 resolve(client);
             } catch (err) {
