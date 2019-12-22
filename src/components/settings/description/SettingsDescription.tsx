@@ -30,6 +30,8 @@ const SettingsDescription: React.FC<SettingsGeneralProps> = (props) => {
 
         newDescriptions.splice($event.detail.to, 0, ...newDescriptions.splice($event.detail.from, 1));
 
+        props.settings.descriptions = [...newDescriptions];
+
         $event.detail.complete();
     }
 
@@ -50,8 +52,8 @@ const SettingsDescription: React.FC<SettingsGeneralProps> = (props) => {
             return [];
         }
 
-        return props.settings.descriptions.map((description: string, i: number) => {
-            return <IonItem key={`description-${i}`}>
+        return props.settings.descriptions.map((description: string) => {
+            return <IonItem key={description}>
                 <IonLabel>{description}</IonLabel>
                 <IonReorder slot="end"/>
             </IonItem>
