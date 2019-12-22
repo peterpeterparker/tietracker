@@ -76,6 +76,8 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({match, history}) => {
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
 
+
+
         history.push('/home');
     }
 

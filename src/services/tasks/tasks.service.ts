@@ -38,7 +38,7 @@ export class TasksService {
 
                 const task: TaskInProgress = await this.createTask(project);
 
-                set('task-in-progress', task);
+                await set('task-in-progress', task);
 
                 resolve(task);
             } catch (err) {
@@ -57,16 +57,16 @@ export class TasksService {
                     return;
                 }
 
-                const now: number = new Date().getTime();
+                const now: Date = new Date();
 
-                task.data.updated_at = now;
-                task.data.to = now;
+                task.data.updated_at = now.getTime();
+                task.data.to = now.getTime();
 
                 await this.saveTask(task);
 
-                await this.addTaskToInvoices();
+                await this.addTaskToInvoices(now);
 
-                del('task-in-progress');
+                await del('task-in-progress');
 
                 resolve(task);
             } catch (err) {
@@ -123,13 +123,13 @@ export class TasksService {
         });
     }
 
-    private addTaskToInvoices(): Promise<void> {
+    private addTaskToInvoices(day: Date): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
-            const today: string = lightFormat(new Date(), 'yyyy-MM-dd');
+            const dayShort: string = lightFormat(day, 'yyyy-MM-dd');
 
             let invoices: string[] = await get('invoices');
 
-            if (invoices && invoices.indexOf(today) > -1) {
+            if (invoices && invoices.indexOf(dayShort) > -1) {
                 resolve();
                 return;
             }
@@ -138,7 +138,7 @@ export class TasksService {
                 invoices = [];
             }
 
-            invoices.push(today);
+            invoices.push(dayShort);
 
             await set('invoices', invoices);
 
@@ -170,7 +170,7 @@ export class TasksService {
 
                 tasks.push(task);
 
-                set(`tasks-${today}`, tasks);
+                await set(`tasks-${today}`, tasks);
 
                 resolve();
             } catch (err) {

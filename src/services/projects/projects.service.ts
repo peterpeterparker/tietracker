@@ -51,7 +51,7 @@ export class ProjectsService {
 
                 projects.push(project);
             
-                set('projects', projects);
+                await set('projects', projects);
 
                 resolve(project);
             } catch (err) {
