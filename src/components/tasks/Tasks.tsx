@@ -14,10 +14,12 @@ import {RootState} from '../../store/reducers';
 
 import {formatTime} from '../../utils/utils.time';
 import {formatCurrency} from '../../utils/utils.currency';
+import {Settings} from '../../models/settings';
 
 const Tasks: React.FC<RootProps> = (props: RootProps) => {
 
     const tasks: TaskItem[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
+    const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
     const [tasksDay, setTasksDay] = useState<string>();
 
@@ -59,7 +61,7 @@ const Tasks: React.FC<RootProps> = (props: RootProps) => {
                 <IonLabel>
                     <h2>{task.data.client.name}</h2>
                     <h3>{task.data.project.name}</h3>
-                    <p>{formatTime(task.data.milliseconds)} - {formatCurrency(task.data.billable)}</p>
+                    <p>{formatTime(task.data.milliseconds)} - {formatCurrency(task.data.billable, settings.currency)}</p>
                 </IonLabel>
             </IonItem>
         });

@@ -13,16 +13,19 @@ import {Summary as SummaryData} from '../../store/interfaces/summary';
 import {formatCurrency} from '../../utils/utils.currency';
 import {formatTime} from '../../utils/utils.time';
 
+import {Settings} from '../../models/settings';
+
 const Summary: React.FC = () => {
 
     const summary: SummaryData | undefined = useSelector((state: RootState) => state.summary.summary);
+    const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
     return (<div className="ion-padding-end ion-padding-top">
         <h1 className={styles.title}>Weekly Summary</h1>
         <IonCard className={styles.card}>
             <IonCardHeader>
                 <IonCardSubtitle className={styles.subtitle}>Tracked: {formatTime(summary !== undefined ? summary.milliseconds : undefined)}</IonCardSubtitle>
-                <IonCardTitle>Billable: {formatCurrency(summary !== undefined ? summary.billable : undefined)}</IonCardTitle>
+                <IonCardTitle>Billable: {formatCurrency(summary !== undefined ? summary.billable : undefined, settings.currency)}</IonCardTitle>
             </IonCardHeader>
         </IonCard>
     </div>);

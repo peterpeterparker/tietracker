@@ -2,7 +2,7 @@ import {get, set, del} from 'idb-keyval';
 
 import uuid from 'uuid/v4';
 
-import {endOfMinute, startOfMinute, lightFormat} from 'date-fns';
+import {addMinutes, getMinutes, lightFormat, roundToNearestMinutes} from 'date-fns';
 
 import {Project} from '../../models/project';
 import {Task} from '../../models/task';
@@ -47,7 +47,7 @@ export class TasksService {
         });
     }
 
-    stop(): Promise<Task> {
+    stop(roundTime: number): Promise<Task> {
         return new Promise<Task>(async (resolve, reject) => {
             try {
                 let task: Task = await get('task-in-progress');
@@ -61,8 +61,11 @@ export class TasksService {
 
                 task.data.updated_at = now.getTime();
 
-                task.data.from = startOfMinute(task.data.from);
-                task.data.to = endOfMinute(now);
+                const from: Date = roundToNearestMinutes(task.data.from, { nearestTo: roundTime });
+                task.data.from = from.getTime();
+
+                const to: Date = getMinutes(now) - getMinutes(from) < roundTime ? addMinutes(from, roundTime) : now;
+                task.data.to = roundToNearestMinutes(to, { nearestTo: roundTime }).getTime();
 
                 await this.saveTask(task);
 
@@ -278,6 +281,28 @@ export class TasksService {
             }
 
             resolve(tasks);
+        });
+    }
+
+    find(id: string, day: string): Promise<Task> {
+        return new Promise<Task>(async (resolve) => {
+            if (!id || id === undefined || !day || day === undefined) {
+                resolve();
+                return;
+            }
+
+            const tasks: Task[] = await get(`tasks-${day}`);
+
+            if (!tasks || tasks.length <= 0) {
+                resolve();
+                return;
+            }
+
+            const task: Task | undefined = tasks.find((filteredTask: Task) => {
+                return filteredTask.id === id;
+            });
+
+            resolve(task);
         });
     }
 

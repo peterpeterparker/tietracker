@@ -11,8 +11,11 @@ import { startTask, stopTask, initTask, listTasks } from './tasks.thunks';
 
 import { ClientData, Client } from '../../models/client';
 import { ProjectData, Project } from '../../models/project';
+import {Settings} from '../../models/settings';
+
 import { computeSummary } from './summary.thunks';
 import { listProjectsInvoices } from './invoices.thunks';
+import {initSettings, updateSettings} from './settings.thunks';
 
 export type RootThunkDispatch = ThunkDispatch<RootState, undefined, Action>;
 
@@ -21,7 +24,8 @@ const mapState = (state: RootState) => ({
     activeProjects: state.activeProjects.projects,
     taskInProgress: state.tasks.taskInProgress,
     summary: state.summary.summary,
-    invoices: state.invoices.invoices
+    invoices: state.invoices.invoices,
+    settings: state.settings.settings
 });
 
 const mapDispatch = (dispatch: RootThunkDispatch) => ({
@@ -32,7 +36,7 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
     initActiveProjects: () => dispatch(initActiveProjects()),
 
     startTask: (project: Project) => dispatch(startTask(project)),
-    stopTask: (delayDispatch: number = 0) => dispatch(stopTask(delayDispatch)),
+    stopTask: (delayDispatch: number = 0, roundTime: number) => dispatch(stopTask(delayDispatch, roundTime)),
     initTask: () => dispatch(initTask()),
 
     computeSummary: () => dispatch(computeSummary()),
@@ -40,6 +44,9 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
     listTasks: () => dispatch(listTasks()),
 
     listProjectsInvoices: () => dispatch(listProjectsInvoices()),
+
+    initSettings: () => dispatch(initSettings()),
+    updateSettings: (settings: Settings) => dispatch(updateSettings(settings))
 });
 
 export const rootConnector = connect(

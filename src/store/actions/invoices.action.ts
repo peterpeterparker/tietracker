@@ -1,6 +1,6 @@
-import { InvoicesActionTypes, LIST_PROJECTS_INVOICES } from '../types/invoices.types';
+import {InvoicesActionTypes, LIST_PROJECTS_INVOICES} from '../types/invoices.types';
 
-import { Invoice } from '../interfaces/invoice';
+import {Invoice} from '../interfaces/invoice';
 
 export function listProjectsInvoices(invoices: Invoice[]): InvoicesActionTypes {
     return {

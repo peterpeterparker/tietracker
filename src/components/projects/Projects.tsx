@@ -12,6 +12,7 @@ import { Task } from '../../models/task';
 
 import { RootState } from '../../store/reducers';
 import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
+import {Settings as SettingsModel} from '../../models/settings';
 
 interface Props extends RootProps {
     addAction: Function;
@@ -21,11 +22,12 @@ const Projects: React.FC<Props> = (props: Props) => {
 
     const projects: Project[] = useSelector((state: RootState) => state.activeProjects.projects);
     const task: Task | undefined = useSelector((state: RootState) => state.tasks.taskInProgress);
+    const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
     async function startStopTask(project: Project) {
         // TODO catch error
         if (task && task !== undefined) {
-            await props.stopTask();
+            await props.stopTask(0, settings.roundTime);
         } else {
             await props.startTask(project);
         }

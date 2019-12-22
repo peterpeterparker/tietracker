@@ -18,9 +18,14 @@ import {rootConnector} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
 import {Invoice} from '../../store/interfaces/invoice';
 
+import {formatCurrency} from '../../utils/utils.currency';
+
+import {Settings} from '../../models/settings';
+
 const Invoices: React.FC = () => {
 
     const invoices: Invoice[] = useSelector((state: RootState) => state.invoices.invoices);
+    const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
     return (
         <IonPage>
@@ -46,11 +51,11 @@ const Invoices: React.FC = () => {
             {
                 invoices.map((invoice: Invoice, i: number) => {
                     return <IonCard key={`invoice-${i}`} className="ion-activatable">
-                        <div style={{ background: invoice.client ? invoice.client.color : undefined }}>
+                        <div style={{background: invoice.client ? invoice.client.color : undefined}}>
                             <h1>{invoice.client ? invoice.client.name : ''}</h1>
                         </div>
                         <IonCardHeader>
-                            <IonCardSubtitle>{invoice.billable} CHF</IonCardSubtitle>
+                            <IonCardSubtitle>{formatCurrency(invoice.billable, settings.currency)}</IonCardSubtitle>
                             <IonCardTitle>{invoice.project.name}</IonCardTitle>
                         </IonCardHeader>
                         <IonRippleEffect></IonRippleEffect>

@@ -1,4 +1,4 @@
-import { Invoice } from "../interfaces/invoice";
+import {Invoice} from '../interfaces/invoice';
 
 export const LIST_PROJECTS_INVOICES = 'LIST_PROJECTS_INVOICES';
 

@@ -44,6 +44,8 @@ import './theme/modal.scss';
 import './theme/fonts.scss';
 import './theme/card.scss';
 import './theme/datetime.picker.scss';
+import './theme/spinner.scss';
+import './theme/checkbox.scss';
 
 import './helpers/i18n';
 
@@ -62,6 +64,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
     promises.push(props.computeSummary());
     promises.push(props.listTasks());
     promises.push(props.listProjectsInvoices());
+    promises.push(props.initSettings());
 
     await Promise.all(promises);
   }
