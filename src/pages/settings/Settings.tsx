@@ -11,7 +11,7 @@ import {
     IonSpinner,
     IonTitle,
     IonToolbar, useIonViewWillEnter,
-    IonSelect, IonSelectOption, IonButton
+    IonSelect, IonSelectOption, IonButton, IonInput
 } from '@ionic/react';
 
 import styles from './Settings.module.scss';
@@ -66,6 +66,20 @@ const Settings: React.FC<RootProps> = (props) => {
         settings.roundTime = $event.detail.value;
     }
 
+    function onVatInput($event: CustomEvent<KeyboardEvent>) {
+        if (!$event) {
+            return;
+        }
+
+        const input: string = ($event.target as InputTargetEvent).value;
+
+        if (!input || input === undefined || input === '') {
+            delete settings['vat'];
+        } else {
+            settings.vat = parseFloat(($event.target as InputTargetEvent).value);
+        }
+    }
+
     return (
         <IonPage>
             <IonHeader>
@@ -104,6 +118,15 @@ const Settings: React.FC<RootProps> = (props) => {
                         <IonSelectOption value={5}>5 minutes</IonSelectOption>
                         <IonSelectOption value={15}>15 minutes</IonSelectOption>
                     </IonSelect>
+                </IonItem>
+
+                <IonItem className="item-title">
+                    <IonLabel>Vat</IonLabel>
+                </IonItem>
+                <IonItem>
+                    <IonInput debounce={500} input-mode="text" value={settings.vat ? `${settings.vat}` : ''}
+                              onIonInput={($event: CustomEvent<KeyboardEvent>) => onVatInput($event)}>
+                    </IonInput>
                 </IonItem>
             </IonList>
 
