@@ -24,7 +24,8 @@ const mapState = (state: RootState) => ({
     activeProjects: state.activeProjects.projects,
     taskInProgress: state.tasks.taskInProgress,
     summary: state.summary.summary,
-    invoices: state.invoices.invoices
+    invoices: state.invoices.invoices,
+    settings: state.settings.settings
 });
 
 const mapDispatch = (dispatch: RootThunkDispatch) => ({

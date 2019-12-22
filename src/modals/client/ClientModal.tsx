@@ -1,13 +1,26 @@
-import React, { FormEvent, RefObject, createRef } from 'react';
-import { IonHeader, IonContent, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonInput } from '@ionic/react';
+import React, {FormEvent, RefObject, createRef} from 'react';
+import {
+    IonHeader,
+    IonContent,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonCheckbox
+} from '@ionic/react';
 
-import { more } from 'ionicons/icons';
+import {more} from 'ionicons/icons';
 
 import styles from './ClientModal.module.scss';
 
-import { Client, ClientData } from '../../models/client';
-import { RootProps, rootConnector } from '../../store/thunks/index.thunks';
-import { ProjectData } from '../../models/project';
+import {Client, ClientData} from '../../models/client';
+import {RootProps, rootConnector} from '../../store/thunks/index.thunks';
+import {ProjectData} from '../../models/project';
 
 type ClientState = {
     clientData?: ClientData;
@@ -52,7 +65,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         let data: ClientData;
 
         if (this.state.clientData) {
-            data = { ...this.state.clientData };
+            data = {...this.state.clientData};
             data.name = ($event.target as InputTargetEvent).value;
         } else {
             data = {
@@ -60,13 +73,13 @@ class ClientModal extends React.Component<Props, ClientState> {
             };
         }
 
-        this.setState({ clientData: data });
+        this.setState({clientData: data});
     }
 
     private validateClientName() {
-        const valid = { ...this.state.valid };
+        const valid = {...this.state.valid};
         valid.client = this.state.clientData !== undefined && this.state.clientData.name !== undefined && this.state.clientData.name.length >= 3;
-        this.setState({ valid });
+        this.setState({valid});
     }
 
     private selectColor = ($event: CustomEvent) => {
@@ -74,9 +87,9 @@ class ClientModal extends React.Component<Props, ClientState> {
             return;
         }
 
-        const data: ClientData = { ...this.state.clientData };
+        const data: ClientData = {...this.state.clientData};
         data.color = $event.detail.hex;
-        this.setState({ clientData: data });
+        this.setState({clientData: data});
     };
 
     private handleProjectNameInput($event: CustomEvent<KeyboardEvent>) {
@@ -87,7 +100,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         let data: ProjectData;
 
         if (this.state.projectData) {
-            data = { ...this.state.projectData };
+            data = {...this.state.projectData};
             data.name = ($event.target as InputTargetEvent).value;
         } else {
             data = {
@@ -95,12 +108,12 @@ class ClientModal extends React.Component<Props, ClientState> {
                 from: new Date().getTime(),
                 rate: {
                     hourly: 0,
-                    vat: true
+                    vat: this.props.settings.vat !== undefined
                 }
             };
         }
 
-        this.setState({ projectData: data });
+        this.setState({projectData: data});
     }
 
     private handleProjectRateInput($event: CustomEvent<KeyboardEvent>) {
@@ -111,7 +124,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         let data: ProjectData;
 
         if (this.state.projectData) {
-            data = { ...this.state.projectData };
+            data = {...this.state.projectData};
             data.rate.hourly = parseInt(($event.target as InputTargetEvent).value);
         } else {
             data = {
@@ -119,18 +132,18 @@ class ClientModal extends React.Component<Props, ClientState> {
                 from: new Date().getTime(),
                 rate: {
                     hourly: parseInt(($event.target as InputTargetEvent).value),
-                    vat: true
+                    vat: this.props.settings.vat !== undefined
                 }
             };
         }
 
-        this.setState({ projectData: data });
+        this.setState({projectData: data});
     }
 
     private validateProject() {
-        const valid = { ...this.state.valid };
+        const valid = {...this.state.valid};
         valid.project = this.state.projectData !== undefined && this.state.projectData.name !== undefined && this.state.projectData.name.length >= 3 && this.state.projectData.rate && this.state.projectData.rate.hourly >= 0;
-        this.setState({ valid });
+        this.setState({valid});
     }
 
     private async handleSubmit($event: FormEvent<HTMLFormElement>) {
@@ -177,6 +190,34 @@ class ClientModal extends React.Component<Props, ClientState> {
         this.projectRateRef.current.value = undefined;
     }
 
+    private onVatChange($event: CustomEvent) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        if (!this.state.clientData) {
+            return;
+        }
+
+        let data: ProjectData;
+
+        if (this.state.projectData) {
+            data = {...this.state.projectData};
+            data.rate.vat = $event.detail.checked;
+        } else {
+            data = {
+                name: '',
+                from: new Date().getTime(),
+                rate: {
+                    hourly: 0,
+                    vat: $event.detail.checked
+                }
+            };
+        }
+
+        this.setState({projectData: data});
+    }
+
     render() {
         const valid: boolean = this.state.valid.client && this.state.valid.project;
 
@@ -199,7 +240,8 @@ class ClientModal extends React.Component<Props, ClientState> {
                                 <IonLabel>Company</IonLabel>
                             </IonItem>
                             <IonItem>
-                                <IonInput ref={this.clientNameRef} debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
+                                <IonInput ref={this.clientNameRef} debounce={500} minlength={3} maxlength={32}
+                                          required={true} input-mode="text"
                                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleClientNameInput($event)}
                                           onIonChange={() => this.validateClientName()}>
                                 </IonInput>
@@ -210,7 +252,9 @@ class ClientModal extends React.Component<Props, ClientState> {
                             </IonItem>
 
                             <IonItem disabled={!this.state.valid.client} className={styles.color}>
-                                <deckgo-color ref={this.clientColorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true}>
+                                <deckgo-color ref={this.clientColorRef}
+                                              className="ion-padding-start ion-padding-end ion-padding-bottom"
+                                              more={true}>
                                     <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
                                 </deckgo-color>
                             </IonItem>
@@ -219,7 +263,8 @@ class ClientModal extends React.Component<Props, ClientState> {
                                 <IonLabel>Project</IonLabel>
                             </IonItem>
                             <IonItem disabled={!this.state.valid.client}>
-                                <IonInput ref={this.projectNameRef} debounce={500} minlength={3} maxlength={32} required={true} input-mode="text"
+                                <IonInput ref={this.projectNameRef} debounce={500} minlength={3} maxlength={32}
+                                          required={true} input-mode="text"
                                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectNameInput($event)}
                                           onIonChange={() => this.validateProject()}>
                                 </IonInput>
@@ -229,11 +274,14 @@ class ClientModal extends React.Component<Props, ClientState> {
                                 <IonLabel>Hourly rate</IonLabel>
                             </IonItem>
                             <IonItem disabled={!this.state.valid.client}>
-                                <IonInput ref={this.projectRateRef} debounce={500} minlength={1} required={true} input-mode="text"
+                                <IonInput ref={this.projectRateRef} debounce={500} minlength={1} required={true}
+                                          input-mode="text"
                                           onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectRateInput($event)}
                                           onIonChange={() => this.validateProject()}>
                                 </IonInput>
                             </IonItem>
+
+                            {this.renderVat()}
                         </IonList>
 
                         <IonButton type="submit" className="ion-margin-top" disabled={!valid}>
@@ -244,6 +292,24 @@ class ClientModal extends React.Component<Props, ClientState> {
             </IonContent>
         </>
     };
+
+    private renderVat() {
+        if (!this.props.settings.vat || this.props.settings.vat === undefined) {
+            return undefined;
+        }
+
+        return <>
+            <IonItem disabled={!this.state.valid.client} className="item-title">
+                <IonLabel>Vat</IonLabel>
+            </IonItem>
+            <IonItem disabled={!this.state.valid.client} className="item-checkbox">
+                <IonLabel>{this.props.settings.vat}%</IonLabel>
+                <IonCheckbox slot="end"
+                             checked={this.state.projectData ? this.state.projectData.rate.vat : false}
+                             onIonChange={($event: CustomEvent) => this.onVatChange($event)}></IonCheckbox>
+            </IonItem>
+        </>
+    }
 
 }
 
