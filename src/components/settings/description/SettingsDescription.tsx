@@ -7,11 +7,11 @@ import styles from './SettingsDescription.module.scss';
 
 import {Settings} from '../../../models/settings';
 
-export interface SettingsGeneralProps {
+export interface SettingsDescriptionProps {
     settings: Settings;
 }
 
-const SettingsDescription: React.FC<SettingsGeneralProps> = (props) => {
+const SettingsDescription: React.FC<SettingsDescriptionProps> = (props) => {
 
     function doReorder($event: CustomEvent<ItemReorderEventDetail>) {
         if (!$event || !$event.detail) {

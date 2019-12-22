@@ -3,23 +3,20 @@ import {useSelector} from 'react-redux';
 
 import {lightFormat} from 'date-fns';
 
-import {IonList, IonItem, IonLabel} from '@ionic/react';
+import {IonList, IonLabel, IonItem} from '@ionic/react';
 
 import styles from './Tasks.module.scss';
 
-import {TaskItem} from '../../store/interfaces/task.item';
+import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
 
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
+import {rootConnector} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
 
-import {formatTime} from '../../utils/utils.time';
-import {formatCurrency} from '../../utils/utils.currency';
-import {Settings} from '../../models/settings';
+import TaskItem from '../taskitem/TaskItem';
 
-const Tasks: React.FC<RootProps> = (props: RootProps) => {
+const Tasks: React.FC = () => {
 
-    const tasks: TaskItem[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
-    const settings: Settings = useSelector((state: RootState) => state.settings.settings);
+    const tasks: TaskItemStore[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
 
     const [tasksDay, setTasksDay] = useState<string>();
 
@@ -53,20 +50,11 @@ const Tasks: React.FC<RootProps> = (props: RootProps) => {
             return undefined;
         }
 
-        return tasks.map((task: TaskItem) => {
-            return <IonItem key={`task-${task.id}`} className={styles.item} lines="none" detail={false}
-                            routerLink={`/task/${tasksDay}/${task.id}`}>
-                <div slot="start" style={{'background': task.data.client.color} as CSSProperties}></div>
-
-                <IonLabel>
-                    <h2>{task.data.client.name}</h2>
-                    <h3>{task.data.project.name}</h3>
-                    <p>{formatTime(task.data.milliseconds)} - {formatCurrency(task.data.billable, settings.currency)}</p>
-                </IonLabel>
-            </IonItem>
+        return tasks.map((task: TaskItemStore) => {
+            return <TaskItem task={task} tasksDay={tasksDay} key={`task-${task.id}`} ></TaskItem>;
         });
     }
 
-}
+};
 
 export default rootConnector(Tasks);
