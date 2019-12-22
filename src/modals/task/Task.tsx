@@ -70,14 +70,14 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
 
     return (
         <div className={`${styles.task} ${task !== undefined ? styles.progress : ''}`} style={client !== undefined ? {background: `${client.color}`} : undefined}>
-            <div>
+            <div style={{'--color': contrastColor} as CSSProperties}>
                 {
                     task !== undefined ? <Spinner freeze={freeze} color={client !== undefined ? client.color : undefined} contrast={contrastColor}></Spinner> : undefined
                 }
 
                 {renderTaskDescription()}
 
-                <button onClick={() => stopTask()} aria-label="Stop current task" className="ion-activatable" disabled={freeze} style={{'--color': contrastColor} as CSSProperties}>
+                <button onClick={() => stopTask()} aria-label="Stop current task" className="ion-activatable" disabled={freeze}>
                     <IonIcon icon={checkmarkCircle} />
                 </button>
             </div>
