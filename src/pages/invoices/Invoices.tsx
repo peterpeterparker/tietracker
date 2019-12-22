@@ -16,7 +16,7 @@ import styles from './Invoices.module.scss';
 
 import {rootConnector} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
-import {Invoice} from '../../store/interfaces/invoice';
+import {Invoice} from '../../models/invoice';
 
 const Invoices: React.FC = () => {
 
@@ -46,7 +46,7 @@ const Invoices: React.FC = () => {
             {
                 invoices.map((invoice: Invoice, i: number) => {
                     return <IonCard key={`invoice-${i}`} className="ion-activatable">
-                        <div style={{ background: invoice.client ? invoice.client.color : undefined }}>
+                        <div style={{background: invoice.client ? invoice.client.color : undefined}}>
                             <h1>{invoice.client ? invoice.client.name : ''}</h1>
                         </div>
                         <IonCardHeader>
