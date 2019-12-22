@@ -62,6 +62,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
     promises.push(props.computeSummary());
     promises.push(props.listTasks());
     promises.push(props.listProjectsInvoices());
+    promises.push(props.initSettings());
 
     await Promise.all(promises);
   }

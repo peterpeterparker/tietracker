@@ -8,7 +8,7 @@ export interface InvoicesState {
 
 const initialState: InvoicesState = {
     invoices: []
-}
+};
 
 export function invoicesReducer(state = initialState, action: InvoicesActionTypes): InvoicesState {
     switch (action.type) {

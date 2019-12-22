@@ -13,6 +13,7 @@ import { ClientData, Client } from '../../models/client';
 import { ProjectData, Project } from '../../models/project';
 import { computeSummary } from './summary.thunks';
 import { listProjectsInvoices } from './invoices.thunks';
+import {initSettings} from './settings.thunks';
 
 export type RootThunkDispatch = ThunkDispatch<RootState, undefined, Action>;
 
@@ -40,6 +41,8 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
     listTasks: () => dispatch(listTasks()),
 
     listProjectsInvoices: () => dispatch(listProjectsInvoices()),
+
+    initSettings: () => dispatch(initSettings())
 });
 
 export const rootConnector = connect(
