@@ -281,4 +281,26 @@ export class TasksService {
         });
     }
 
+    find(id: string, day: string): Promise<Task> {
+        return new Promise<Task>(async (resolve) => {
+            if (!id || id === undefined || !day || day === undefined) {
+                resolve();
+                return;
+            }
+
+            const tasks: Task[] = await get(`tasks-${day}`);
+
+            if (!tasks || tasks.length <= 0) {
+                resolve();
+                return;
+            }
+
+            const task: Task | undefined = tasks.find((filteredTask: Task) => {
+                return filteredTask.id === id;
+            });
+
+            resolve(task);
+        });
+    }
+
 }

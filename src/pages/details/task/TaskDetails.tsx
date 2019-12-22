@@ -16,8 +16,6 @@ import {RouteComponentProps} from 'react-router';
 import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
-import {get} from 'idb-keyval';
-
 import styles from './TaskDetails.module.scss';
 
 import {Task} from '../../../models/task';
@@ -47,7 +45,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     useIonViewWillEnter(async () => {
         setSaving(false);
 
-        const task: Task = await findTask();
+        const task: Task = await TasksService.getInstance().find(props.match.params.id, props.match.params.day);
         setTask(task);
 
         if (task && task.data) {
@@ -57,28 +55,6 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
             setLoading(false);
         }
     });
-
-    function findTask(): Promise<Task> {
-        return new Promise<Task>(async (resolve) => {
-            if (!props.match.params.id || props.match.params.id === undefined || !props.match.params.day || props.match.params.day === undefined) {
-                resolve();
-                return;
-            }
-
-            const tasks: Task[] = await get(`tasks-${props.match.params.day}`);
-
-            if (!tasks || tasks.length <= 0) {
-                resolve();
-                return;
-            }
-
-            const task: Task | undefined = tasks.find((filteredTask: Task) => {
-                return filteredTask.id === props.match.params.id;
-            });
-
-            resolve(task);
-        });
-    }
 
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         console.log('form');
