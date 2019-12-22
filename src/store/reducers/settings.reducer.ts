@@ -1,6 +1,6 @@
 import {Settings} from '../../models/settings';
 
-import {INIT_SETTINGS, SettingsActionTypes} from '../types/settings.types';
+import {INIT_SETTINGS, SettingsActionTypes, UPDATE_SETTINGS} from '../types/settings.types';
 import {SettingsService} from '../../services/settings/settings.service';
 
 export interface SettingsState {
@@ -14,6 +14,7 @@ const initialState: SettingsState = {
 export function settingsReducer(state = initialState, action: SettingsActionTypes): SettingsState {
     switch (action.type) {
         case INIT_SETTINGS:
+        case UPDATE_SETTINGS:
             return {
                 settings: action.payload
             };

@@ -16,13 +16,13 @@ import {
 
 import styles from './Settings.module.scss';
 
-import {rootConnector} from '../../store/thunks/index.thunks';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
 
 import {Settings as SettingsModel} from '../../models/settings';
 import {Currencies, SettingsService} from '../../services/settings/settings.service';
 
-const Settings: React.FC = () => {
+const Settings: React.FC<RootProps> = (props) => {
 
     const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
@@ -38,7 +38,16 @@ const Settings: React.FC = () => {
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
 
-        console.log(settings);
+        setSaving(true);
+
+        try {
+            await props.updateSettings(settings);
+        } catch (err) {
+            // TODO show err
+            console.error(err);
+        }
+
+        setSaving(false);
     }
 
     function onCurrencyChange($event: CustomEvent) {

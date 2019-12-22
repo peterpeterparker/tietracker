@@ -78,4 +78,23 @@ export class SettingsService {
             }
         });
     }
+
+    update(settings: Settings): Promise<Settings> {
+        return new Promise<Settings>(async (resolve, reject) => {
+            try {
+                if (!settings) {
+                    reject('Settings not defined.');
+                    return;
+                }
+
+                settings.updated_at = new Date().getTime();
+
+                await set('settings', settings);
+
+                resolve(settings);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
 }
