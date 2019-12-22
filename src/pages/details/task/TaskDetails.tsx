@@ -9,7 +9,7 @@ import {
     IonContent,
     useIonViewWillEnter,
     IonList,
-    IonSpinner, IonLabel, IonItem, IonButton
+    IonSpinner, IonLabel, IonItem, IonButton, IonInput
 } from '@ionic/react';
 import {RouteComponentProps} from 'react-router';
 
@@ -24,6 +24,7 @@ import {toDateObj} from '../../../utils/utils.date';
 import {TasksService} from '../../../services/tasks/tasks.service';
 
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
+import {ClientData} from '../../../models/client';
 
 interface TaskDetailsProps extends RouteComponentProps<{
     day: string,
@@ -38,6 +39,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     const [task, setTask] = useState<Task | undefined>(undefined);
     const [from, setFrom] = useState<Date | undefined>(undefined);
     const [to, setTo] = useState<Date | undefined>(undefined);
+    const [description, setDescription] = useState<string | undefined>(undefined);
 
     const [loading, setLoading] = useState<boolean>(true);
     const [saving, setSaving] = useState<boolean>(false);
@@ -51,6 +53,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
         if (task && task.data) {
             setFrom(toDateObj(task.data.from));
             setTo(toDateObj(task.data.to));
+            setDescription(task.data.description);
 
             setLoading(false);
         }
@@ -69,6 +72,12 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
             const taskToUpdate: Task = {...task};
             taskToUpdate.data.to = to.getTime();
             taskToUpdate.data.from = from.getTime();
+
+            if (description && description !== undefined && description !== '') {
+                taskToUpdate.data.description = description;
+            } else {
+                delete taskToUpdate.data['description'];
+            }
 
             await TasksService.getInstance().update(task, props.match.params.day);
 
@@ -108,6 +117,10 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
         await props.listProjectsInvoices();
     }
 
+    function onDescriptionChange($event: CustomEvent<KeyboardEvent>) {
+        setDescription(($event.target as InputTargetEvent).value);
+    }
+
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <IonPage>
@@ -133,6 +146,16 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
             <IonList className="inputs-list">
+                <IonItem className="item-title">
+                    <IonLabel>Description</IonLabel>
+                </IonItem>
+                <IonItem>
+                    <IonInput debounce={500} maxlength={256} value={description}
+                              input-mode="text"
+                              onIonInput={($event: CustomEvent<KeyboardEvent>) => onDescriptionChange($event)}>
+                    </IonInput>
+                </IonItem>
+
                 <IonItem className="item-title">
                     <IonLabel>From</IonLabel>
                 </IonItem>
