@@ -29,7 +29,7 @@ const Projects: React.FC<Props> = (props: Props) => {
         if (task && task !== undefined) {
             await props.stopTask(0, settings.roundTime);
         } else {
-            await props.startTask(project);
+            await props.startTask(project, settings);
         }
     }
 

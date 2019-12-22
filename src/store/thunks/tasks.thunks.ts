@@ -7,10 +7,11 @@ import {START_TASK, STOP_TASK, INIT_TASK, LIST_TASKS, UPDATE_TASK} from '../type
 import { TasksService } from '../../services/tasks/tasks.service';
 import { TaskInProgress } from '../interfaces/task.inprogress';
 import { TaskItem } from '../interfaces/task.item';
+import {Settings} from '../../models/settings';
 
-export function startTask(project: Project): RootThunkResult<Promise<void>> {
+export function startTask(project: Project, settings: Settings): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
-        const task: TaskInProgress = await TasksService.getInstance().start(project);
+        const task: TaskInProgress = await TasksService.getInstance().start(project, settings);
 
         dispatch({ type: START_TASK, payload: task });
     };

@@ -8,6 +8,7 @@ import {Project} from '../../models/project';
 import {Task} from '../../models/task';
 
 import {TaskInProgress, TaskInProgressData} from '../../store/interfaces/task.inprogress';
+import {Settings} from '../../models/settings';
 
 export class TasksService {
 
@@ -26,7 +27,7 @@ export class TasksService {
         return TasksService.instance;
     }
 
-    start(project: Project): Promise<TaskInProgress> {
+    start(project: Project, settings: Settings): Promise<TaskInProgress> {
         return new Promise<TaskInProgress>(async (resolve, reject) => {
             try {
                 const taskInProgress: TaskInProgress = await get('task-in-progress');
@@ -36,7 +37,7 @@ export class TasksService {
                     return;
                 }
 
-                const task: TaskInProgress = await this.createTaskInProgress(project);
+                const task: TaskInProgress = await this.createTaskInProgress(project, settings);
 
                 await set('task-in-progress', task);
 
@@ -112,7 +113,7 @@ export class TasksService {
         });
     }
 
-    private createTaskInProgress(project: Project): Promise<TaskInProgress> {
+    private createTaskInProgress(project: Project, settings: Settings): Promise<TaskInProgress> {
         return new Promise<TaskInProgress>((resolve, reject) => {
             if (!project || !project.data || !project.data.client) {
                 reject('Project is empty.');
@@ -122,7 +123,7 @@ export class TasksService {
             const now: number = new Date().getTime();
 
             // We create a TaskInProgress as, furthermore than being persisted, it gonna be added to the root state too
-            const task: TaskInProgress = {
+            let task: TaskInProgress = {
                 id: uuid(),
                 data: {
                     from: now,
@@ -143,6 +144,11 @@ export class TasksService {
                     }
                 }
             };
+
+            // Per default, if defined, we use the first description from the settings
+            if (settings && settings.descriptions && settings.descriptions.length > 0) {
+                task.data.description = settings.descriptions[0];
+            }
 
             resolve(task);
         });
