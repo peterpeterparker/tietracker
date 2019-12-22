@@ -4,7 +4,7 @@ import {LIST_PROJECTS_INVOICES} from '../types/invoices.types';
 
 import {InvoicesService} from '../../services/invoices/invoices.services';
 
-import {Invoice} from '../../models/invoice';
+import {Invoice} from '../interfaces/invoice';
 
 export function listProjectsInvoices(): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {

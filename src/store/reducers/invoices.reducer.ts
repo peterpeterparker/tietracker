@@ -1,6 +1,6 @@
 import {LIST_PROJECTS_INVOICES, InvoicesActionTypes} from '../types/invoices.types';
 
-import {Invoice} from '../../models/invoice';
+import {Invoice} from '../interfaces/invoice';
 
 export interface InvoicesState {
     invoices: Invoice[];

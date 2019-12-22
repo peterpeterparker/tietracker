@@ -16,7 +16,7 @@ import styles from './Invoices.module.scss';
 
 import {rootConnector} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
-import {Invoice} from '../../models/invoice';
+import {Invoice} from '../../store/interfaces/invoice';
 
 const Invoices: React.FC = () => {
 

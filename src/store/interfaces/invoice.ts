@@ -1,4 +1,4 @@
-import {TaskInProgressClientData, TaskInProgressProjectData} from '../store/interfaces/task.inprogress';
+import {TaskInProgressClientData, TaskInProgressProjectData} from './task.inprogress';
 
 export interface Invoice {
     client_id: string;
