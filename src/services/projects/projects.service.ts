@@ -1,13 +1,13 @@
-import { get, set } from 'idb-keyval';
+import {get, set} from 'idb-keyval';
 
 import uuid from 'uuid/v4';
 
 import isAfter from 'date-fns/isAfter';
 
-import { Project, ProjectData } from '../../models/project';
+import {Project, ProjectData} from '../../models/project';
 
-import { toDateObj } from '../../utils/utils.date';
-import { Client } from '../../models/client';
+import {toDateObj} from '../../utils/utils.date';
+import {Client} from '../../models/client';
 
 export class ProjectsService {
 
@@ -28,11 +28,11 @@ export class ProjectsService {
         return new Promise<Project>(async (resolve, reject) => {
             try {
                 let projects: Project[] = await get('projects');
-    
+
                 if (!projects || projects.length <= 0) {
                     projects = [];
                 }
-            
+
                 data.client = {
                     id: client.id as string,
                     name: client.data.name,
@@ -47,10 +47,10 @@ export class ProjectsService {
                 const project: Project = {
                     id: uuid(),
                     data: data
-                }
+                };
 
                 projects.push(project);
-            
+
                 await set('projects', projects);
 
                 resolve(project);
@@ -59,7 +59,7 @@ export class ProjectsService {
             }
         });
     }
-    
+
     list(filterActive: boolean = true): Promise<Project[]> {
         return new Promise<Project[]>(async (resolve, reject) => {
             try {
@@ -70,7 +70,7 @@ export class ProjectsService {
                     return;
                 }
 
-                if (!filterActive) {
+                if (!filterActive) {
                     resolve(projects);
                     return;
                 }
@@ -98,6 +98,27 @@ export class ProjectsService {
                 resolve(sortedProjects);
             } catch (err) {
                 reject(err);
+            }
+        });
+    }
+
+    find(id: string): Promise<Project | undefined> {
+        return new Promise<Project | undefined>(async (resolve) => {
+            try {
+                const projects: Project[] = await get('projects');
+
+                if (!projects || projects.length <= 0) {
+                    resolve(undefined);
+                    return;
+                }
+
+                const project: Project | undefined = projects.find((filteredProject: Project) => {
+                    return filteredProject.id === id;
+                });
+
+                resolve(project);
+            } catch (err) {
+                resolve(undefined);
             }
         });
     }

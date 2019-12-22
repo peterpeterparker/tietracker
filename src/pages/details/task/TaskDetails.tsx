@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from 'react';
+import React, {CSSProperties, FormEvent, useEffect, useState} from 'react';
 import {
     IonBackButton,
     IonButtons,
@@ -24,7 +24,13 @@ import {toDateObj} from '../../../utils/utils.date';
 import {TasksService} from '../../../services/tasks/tasks.service';
 
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
-import {ClientData} from '../../../models/client';
+
+import {Client} from '../../../models/client';
+import {Project} from '../../../models/project';
+import {ProjectsService} from '../../../services/projects/projects.service';
+import {ClientsService} from '../../../services/clients/clients.service';
+import {contrast} from '../../../utils/utils.color';
+
 
 interface TaskDetailsProps extends RouteComponentProps<{
     day: string,
@@ -44,16 +50,25 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [saving, setSaving] = useState<boolean>(false);
 
+    const [client, setClient] = useState<Client | undefined>(undefined);
+    const [project, setProject] = useState<Project | undefined>(undefined);
+
     useIonViewWillEnter(async () => {
         setSaving(false);
 
-        const task: Task = await TasksService.getInstance().find(props.match.params.id, props.match.params.day);
+        const task: Task | undefined = await TasksService.getInstance().find(props.match.params.id, props.match.params.day);
         setTask(task);
 
         if (task && task.data) {
             setFrom(toDateObj(task.data.from));
             setTo(toDateObj(task.data.to));
             setDescription(task.data.description);
+
+            const project: Project | undefined = await ProjectsService.getInstance().find(task.data.project_id);
+            setProject(project);
+
+            const client: Client | undefined = await ClientsService.getInstance().find(task.data.client_id);
+            setClient(client);
 
             setLoading(false);
         }
@@ -123,25 +138,32 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <IonPage>
-                <IonHeader>
-                    <IonToolbar>
-                        <IonButtons slot="start">
-                            <IonBackButton defaultHref="/home"/>
-                        </IonButtons>
-                        <IonTitle>Task</IonTitle>
-                    </IonToolbar>
-                </IonHeader>
-                <IonContent className="ion-padding">
-                    {renderTask()}
-                </IonContent>
-            </IonPage>
+            {renderContent()}
         </MuiPickersUtilsProvider>
     );
 
+    function renderContent() {
+        const color: string = client && client.data && client.data.color ? client.data.color : 'var(--ion-color-primary)';
+        const colorContrast: string = contrast(color);
+
+        return <IonPage>
+            <IonHeader>
+                <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
+                    <IonButtons slot="start">
+                        <IonBackButton defaultHref="/home" style={{'--color': colorContrast} as CSSProperties}/>
+                    </IonButtons>
+                    <IonTitle>{client && client.data ? client.data.name + (project && project.data ? ` - ${project.data.name}` : '') : 'Task'}</IonTitle>
+                </IonToolbar>
+            </IonHeader>
+            <IonContent className="ion-padding">
+                {renderTask()}
+            </IonContent>
+        </IonPage>
+    }
+
     function renderTask() {
         if (loading) {
-            return <div className="spinner"><IonSpinner color="primary"></IonSpinner></div>;
+            return <div className="spinner"><IonSpinner color="primary"></IonSpinner></div>
         }
 
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
@@ -180,7 +202,8 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
                     <IonLabel>Update</IonLabel>
                 </IonButton>
 
-                <a href="#" onClick={() => deleteTask()} aria-label="Delete task" aria-disabled={saving}><IonLabel>Delete</IonLabel></a>
+                <a href="#" onClick={() => deleteTask()} aria-label="Delete task"
+                   aria-disabled={saving}><IonLabel>Delete</IonLabel></a>
             </div>
         </form>
     }

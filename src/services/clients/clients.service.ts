@@ -1,8 +1,8 @@
-import { get, set } from 'idb-keyval';
+import {get, set} from 'idb-keyval';
 
 import uuid from 'uuid/v4';
 
-import { Client, ClientData } from '../../models/client';
+import {Client, ClientData} from '../../models/client';
 
 export class ClientsService {
 
@@ -23,11 +23,11 @@ export class ClientsService {
         return new Promise<Client>(async (resolve, reject) => {
             try {
                 let clients: Client[] = await get('clients');
-    
+
                 if (!clients || clients.length <= 0) {
                     clients = [];
                 }
-            
+
                 const now: number = new Date().getTime();
 
                 data.created_at = now;
@@ -36,14 +36,14 @@ export class ClientsService {
                 if (!data.color) {
                     data.color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
                 }
-            
+
                 const client: Client = {
                     id: uuid(),
                     data: data
                 }
 
                 clients.push(client);
-            
+
                 await set('clients', clients);
 
                 resolve(client);
@@ -52,7 +52,7 @@ export class ClientsService {
             }
         });
     }
-    
+
     list(): Promise<Client[]> {
         return new Promise<Client[]>(async (resolve, reject) => {
             try {
@@ -66,6 +66,27 @@ export class ClientsService {
                 resolve(clients);
             } catch (err) {
                 reject(err);
+            }
+        });
+    }
+
+    find(id: string): Promise<Client | undefined> {
+        return new Promise<Client | undefined>(async (resolve) => {
+            try {
+                const clients: Client[] = await get('clients');
+
+                if (!clients || clients.length <= 0) {
+                    resolve(undefined);
+                    return;
+                }
+
+                const client: Client | undefined = clients.find((filteredClient: Client) => {
+                    return filteredClient.id === id;
+                });
+
+                resolve(client);
+            } catch (err) {
+                resolve(undefined);
             }
         });
     }

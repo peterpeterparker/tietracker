@@ -309,17 +309,17 @@ export class TasksService {
         });
     }
 
-    find(id: string, day: string): Promise<Task> {
+    find(id: string, day: string): Promise<Task | undefined> {
         return new Promise<Task>(async (resolve) => {
             if (!id || id === undefined || !day || day === undefined) {
-                resolve();
+                resolve(undefined);
                 return;
             }
 
             const tasks: Task[] = await get(`tasks-${day}`);
 
             if (!tasks || tasks.length <= 0) {
-                resolve();
+                resolve(undefined);
                 return;
             }
 
