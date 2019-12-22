@@ -23,6 +23,9 @@ import styles from './TaskDetails.module.scss';
 import {Task} from '../../../models/task';
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 import {toDateObj} from '../../../utils/utils.date';
+import {TasksService} from '../../../services/tasks/tasks.service';
+
+import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 
 interface TaskDetailsProps extends RouteComponentProps<{
     day: string,
@@ -30,35 +33,39 @@ interface TaskDetailsProps extends RouteComponentProps<{
 }> {
 }
 
-const TaskDetails: React.FC<TaskDetailsProps> = ({match, history}) => {
+type Props = RootProps & TaskDetailsProps;
+
+const TaskDetails: React.FC<Props> = (props: Props) => {
 
     const [task, setTask] = useState<Task | undefined>(undefined);
     const [from, setFrom] = useState<Date | undefined>(undefined);
     const [to, setTo] = useState<Date | undefined>(undefined);
 
     const [loading, setLoading] = useState<boolean>(true);
+    const [saving, setSaving] = useState<boolean>(false);
 
     useIonViewWillEnter(async () => {
-        setTask(await findTask());
-    });
+        setSaving(false);
 
-    useEffect(() => {
+        const task: Task = await findTask();
+        setTask(task);
+
         if (task && task.data) {
             setFrom(toDateObj(task.data.from));
             setTo(toDateObj(task.data.to));
 
             setLoading(false);
         }
-    }, [task]);
+    });
 
     function findTask(): Promise<Task> {
         return new Promise<Task>(async (resolve) => {
-            if (!match.params.id || match.params.id === undefined || !match.params.day || match.params.day === undefined) {
+            if (!props.match.params.id || props.match.params.id === undefined || !props.match.params.day || props.match.params.day === undefined) {
                 resolve();
                 return;
             }
 
-            const tasks: Task[] = await get(`tasks-${match.params.day}`);
+            const tasks: Task[] = await get(`tasks-${props.match.params.day}`);
 
             if (!tasks || tasks.length <= 0) {
                 resolve();
@@ -66,7 +73,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({match, history}) => {
             }
 
             const task: Task | undefined = tasks.find((filteredTask: Task) => {
-                return filteredTask.id === match.params.id;
+                return filteredTask.id === props.match.params.id;
             });
 
             resolve(task);
@@ -74,11 +81,59 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({match, history}) => {
     }
 
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
+        console.log('form');
+
         $event.preventDefault();
 
+        if (!task || !task.data || from === undefined || to === undefined) {
+            return;
+        }
 
+        setSaving(true);
 
-        history.push('/home');
+        try {
+            const taskToUpdate: Task = {...task};
+            taskToUpdate.data.to = to.getTime();
+            taskToUpdate.data.from = from.getTime();
+
+            await TasksService.getInstance().update(task, props.match.params.day);
+
+            await updateStore();
+
+            props.history.push('/home');
+        } catch (err) {
+            // TODO show err
+            console.error(err);
+            setSaving(false);
+        }
+    }
+
+    async function deleteTask() {
+        console.log('delete');
+
+        if (!task || !task.data || from === undefined || to === undefined) {
+            return;
+        }
+
+        setSaving(true);
+
+        try {
+            await TasksService.getInstance().delete(task, props.match.params.day);
+
+            await updateStore();
+
+            props.history.push('/home');
+        } catch (err) {
+            // TODO show err
+            console.error(err);
+            setSaving(false);
+        }
+    }
+
+    async function updateStore() {
+        await props.computeSummary();
+        await props.listTasks();
+        await props.listProjectsInvoices();
     }
 
     return (
@@ -111,7 +166,8 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({match, history}) => {
                 </IonItem>
 
                 <IonItem className="item-input">
-                    <DateTimePicker value={from} onChange={(date: MaterialUiPickersDate) => setFrom(date as Date)} ampm={false} hideTabs={true} format="yyyy/MM/dd HH:mm"/>
+                    <DateTimePicker value={from} onChange={(date: MaterialUiPickersDate) => setFrom(date as Date)}
+                                    ampm={false} hideTabs={true} format="yyyy/MM/dd HH:mm"/>
                 </IonItem>
 
                 <IonItem className="item-title">
@@ -119,15 +175,20 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({match, history}) => {
                 </IonItem>
 
                 <IonItem className="item-input">
-                    <DateTimePicker value={to} onChange={(date: MaterialUiPickersDate) => setTo(date as Date)} ampm={false} hideTabs={true} format="yyyy/MM/dd HH:mm"/>
+                    <DateTimePicker value={to} onChange={(date: MaterialUiPickersDate) => setTo(date as Date)}
+                                    ampm={false} hideTabs={true} format="yyyy/MM/dd HH:mm"/>
                 </IonItem>
             </IonList>
 
-            <IonButton type="submit" className="ion-margin-top">
-                <IonLabel>Save</IonLabel>
-            </IonButton>
+            <div className={styles.actions}>
+                <IonButton type="submit" disabled={saving} aria-label="Update task">
+                    <IonLabel>Update</IonLabel>
+                </IonButton>
+
+                <a href="#" onClick={() => deleteTask()} aria-label="Delete task" aria-disabled={saving}><IonLabel>Delete</IonLabel></a>
+            </div>
         </form>
     }
 };
 
-export default TaskDetails;
+export default rootConnector(TaskDetails);
