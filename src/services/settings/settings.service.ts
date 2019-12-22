@@ -2,6 +2,22 @@ import {get, set} from 'idb-keyval';
 
 import {Settings} from '../../models/settings';
 
+// Source MIT: https://github.com/xsolla/currency-format
+export interface Currency {
+    name: string;
+    fractionSize: number;
+    symbol: {
+        grapheme: string;
+        template: string;
+        rtl: boolean;
+    };
+    uniqSymbol: boolean;
+}
+
+export interface Currencies {
+    [currency: string]: Currency;
+}
+
 export class SettingsService {
 
     private static instance: SettingsService;
@@ -42,5 +58,24 @@ export class SettingsService {
             created_at: now.getTime(),
             updated_at: now.getTime()
         }
+    }
+
+    currencies(): Promise<Currencies | undefined> {
+        return new Promise<Currencies | undefined>(async (resolve) => {
+            try {
+                const res: Response = await fetch('./assets/currency/currency.json');
+
+                if (!res) {
+                    resolve(undefined);
+                    return;
+                }
+
+                const currencies: Currencies = await res.json();
+
+                resolve(currencies);
+             } catch (err) {
+                resolve(undefined);
+            }
+        });
     }
 }

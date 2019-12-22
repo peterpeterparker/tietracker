@@ -44,6 +44,7 @@ import './theme/modal.scss';
 import './theme/fonts.scss';
 import './theme/card.scss';
 import './theme/datetime.picker.scss';
+import './theme/spinner.scss';
 
 import './helpers/i18n';
 

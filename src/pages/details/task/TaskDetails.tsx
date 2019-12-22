@@ -57,8 +57,6 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     });
 
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
-        console.log('form');
-
         $event.preventDefault();
 
         if (!task || !task.data || from === undefined || to === undefined) {
@@ -85,8 +83,6 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     }
 
     async function deleteTask() {
-        console.log('delete');
-
         if (!task || !task.data || from === undefined || to === undefined) {
             return;
         }
@@ -132,7 +128,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
     function renderTask() {
         if (loading) {
-            return <div className={styles.spinner}><IonSpinner color="primary"></IonSpinner></div>
+            return <div className="spinner"><IonSpinner color="primary"></IonSpinner></div>;
         }
 
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
