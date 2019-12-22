@@ -29,13 +29,14 @@ const TaskItem: React.FC<TaskItemProps> = (props) => {
             <div slot="start" style={{'background': props.task.data.client.color} as CSSProperties}></div>
 
             <IonLabel>
-                <h2>{props.task.data.client.name}</h2>
-                <h3>{props.task.data.project.name}</h3>
+                {
+                    props.task.data.description ? <h2>{props.task.data.description}</h2> : 'Without description'
+                }
                 <p>{formatTime(props.task.data.milliseconds)} - {formatCurrency(props.task.data.billable, settings.currency)}</p>
             </IonLabel>
         </IonItem>
     );
-    
+
 };
 
 export default rootConnector(TaskItem);
