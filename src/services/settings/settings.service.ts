@@ -55,6 +55,7 @@ export class SettingsService {
         const now: Date = new Date();
         return {
             currency: 'CHF',
+            roundTime: 5,
             created_at: now.getTime(),
             updated_at: now.getTime()
         }

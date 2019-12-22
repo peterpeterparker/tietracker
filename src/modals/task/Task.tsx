@@ -15,6 +15,7 @@ import { TaskInProgress, TaskInProgressClientData, TaskInProgressData } from '..
 import Spinner from '../../components/spinner/Spinner';
 
 import { contrast } from '../../utils/utils.color';
+import {Settings as SettingsModel} from '../../models/settings';
 
 const Task: React.FC<RootProps> = (props: RootProps) => {
 
@@ -33,10 +34,12 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
         return contrast(client !== undefined ? client.color : undefined);
     });
 
+    const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
+
     async function stopTask() {
         setFreeze(true);
 
-        await props.stopTask(1500);
+        await props.stopTask(1500, settings.roundTime);
 
         await props.computeSummary();
         await props.listTasks();

@@ -16,9 +16,9 @@ export function startTask(project: Project): RootThunkResult<Promise<void>> {
     };
 }
 
-export function stopTask(delayDispatch: number = 0): RootThunkResult<Promise<void>> {
+export function stopTask(delayDispatch: number = 0, roundTime: number): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
-        await TasksService.getInstance().stop();
+        await TasksService.getInstance().stop(roundTime);
 
         setTimeout(() => {
             dispatch({ type: STOP_TASK });

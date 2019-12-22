@@ -58,6 +58,14 @@ const Settings: React.FC<RootProps> = (props) => {
         settings.currency = $event.detail.value;
     }
 
+    function onRoundTimeChange($event: CustomEvent) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        settings.roundTime = $event.detail.value;
+    }
+
     return (
         <IonPage>
             <IonHeader>
@@ -84,6 +92,18 @@ const Settings: React.FC<RootProps> = (props) => {
 
                 <IonItem className="item-input">
                     {renderCurrencies()}
+                </IonItem>
+
+                <IonItem className="item-title">
+                    <IonLabel>Round time</IonLabel>
+                </IonItem>
+
+                <IonItem className="item-input">
+                    <IonSelect placeholder="Round time" value={settings.roundTime} onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
+                        <IonSelectOption value={1}>1 minute</IonSelectOption>
+                        <IonSelectOption value={5}>5 minutes</IonSelectOption>
+                        <IonSelectOption value={15}>15 minutes</IonSelectOption>
+                    </IonSelect>
                 </IonItem>
             </IonList>
 
