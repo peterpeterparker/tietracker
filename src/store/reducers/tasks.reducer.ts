@@ -1,7 +1,15 @@
-import { TaskActionTypes, START_TASK, STOP_TASK, INIT_TASK, LIST_TASKS, TasksActionTypes } from '../types/tasks.types';
+import {
+    INIT_TASK,
+    LIST_TASKS,
+    START_TASK,
+    STOP_TASK,
+    TaskActionTypes,
+    TasksActionTypes,
+    UPDATE_TASK
+} from '../types/tasks.types';
 
-import { TaskItem } from '../interfaces/task.item';
-import { TaskInProgress } from '../interfaces/task.inprogress';
+import {TaskItem} from '../interfaces/task.item';
+import {TaskInProgress} from '../interfaces/task.inprogress';
 
 export interface TaskState {
     taskInProgress: TaskInProgress | undefined;
@@ -11,11 +19,12 @@ export interface TaskState {
 const initialState: TaskState = {
     taskInProgress: undefined,
     taskItems: []
-}
+};
 
 export function tasksReducer(state = initialState, action: TaskActionTypes | TasksActionTypes): TaskState {
     switch (action.type) {
         case INIT_TASK:
+        case UPDATE_TASK:
         case START_TASK:
             return {
                 taskInProgress: action.payload,

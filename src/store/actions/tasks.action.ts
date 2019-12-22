@@ -1,11 +1,26 @@
-import { TaskActionTypes, START_TASK, STOP_TASK, INIT_TASK, TasksActionTypes, LIST_TASKS } from '../types/tasks.types';
+import {
+    INIT_TASK,
+    LIST_TASKS,
+    START_TASK,
+    STOP_TASK,
+    TaskActionTypes,
+    TasksActionTypes,
+    UPDATE_TASK
+} from '../types/tasks.types';
 
-import { TaskInProgress } from '../interfaces/task.inprogress';
-import { TaskItem } from '../interfaces/task.item';
+import {TaskInProgress} from '../interfaces/task.inprogress';
+import {TaskItem} from '../interfaces/task.item';
 
 export function startTask(task: TaskInProgress): TaskActionTypes {
     return {
         type: START_TASK,
+        payload: task
+    }
+}
+
+export function updateTask(task: TaskInProgress): TaskActionTypes {
+    return {
+        type: UPDATE_TASK,
         payload: task
     }
 }

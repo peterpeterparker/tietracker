@@ -2,13 +2,14 @@ import { TaskInProgress } from '../interfaces/task.inprogress';
 import { TaskItem } from '../interfaces/task.item';
 
 export const START_TASK = 'START_TASK';
+export const UPDATE_TASK = 'UPDATE_TASK';
 export const STOP_TASK = 'STOP_TASK';
 export const INIT_TASK = 'INIT_TASK';
 
 export const LIST_TASKS = 'LIST_TASKS';
 
 interface TrackTaskAction {
-    type: typeof START_TASK | typeof INIT_TASK
+    type: typeof START_TASK | typeof INIT_TASK | typeof UPDATE_TASK
     payload: TaskInProgress | undefined
 }
 

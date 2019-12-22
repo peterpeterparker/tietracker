@@ -64,7 +64,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
             </IonItem>
 
             <IonItem className="item-input">
-                <IonSelect placeholder="Round time" value={props.settings.roundTime} onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
+                <IonSelect interfaceOptions={{header: 'Round time'}} placeholder="Round time" value={props.settings.roundTime} onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
                     <IonSelectOption value={1}>1 minute</IonSelectOption>
                     <IonSelectOption value={5}>5 minutes</IonSelectOption>
                     <IonSelectOption value={15}>15 minutes</IonSelectOption>

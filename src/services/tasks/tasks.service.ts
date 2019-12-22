@@ -81,6 +81,25 @@ export class TasksService {
         });
     }
 
+    updateTaskInProgress(task: TaskInProgress): Promise<TaskInProgress | undefined> {
+        return new Promise<TaskInProgress | undefined>(async (resolve, reject) => {
+            try {
+                if (!task || !task.data) {
+                    reject('Task is not defined.');
+                    return;
+                }
+
+                task.data.updated_at = new Date().getTime();
+
+                await set('task-in-progress', task);
+
+                resolve(task);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
     current(): Promise<TaskInProgress | undefined> {
         return new Promise<TaskInProgress | undefined>(async (resolve, reject) => {
             try {

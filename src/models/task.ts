@@ -12,6 +12,8 @@ export interface TaskData {
 
     invoice: TaskDataInvoice;
 
+    description?: string;
+
     created_at: Date | number;
     updated_at: Date | number;
 }

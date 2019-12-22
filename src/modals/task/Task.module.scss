@@ -32,6 +32,10 @@
     align-items: center;
   }
 
+  ion-select {
+    margin-top: 32px;
+  }
+
   button {
     border: none;
     margin: 0;
@@ -43,8 +47,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    margin-top: 32px;
 
     color: var(--color);
     background: transparent;

@@ -1,7 +1,7 @@
 import React, { useState, CSSProperties } from 'react';
 import { useSelector } from 'react-redux';
 
-import { IonIcon, IonLabel } from '@ionic/react';
+import { IonIcon, IonLabel, IonSelectOption, IonSelect } from '@ionic/react';
 
 import styles from './Task.module.scss';
 
@@ -50,6 +50,24 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
         }, 1500);
     }
 
+    async function onRoundTimeChange($event: CustomEvent) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        if  (!task || task.data === undefined) {
+            return;
+        }
+
+        if ($event.detail.value === undefined || $event.detail.value === '') {
+            delete task.data['description'];
+        } else {
+            task.data.description = $event.detail.value;
+        }
+
+        await props.updateTask(task);
+    }
+
     return (
         <div className={`${styles.task} ${task !== undefined ? styles.progress : ''}`} style={client !== undefined ? {background: `${client.color}`} : undefined}>
             <div>
@@ -57,14 +75,33 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
                     task !== undefined ? <Spinner freeze={freeze} color={client !== undefined ? client.color : undefined} contrast={contrastColor}></Spinner> : undefined
                 }
 
+                {renderTaskDescription()}
+
                 <button onClick={() => stopTask()} aria-label="Stop current task" className="ion-activatable" disabled={freeze} style={{'--color': contrastColor} as CSSProperties}>
                     <IonIcon icon={checkmarkCircle} />
-                    <IonLabel>Done</IonLabel>
                 </button>
             </div>
         </div>
     );
 
-}
+    function renderTaskDescription() {
+        if (!settings || !settings.descriptions || settings.descriptions.length <= 0) {
+            return undefined;
+        }
+
+        if (!task || task.data === undefined) {
+            return undefined;
+        }
+
+        return <IonSelect interfaceOptions={{header: 'Description of the task'}} placeholder="Description of the task" value={task.data.description} onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
+            {
+                settings.descriptions.map((description: string, i: number) => {
+                    return <IonSelectOption value={description} key={`desc-${i}`}>{description}</IonSelectOption>
+                })
+            }
+        </IonSelect>
+    }
+
+};
 
 export default rootConnector(Task);
