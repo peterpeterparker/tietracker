@@ -59,7 +59,7 @@ async function computeSum(projects) {
     }
 
     if (today.getDay() === 0) {
-        promises.push(computeDaySum(dayjs().add(-6, 'day').toDate()), projects);
+        promises.push(computeDaySum(dayjs().add(-6, 'day').toDate(), projects));
     }
 
     const daily = await Promise.all(promises);
