@@ -56,6 +56,7 @@ export class SettingsService {
         return {
             currency: 'CHF',
             roundTime: 5,
+            descriptions: ['Development', 'Meeting', 'Test', 'Communication', 'Release'],
             created_at: now.getTime(),
             updated_at: now.getTime()
         }

@@ -1,0 +1,20 @@
+ion-reorder-group.reorder-list {
+  display: block;
+
+  --background: var(--ion-color-light);
+  background: var(--ion-color-light);
+  border: 1px solid #dedede;
+  border-radius: 4px;
+  --placeholder-opacity: 0.33;
+  padding: 8px;
+
+  ion-item {
+    --ion-item-border-color: transparent;
+    --padding-start: 0;
+
+    --border-color: transparent;
+
+    --background: var(--ion-color-light);
+    background: var(--ion-color-light);
+  }
+}
