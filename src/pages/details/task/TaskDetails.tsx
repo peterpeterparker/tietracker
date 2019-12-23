@@ -1,4 +1,4 @@
-import React, {CSSProperties, FormEvent, useEffect, useState} from 'react';
+import React, {CSSProperties, FormEvent, useState} from 'react';
 import {
     IonBackButton,
     IonButtons,

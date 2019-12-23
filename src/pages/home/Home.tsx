@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+import {RouteComponentProps} from 'react-router';
+
 import {
   IonContent,
   IonHeader,
@@ -7,8 +10,6 @@ import {
   IonButton,
   IonModal
 } from '@ionic/react';
-
-import React, { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -22,12 +23,20 @@ import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
 import Header from '../../components/header/Header';
 
-const Home: React.FC = () => {
+const Home: React.FC<RouteComponentProps> = (props) => {
 
   const { t } = useTranslation('home');
 
   const [showModalClient, setShowModalClient] = useState(false);
   const [showModalClients, setShowModalClients] = useState(false);
+
+  async function closeAndNavigate($event: CustomEvent) {
+    await setShowModalClients(false);
+
+    if ($event && $event.detail && $event.detail.data) {
+      props.history.push(`/client/${$event.detail.data}`);
+    }
+  }
 
   return (
     <IonPage>
@@ -39,8 +48,8 @@ const Home: React.FC = () => {
           <ClientModal closeAction={async () => await setShowModalClient(false)}></ClientModal>
         </IonModal>
 
-        <IonModal isOpen={showModalClients} onDidDismiss={() => setShowModalClients(false)} cssClass="fullscreen">
-          <ClientsModal isOpen={showModalClients} closeAction={async () => await setShowModalClients(false)}></ClientsModal>
+        <IonModal isOpen={showModalClients} onDidDismiss={($event) => closeAndNavigate($event)} cssClass="fullscreen">
+          <ClientsModal isOpen={showModalClients}></ClientsModal>
         </IonModal>
 
         <main>

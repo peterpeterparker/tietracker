@@ -54,6 +54,7 @@ import { RootProps, rootConnector } from './store/thunks/index.thunks';
 
 import Task from './modals/task/Task';
 import TaskDetails from './pages/details/task/TaskDetails';
+import ClientDetails from './pages/details/client/ClientDetails';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
 
@@ -85,6 +86,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
               <Route path="/invoices" component={Invoices} />
               <Route path="/settings" component={Settings} exact={true} />
 
+              <Route path="/client/:id" component={ClientDetails} />
               <Route path="/task/:day/:id" component={TaskDetails} />
 
               <Route path="/" render={() => <Redirect to="/home" />} exact={true} />

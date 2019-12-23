@@ -20,11 +20,12 @@ import {
 } from '@ionic/react';
 
 interface Props extends RootProps {
-    closeAction: Function;
     isOpen: boolean;
 }
 
 const ClientsModal: React.FC<Props> = (props) => {
+
+    const headerRef: RefObject<HTMLIonHeaderElement> = React.createRef();
 
     const filterRef: RefObject<any> = createRef();
 
@@ -73,13 +74,21 @@ const ClientsModal: React.FC<Props> = (props) => {
         });
     }
 
+    async function closeModal(clientId?: string) {
+        if (!headerRef || !headerRef.current) {
+            return;
+        }
+
+        await (headerRef.current.closest('ion-modal') as HTMLIonModalElement).dismiss(clientId);
+    }
+
     return (
         <>
-            <IonHeader>
+            <IonHeader ref={headerRef}>
                 <IonToolbar color="primary">
                     <IonTitle>Search clients</IonTitle>
                     <IonButtons slot="start">
-                        <IonButton onClick={() => props.closeAction()}>
+                        <IonButton onClick={() => closeModal()}>
                             <IonIcon name="close" slot="icon-only"></IonIcon>
                         </IonButton>
                     </IonButtons>
@@ -107,7 +116,7 @@ const ClientsModal: React.FC<Props> = (props) => {
         }
 
         return filteredClients.map((client: Client) => {
-            return <IonItem className={styles.item} lines="none" detail={false}>
+            return <IonItem key={client.id} className={styles.item} lines="none" detail={false} onClick={() => closeModal(client.id)}>
                 <div slot="start" style={{'background': client.data.color} as CSSProperties}></div>
 
                 <IonLabel><h2>{client.data.name}</h2></IonLabel>

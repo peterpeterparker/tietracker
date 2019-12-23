@@ -1,4 +1,4 @@
-import React, {FormEvent, RefObject, createRef} from 'react';
+import React, {FormEvent, RefObject, createRef, CSSProperties} from 'react';
 import {
     IonHeader,
     IonContent,
@@ -21,6 +21,8 @@ import styles from './ClientModal.module.scss';
 import {Client, ClientData} from '../../models/client';
 import {RootProps, rootConnector} from '../../store/thunks/index.thunks';
 import {ProjectData} from '../../models/project';
+
+import {contrast} from '../../utils/utils.color';
 
 type ClientState = {
     clientData?: ClientData;
@@ -221,9 +223,14 @@ class ClientModal extends React.Component<Props, ClientState> {
     render() {
         const valid: boolean = this.state.valid.client && this.state.valid.project;
 
+        const color: string | undefined = this.state.clientData ? this.state.clientData.color : undefined;
+        const colorContrast: string = contrast(color);
+
+        console.log(color);
+
         return <>
             <IonHeader>
-                <IonToolbar color="primary">
+                <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
                     <IonTitle>Add a new client</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => this.props.closeAction()}>
@@ -251,13 +258,13 @@ class ClientModal extends React.Component<Props, ClientState> {
                                 <IonLabel>Color</IonLabel>
                             </IonItem>
 
-                            <IonItem disabled={!this.state.valid.client} className={styles.color}>
+                            <div className={styles.color + ' ' + `${!this.state.valid.client ? 'disabled' : ''}`}>
                                 <deckgo-color ref={this.clientColorRef}
                                               className="ion-padding-start ion-padding-end ion-padding-bottom"
                                               more={true}>
                                     <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
                                 </deckgo-color>
-                            </IonItem>
+                            </div>
 
                             <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
                                 <IonLabel>Project</IonLabel>
@@ -284,7 +291,7 @@ class ClientModal extends React.Component<Props, ClientState> {
                             {this.renderVat()}
                         </IonList>
 
-                        <IonButton type="submit" className="ion-margin-top" disabled={!valid}>
+                        <IonButton type="submit" className="ion-margin-top" disabled={!valid} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
                             <IonLabel>Submit</IonLabel>
                         </IonButton>
                     </form>

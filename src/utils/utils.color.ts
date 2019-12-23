@@ -27,13 +27,13 @@ function hexToRgb(hex: string): RGB | undefined {
 
 export function contrast(colorHex: string | undefined, threshold: number = 128): string {
     if (colorHex === undefined) {
-        return '#ffffff';
+        return '#000';
     }
 
     const rgb: RGB | undefined = hexToRgb(colorHex);
 
     if (rgb === undefined) {
-        return '#ffffff';
+        return '#000';
     }
 
     return rgbToYIQ(rgb) >= threshold ? '#000' : '#fff';
