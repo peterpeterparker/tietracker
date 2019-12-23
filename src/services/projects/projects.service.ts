@@ -122,4 +122,71 @@ export class ProjectsService {
             }
         });
     }
+
+    listForClient(clientId: string): Promise<Project[]> {
+        return new Promise<Project[]>(async (resolve, reject) => {
+            try {
+                if (!clientId || clientId === undefined) {
+                    reject('Client not defined.');
+                    return;
+                }
+
+                const projects: Project[] = await get('projects');
+
+                if (!projects || projects.length <= 0) {
+                    resolve([]);
+                    return;
+                }
+
+                const filteredProjects: Project[] = projects.filter((project: Project) => {
+                    return project.data.client !== undefined && project.data.client.id === clientId;
+                });
+
+                if (!filteredProjects || filteredProjects.length <= 0) {
+                    resolve([]);
+                    return;
+                }
+
+                resolve(filteredProjects);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    updateForClient(client: Client): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                if (!client || !client.id) {
+                    reject('Client not defined.');
+                    return;
+                }
+
+                const projects: Project[] = await get('projects');
+
+                if (!projects || projects.length <= 0) {
+                    resolve();
+                    return;
+                }
+
+                projects.forEach((project: Project) => {
+                   if (project.data.client && project.data.client.id === client.id) {
+                       project.data.client = {
+                           id: client.id as string,
+                           name: client.data.name,
+                           color: client.data.color as string
+                       };
+
+                       project.data.updated_at = new Date().getTime();
+                   }
+                });
+
+                await set('projects', projects);
+
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
 }

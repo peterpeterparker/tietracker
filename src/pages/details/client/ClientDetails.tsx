@@ -23,6 +23,7 @@ import {Client} from '../../../models/client';
 
 import {ClientsService} from '../../../services/clients/clients.service';
 import {TasksService} from '../../../services/tasks/tasks.service';
+import {ProjectsService} from '../../../services/projects/projects.service';
 
 interface ClientDetailsProps extends RouteComponentProps<{
     id: string
@@ -95,6 +96,8 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
         try {
             await ClientsService.getInstance().update(client);
+
+            await ProjectsService.getInstance().updateForClient(client);
 
             await updateStore();
 
