@@ -47,6 +47,7 @@ ion-item.item-input {
 
 ion-list[class*="list"].inputs-list  {
   background: transparent;
+  contain: inherit;
 
   ion-item {
     --background: transparent;
