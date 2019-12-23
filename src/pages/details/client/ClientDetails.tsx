@@ -1,5 +1,6 @@
 import React, {createRef, CSSProperties, FormEvent, RefObject, useEffect, useState} from 'react';
 import {RouteComponentProps} from 'react-router';
+import {useSelector} from 'react-redux';
 
 import styles from './ClientDetails.module.scss';
 
@@ -17,13 +18,17 @@ import {
 
 import {more} from 'ionicons/icons';
 
+import {formatCurrency} from '../../../utils/utils.currency';
 import {contrast} from '../../../utils/utils.color';
 
 import {Client} from '../../../models/client';
+import {Settings} from '../../../models/settings';
+import {Project} from '../../../models/project';
 
 import {ClientsService} from '../../../services/clients/clients.service';
-import {TasksService} from '../../../services/tasks/tasks.service';
 import {ProjectsService} from '../../../services/projects/projects.service';
+
+import {RootState} from '../../../store/reducers';
 
 interface ClientDetailsProps extends RouteComponentProps<{
     id: string
@@ -39,16 +44,23 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     const [client, setClient] = useState<Client | undefined>(undefined);
     const [color, setColor] = useState<string | undefined>(undefined);
 
+    const [projects, setProjects] = useState<Project[] | undefined>(undefined);
+
     const [loading, setLoading] = useState<boolean>(true);
     const [saving, setSaving] = useState<boolean>(false);
 
     const [valid, setValid] = useState<boolean>(true);
+
+    const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
     useIonViewWillEnter(async () => {
         setSaving(false);
 
         const client: Client | undefined = await ClientsService.getInstance().find(props.match.params.id);
         setClient(client);
+
+        const projects: Project[] | undefined = await ProjectsService.getInstance().listForClient(props.match.params.id);
+        setProjects(projects);
 
         setColor(client && client.data ? client.data.color : undefined);
 
@@ -101,7 +113,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
             await updateStore();
 
-            props.history.push('/home');
+            // TODO display save done?
         } catch (err) {
             // TODO show err
             console.error(err);
@@ -168,12 +180,33 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                         <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
                     </deckgo-color>
                 </div>
+
+                <IonItem className="item-title ion-margin-top">
+                    <IonLabel>Projects</IonLabel>
+                </IonItem>
+
+                {renderProjects()}
             </IonList>
 
             <IonButton type="submit" disabled={saving || !valid} aria-label="Update task" className="ion-margin-top" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
                 <IonLabel>Update</IonLabel>
             </IonButton>
         </form>
+    }
+
+    function renderProjects() {
+        if (!projects || projects.length <= 0) {
+            return <p>No projects.</p>
+        }
+
+        return projects.map((project: Project) => {
+            return <IonItem key={project.id} className="item-input">
+                <IonLabel>
+                    <h2>{project.data.name}</h2>
+                    <p>{formatCurrency(project.data.rate.hourly, settings.currency)}</p>
+                </IonLabel>
+            </IonItem>
+        });
     }
 
 };
