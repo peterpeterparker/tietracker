@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 
 import {IonItem, IonLabel} from '@ionic/react';
 
-import styles from '../tasks/Tasks.module.scss';
+import styles from './TaskItem.module.scss';
 
 import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';

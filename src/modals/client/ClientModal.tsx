@@ -31,7 +31,7 @@ type ClientState = {
     }
 }
 
-type Props = RootProps & {
+interface Props extends RootProps {
     closeAction: Function
 }
 
@@ -225,7 +225,7 @@ class ClientModal extends React.Component<Props, ClientState> {
             <IonHeader>
                 <IonToolbar color="primary">
                     <IonTitle>Add a new client</IonTitle>
-                    <IonButtons slot="end">
+                    <IonButtons slot="start">
                         <IonButton onClick={() => this.props.closeAction()}>
                             <IonIcon name="close" slot="icon-only"></IonIcon>
                         </IonButton>

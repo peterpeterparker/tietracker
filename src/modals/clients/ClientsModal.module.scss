@@ -1,0 +1,26 @@
+.searchbar {
+  padding: 8px 0;
+}
+
+.label {
+  --padding-start: 0;
+}
+
+.item {
+  --border-color: transparent;
+  border: 1px solid transparent;
+
+  > div {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+  }
+
+  ion-label {
+    h2, h3, p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
