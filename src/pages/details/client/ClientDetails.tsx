@@ -137,8 +137,16 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         await props.listProjectsInvoices();
     }
 
+    async function updateProjectsStore() {
+        await props.computeSummary();
+        await props.listProjectsInvoices();
+        await props.listTasks();
+    }
+
     async function closeProjectModal() {
         await loadProjects();
+
+        await updateProjectsStore();
 
         setSelectedProjectId(undefined);
     }
