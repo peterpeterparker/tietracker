@@ -22,6 +22,7 @@ import {contrast} from '../../../utils/utils.color';
 import {Client} from '../../../models/client';
 
 import {ClientsService} from '../../../services/clients/clients.service';
+import {TasksService} from '../../../services/tasks/tasks.service';
 
 interface ClientDetailsProps extends RouteComponentProps<{
     id: string
@@ -86,7 +87,30 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
 
+        if (!client || !client.data) {
+            return;
+        }
 
+        setSaving(true);
+
+        try {
+            await ClientsService.getInstance().update(client);
+
+            await updateStore();
+
+            props.history.push('/home');
+        } catch (err) {
+            // TODO show err
+            console.error(err);
+            setSaving(false);
+        }
+    }
+
+    async function updateStore() {
+        await props.initClients();
+        await props.initActiveProjects();
+        await props.listTasks();
+        await props.listProjectsInvoices();
     }
 
     return (
