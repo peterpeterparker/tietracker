@@ -226,8 +226,6 @@ class ClientModal extends React.Component<Props, ClientState> {
         const color: string | undefined = this.state.clientData ? this.state.clientData.color : undefined;
         const colorContrast: string = contrast(color);
 
-        console.log(color);
-
         return <>
             <IonHeader>
                 <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
