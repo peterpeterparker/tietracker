@@ -5,9 +5,9 @@ import uuid from 'uuid/v4';
 import isAfter from 'date-fns/isAfter';
 
 import {Project, ProjectData} from '../../models/project';
+import {Client} from '../../models/client';
 
 import {toDateObj} from '../../utils/utils.date';
-import {Client} from '../../models/client';
 
 export class ProjectsService {
 
@@ -182,6 +182,43 @@ export class ProjectsService {
                 });
 
                 await set('projects', projects);
+
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    update(project: Project | undefined): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                if (!project || !project.data) {
+                    reject('Project is not defined.');
+                    return;
+                }
+
+                const projects: Project[] = await get('projects');
+
+                if (!projects || projects.length <= 0) {
+                    reject('No projects found.');
+                    return;
+                }
+
+                const index: number = projects.findIndex((filteredProject: Project) => {
+                    return filteredProject.id === project.id;
+                });
+
+                if (index < 0) {
+                    reject('Project not found.');
+                    return;
+                }
+
+                project.data.updated_at = new Date().getTime();
+
+                projects[index] = project;
+
+                await set(`projects`, projects);
 
                 resolve();
             } catch (err) {

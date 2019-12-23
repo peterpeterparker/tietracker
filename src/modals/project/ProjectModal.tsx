@@ -23,6 +23,7 @@ import styles from '../clients/ClientsModal.module.scss';
 import {Settings} from '../../models/settings';
 
 import {RootState} from '../../store/reducers';
+import {ClientsService} from '../../services/clients/clients.service';
 
 interface Props extends RootProps {
     closeAction: Function;
@@ -80,8 +81,22 @@ const ProjectModal: React.FC<Props> = (props) => {
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
 
-        console.log(project);
+        if (!project || !project.data) {
+            return;
+        }
 
+        setSaving(true);
+
+        try {
+            await ProjectsService.getInstance().update(project);
+
+            props.closeAction();
+        } catch (err) {
+            // TODO show err
+            console.error(err);
+        }
+
+        setSaving(false);
     }
 
     return (

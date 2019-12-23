@@ -63,13 +63,17 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         const client: Client | undefined = await ClientsService.getInstance().find(props.match.params.id);
         setClient(client);
 
-        const projects: Project[] | undefined = await ProjectsService.getInstance().listForClient(props.match.params.id);
-        setProjects(projects);
+        await loadProjects();
 
         setColor(client && client.data ? client.data.color : undefined);
 
         setLoading(false);
     });
+
+    async function loadProjects() {
+        const projects: Project[] | undefined = await ProjectsService.getInstance().listForClient(props.match.params.id);
+        setProjects(projects);
+    }
 
     useEffect(() => {
         if (clientColorRef && clientColorRef.current) {
@@ -117,12 +121,13 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
             await updateStore();
 
-            // TODO display save done?
+            props.history.push('/home');
         } catch (err) {
             // TODO show err
             console.error(err);
-            setSaving(false);
         }
+
+        setSaving(false);
     }
 
     async function updateStore() {
@@ -130,6 +135,12 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         await props.initActiveProjects();
         await props.listTasks();
         await props.listProjectsInvoices();
+    }
+
+    async function closeProjectModal() {
+        await loadProjects();
+
+        setSelectedProjectId(undefined);
     }
 
     return (
@@ -154,7 +165,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                 {renderClient(colorContrast)}
 
                 <IonModal isOpen={selectedProjectId !== undefined} onDidDismiss={() => setSelectedProjectId(undefined)} cssClass="fullscreen">
-                    <ProjectModal projectId={selectedProjectId as string} color={color} colorContrast={colorContrast} closeAction={async () => await setSelectedProjectId(undefined)}></ProjectModal>
+                    <ProjectModal projectId={selectedProjectId as string} color={color} colorContrast={colorContrast} closeAction={closeProjectModal}></ProjectModal>
                 </IonModal>
             </IonContent>
         </>
