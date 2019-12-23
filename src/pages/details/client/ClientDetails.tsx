@@ -9,7 +9,7 @@ import {
     IonBackButton, IonButton,
     IonButtons,
     IonContent,
-    IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList,
+    IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonModal,
     IonPage, IonSpinner,
     IonTitle,
     IonToolbar, useIonViewDidEnter,
@@ -29,6 +29,8 @@ import {ClientsService} from '../../../services/clients/clients.service';
 import {ProjectsService} from '../../../services/projects/projects.service';
 
 import {RootState} from '../../../store/reducers';
+
+import ProjectModal from '../../../modals/project/ProjectModal';
 
 interface ClientDetailsProps extends RouteComponentProps<{
     id: string
@@ -52,6 +54,8 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     const [valid, setValid] = useState<boolean>(true);
 
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
+
+    const [selectedProjectId, setSelectedProjectId] = useState<string | undefined>(undefined);
 
     useIonViewWillEnter(async () => {
         setSaving(false);
@@ -148,6 +152,10 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
             </IonHeader>
             <IonContent className="ion-padding">
                 {renderClient(colorContrast)}
+
+                <IonModal isOpen={selectedProjectId !== undefined} onDidDismiss={() => setSelectedProjectId(undefined)} cssClass="fullscreen">
+                    <ProjectModal projectId={selectedProjectId as string} color={color} colorContrast={colorContrast} closeAction={async () => await setSelectedProjectId(undefined)}></ProjectModal>
+                </IonModal>
             </IonContent>
         </>
     }
@@ -188,7 +196,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                 {renderProjects()}
             </IonList>
 
-            <IonButton type="submit" disabled={saving || !valid} aria-label="Update task" className="ion-margin-top" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+            <IonButton type="submit" disabled={saving || !valid} aria-label="Update client" className="ion-margin-top" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
                 <IonLabel>Update</IonLabel>
             </IonButton>
         </form>
@@ -200,7 +208,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         }
 
         return projects.map((project: Project) => {
-            return <IonItem key={project.id} className="item-input">
+            return <IonItem key={project.id} className={styles.projectItem + ' item-input'} onClick={() => setSelectedProjectId(project.id)}>
                 <IonLabel>
                     <h2>{project.data.name}</h2>
                     <p>{formatCurrency(project.data.rate.hourly, settings.currency)}</p>
