@@ -40,9 +40,9 @@ const Home: React.FC<RouteComponentProps> = (props) => {
 
   return (
     <IonPage>
-      <Header></Header>
+      <IonContent>
 
-      <IonContent className="ion-padding-start ion-padding-bottom ion-padding-top">
+        <Header></Header>
 
         <IonModal isOpen={showModalClient} onDidDismiss={() => setShowModalClient(false)} cssClass="fullscreen">
           <ClientModal closeAction={async () => await setShowModalClient(false)}></ClientModal>
@@ -52,7 +52,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
           <ClientsModal isOpen={showModalClients}></ClientsModal>
         </IonModal>
 
-        <main>
+        <main className="ion-padding-start ion-padding-bottom ion-padding-top">
           <IonHeader className="ion-padding-end"><IonToolbar><IonSearchbar placeholder={t('search.clients')} className={styles.searchbar} onIonFocus={() => setShowModalClients(true)}></IonSearchbar></IonToolbar></IonHeader>
 
           <div className={styles.addclient}>

@@ -226,7 +226,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         const color: string | undefined = this.state.clientData ? this.state.clientData.color : undefined;
         const colorContrast: string = contrast(color);
 
-        return <>
+        return <IonContent>
             <IonHeader>
                 <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
                     <IonTitle>Add a new client</IonTitle>
@@ -237,65 +237,64 @@ class ClientModal extends React.Component<Props, ClientState> {
                     </IonButtons>
                 </IonToolbar>
             </IonHeader>
-            <IonContent className="ion-padding">
-                <main>
-                    <form onSubmit={($event: FormEvent<HTMLFormElement>) => this.handleSubmit($event)}>
-                        <IonList className="inputs-list">
-                            <IonItem className="item-title">
-                                <IonLabel>Company</IonLabel>
-                            </IonItem>
-                            <IonItem>
-                                <IonInput ref={this.clientNameRef} debounce={500} minlength={3} maxlength={32}
-                                          required={true} input-mode="text"
-                                          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleClientNameInput($event)}
-                                          onIonChange={() => this.validateClientName()}>
-                                </IonInput>
-                            </IonItem>
 
-                            <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
-                                <IonLabel>Color</IonLabel>
-                            </IonItem>
+            <main className="ion-padding">
+                <form onSubmit={($event: FormEvent<HTMLFormElement>) => this.handleSubmit($event)}>
+                    <IonList className="inputs-list">
+                        <IonItem className="item-title">
+                            <IonLabel>Company</IonLabel>
+                        </IonItem>
+                        <IonItem>
+                            <IonInput ref={this.clientNameRef} debounce={500} minlength={3} maxlength={32}
+                                      required={true} input-mode="text"
+                                      onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleClientNameInput($event)}
+                                      onIonChange={() => this.validateClientName()}>
+                            </IonInput>
+                        </IonItem>
 
-                            <div className={styles.color + ` ${!this.state.valid.client ? 'disabled' : ''}`}>
-                                <deckgo-color ref={this.clientColorRef}
-                                              className="ion-padding-start ion-padding-end ion-padding-bottom"
-                                              more={true}>
-                                    <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
-                                </deckgo-color>
-                            </div>
+                        <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
+                            <IonLabel>Color</IonLabel>
+                        </IonItem>
 
-                            <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
-                                <IonLabel>Project</IonLabel>
-                            </IonItem>
-                            <IonItem disabled={!this.state.valid.client}>
-                                <IonInput ref={this.projectNameRef} debounce={500} minlength={3} maxlength={32}
-                                          required={true} input-mode="text"
-                                          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectNameInput($event)}
-                                          onIonChange={() => this.validateProject()}>
-                                </IonInput>
-                            </IonItem>
+                        <div className={styles.color + ` ${!this.state.valid.client ? 'disabled' : ''}`}>
+                            <deckgo-color ref={this.clientColorRef}
+                                          className="ion-padding-start ion-padding-end ion-padding-bottom"
+                                          more={true}>
+                                <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
+                            </deckgo-color>
+                        </div>
 
-                            <IonItem disabled={!this.state.valid.client} className="item-title">
-                                <IonLabel>Hourly rate</IonLabel>
-                            </IonItem>
-                            <IonItem disabled={!this.state.valid.client}>
-                                <IonInput ref={this.projectRateRef} debounce={500} minlength={1} required={true}
-                                          input-mode="text"
-                                          onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectRateInput($event)}
-                                          onIonChange={() => this.validateProject()}>
-                                </IonInput>
-                            </IonItem>
+                        <IonItem disabled={!this.state.valid.client} className="item-title ion-margin-top">
+                            <IonLabel>Project</IonLabel>
+                        </IonItem>
+                        <IonItem disabled={!this.state.valid.client}>
+                            <IonInput ref={this.projectNameRef} debounce={500} minlength={3} maxlength={32}
+                                      required={true} input-mode="text"
+                                      onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectNameInput($event)}
+                                      onIonChange={() => this.validateProject()}>
+                            </IonInput>
+                        </IonItem>
 
-                            {this.renderVat()}
-                        </IonList>
+                        <IonItem disabled={!this.state.valid.client} className="item-title">
+                            <IonLabel>Hourly rate</IonLabel>
+                        </IonItem>
+                        <IonItem disabled={!this.state.valid.client}>
+                            <IonInput ref={this.projectRateRef} debounce={500} minlength={1} required={true}
+                                      input-mode="text"
+                                      onIonInput={($event: CustomEvent<KeyboardEvent>) => this.handleProjectRateInput($event)}
+                                      onIonChange={() => this.validateProject()}>
+                            </IonInput>
+                        </IonItem>
 
-                        <IonButton type="submit" className="ion-margin-top" disabled={!valid} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                            <IonLabel>Submit</IonLabel>
-                        </IonButton>
-                    </form>
-                </main>
-            </IonContent>
-        </>
+                        {this.renderVat()}
+                    </IonList>
+
+                    <IonButton type="submit" className="ion-margin-top" disabled={!valid} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+                        <IonLabel>Submit</IonLabel>
+                    </IonButton>
+                </form>
+            </main>
+        </IonContent>
     };
 
     private renderVat() {

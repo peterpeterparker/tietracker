@@ -34,7 +34,7 @@ const Projects: React.FC<Props> = (props: Props) => {
     }
 
     return (
-        <div className="ion-padding-end ion-padding-top">
+        <div className="ion-padding-top">
             <h1 className={styles.title}>Projects</h1>
             {renderProjects()}
         </div>

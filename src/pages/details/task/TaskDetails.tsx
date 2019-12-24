@@ -171,16 +171,17 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
         const colorContrast: string = contrast(color);
 
         return <IonPage>
-            <IonHeader ref={headerRef} >
-                <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
-                    <IonButtons slot="start">
-                        <IonBackButton defaultHref="/home" style={{'--color': colorContrast} as CSSProperties}/>
-                    </IonButtons>
-                    <IonTitle>{client && client.data ? client.data.name + (project && project.data ? ` - ${project.data.name}` : '') : 'Task'}</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">
-                <main>
+            <IonContent>
+                <IonHeader ref={headerRef} >
+                    <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
+                        <IonButtons slot="start">
+                            <IonBackButton defaultHref="/home" style={{'--color': colorContrast} as CSSProperties}/>
+                        </IonButtons>
+                        <IonTitle>{client && client.data ? client.data.name + (project && project.data ? ` - ${project.data.name}` : '') : 'Task'}</IonTitle>
+                    </IonToolbar>
+                </IonHeader>
+
+                <main className="ion-padding">
                     {renderTask(color, colorContrast)}
                 </main>
             </IonContent>

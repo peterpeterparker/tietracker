@@ -161,7 +161,7 @@ const ProjectModal: React.FC<Props> = (props) => {
     }
 
     return (
-        <>
+        <IonContent>
             <IonHeader>
                 <IonToolbar style={{'--background': props.color, '--color': props.colorContrast} as CSSProperties}>
                     <IonTitle>{name !== undefined ? name : ''}</IonTitle>
@@ -172,12 +172,11 @@ const ProjectModal: React.FC<Props> = (props) => {
                     </IonButtons>
                 </IonToolbar>
             </IonHeader>
-            <IonContent className="ion-padding">
-                <main>
-                    {renderProject()}
-                </main>
-            </IonContent>
-        </>
+
+            <main className="ion-padding">
+                {renderProject()}
+            </main>
+        </IonContent>
     );
 
     function renderProject() {

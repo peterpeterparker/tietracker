@@ -84,7 +84,7 @@ const ClientsModal: React.FC<Props> = (props) => {
     }
 
     return (
-        <>
+        <IonContent>
             <IonHeader ref={headerRef}>
                 <IonToolbar>
                     <IonTitle>Search clients</IonTitle>
@@ -95,19 +95,18 @@ const ClientsModal: React.FC<Props> = (props) => {
                     </IonButtons>
                 </IonToolbar>
             </IonHeader>
-            <IonContent className="ion-padding">
-                <main>
-                    <IonSearchbar debounce={500} placeholder="Filter clients" className={styles.searchbar}
-                                  ref={filterRef}
-                                  onIonInput={($event: CustomEvent<KeyboardEvent>) => onFilter($event)}
-                    ></IonSearchbar>
 
-                    <IonList className="ion-margin-top">
-                        {renderClients()}
-                    </IonList>
-                </main>
-            </IonContent>
-        </>
+            <main className="ion-padding">
+                <IonSearchbar debounce={500} placeholder="Filter clients" className={styles.searchbar}
+                              ref={filterRef}
+                              onIonInput={($event: CustomEvent<KeyboardEvent>) => onFilter($event)}
+                ></IonSearchbar>
+
+                <IonList className="ion-margin-top">
+                    {renderClients()}
+                </IonList>
+            </main>
+        </IonContent>
     );
 
     function renderClients() {

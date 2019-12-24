@@ -175,16 +175,17 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         const colorContrast: string = contrast(color);
 
         return <>
-            <IonHeader>
-                <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
-                    <IonButtons slot="start">
-                        <IonBackButton defaultHref="/home" style={{'--color': colorContrast} as CSSProperties}/>
-                    </IonButtons>
-                    <IonTitle>{client && client.data ? client.data.name : ''}</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">
-                <main>
+            <IonContent>
+                <IonHeader>
+                    <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
+                        <IonButtons slot="start">
+                            <IonBackButton defaultHref="/home" style={{'--color': colorContrast} as CSSProperties}/>
+                        </IonButtons>
+                        <IonTitle>{client && client.data ? client.data.name : ''}</IonTitle>
+                    </IonToolbar>
+                </IonHeader>
+
+                <main className="ion-padding">
                     {renderClient(colorContrast)}
                 </main>
 
