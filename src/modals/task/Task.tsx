@@ -1,20 +1,20 @@
-import React, { useState, CSSProperties } from 'react';
-import { useSelector } from 'react-redux';
+import React, {useState, CSSProperties} from 'react';
+import {useSelector} from 'react-redux';
 
-import { IonIcon, IonLabel, IonSelectOption, IonSelect } from '@ionic/react';
+import {IonIcon, IonSelectOption, IonSelect} from '@ionic/react';
 
 import styles from './Task.module.scss';
 
-import { checkmarkCircle } from 'ionicons/icons';
+import {checkmarkCircle} from 'ionicons/icons';
 
-import { RootState } from '../../store/reducers';
-import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
+import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
-import { TaskInProgress, TaskInProgressClientData, TaskInProgressData } from '../../store/interfaces/task.inprogress';
+import {TaskInProgress, TaskInProgressClientData, TaskInProgressData} from '../../store/interfaces/task.inprogress';
 
 import Spinner from '../../components/spinner/Spinner';
 
-import { contrast } from '../../utils/utils.color';
+import {contrast} from '../../utils/utils.color';
 import {Settings as SettingsModel} from '../../models/settings';
 
 const Task: React.FC<RootProps> = (props: RootProps) => {
@@ -55,7 +55,7 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
             return;
         }
 
-        if  (!task || task.data === undefined) {
+        if (!task || task.data === undefined) {
             return;
         }
 
@@ -69,16 +69,20 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
     }
 
     return (
-        <div className={`${styles.task} ${task !== undefined ? styles.progress : ''}`} style={client !== undefined ? {background: `${client.color}`} : undefined}>
+        <div className={`${styles.task} ${task !== undefined ? styles.progress : ''}`}
+             style={client !== undefined ? {background: `${client.color}`} : undefined}>
             <div style={{'--color': contrastColor} as CSSProperties}>
                 {
-                    task !== undefined ? <Spinner freeze={freeze} color={client !== undefined ? client.color : undefined} contrast={contrastColor}></Spinner> : undefined
+                    task !== undefined ?
+                        <Spinner freeze={freeze} color={client !== undefined ? client.color : undefined}
+                                 contrast={contrastColor}></Spinner> : undefined
                 }
 
                 {renderTaskDescription()}
 
-                <button onClick={() => stopTask()} aria-label="Stop current task" className="ion-activatable" disabled={freeze}>
-                    <IonIcon icon={checkmarkCircle} />
+                <button onClick={() => stopTask()} aria-label="Stop current task" className="ion-activatable"
+                        disabled={freeze}>
+                    <IonIcon icon={checkmarkCircle}/>
                 </button>
             </div>
         </div>
@@ -93,7 +97,9 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
             return undefined;
         }
 
-        return <IonSelect interfaceOptions={{header: 'Description of the task'}} placeholder="Description of the task" value={task.data.description} onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
+        return <IonSelect interfaceOptions={{header: 'Description of the task'}} placeholder="Description of the task"
+                          value={task.data.description}
+                          onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
             {
                 settings.descriptions.map((description: string, i: number) => {
                     return <IonSelectOption value={description} key={`desc-${i}`}>{description}</IonSelectOption>

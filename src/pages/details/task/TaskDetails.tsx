@@ -1,4 +1,4 @@
-import React, {CSSProperties, FormEvent, useState} from 'react';
+import React, {CSSProperties, FormEvent, RefObject, useRef, useState} from 'react';
 import {
     IonBackButton,
     IonButtons,
@@ -14,23 +14,25 @@ import {
 import {RouteComponentProps} from 'react-router';
 
 import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
+import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
+
 import DateFnsUtils from '@date-io/date-fns';
 
 import styles from './TaskDetails.module.scss';
 
 import {Task} from '../../../models/task';
-import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
-import {toDateObj} from '../../../utils/utils.date';
-import {TasksService} from '../../../services/tasks/tasks.service';
-
-import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 
 import {Client} from '../../../models/client';
 import {Project} from '../../../models/project';
-import {ProjectsService} from '../../../services/projects/projects.service';
-import {ClientsService} from '../../../services/clients/clients.service';
+
+import {toDateObj} from '../../../utils/utils.date';
 import {contrast} from '../../../utils/utils.color';
 
+import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
+
+import {ProjectsService} from '../../../services/projects/projects.service';
+import {ClientsService} from '../../../services/clients/clients.service';
+import {TasksService} from '../../../services/tasks/tasks.service';
 
 interface TaskDetailsProps extends RouteComponentProps<{
     day: string,
@@ -53,8 +55,11 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     const [client, setClient] = useState<Client | undefined>(undefined);
     const [project, setProject] = useState<Project | undefined>(undefined);
 
+    const headerRef: RefObject<any> = useRef();
+
     useIonViewWillEnter(async () => {
         setSaving(false);
+        setLoading(true);
 
         const task: Task | undefined = await TasksService.getInstance().find(props.match.params.id, props.match.params.day);
         setTask(task);
@@ -69,9 +74,15 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
             const client: Client | undefined = await ClientsService.getInstance().find(task.data.client_id);
             setClient(client);
-
-            setLoading(false);
+        } else {
+            setFrom(undefined);
+            setTo(undefined);
+            setDescription(undefined);
+            setProject(undefined);
+            setClient(undefined);
         }
+
+        setLoading(false);
     });
 
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
@@ -98,12 +109,13 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
             await updateStore();
 
-            props.history.push('/home');
+            goBack();
         } catch (err) {
             // TODO show err
             console.error(err);
-            setSaving(false);
         }
+
+        setSaving(false);
     }
 
     async function deleteTask() {
@@ -118,11 +130,23 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
             await updateStore();
 
-            props.history.push('/home');
+            goBack();
         } catch (err) {
             // TODO show err
             console.error(err);
-            setSaving(false);
+        }
+
+        setSaving(false);
+    }
+
+    function goBack() {
+        // HACK: For an unknow reason, if I use history.push, if user select another task after redirect, parameters are not going to be reflected in RouteComponentProps
+        if (headerRef && headerRef.current) {
+            const backButton: HTMLElement = headerRef.current.querySelector('ion-back-button');
+            backButton.click();
+        } else {
+            // In worst case, still better than no redirect in case of delete
+            props.history.push('/home');
         }
     }
 
@@ -147,7 +171,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
         const colorContrast: string = contrast(color);
 
         return <IonPage>
-            <IonHeader>
+            <IonHeader ref={headerRef} >
                 <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
                     <IonButtons slot="start">
                         <IonBackButton defaultHref="/home" style={{'--color': colorContrast} as CSSProperties}/>
@@ -202,8 +226,8 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
                     <IonLabel>Update</IonLabel>
                 </IonButton>
 
-                <a href="#" onClick={() => deleteTask()} aria-label="Delete task"
-                   aria-disabled={saving}><IonLabel>Delete</IonLabel></a>
+                <button type="button" onClick={() => deleteTask()} aria-label="Delete task"
+                        aria-disabled={saving}><IonLabel>Delete</IonLabel></button>
             </div>
         </form>
     }

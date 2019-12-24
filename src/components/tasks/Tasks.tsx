@@ -1,9 +1,9 @@
-import React, {CSSProperties, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {lightFormat} from 'date-fns';
 
-import {IonList, IonLabel, IonItem} from '@ionic/react';
+import {IonList, IonLabel} from '@ionic/react';
 
 import styles from './Tasks.module.scss';
 

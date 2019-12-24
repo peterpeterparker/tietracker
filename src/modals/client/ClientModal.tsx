@@ -256,7 +256,7 @@ class ClientModal extends React.Component<Props, ClientState> {
                                 <IonLabel>Color</IonLabel>
                             </IonItem>
 
-                            <div className={styles.color + ' ' + `${!this.state.valid.client ? 'disabled' : ''}`}>
+                            <div className={styles.color + ` ${!this.state.valid.client ? 'disabled' : ''}`}>
                                 <deckgo-color ref={this.clientColorRef}
                                               className="ion-padding-start ion-padding-end ion-padding-bottom"
                                               more={true}>

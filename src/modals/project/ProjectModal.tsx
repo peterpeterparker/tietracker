@@ -18,12 +18,9 @@ import {
     IonToolbar
 } from '@ionic/react';
 
-import styles from '../clients/ClientsModal.module.scss';
-
 import {Settings} from '../../models/settings';
 
 import {RootState} from '../../store/reducers';
-import {ClientsService} from '../../services/clients/clients.service';
 
 interface Props extends RootProps {
     closeAction: Function;
@@ -49,6 +46,8 @@ const ProjectModal: React.FC<Props> = (props) => {
         loadProject();
 
         setLoading(false);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.projectId]);
 
     async function loadProject() {

@@ -12,7 +12,7 @@ import {
     IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonModal,
     IonPage, IonSpinner,
     IonTitle,
-    IonToolbar, useIonViewDidEnter,
+    IonToolbar,
     useIonViewWillEnter, useIonViewWillLeave
 } from '@ionic/react';
 
@@ -79,6 +79,8 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         if (clientColorRef && clientColorRef.current) {
             clientColorRef.current.addEventListener('colorChange', selectColor, false);
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [clientColorRef]);
 
     useIonViewWillLeave(() => {

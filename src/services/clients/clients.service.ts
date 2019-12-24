@@ -3,8 +3,6 @@ import {get, set} from 'idb-keyval';
 import uuid from 'uuid/v4';
 
 import {Client, ClientData} from '../../models/client';
-import {Task} from '../../models/task';
-import {TaskInProgressData} from '../../store/interfaces/task.inprogress';
 
 export class ClientsService {
 

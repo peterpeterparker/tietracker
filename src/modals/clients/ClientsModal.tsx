@@ -42,6 +42,7 @@ const ClientsModal: React.FC<Props> = (props) => {
         }
 
         setFilteredClients(clients);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.isOpen, clients]);
 
     async function onFilter($event: CustomEvent<KeyboardEvent>) {
