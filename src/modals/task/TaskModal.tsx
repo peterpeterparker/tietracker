@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 
 import {IonIcon, IonSelectOption, IonSelect} from '@ionic/react';
 
-import styles from './Task.module.scss';
+import styles from './TaskModal.module.scss';
 
 import {checkmarkCircle} from 'ionicons/icons';
 
@@ -17,7 +17,7 @@ import Spinner from '../../components/spinner/Spinner';
 import {contrast} from '../../utils/utils.color';
 import {Settings as SettingsModel} from '../../models/settings';
 
-const Task: React.FC<RootProps> = (props: RootProps) => {
+const TaskModal: React.FC<RootProps> = (props: RootProps) => {
 
     const [freeze, setFreeze] = useState<boolean>(false);
 
@@ -110,4 +110,4 @@ const Task: React.FC<RootProps> = (props: RootProps) => {
 
 };
 
-export default rootConnector(Task);
+export default rootConnector(TaskModal);
