@@ -86,7 +86,7 @@ const ClientsModal: React.FC<Props> = (props) => {
     return (
         <>
             <IonHeader ref={headerRef}>
-                <IonToolbar color="primary">
+                <IonToolbar>
                     <IonTitle>Search clients</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => closeModal()}>

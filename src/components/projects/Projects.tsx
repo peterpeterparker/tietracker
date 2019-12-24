@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { playCircle, personAdd } from 'ionicons/icons';
+import { playCircle, addCircle } from 'ionicons/icons';
 
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonRippleEffect } from '@ionic/react';
 
@@ -69,11 +69,11 @@ const Projects: React.FC<Props> = (props: Props) => {
         return <div className={styles.projects}>
             <IonCard onClick={() => props.addAction()} className="ion-activatable ion-margin-bottom">
                 <div style={{ background: 'var(--ion-color-primary)' }}>
-                    <IonIcon icon={personAdd} />
+                    <IonIcon icon={addCircle} />
                 </div>
                 <IonCardHeader>
                     <IonCardSubtitle></IonCardSubtitle>
-                    <IonCardTitle>Add a new client</IonCardTitle>
+                    <IonCardTitle>Add a first client</IonCardTitle>
                 </IonCardHeader>
                 <IonRippleEffect></IonRippleEffect>
             </IonCard>
