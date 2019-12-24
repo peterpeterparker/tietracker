@@ -172,7 +172,9 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-                {renderClient(colorContrast)}
+                <main>
+                    {renderClient(colorContrast)}
+                </main>
 
                 <IonModal isOpen={selectedProjectId !== undefined} onDidDismiss={() => setSelectedProjectId(undefined)} cssClass="fullscreen">
                     <ProjectModal projectId={selectedProjectId as string} color={color} colorContrast={colorContrast} closeAction={closeProjectModal}></ProjectModal>

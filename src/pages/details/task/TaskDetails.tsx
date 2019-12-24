@@ -180,12 +180,14 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-                {renderTask()}
+                <main>
+                    {renderTask(color, colorContrast)}
+                </main>
             </IonContent>
         </IonPage>
     }
 
-    function renderTask() {
+    function renderTask(color: string, colorContrast: string) {
         if (loading) {
             return <div className="spinner"><IonSpinner color="primary"></IonSpinner></div>
         }
@@ -222,7 +224,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
             </IonList>
 
             <div className={styles.actions}>
-                <IonButton type="submit" disabled={saving} aria-label="Update task">
+                <IonButton type="submit" disabled={saving} aria-label="Update task" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
                     <IonLabel>Update</IonLabel>
                 </IonButton>
 
