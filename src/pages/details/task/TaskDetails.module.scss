@@ -4,15 +4,5 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-
-  a {
-    text-decoration: none;
-    margin: 0 8px;
-
-    &[aria-disabled="true"] {
-      opacity: 0.4;
-      pointer-events: none;
-    }
-  }
 }
 

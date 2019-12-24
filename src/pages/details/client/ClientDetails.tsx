@@ -6,14 +6,23 @@ import styles from './ClientDetails.module.scss';
 
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 import {
-    IonBackButton, IonButton,
+    IonBackButton,
+    IonButton,
     IonButtons,
     IonContent,
-    IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonModal,
-    IonPage, IonSpinner,
+    IonHeader,
+    IonIcon,
+    IonInput,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonModal,
+    IonPage,
+    IonSpinner,
     IonTitle,
     IonToolbar,
-    useIonViewWillEnter, useIonViewWillLeave
+    useIonViewWillEnter,
+    useIonViewWillLeave
 } from '@ionic/react';
 
 import {more} from 'ionicons/icons';
@@ -30,7 +39,7 @@ import {ProjectsService} from '../../../services/projects/projects.service';
 
 import {RootState} from '../../../store/reducers';
 
-import ProjectModal from '../../../modals/project/ProjectModal';
+import ProjectModal, {ProjectModalAction} from '../../../modals/project/ProjectModal';
 
 interface ClientDetailsProps extends RouteComponentProps<{
     id: string
@@ -56,6 +65,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
     const [selectedProjectId, setSelectedProjectId] = useState<string | undefined>(undefined);
+    const [projectModalAction, setProjectModalAction] = useState<ProjectModalAction | undefined>(undefined);
 
     useIonViewWillEnter(async () => {
         setSaving(false);
@@ -137,20 +147,22 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         await props.initActiveProjects();
         await props.listTasks();
         await props.listProjectsInvoices();
-    }
-
-    async function updateProjectsStore() {
         await props.computeSummary();
-        await props.listProjectsInvoices();
-        await props.listTasks();
     }
 
-    async function closeProjectModal() {
-        await loadProjects();
+    async function closeProjectModal(refresh: boolean) {
+        if (refresh) {
+            await loadProjects();
+            await updateStore();
+        }
 
-        await updateProjectsStore();
-
+        setProjectModalAction(undefined);
         setSelectedProjectId(undefined);
+    }
+
+    function updateProject(projectId: string) {
+        setSelectedProjectId(projectId);
+        setProjectModalAction(ProjectModalAction.UPDATE);
     }
 
     return (
@@ -176,8 +188,8 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                     {renderClient(colorContrast)}
                 </main>
 
-                <IonModal isOpen={selectedProjectId !== undefined} onDidDismiss={() => setSelectedProjectId(undefined)} cssClass="fullscreen">
-                    <ProjectModal projectId={selectedProjectId as string} color={color} colorContrast={colorContrast} closeAction={closeProjectModal}></ProjectModal>
+                <IonModal isOpen={projectModalAction !== undefined} onDidDismiss={() => closeProjectModal(false)} cssClass="fullscreen">
+                    <ProjectModal action={projectModalAction} projectId={selectedProjectId} color={color} colorContrast={colorContrast} closeAction={closeProjectModal} client={client}></ProjectModal>
                 </IonModal>
             </IonContent>
         </>
@@ -212,16 +224,21 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                     </deckgo-color>
                 </div>
 
-                <IonItem className="item-title ion-margin-top">
+                <IonItem className="item-title ion-margin-top ion-margin-bottom">
                     <IonLabel>Projects</IonLabel>
                 </IonItem>
 
                 {renderProjects()}
             </IonList>
 
-            <IonButton type="submit" disabled={saving || !valid} aria-label="Update client" className="ion-margin-top" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                <IonLabel>Update</IonLabel>
-            </IonButton>
+            <div className={styles.actions}>
+                <IonButton type="submit" disabled={saving || !valid} aria-label="Update client" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+                    <IonLabel>Update</IonLabel>
+                </IonButton>
+
+                <button type="button" onClick={() => setProjectModalAction(ProjectModalAction.CREATE)} aria-label="Add a new project"
+                        aria-disabled={saving}><IonLabel>Add a new project</IonLabel></button>
+            </div>
         </form>
     }
 
@@ -231,10 +248,10 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         }
 
         return projects.map((project: Project) => {
-            return <IonItem key={project.id} className={styles.projectItem + ' item-input'} onClick={() => setSelectedProjectId(project.id)}>
+            return <IonItem key={project.id} className={styles.projectItem + ' item-input'} onClick={() => updateProject(project.id)}>
                 <IonLabel>
                     <h2>{project.data.name}</h2>
-                    <p>{formatCurrency(project.data.rate.hourly, settings.currency)}</p>
+                    <p>{formatCurrency(project.data.rate.hourly, settings.currency)}/h</p>
                 </IonLabel>
             </IonItem>
         });

@@ -1,9 +1,9 @@
-import React, {CSSProperties, FormEvent, useEffect, useState} from 'react';
+import React, {createRef, CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
-import {Project} from '../../models/project';
+import {Project, ProjectData} from '../../models/project';
 import {ProjectsService} from '../../services/projects/projects.service';
 
 import {
@@ -21,12 +21,20 @@ import {
 import {Settings} from '../../models/settings';
 
 import {RootState} from '../../store/reducers';
+import {Client} from '../../models/client';
+
+export enum ProjectModalAction {
+    CREATE,
+    UPDATE
+}
 
 interface Props extends RootProps {
     closeAction: Function;
-    projectId: string;
+    projectId: string | undefined;
     color: string | undefined;
     colorContrast: string;
+    action: ProjectModalAction | undefined;
+    client: Client | undefined;
 }
 
 const ProjectModal: React.FC<Props> = (props) => {
@@ -40,6 +48,13 @@ const ProjectModal: React.FC<Props> = (props) => {
 
     const [valid, setValid] = useState<boolean>(true);
 
+    const [name, setName] = useState<string | undefined>(undefined);
+    const [rate, setRate] = useState<number | undefined>(undefined);
+    const [vat, setVat] = useState<boolean>(false);
+
+    const nameRef: RefObject<any> = useRef();
+    const rateRef: RefObject<any> = useRef();
+
     useEffect(() => {
         setLoading(true);
 
@@ -48,48 +63,64 @@ const ProjectModal: React.FC<Props> = (props) => {
         setLoading(false);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.projectId]);
+    }, [props.action]);
 
     async function loadProject() {
         const project: Project | undefined = await ProjectsService.getInstance().find(props.projectId);
+
+        console.log('here', project, props.projectId);
+
         setProject(project);
+
+        setName(project && project.data !== undefined ? project.data.name : undefined);
+        setRate(project && project.data !== undefined && project.data.rate !== undefined ? project.data.rate.hourly : undefined);
+        setVat(project && project.data !== undefined && project.data.rate !== undefined ? project.data.rate.vat : false);
+
+        if (!project || project.data === undefined) {
+            console.log(nameRef.current);
+
+            nameRef.current.value = undefined;
+            rateRef.current.value = undefined;
+        }
     }
 
     function handleClientNameInput($event: CustomEvent<KeyboardEvent>) {
-        if (project && project.data) {
-            project.data.name = ($event.target as InputTargetEvent).value;
-        }
+        setName(($event.target as InputTargetEvent).value);
     }
 
     function handleProjectRateInput($event: CustomEvent<KeyboardEvent>) {
-        if (project && project.data && project.data.rate) {
-            project.data.rate.hourly = parseInt(($event.target as InputTargetEvent).value);
-        }
+        setRate(parseInt(($event.target as InputTargetEvent).value));
     }
 
     function onVatChange($event: CustomEvent) {
-        if (project && project.data && project.data.rate) {
-            project.data.rate.vat = $event.detail.checked;
-        }
+        setVat($event.detail.checked);
     }
 
     function validateProject() {
-        setValid(project !== undefined && project.data !== undefined && project.data.name !== undefined && project.data.name.length >= 3 && project.data.rate && project.data.rate.hourly >= 0);
+        setValid(name !== undefined && name.length >= 3 && rate !== undefined && rate >= 0);
     }
 
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
 
-        if (!project || !project.data) {
+        if (props.action === ProjectModalAction.UPDATE && (!project || !project.data)) {
+            return;
+        }
+
+        if (props.action === undefined) {
             return;
         }
 
         setSaving(true);
 
         try {
-            await ProjectsService.getInstance().update(project);
+            if (props.action === ProjectModalAction.UPDATE) {
+                await updateProject();
+            } else {
+                await createProject();
+            }
 
-            props.closeAction();
+            props.closeAction(true);
         } catch (err) {
             // TODO show err
             console.error(err);
@@ -98,11 +129,42 @@ const ProjectModal: React.FC<Props> = (props) => {
         setSaving(false);
     }
 
+    async function createProject() {
+        if (!name || name === undefined || rate === undefined) {
+            return;
+        }
+
+        const data: ProjectData =  {
+            name: name,
+            from: new Date().getTime(),
+            rate: {
+                hourly: rate,
+                vat: vat
+            }
+        };
+
+        await ProjectsService.getInstance().create(props.client, data);
+    }
+
+    async function updateProject() {
+        let projectToUpdate: Project = {...project as Project};
+
+        if (!projectToUpdate || projectToUpdate.data === undefined || projectToUpdate.data.rate === undefined) {
+            return;
+        }
+
+        projectToUpdate.data.name = name as string;
+        projectToUpdate.data.rate.hourly = rate as number;
+        projectToUpdate.data.rate.vat = vat;
+
+        await ProjectsService.getInstance().update(projectToUpdate);
+    }
+
     return (
         <>
             <IonHeader>
                 <IonToolbar style={{'--background': props.color, '--color': props.colorContrast} as CSSProperties}>
-                    <IonTitle>{project && project.data ? project.data.name : ''}</IonTitle>
+                    <IonTitle>{name !== undefined ? name : ''}</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => props.closeAction()}>
                             <IonIcon name="close" slot="icon-only"></IonIcon>
@@ -119,7 +181,7 @@ const ProjectModal: React.FC<Props> = (props) => {
     );
 
     function renderProject() {
-        if (loading || !project || !project.data) {
+        if (loading) {
             return <div className="spinner"><IonSpinner color="primary"></IonSpinner></div>
         }
 
@@ -129,19 +191,19 @@ const ProjectModal: React.FC<Props> = (props) => {
                     <IonLabel>Project</IonLabel>
                 </IonItem>
                 <IonItem>
-                    <IonInput debounce={500} minlength={3} maxlength={32}
-                              required={true} input-mode="text" value={project.data.name}
+                    <IonInput debounce={500} minlength={3} maxlength={32} ref={nameRef}
+                              required={true} input-mode="text" value={name}
                               onIonInput={($event: CustomEvent<KeyboardEvent>) => handleClientNameInput($event)}
                               onIonChange={() => validateProject()}>
                     </IonInput>
                 </IonItem>
 
-                <IonItem disabled={!valid} className="item-title">
+                <IonItem className="item-title">
                     <IonLabel>Hourly rate</IonLabel>
                 </IonItem>
-                <IonItem disabled={!valid}>
-                    <IonInput debounce={500} minlength={1} required={true}
-                              input-mode="text" value={`${project.data.rate ? project.data.rate.hourly : ''}`}
+                <IonItem>
+                    <IonInput debounce={500} minlength={1} required={true} ref={rateRef}
+                              input-mode="text" value={`${rate ? rate : ''}`}
                               onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectRateInput($event)}
                               onIonChange={() => validateProject()}>
                     </IonInput>
@@ -159,7 +221,7 @@ const ProjectModal: React.FC<Props> = (props) => {
                 '--background-activated': props.colorContrast,
                 '--color-activated': props.color
             } as CSSProperties}>
-                <IonLabel>Update</IonLabel>
+                <IonLabel>{props.action === ProjectModalAction.CREATE ? 'Create' : 'Update'}</IonLabel>
             </IonButton>
         </form>
     }
@@ -170,13 +232,13 @@ const ProjectModal: React.FC<Props> = (props) => {
         }
 
         return <>
-            <IonItem disabled={!valid} className="item-title">
+            <IonItem className="item-title">
                 <IonLabel>Vat</IonLabel>
             </IonItem>
-            <IonItem disabled={!valid} className="item-checkbox">
+            <IonItem className="item-checkbox">
                 <IonLabel>{settings.vat}%</IonLabel>
                 <IonCheckbox slot="end"
-                             checked={project && project.data && project.data.rate ? project.data.rate.vat : false}
+                             checked={vat}
                              onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
             </IonItem>
         </>

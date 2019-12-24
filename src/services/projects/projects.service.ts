@@ -24,9 +24,14 @@ export class ProjectsService {
         return ProjectsService.instance;
     }
 
-    create(client: Client, data: ProjectData): Promise<Project> {
+    create(client: Client | undefined, data: ProjectData): Promise<Project> {
         return new Promise<Project>(async (resolve, reject) => {
             try {
+                if (!client || client === undefined) {
+                    reject('Client not defined.');
+                    return;
+                }
+
                 let projects: Project[] = await get('projects');
 
                 if (!projects || projects.length <= 0) {
@@ -102,7 +107,7 @@ export class ProjectsService {
         });
     }
 
-    find(id: string): Promise<Project | undefined> {
+    find(id: string | undefined): Promise<Project | undefined> {
         return new Promise<Project | undefined>(async (resolve) => {
             try {
                 const projects: Project[] = await get('projects');
