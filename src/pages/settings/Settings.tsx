@@ -3,12 +3,9 @@ import {useSelector} from 'react-redux';
 
 import {
     IonContent,
-    IonHeader,
     IonLabel,
     IonPage,
     IonSpinner,
-    IonTitle,
-    IonToolbar,
     IonButton,
     IonSegment,
     IonSegmentButton
@@ -21,6 +18,8 @@ import {Settings as SettingsModel} from '../../models/settings';
 
 import SettingsGeneral from '../../components/settings/general/SettingsGeneral';
 import SettingsDescription from '../../components/settings/description/SettingsDescription';
+
+import Header from '../../components/header/Header';
 
 enum SettingsCategory {
     GENERAL = 'general',
@@ -58,13 +57,10 @@ const Settings: React.FC<RootProps> = (props) => {
 
     return (
         <IonPage>
-            <IonHeader>
-                <IonToolbar color="primary">
-                    <IonTitle>Settings</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">
-                <main>
+            <IonContent>
+                <Header></Header>
+
+                <main className="ion-padding">
                     {renderSettingsCategory()}
                     {renderSettings()}
                 </main>

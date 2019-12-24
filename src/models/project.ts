@@ -13,8 +13,7 @@ export interface ProjectDataRate {
 export interface ProjectData {
     name: string;
 
-    from: Date | number;
-    to?: Date | number;
+    disabled: boolean;
 
     rate: ProjectDataRate;
 

@@ -107,7 +107,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         } else {
             data = {
                 name: ($event.target as InputTargetEvent).value,
-                from: new Date().getTime(),
+                disabled: false,
                 rate: {
                     hourly: 0,
                     vat: this.props.settings.vat !== undefined
@@ -131,7 +131,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         } else {
             data = {
                 name: '',
-                from: new Date().getTime(),
+                disabled: false,
                 rate: {
                     hourly: parseInt(($event.target as InputTargetEvent).value),
                     vat: this.props.settings.vat !== undefined
@@ -209,7 +209,7 @@ class ClientModal extends React.Component<Props, ClientState> {
         } else {
             data = {
                 name: '',
-                from: new Date().getTime(),
+                disabled: false,
                 rate: {
                     hourly: 0,
                     vat: $event.detail.checked

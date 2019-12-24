@@ -21,6 +21,7 @@ import {
     IonSpinner,
     IonTitle,
     IonToolbar,
+    IonCheckbox,
     useIonViewWillEnter,
     useIonViewWillLeave
 } from '@ionic/react';
@@ -202,7 +203,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         }
 
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
-            <IonList className="inputs-list">
+            <IonList className={styles.clientList + ' inputs-list'}>
                 <IonItem className="item-title">
                     <IonLabel>Company</IonLabel>
                 </IonItem>
@@ -224,11 +225,15 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                         <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
                     </deckgo-color>
                 </div>
+            </IonList>
 
-                <IonItem className="item-title ion-margin-top ion-margin-bottom">
+            <IonList className={styles.projectListTitle + ' inputs-list'}>
+                <IonItem className="item-title ion-no-margin">
                     <IonLabel>Projects</IonLabel>
                 </IonItem>
+            </IonList>
 
+            <IonList className={styles.projectList + ' inputs-list'}>
                 {renderProjects()}
             </IonList>
 
@@ -254,6 +259,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                     <h2>{project.data.name}</h2>
                     <p>{formatCurrency(project.data.rate.hourly, settings.currency)}/h</p>
                 </IonLabel>
+                <IonCheckbox slot="end" checked={!project.data.disabled}></IonCheckbox>
             </IonItem>
         });
     }

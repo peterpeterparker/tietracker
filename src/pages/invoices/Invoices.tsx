@@ -1,9 +1,6 @@
 import React from 'react';
 import {
-    IonHeader,
-    IonToolbar,
     IonPage,
-    IonTitle,
     IonContent,
     IonCard,
     IonCardHeader,
@@ -22,6 +19,8 @@ import {formatCurrency} from '../../utils/utils.currency';
 
 import {Settings} from '../../models/settings';
 
+import Header from '../../components/header/Header';
+
 const Invoices: React.FC = () => {
 
     const invoices: Invoice[] = useSelector((state: RootState) => state.invoices.invoices);
@@ -29,13 +28,10 @@ const Invoices: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Open Invoices</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">
-                <main>
+            <IonContent>
+                <Header></Header>
+
+                <main className="ion-padding">
                     {renderProjects()}
                 </main>
             </IonContent>
