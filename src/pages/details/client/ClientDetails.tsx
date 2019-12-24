@@ -21,12 +21,11 @@ import {
     IonSpinner,
     IonTitle,
     IonToolbar,
-    IonCheckbox,
     useIonViewWillEnter,
     useIonViewWillLeave
 } from '@ionic/react';
 
-import {more} from 'ionicons/icons';
+import {lock, more, unlock} from 'ionicons/icons';
 
 import {formatCurrency} from '../../../utils/utils.currency';
 import {contrast} from '../../../utils/utils.color';
@@ -259,7 +258,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                     <h2>{project.data.name}</h2>
                     <p>{formatCurrency(project.data.rate.hourly, settings.currency)}/h</p>
                 </IonLabel>
-                <IonCheckbox slot="end" checked={!project.data.disabled}></IonCheckbox>
+                <IonIcon slot="end" icon={project.data.disabled ? lock : unlock}/>
             </IonItem>
         });
     }

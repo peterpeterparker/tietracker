@@ -255,10 +255,10 @@ const ProjectModal: React.FC<Props> = (props) => {
 
         return <>
             <IonItem className="item-title">
-                <IonLabel>Enabled</IonLabel>
+                <IonLabel>Status</IonLabel>
             </IonItem>
             <IonItem className="item-checkbox">
-                <IonLabel>Enabled</IonLabel>
+                <IonLabel>{enabled ? 'Ongoing' : 'Closed'}</IonLabel>
                 <IonCheckbox slot="end"
                              checked={enabled}
                              onIonChange={($event: CustomEvent) => onEnabledChange($event)}></IonCheckbox>
