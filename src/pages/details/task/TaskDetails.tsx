@@ -33,6 +33,7 @@ import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 import {ProjectsService} from '../../../services/projects/projects.service';
 import {ClientsService} from '../../../services/clients/clients.service';
 import {TasksService} from '../../../services/tasks/tasks.service';
+import {pickerColor} from '../../../utils/utils.picker';
 
 interface TaskDetailsProps extends RouteComponentProps<{
     day: string,
@@ -169,6 +170,8 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     function renderContent() {
         const color: string = client && client.data && client.data.color ? client.data.color : 'var(--ion-color-primary)';
         const colorContrast: string = contrast(color);
+
+        pickerColor(colorContrast, color);
 
         return <IonPage>
             <IonContent>
