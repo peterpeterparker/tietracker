@@ -51,6 +51,7 @@ const ProjectModal: React.FC<Props> = (props) => {
     const [name, setName] = useState<string | undefined>(undefined);
     const [rate, setRate] = useState<number | undefined>(undefined);
     const [vat, setVat] = useState<boolean>(false);
+    const [enabled, setEnabled] = useState<boolean>(true);
 
     const nameRef: RefObject<any> = useRef();
     const rateRef: RefObject<any> = useRef();
@@ -68,17 +69,14 @@ const ProjectModal: React.FC<Props> = (props) => {
     async function loadProject() {
         const project: Project | undefined = await ProjectsService.getInstance().find(props.projectId);
 
-        console.log('here', project, props.projectId);
-
         setProject(project);
 
         setName(project && project.data !== undefined ? project.data.name : undefined);
         setRate(project && project.data !== undefined && project.data.rate !== undefined ? project.data.rate.hourly : undefined);
         setVat(project && project.data !== undefined && project.data.rate !== undefined ? project.data.rate.vat : false);
+        setEnabled(project && project.data !== undefined ? !project.data.disabled : false);
 
         if (!project || project.data === undefined) {
-            console.log(nameRef.current);
-
             nameRef.current.value = undefined;
             rateRef.current.value = undefined;
         }
@@ -94,6 +92,10 @@ const ProjectModal: React.FC<Props> = (props) => {
 
     function onVatChange($event: CustomEvent) {
         setVat($event.detail.checked);
+    }
+
+    function onEnabledChange($event: CustomEvent) {
+        setEnabled($event.detail.checked);
     }
 
     function validateProject() {
@@ -136,7 +138,7 @@ const ProjectModal: React.FC<Props> = (props) => {
 
         const data: ProjectData =  {
             name: name,
-            from: new Date().getTime(),
+            disabled: false,
             rate: {
                 hourly: rate,
                 vat: vat
@@ -156,6 +158,7 @@ const ProjectModal: React.FC<Props> = (props) => {
         projectToUpdate.data.name = name as string;
         projectToUpdate.data.rate.hourly = rate as number;
         projectToUpdate.data.rate.vat = vat;
+        projectToUpdate.data.disabled = !enabled;
 
         await ProjectsService.getInstance().update(projectToUpdate);
     }
@@ -209,6 +212,8 @@ const ProjectModal: React.FC<Props> = (props) => {
                 </IonItem>
 
                 {renderVat()}
+
+                {renderEnabled()}
             </IonList>
 
             <IonButton type="submit" disabled={saving || !valid} aria-label="Update project"
@@ -239,6 +244,24 @@ const ProjectModal: React.FC<Props> = (props) => {
                 <IonCheckbox slot="end"
                              checked={vat}
                              onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
+            </IonItem>
+        </>
+    }
+
+    function renderEnabled() {
+        if (props.action !== ProjectModalAction.UPDATE) {
+            return undefined;
+        }
+
+        return <>
+            <IonItem className="item-title">
+                <IonLabel>Enabled</IonLabel>
+            </IonItem>
+            <IonItem className="item-checkbox">
+                <IonLabel>Enabled</IonLabel>
+                <IonCheckbox slot="end"
+                             checked={enabled}
+                             onIonChange={($event: CustomEvent) => onEnabledChange($event)}></IonCheckbox>
             </IonItem>
         </>
     }

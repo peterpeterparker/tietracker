@@ -2,12 +2,8 @@ import {get, set} from 'idb-keyval';
 
 import uuid from 'uuid/v4';
 
-import isAfter from 'date-fns/isAfter';
-
 import {Project, ProjectData} from '../../models/project';
 import {Client} from '../../models/client';
-
-import {toDateObj} from '../../utils/utils.date';
 
 export class ProjectsService {
 
@@ -81,14 +77,7 @@ export class ProjectsService {
                 }
 
                 const filteredProjects: Project[] = projects.filter((project: Project) => {
-                    const from: Date | undefined = toDateObj(project.data.from);
-                    const to: Date | undefined = toDateObj(project.data.to);
-
-                    if (!to || to === undefined) {
-                        return true;
-                    }
-
-                    return isAfter(to, from ? from : new Date());
+                    return !project.data.disabled;
                 });
 
                 if (!filteredProjects || filteredProjects.length <= 0) {
