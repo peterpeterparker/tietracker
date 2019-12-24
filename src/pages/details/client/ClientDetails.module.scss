@@ -8,9 +8,38 @@
 }
 
 .actions {
-  margin-top: 16px;
+  margin-top: 24px;
 
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+.projectListTitle, .projectList, .clientList {
+  margin-bottom: 2px;
+}
+
+.projectListTitle {
+  margin-top: 8px;
+
+  &:global([class*="list"].inputs-list) {
+    ion-item {
+      &:global(.item-title) {
+        height: inherit;
+      }
+    }
+  }
+}
+
+.projectList {
+  &:global([class*="list"].inputs-list) {
+    background: var(--ion-color-light);
+    border: 1px solid #dedede;
+    border-radius: 4px;
+
+    ion-item {
+      --padding-start: inherit;
+      --inner-padding-end: 8px;
+    }
+  }
 }
