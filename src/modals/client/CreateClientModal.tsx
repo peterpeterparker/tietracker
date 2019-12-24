@@ -286,7 +286,7 @@ class CreateClientModal extends React.Component<Props, ClientState> {
                             </IonInput>
                         </IonItem>
 
-                        {this.renderVat()}
+                        {this.renderVat(color)}
                     </IonList>
 
                     <IonButton type="submit" className="ion-margin-top" disabled={!valid} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
@@ -297,7 +297,7 @@ class CreateClientModal extends React.Component<Props, ClientState> {
         </IonContent>
     };
 
-    private renderVat() {
+    private renderVat(color: string | undefined) {
         if (!this.props.settings.vat || this.props.settings.vat === undefined) {
             return undefined;
         }
@@ -308,7 +308,7 @@ class CreateClientModal extends React.Component<Props, ClientState> {
             </IonItem>
             <IonItem disabled={!this.state.valid.client} className="item-checkbox">
                 <IonLabel>{this.props.settings.vat}%</IonLabel>
-                <IonCheckbox slot="end"
+                <IonCheckbox slot="end" style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
                              checked={this.state.projectData ? this.state.projectData.rate.vat : false}
                              onIonChange={($event: CustomEvent) => this.onVatChange($event)}></IonCheckbox>
             </IonItem>

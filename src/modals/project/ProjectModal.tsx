@@ -241,7 +241,7 @@ const ProjectModal: React.FC<Props> = (props) => {
             </IonItem>
             <IonItem className="item-checkbox">
                 <IonLabel>{settings.vat}%</IonLabel>
-                <IonCheckbox slot="end"
+                <IonCheckbox slot="end" style={{'--background-checked': props.color, '--border-color-checked': props.color} as CSSProperties}
                              checked={vat}
                              onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
             </IonItem>
@@ -259,7 +259,7 @@ const ProjectModal: React.FC<Props> = (props) => {
             </IonItem>
             <IonItem className="item-checkbox">
                 <IonLabel>{enabled ? 'Ongoing' : 'Closed'}</IonLabel>
-                <IonCheckbox slot="end"
+                <IonCheckbox slot="end" style={{'--background-checked': props.color, '--border-color-checked': props.color} as CSSProperties}
                              checked={enabled}
                              onIonChange={($event: CustomEvent) => onEnabledChange($event)}></IonCheckbox>
             </IonItem>
