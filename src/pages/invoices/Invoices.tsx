@@ -4,10 +4,12 @@ import {
     IonContent,
     IonCard,
     IonCardHeader,
-    IonCardSubtitle, IonCardTitle, IonRippleEffect
+    IonCardSubtitle, IonCardTitle, IonRippleEffect, IonIcon
 } from '@ionic/react';
 
 import {useSelector} from 'react-redux';
+
+import {cash} from 'ionicons/icons';
 
 import styles from './Invoices.module.scss';
 
@@ -46,13 +48,13 @@ const Invoices: React.FC = () => {
         return <div className={styles.invoices}>
             {
                 invoices.map((invoice: Invoice, i: number) => {
-                    return <IonCard key={`invoice-${i}`} className="ion-activatable">
+                    return <IonCard key={`invoice-${i}`} className="ion-activatable client">
                         <div style={{background: invoice.client ? invoice.client.color : undefined}}>
-                            <h1>{invoice.client ? invoice.client.name : ''}</h1>
+                            <IonIcon icon={cash} />
                         </div>
                         <IonCardHeader>
                             <IonCardSubtitle>{formatCurrency(invoice.billable, settings.currency)}</IonCardSubtitle>
-                            <IonCardTitle>{invoice.project.name}</IonCardTitle>
+                            <IonCardTitle>{invoice.client ? invoice.client.name : ''}</IonCardTitle>
                         </IonCardHeader>
                         <IonRippleEffect></IonRippleEffect>
                     </IonCard>
