@@ -21,6 +21,7 @@ import {
     IonSpinner,
     IonTitle,
     IonToolbar,
+    IonCheckbox,
     useIonViewWillEnter,
     useIonViewWillLeave
 } from '@ionic/react';
@@ -254,6 +255,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                     <h2>{project.data.name}</h2>
                     <p>{formatCurrency(project.data.rate.hourly, settings.currency)}/h</p>
                 </IonLabel>
+                <IonCheckbox slot="end" checked={!project.data.disabled}></IonCheckbox>
             </IonItem>
         });
     }
