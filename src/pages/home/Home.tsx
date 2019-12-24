@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './Home.module.scss';
 
-import ClientModal from '../../modals/client/ClientModal';
+import CreateClientModal from '../../modals/client/CreateClientModal';
 import ClientsModal from '../../modals/clients/ClientsModal';
 
 import Projects from '../../components/projects/Projects';
@@ -45,7 +45,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
         <Header></Header>
 
         <IonModal isOpen={showModalClient} onDidDismiss={() => setShowModalClient(false)} cssClass="fullscreen">
-          <ClientModal closeAction={async () => await setShowModalClient(false)}></ClientModal>
+          <CreateClientModal closeAction={async () => await setShowModalClient(false)}></CreateClientModal>
         </IonModal>
 
         <IonModal isOpen={showModalClients} onDidDismiss={($event) => closeAndNavigate($event)} cssClass="fullscreen">

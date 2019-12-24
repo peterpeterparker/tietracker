@@ -16,7 +16,7 @@ import {
 
 import {more} from 'ionicons/icons';
 
-import styles from './ClientModal.module.scss';
+import styles from './CreateClientModal.module.scss';
 
 import {Client, ClientData} from '../../models/client';
 import {RootProps, rootConnector} from '../../store/thunks/index.thunks';
@@ -37,7 +37,7 @@ interface Props extends RootProps {
     closeAction: Function
 }
 
-class ClientModal extends React.Component<Props, ClientState> {
+class CreateClientModal extends React.Component<Props, ClientState> {
 
     private clientNameRef: RefObject<any> = createRef();
     private clientColorRef: RefObject<any> = createRef();
@@ -317,4 +317,4 @@ class ClientModal extends React.Component<Props, ClientState> {
 
 }
 
-export default rootConnector(ClientModal);
+export default rootConnector(CreateClientModal);
