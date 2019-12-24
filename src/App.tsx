@@ -47,13 +47,15 @@ import './theme/datetime.picker.scss';
 import './theme/spinner.scss';
 import './theme/checkbox.scss';
 import './theme/reorder.scss';
+import './theme/searchbar.scss';
 
 import './helpers/i18n';
 
 import { RootProps, rootConnector } from './store/thunks/index.thunks';
 
-import Task from './modals/task/Task';
+import TaskModal from './modals/task/TaskModal';
 import TaskDetails from './pages/details/task/TaskDetails';
+import ClientDetails from './pages/details/client/ClientDetails';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
 
@@ -85,6 +87,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
               <Route path="/invoices" component={Invoices} />
               <Route path="/settings" component={Settings} exact={true} />
 
+              <Route path="/client/:id" component={ClientDetails} />
               <Route path="/task/:day/:id" component={TaskDetails} />
 
               <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
@@ -107,7 +110,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
           </IonTabs>
         </IonReactRouter>
 
-        <Task></Task>
+        <TaskModal></TaskModal>
       </IonApp>
     </Suspense>
   );

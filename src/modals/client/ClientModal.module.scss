@@ -1,5 +1,12 @@
 .color {
-  --border-color: transparent;
-  --padding-start: 0;
+  padding: 8px 4px;
   --deckgo-button-more-border: 1px solid var(--ion-color-medium);
+
+  &:global(.disabled) {
+    opacity: 0.4;
+
+    deckgo-color {
+      pointer-events: none;
+    }
+  }
 }

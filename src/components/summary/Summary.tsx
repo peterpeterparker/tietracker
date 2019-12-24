@@ -21,7 +21,7 @@ const Summary: React.FC = () => {
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
     return (<div className="ion-padding-end ion-padding-top">
-        <h1 className={styles.title}>Weekly Summary</h1>
+        <h1>Weekly Summary</h1>
         <IonCard className={styles.card}>
             <IonCardHeader>
                 <IonCardSubtitle className={styles.subtitle}>Tracked: {formatTime(summary !== undefined ? summary.milliseconds : undefined)}</IonCardSubtitle>

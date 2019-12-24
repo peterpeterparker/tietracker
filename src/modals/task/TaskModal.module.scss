@@ -39,12 +39,6 @@
   }
 
   button {
-    border: none;
-    margin: 0;
-    padding: 0;
-    width: auto;
-    outline: none;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -52,9 +46,6 @@
 
     color: var(--color);
     background: transparent;
-
-    cursor: pointer;
-    user-select: none;
 
     overflow: hidden;
     position: relative;

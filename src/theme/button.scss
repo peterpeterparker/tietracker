@@ -2,3 +2,18 @@ ion-button {
   --border-radius: 24px;
   text-transform: inherit;
 }
+
+button {
+  border: none;
+  margin: 0;
+  padding: 8px;
+  width: auto;
+  outline: none;
+
+  cursor: pointer;
+  user-select: none;
+
+  font-size: inherit;
+
+  background: inherit;
+}

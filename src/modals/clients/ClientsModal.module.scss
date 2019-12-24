@@ -1,10 +1,18 @@
-.title {
-  padding-left: 8px;
+.searchbar {
+  padding: 8px 0;
+}
+
+.label {
+  --padding-start: 0;
 }
 
 .item {
   --border-color: transparent;
   border: 1px solid transparent;
+
+  --padding-start: 0;
+
+  cursor: pointer;
 
   > div {
     width: 2rem;

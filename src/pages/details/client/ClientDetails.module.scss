@@ -1,0 +1,16 @@
+.color {
+  padding: 8px 0;
+  --deckgo-button-more-border: 1px solid var(--ion-color-medium);
+}
+
+.projectItem {
+  cursor: pointer;
+}
+
+.actions {
+  margin-top: 16px;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}

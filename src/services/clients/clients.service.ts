@@ -90,4 +90,41 @@ export class ClientsService {
             }
         });
     }
+
+    update(client: Client | undefined): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                if (!client || !client.data) {
+                    reject('Client is not defined.');
+                    return;
+                }
+
+                const clients: Client[] = await get('clients');
+
+                if (!clients || clients.length <= 0) {
+                    reject('No clients found.');
+                    return;
+                }
+
+                const index: number = clients.findIndex((filteredClient: Client) => {
+                    return filteredClient.id === client.id;
+                });
+
+                if (index < 0) {
+                    reject('Client not found.');
+                    return;
+                }
+
+                client.data.updated_at = new Date().getTime();
+
+                clients[index] = client;
+
+                await set(`clients`, clients);
+
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
 }
