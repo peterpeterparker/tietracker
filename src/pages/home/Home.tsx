@@ -56,7 +56,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
           <IonHeader className="ion-padding-end"><IonToolbar><IonSearchbar placeholder={t('search.clients')} className={styles.searchbar} onIonFocus={() => setShowModalClients(true)}></IonSearchbar></IonToolbar></IonHeader>
 
           <div className={styles.addclient}>
-            <IonButton onClick={() => setShowModalClient(true)} fill="outline" color="medium">Add a new client</IonButton>
+            <IonButton onClick={() => setShowModalClient(true)} fill="outline" color="medium" size="small">Add a new client</IonButton>
           </div>
 
           <Summary></Summary>

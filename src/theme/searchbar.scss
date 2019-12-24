@@ -1,0 +1,18 @@
+ion-searchbar[class*="sc-ion-searchbar"] {
+  --background: var(--ion-color-light);
+  background: var(--ion-color-light);
+  border: 1px solid #dedede;
+  border-radius: 4px;
+  --placeholder-opacity: 0.33;
+  padding: 0 7px;
+
+  div {
+    input.searchbar-input {
+      box-shadow: none;
+    }
+  }
+}
+
+ion-searchbar[class*="sc-ion-searchbar-ios"] {
+  height: 38px;
+}

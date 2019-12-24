@@ -5,8 +5,6 @@ import {lightFormat} from 'date-fns';
 
 import {IonList, IonLabel} from '@ionic/react';
 
-import styles from './Tasks.module.scss';
-
 import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
 
 import {rootConnector} from '../../store/thunks/index.thunks';
@@ -30,14 +28,14 @@ const Tasks: React.FC = () => {
 
     return (
         <div className="ion-padding-end ion-padding-top">
-            <h1 className={styles.title}>Today's completed</h1>
+            <h1>Today's completed</h1>
             {renderTasks()}
         </div>
     );
 
     function renderTasks() {
         if (!tasks || tasks.length <= 0) {
-            return <IonLabel><p className={styles.title}>No tasks achieved yet.</p></IonLabel>;
+            return <IonLabel><p>No tasks achieved yet.</p></IonLabel>;
         }
 
         return <IonList>
