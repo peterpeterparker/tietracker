@@ -38,7 +38,7 @@ const SettingsDescription: React.FC<SettingsDescriptionProps> = (props) => {
     return (<>
             <IonList className={`inputs-list ${styles.introduction}`}>
                 <IonItem className="item-title">
-                    <IonLabel>Commonly used task descriptions</IonLabel>
+                    <IonLabel>Task description templates</IonLabel>
                 </IonItem>
             </IonList>
             <IonReorderGroup disabled={false} className="reorder-list ion-margin-bottom" onIonItemReorder={doReorder}>

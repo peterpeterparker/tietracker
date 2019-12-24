@@ -1,4 +1,4 @@
-import React, {createRef, CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
+import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
