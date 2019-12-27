@@ -230,7 +230,7 @@ class CreateClientModal extends React.Component<Props, ClientState> {
 
         return <IonContent>
             <IonHeader>
-                <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
+                <IonToolbar style={{'--background': color, '--color': colorContrast, '--ion-toolbar-color': colorContrast} as CSSProperties}>
                     <IonTitle>Add a new client</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => this.props.closeAction()}>
