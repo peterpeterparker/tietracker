@@ -88,11 +88,11 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
             </IonItem>
 
             <IonItem className="item-title">
-                <IonLabel>Round time</IonLabel>
+                <IonLabel>Round tracked time</IonLabel>
             </IonItem>
 
             <IonItem className="item-input">
-                <IonSelect interfaceOptions={{header: 'Round time'}} placeholder="Round time"
+                <IonSelect interfaceOptions={{header: 'Round tracked time'}} placeholder="Round tracked time"
                            value={props.settings.roundTime}
                            onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
                     <IonSelectOption value={1}>1 minute</IonSelectOption>
