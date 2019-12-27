@@ -44,7 +44,7 @@ const Invoices: React.FC = () => {
 
     function renderProjects() {
         if (!invoices || invoices.length <= 0) {
-            return <p>No clients need to be billed currently.</p>
+            return <p>No clients need to be billed.</p>
         }
 
         return <div className={styles.invoices}>
