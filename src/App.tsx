@@ -45,7 +45,7 @@ import './theme/fonts.scss';
 import './theme/card.scss';
 import './theme/datetime.picker.scss';
 import './theme/spinner.scss';
-import './theme/checkbox.scss';
+import './theme/checkbox-toggle.scss';
 import './theme/reorder.scss';
 import './theme/searchbar.scss';
 import './theme/tabs.scss';

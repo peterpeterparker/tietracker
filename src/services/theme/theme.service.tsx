@@ -4,6 +4,9 @@ export class ThemeService {
 
     private static instance: ThemeService;
 
+    private darkTheme: boolean | undefined = undefined;
+    private updateState: Function | undefined;
+
     private constructor() {
         // Private constructor, singleton
     }
@@ -15,7 +18,14 @@ export class ThemeService {
         return ThemeService.instance;
     }
 
-    async switch(dark: boolean) {
+    async switch(dark: boolean | undefined) {
+        this.darkTheme = dark;
+        console.log(dark);
+
+        if (this.updateState) {
+            this.updateState(dark);
+        }
+
         const body: HTMLElement | null = document.querySelector('body');
 
         if (body) {
@@ -29,6 +39,12 @@ export class ThemeService {
         } catch (err) {
             // We ignore this error. In worst case scenario, the application will be displayed in another theme after next refresh.
         }
+    }
+
+    setState(initStateFunction: Function) {
+        this.updateState = initStateFunction;
+
+        this.updateState(this.darkTheme);
     }
 
     async initDarkModePreference(): Promise<void> {
