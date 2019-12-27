@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {lightFormat} from 'date-fns';
@@ -16,15 +16,7 @@ const Tasks: React.FC = () => {
 
     const tasks: TaskItemStore[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
 
-    const [tasksDay, setTasksDay] = useState<string>();
-
-    useEffect(() => {
-        if (tasks && tasks.length >= 1 && tasks[0].data !== undefined) {
-            setTasksDay(lightFormat(new Date(tasks[0].data.from), 'yyyy-MM-dd'));
-        } else {
-            setTasksDay(lightFormat(new Date(), 'yyyy-MM-dd'));
-        }
-    }, [tasks]);
+    const [tasksDay] = useState<string>(lightFormat(new Date(), 'yyyy-MM-dd'));
 
     return (
         <div className="ion-padding-end ion-padding-top">
