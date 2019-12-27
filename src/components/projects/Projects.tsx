@@ -67,7 +67,7 @@ const Projects: React.FC<Props> = (props: Props) => {
 
     function renderDummyProject() {
         return <div className={styles.projects}>
-            <IonCard onClick={() => props.addAction()} className="ion-activatable ion-margin-bottom">
+            <IonCard onClick={() => props.addAction()} className="ion-activatable ion-margin-bottom client">
                 <div style={{ background: 'var(--ion-color-primary)' }}>
                     <IonIcon icon={addCircle} />
                 </div>
