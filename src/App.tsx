@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -48,6 +48,7 @@ import './theme/spinner.scss';
 import './theme/checkbox.scss';
 import './theme/reorder.scss';
 import './theme/searchbar.scss';
+import './theme/tabs.scss';
 
 import './helpers/i18n';
 
@@ -58,6 +59,8 @@ import TaskDetails from './pages/details/task/TaskDetails';
 import ClientDetails from './pages/details/client/ClientDetails';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
+
+  const [selectedTab, setSelectedTab] = useState<string>('home');
 
   async function initInitialState() {
     const promises = [];
@@ -74,14 +77,26 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
   useEffect(() => {
     initInitialState();
+
+    initSelectedTab();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function initSelectedTab() {
+    const element: HTMLElement | null = document.querySelector('ion-tab-bar');
+
+    if (element) {
+      const selected: string = (element as any).selectedTab;
+      setSelectedTab(selected ? selected : 'home');
+    }
+  }
 
   return (
     <Suspense fallback="loading">
       <IonApp>
         <IonReactRouter>
-          <IonTabs>
+          <IonTabs onIonTabsDidChange={($event) => setSelectedTab($event.detail.tab)}>
             <IonRouterOutlet>
               <Route path="/home" component={Home} exact={true} />
               <Route path="/invoices" component={Invoices} />
@@ -95,7 +110,9 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
             <IonTabBar slot="bottom">
               <IonTabButton tab="home" href="/home">
-                <IonIcon src="/assets/icon/logo.svg" ariaLabel="Tie Tracker logo" />
+                {
+                  selectedTab === 'home' ? <IonIcon src="/assets/icon/logo.svg" ariaLabel="Tie Tracker logo" /> : <IonIcon src="/assets/icon/logo-grey.svg" ariaLabel="Tie Tracker logo" />
+                }
                 <IonLabel>Home</IonLabel>
               </IonTabButton>
               <IonTabButton tab="invoices" href="/invoices">
