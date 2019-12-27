@@ -30,6 +30,8 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
                 setDarkTheme(dark)
             }
         });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     async function initCurrencies() {

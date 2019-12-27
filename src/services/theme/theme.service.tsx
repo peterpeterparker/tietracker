@@ -18,9 +18,12 @@ export class ThemeService {
         return ThemeService.instance;
     }
 
+    isDark(): boolean | undefined {
+        return this.darkTheme;
+    }
+
     async switch(dark: boolean | undefined) {
         this.darkTheme = dark;
-        console.log(dark);
 
         if (this.updateState) {
             this.updateState(dark);
