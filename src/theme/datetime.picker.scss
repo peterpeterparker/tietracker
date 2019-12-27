@@ -6,6 +6,10 @@ div.MuiPickersToolbar-toolbar, button.MuiPickersDay-current {
   background: var(--picker-background, var(--ion-color-primary));
 }
 
-button.MuiButton-text {
+div.MuiPickersToolbar-toolbar button.MuiButton-text {
   color: var(--picker-color, var(--ion-color-dark));
+}
+
+button.MuiButton-text {
+  color: var(--ion-color-text);
 }

@@ -24,6 +24,8 @@ import {ProjectData} from '../../models/project';
 
 import {contrast} from '../../utils/utils.color';
 
+import {ThemeService} from '../../services/theme/theme.service';
+
 type ClientState = {
     clientData?: ClientData;
     projectData?: ProjectData;
@@ -224,7 +226,7 @@ class CreateClientModal extends React.Component<Props, ClientState> {
         const valid: boolean = this.state.valid.client && this.state.valid.project;
 
         const color: string | undefined = this.state.clientData ? this.state.clientData.color : undefined;
-        const colorContrast: string = contrast(color);
+        const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
 
         return <IonContent>
             <IonHeader>

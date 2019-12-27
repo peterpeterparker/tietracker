@@ -6,9 +6,12 @@ import {
     IonItem,
     IonLabel,
     IonList,
-    IonSelect, IonSelectOption,
+    IonSelect,
+    IonSelectOption,
+    IonToggle,
 } from '@ionic/react';
 import {Currencies, SettingsService} from '../../../services/settings/settings.service';
+import {ThemeService} from '../../../services/theme/theme.service';
 
 export interface SettingsGeneralProps {
     settings: Settings;
@@ -17,9 +20,18 @@ export interface SettingsGeneralProps {
 const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
 
     const [currencies, setCurrencies] = useState<Currencies | undefined>(undefined);
+    const [darkTheme, setDarkTheme] = useState<boolean | undefined>(undefined);
 
     useEffect(() => {
         initCurrencies();
+
+        ThemeService.getInstance().setState((dark: boolean) => {
+            if (darkTheme === undefined) {
+                setDarkTheme(dark)
+            }
+        });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     async function initCurrencies() {
@@ -57,14 +69,32 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
         }
     }
 
+    async function toggleTheme($event: any) {
+        if ($event && $event.detail) {
+            await ThemeService.getInstance().switch($event.detail.checked);
+        }
+    }
+
     return (
         <IonList className="inputs-list">
             <IonItem className="item-title">
-                <IonLabel>Round time</IonLabel>
+                <IonLabel>Theme</IonLabel>
+            </IonItem>
+
+            <IonItem className="item-input item-radio with-padding">
+                <IonLabel>{darkTheme ? 'Dark' : 'Light'} {darkTheme ? '🌑' : '☀️'}</IonLabel>
+                <IonToggle slot="end" checked={darkTheme} mode="md" color="medium"
+                           onIonChange={($event) => toggleTheme($event)}></IonToggle>
+            </IonItem>
+
+            <IonItem className="item-title">
+                <IonLabel>Round tracked time</IonLabel>
             </IonItem>
 
             <IonItem className="item-input">
-                <IonSelect interfaceOptions={{header: 'Round time'}} placeholder="Round time" value={props.settings.roundTime} onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
+                <IonSelect interfaceOptions={{header: 'Round tracked time'}} placeholder="Round tracked time"
+                           value={props.settings.roundTime}
+                           onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
                     <IonSelectOption value={1}>1 minute</IonSelectOption>
                     <IonSelectOption value={5}>5 minutes</IonSelectOption>
                     <IonSelectOption value={15}>15 minutes</IonSelectOption>
@@ -95,10 +125,12 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
             return undefined;
         }
 
-        return <IonSelect placeholder="Currency" value={props.settings.currency} onIonChange={($event: CustomEvent) => onCurrencyChange($event)}>
+        return <IonSelect placeholder="Currency" value={props.settings.currency}
+                          onIonChange={($event: CustomEvent) => onCurrencyChange($event)}>
             {
                 Object.keys(currencies).map((key: string) => {
-                    return <IonSelectOption value={key} key={`currency-${key}`}>{currencies[key].name} ({key})</IonSelectOption>
+                    return <IonSelectOption value={key}
+                                            key={`currency-${key}`}>{currencies[key].name} ({key})</IonSelectOption>
                 })
             }
         </IonSelect>

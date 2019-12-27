@@ -25,16 +25,16 @@ function hexToRgb(hex: string): RGB | undefined {
     } : undefined;
 }
 
-export function contrast(colorHex: string | undefined, threshold: number = 128): string {
+export function contrast(colorHex: string | undefined, threshold: number = 128, invert:boolean = false): string {
     if (colorHex === undefined) {
-        return '#000';
+        return invert ? '#fff' : '#000';
     }
 
     const rgb: RGB | undefined = hexToRgb(colorHex);
 
     if (rgb === undefined) {
-        return '#000';
+        return invert ? '#fff' : '#000';
     }
 
-    return rgbToYIQ(rgb) >= threshold ? '#000' : '#fff';
+    return rgbToYIQ(rgb) >= threshold ? (invert ? '#fff' : '#000') : (invert ? '#000' : '#fff');
 }

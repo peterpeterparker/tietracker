@@ -1,0 +1,14 @@
+body.dark {
+  ion-segment {
+    ion-segment-button {
+      color: rgba(255,255,255,0.4);
+
+      &.segment-button-checked {
+        color: var(--ion-text-color);
+        --border-color: var(--ion-text-color);
+        --indicator-color-checked: var(--ion-text-color);
+      }
+    }
+  }
+
+}

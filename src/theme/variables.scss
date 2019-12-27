@@ -61,4 +61,67 @@
   --ion-color-light-contrast-rgb: 0,0,0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  --ion-color-card: #ffffff;
+  --ion-color-card-rgb: 255,255,255;
+  --ion-color-card-contrast: #000000;
+  --ion-color-card-contrast-rgb: 0,0,0;
+  --ion-color-card-shade: #e0e0e0;
+  --ion-color-card-tint: #ffffff;
+
+  --ion-color-card-border: #dedede;
+
+  --ion-color-button: #230F29;
+  --ion-color-button-rgb: 35,15,41;
+  --ion-color-button-contrast: #ffffff;
+  --ion-color-button-contrast-rgb: 255,255,255;
+  --ion-color-button-shade: #1f0d24;
+  --ion-color-button-tint: #39273e;
+}
+
+body.dark {
+  --ion-background-color: #230F29;
+
+  --ion-text-color: white;
+
+  --ion-color-light: #382243;
+  --ion-color-light-rgb: 56,34,67;
+  --ion-color-light-contrast: #ffffff;
+  --ion-color-light-contrast-rgb: 255,255,255;
+  --ion-color-light-shade: #311e3b;
+  --ion-color-light-tint: #4c3856;
+
+  --ion-color-card: #382243;
+  --ion-color-card-rgb: 56,34,67;
+  --ion-color-card-contrast: #ffffff;
+  --ion-color-card-contrast-rgb: 255,255,255;
+  --ion-color-card-shade: #311e3b;
+  --ion-color-card-tint: #4c3856;
+
+  --ion-color-card-border: #2E1538;
+
+  --ion-color-button: #f4f5f8;
+  --ion-color-button-rgb: 244,244,244;
+  --ion-color-button-contrast: #000000;
+  --ion-color-button-contrast-rgb: 0,0,0;
+  --ion-color-button-shade: #d7d8da;
+  --ion-color-button-tint: #f5f6f9;
+}
+
+.ion-color-card {
+  --ion-color-base: var(--ion-color-card) !important;
+  --ion-color-base-rgb: var(--ion-color-card-rgb) !important;
+  --ion-color-contrast: var(--ion-color-card-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-card-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-card-shade) !important;
+  --ion-color-tint: var(--ion-color-card-tint) !important;
+}
+
+.ion-color-button {
+  --ion-color-base: var(--ion-color-button) !important;
+  --ion-color-base-rgb: var(--ion-color-button-rgb) !important;
+  --ion-color-contrast: var(--ion-color-button-contrast) !important;
+  --ion-color-contrast-rgb: var(--ion-color-button-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-color-button-shade) !important;
+  --ion-color-tint: var(--ion-color-button-tint) !important;
 }

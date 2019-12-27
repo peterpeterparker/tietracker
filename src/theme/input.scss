@@ -9,9 +9,9 @@ ion-item.item-input {
 
   ion-input[class*="sc-ion-input"], ion-textarea[class*="sc-ion-textarea"], div.MuiFormControl-root, ion-select {
     --padding-start: 8px;
-    --background: var(--ion-color-light);
+    --background: var(--ion-color-card);
     background: var(--ion-color-light);
-    border: 1px solid #dedede;
+    border: 1px solid var(--ion-color-card-border);
     border-radius: 4px;
 
     --placeholder-opacity: 0.33;
@@ -19,6 +19,7 @@ ion-item.item-input {
 
   ion-select {
     min-width: 100%;
+    padding-right: 16px;
   }
 
   div.MuiFormControl-root {

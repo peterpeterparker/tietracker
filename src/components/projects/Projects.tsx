@@ -49,7 +49,7 @@ const Projects: React.FC<Props> = (props: Props) => {
             <div>
                 {
                     projects.map((project: Project) => {
-                        return <IonCard key={project.id} onClick={() => startStopTask(project)} className="ion-activatable ion-margin-bottom client">
+                        return <IonCard key={project.id} onClick={() => startStopTask(project)} className="ion-activatable ion-margin-bottom client" color="card">
                             <div style={{ background: project.data.client ? project.data.client.color : undefined }}>
                                 <IonIcon icon={playCircle} />
                             </div>
@@ -67,7 +67,7 @@ const Projects: React.FC<Props> = (props: Props) => {
 
     function renderDummyProject() {
         return <div className={styles.projects}>
-            <IonCard onClick={() => props.addAction()} className="ion-activatable ion-margin-bottom client">
+            <IonCard onClick={() => props.addAction()} className="ion-activatable ion-margin-bottom client" color="card">
                 <div style={{ background: 'var(--ion-color-danger)' }}>
                     <IonIcon icon={addCircle} />
                 </div>

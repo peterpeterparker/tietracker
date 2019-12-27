@@ -77,7 +77,7 @@ const Settings: React.FC<RootProps> = (props) => {
             {renderSettingsGeneral()}
             {renderSettingsDescription()}
 
-            <IonButton type="submit" disabled={saving} aria-label="Update task">
+            <IonButton type="submit" disabled={saving} aria-label="Update task" color="button" className="ion-margin-top">
                 <IonLabel>Save</IonLabel>
             </IonButton>
         </form>

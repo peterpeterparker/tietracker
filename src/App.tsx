@@ -45,10 +45,12 @@ import './theme/fonts.scss';
 import './theme/card.scss';
 import './theme/datetime.picker.scss';
 import './theme/spinner.scss';
-import './theme/checkbox.scss';
+import './theme/checkbox-toggle.scss';
 import './theme/reorder.scss';
 import './theme/searchbar.scss';
 import './theme/tabs.scss';
+import './theme/segment.scss';
+import './theme/alert.scss';
 
 import './helpers/i18n';
 
@@ -57,6 +59,7 @@ import { RootProps, rootConnector } from './store/thunks/index.thunks';
 import TaskModal from './modals/task/TaskModal';
 import TaskDetails from './pages/details/task/TaskDetails';
 import ClientDetails from './pages/details/client/ClientDetails';
+import {ThemeService} from './services/theme/theme.service';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
 
@@ -75,7 +78,13 @@ const App: React.FC<RootProps> = (props: RootProps) => {
     await Promise.all(promises);
   }
 
+  async function initTheme() {
+    await ThemeService.getInstance().initDarkModePreference();
+  }
+
   useEffect(() => {
+    initTheme();
+
     initInitialState();
 
     initSelectedTab();
