@@ -50,6 +50,7 @@ import './theme/reorder.scss';
 import './theme/searchbar.scss';
 import './theme/tabs.scss';
 import './theme/segment.scss';
+import './theme/alert.scss';
 
 import './helpers/i18n';
 
