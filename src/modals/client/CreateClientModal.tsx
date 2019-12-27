@@ -242,7 +242,7 @@ class CreateClientModal extends React.Component<Props, ClientState> {
                 <form onSubmit={($event: FormEvent<HTMLFormElement>) => this.handleSubmit($event)}>
                     <IonList className="inputs-list">
                         <IonItem className="item-title">
-                            <IonLabel>Company</IonLabel>
+                            <IonLabel>Client</IonLabel>
                         </IonItem>
                         <IonItem>
                             <IonInput ref={this.clientNameRef} debounce={500} minlength={3} maxlength={32}

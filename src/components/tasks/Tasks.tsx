@@ -28,7 +28,7 @@ const Tasks: React.FC = () => {
 
     return (
         <div className="ion-padding-end ion-padding-top">
-            <h1>Today's completed</h1>
+            <h1>Today's Completed</h1>
             {renderTasks()}
         </div>
     );

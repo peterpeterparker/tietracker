@@ -204,7 +204,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
             <IonList className={styles.clientList + ' inputs-list'}>
                 <IonItem className="item-title">
-                    <IonLabel>Company</IonLabel>
+                    <IonLabel>Client</IonLabel>
                 </IonItem>
                 <IonItem>
                     <IonInput debounce={500} minlength={3} maxlength={32}

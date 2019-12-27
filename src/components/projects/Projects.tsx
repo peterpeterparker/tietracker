@@ -72,8 +72,8 @@ const Projects: React.FC<Props> = (props: Props) => {
                     <IonIcon icon={addCircle} />
                 </div>
                 <IonCardHeader>
-                    <IonCardSubtitle></IonCardSubtitle>
-                    <IonCardTitle>Add a first client</IonCardTitle>
+                    <IonCardSubtitle>Start</IonCardSubtitle>
+                    <IonCardTitle>Add your first project</IonCardTitle>
                 </IonCardHeader>
                 <IonRippleEffect></IonRippleEffect>
             </IonCard>

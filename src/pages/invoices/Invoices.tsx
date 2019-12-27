@@ -34,6 +34,8 @@ const Invoices: React.FC = () => {
                 <Header></Header>
 
                 <main className="ion-padding">
+                    <h1>Open Invoices</h1>
+
                     {renderProjects()}
                 </main>
             </IonContent>
@@ -42,7 +44,7 @@ const Invoices: React.FC = () => {
 
     function renderProjects() {
         if (!invoices || invoices.length <= 0) {
-            return <p>No clients to bill.</p>
+            return <p>No clients need to be billed currently.</p>
         }
 
         return <div className={styles.invoices}>
