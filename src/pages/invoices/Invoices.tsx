@@ -50,7 +50,7 @@ const Invoices: React.FC = () => {
         return <div className={styles.invoices}>
             {
                 invoices.map((invoice: Invoice, i: number) => {
-                    return <IonCard key={`invoice-${i}`} className="ion-activatable client">
+                    return <IonCard key={`invoice-${i}`} className="ion-activatable client" color="card">
                         <div style={{background: invoice.client ? invoice.client.color : undefined}}>
                             <IonIcon icon={cash} />
                         </div>

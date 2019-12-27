@@ -1,10 +1,11 @@
 ion-searchbar[class*="sc-ion-searchbar"] {
   --background: var(--ion-color-light);
   background: var(--ion-color-light);
-  border: 1px solid #dedede;
+  border: 1px solid var(--ion-color-card-border);
   border-radius: 4px;
   --placeholder-opacity: 0.33;
   padding: 0 7px;
+  color: var(--ion-text-color);
 
   div {
     input.searchbar-input {

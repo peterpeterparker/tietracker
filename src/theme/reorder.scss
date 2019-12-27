@@ -3,7 +3,7 @@ ion-reorder-group.reorder-list {
 
   --background: var(--ion-color-light);
   background: var(--ion-color-light);
-  border: 1px solid #dedede;
+  border: 1px solid var(--ion-color-card-border);
   border-radius: 4px;
   --placeholder-opacity: 0.33;
   padding: 8px;
