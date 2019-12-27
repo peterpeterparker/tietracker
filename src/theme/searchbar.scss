@@ -1,3 +1,7 @@
+ion-toolbar.toolbar-searchbar {
+    --background: transparent;
+}
+
 ion-searchbar[class*="sc-ion-searchbar"] {
   --background: var(--ion-color-light);
   background: var(--ion-color-light);
@@ -16,4 +20,5 @@ ion-searchbar[class*="sc-ion-searchbar"] {
 
 ion-searchbar[class*="sc-ion-searchbar-ios"] {
   height: 38px;
+  --background: transparent;
 }
