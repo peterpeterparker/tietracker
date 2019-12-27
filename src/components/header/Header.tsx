@@ -16,9 +16,9 @@ class Header extends React.Component {
                 <IonTitle>
                     <div className={styles.title}>
                         <div>
-                            <img src="/assets/icon/gsd-logo.svg" alt="Get Slick Done logo" height="18"/>
+                            <img src="/assets/icon/logo.svg" alt="Tie Tracker logo" height="18"/>
                         </div>
-                        <span>Get Slick Done</span>
+                        <span>Tie Tracker</span>
                     </div>
                 </IonTitle>
             </IonToolbar>

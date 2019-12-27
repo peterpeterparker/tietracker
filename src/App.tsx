@@ -95,7 +95,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
             <IonTabBar slot="bottom">
               <IonTabButton tab="home" href="/home">
-                <IonIcon src="/assets/icon/gsd-logo.svg" ariaLabel="Get Slick Done logo" />
+                <IonIcon src="/assets/icon/logo.svg" ariaLabel="Tie Tracker logo" />
                 <IonLabel>Home</IonLabel>
               </IonTabButton>
               <IonTabButton tab="invoices" href="/invoices">
