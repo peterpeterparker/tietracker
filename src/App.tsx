@@ -49,6 +49,7 @@ import './theme/checkbox-toggle.scss';
 import './theme/reorder.scss';
 import './theme/searchbar.scss';
 import './theme/tabs.scss';
+import './theme/segment.scss';
 
 import './helpers/i18n';
 
