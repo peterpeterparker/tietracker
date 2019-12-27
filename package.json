@@ -60,5 +60,11 @@
     "@types/uuid": "^3.4.6",
     "node-sass": "^4.13.0"
   },
-  "homepage": "https://tietracker.com"
+  "homepage": "https://tietracker.com",
+  "author": "David Dal Busco",
+  "license": "AGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/peterpeterparker/tietracker.git"
+  }
 }
