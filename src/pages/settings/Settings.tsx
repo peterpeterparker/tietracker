@@ -17,13 +17,15 @@ import {RootState} from '../../store/reducers';
 import {Settings as SettingsModel} from '../../models/settings';
 
 import SettingsGeneral from '../../components/settings/general/SettingsGeneral';
-import SettingsDescription from '../../components/settings/description/SettingsDescription';
+import SettingsTemplates from '../../components/settings/templates/SettingsTermplates';
+import SettingsTracker from '../../components/settings/tracker/SettingsTracker';
 
 import Header from '../../components/header/Header';
 
 enum SettingsCategory {
     GENERAL = 'general',
-    DESCRIPTION = 'description'
+    TRACKER = 'tracker',
+    TEMPLATES = 'templates'
 }
 
 const Settings: React.FC<RootProps> = (props) => {
@@ -75,12 +77,21 @@ const Settings: React.FC<RootProps> = (props) => {
 
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
             {renderSettingsGeneral()}
+            {renderSettingsTracker()}
             {renderSettingsDescription()}
 
-            <IonButton type="submit" disabled={saving} aria-label="Update task" color="button" className="ion-margin-top">
-                <IonLabel>Save</IonLabel>
-            </IonButton>
+            {renderSave()}
         </form>
+    }
+
+    function renderSave() {
+        if (category === SettingsCategory.GENERAL) {
+            return undefined;
+        }
+
+        return <IonButton type="submit" disabled={saving} aria-label="Update task" color="button" className="ion-margin-top">
+            <IonLabel>Save</IonLabel>
+        </IonButton>;
     }
 
     function renderSettingsGeneral() {
@@ -91,12 +102,20 @@ const Settings: React.FC<RootProps> = (props) => {
         return <SettingsGeneral settings={settings}></SettingsGeneral>;
     }
 
-    function renderSettingsDescription() {
-        if (category !== SettingsCategory.DESCRIPTION) {
+    function renderSettingsTracker() {
+        if (category !== SettingsCategory.TRACKER) {
             return undefined;
         }
 
-        return <SettingsDescription settings={settings}></SettingsDescription>;
+        return <SettingsTracker settings={settings}></SettingsTracker>;
+    }
+
+    function renderSettingsDescription() {
+        if (category !== SettingsCategory.TEMPLATES) {
+            return undefined;
+        }
+
+        return <SettingsTemplates settings={settings}></SettingsTemplates>;
     }
 
     function renderSettingsCategory() {
@@ -108,8 +127,11 @@ const Settings: React.FC<RootProps> = (props) => {
             <IonSegmentButton value={SettingsCategory.GENERAL} checked={category === SettingsCategory.GENERAL} mode="md">
                 <ion-label>General</ion-label>
             </IonSegmentButton>
-            <IonSegmentButton value={SettingsCategory.DESCRIPTION} checked={category === SettingsCategory.DESCRIPTION} mode="md">
-                <ion-label>Description</ion-label>
+            <IonSegmentButton value={SettingsCategory.TRACKER} checked={category === SettingsCategory.TRACKER} mode="md">
+                <ion-label>Tracker</ion-label>
+            </IonSegmentButton>
+            <IonSegmentButton value={SettingsCategory.TEMPLATES} checked={category === SettingsCategory.TEMPLATES} mode="md">
+                <ion-label>Templates</ion-label>
             </IonSegmentButton>
         </IonSegment>
     }
