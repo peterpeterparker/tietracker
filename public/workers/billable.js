@@ -118,9 +118,9 @@ function reduceAllProjects(projectsWithInvoices) {
 
                 let project;
                 if (projects[key] !== undefined) {
-                    project = results[key];
-                    project.hours += hours;
-                    project.billable += billable;
+                    project = projects[key];
+                    project.hours += projectsWithInvoice.hours;
+                    project.billable += projectsWithInvoice.billable;
                     projects[key] = project;
                 } else {
                     projects[key] = projectsWithInvoice;
