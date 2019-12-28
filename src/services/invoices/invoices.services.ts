@@ -1,3 +1,12 @@
+import {get} from 'idb-keyval';
+
+import {compareAsc, compareDesc, parse} from 'date-fns';
+
+export interface InvoicesPeriod {
+    from: Date;
+    to: Date;
+}
+
 export class InvoicesService {
 
     private static instance: InvoicesService;
@@ -29,4 +38,37 @@ export class InvoicesService {
         });
     }
 
+    period(): Promise<InvoicesPeriod | undefined> {
+        return new Promise<InvoicesPeriod | undefined>(async (resolve) => {
+            try {
+                const invoices: string[] = await get('invoices');
+
+                if (!invoices || invoices.length <= 0) {
+                    resolve(undefined);
+                    return;
+                }
+
+                const min: string = invoices.reduce((a: string, b: string) => {
+                    const aDate: Date = parse(a, 'yyyy-MM-dd', new Date());
+                    const bDate: Date = parse(b, 'yyyy-MM-dd', new Date());
+
+                    return compareAsc(aDate, bDate) <= 0 ? a : b;
+                });
+
+                const max: string = invoices.reduce((a: string, b: string) => {
+                    const aDate: Date = parse(a, 'yyyy-MM-dd', new Date());
+                    const bDate: Date = parse(b, 'yyyy-MM-dd', new Date());
+
+                    return compareDesc(aDate, bDate) <= 0 ? a : b;
+                });
+
+                resolve({
+                    from: parse(min, 'yyyy-MM-dd', new Date()),
+                    to: parse(max, 'yyyy-MM-dd', new Date()),
+                })
+            } catch (err) {
+                resolve(undefined);
+            }
+        });
+    }
 }
