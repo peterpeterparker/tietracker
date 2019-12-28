@@ -5,7 +5,7 @@ importScripts('./utils/utils.js');
 
 self.onmessage = async ($event) => {
     if ($event && $event.data === 'listTasks') {
-        self.listTasks();
+        await self.listTasks();
     }
 };
 

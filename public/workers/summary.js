@@ -3,7 +3,7 @@ importScripts('./libs/dayjs.min.js');
 
 self.onmessage = async ($event) => {
     if ($event && $event.data === 'compute') {
-        self.compute();
+        await self.compute();
     }
 };
 

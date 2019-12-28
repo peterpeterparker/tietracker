@@ -44,12 +44,17 @@ const InvoiceModal: React.FC<Props> = (props) => {
     const color: string | undefined = props.invoice !== undefined && props.invoice.client ? props.invoice.client.color : undefined;
     const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
 
-    const [selectedInvoice, setSelectedInvoice] = useState<Invoice | undefined>(undefined);
+    const [billable, setBillable] = useState<number | undefined>(undefined);
 
     useEffect(() => {
         init();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.invoice]);
+
+    useEffect(() => {
+        updateBillable();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [from, to]);
 
     async function init() {
         if (props.invoice) {
@@ -58,16 +63,30 @@ const InvoiceModal: React.FC<Props> = (props) => {
             setFrom(period ? period.from : undefined);
             setTo(period ? period.to : undefined);
 
-            setSelectedInvoice({...props.invoice});
+            setBillable(props.invoice ? props.invoice.billable : undefined);
         } else {
             setFrom(undefined);
             setTo(undefined);
-            setSelectedInvoice(undefined);
+            setBillable(undefined);
         }
     }
 
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
+    }
+
+    async function updateBillable() {
+        if (!props.invoice) {
+            return;
+        }
+
+        if (from === undefined || to === undefined) {
+            return;
+        }
+
+        await InvoicesService.getInstance().listProjectInvoice((data: Invoice) => {
+            setBillable(data !== undefined ? data.billable : undefined);
+        }, props.invoice.project_id, from, to);
     }
 
     return (
@@ -103,11 +122,11 @@ const InvoiceModal: React.FC<Props> = (props) => {
             return <p>No period defined.</p>
         }
 
-        if (selectedInvoice === undefined) {
+        if (billable === undefined) {
             return <p>For the selected period nothing can be billed.</p>
         }
 
-        return <p>For the selected period <strong>{formatCurrency(selectedInvoice.billable, settings.currency)}</strong> can be billed.</p>
+        return <p>For the selected period <strong>{formatCurrency(billable, settings.currency)}</strong> can be billed.</p>
     }
 
     function renderFilter() {

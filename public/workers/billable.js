@@ -4,14 +4,24 @@ importScripts('./libs/dayjs.min.js');
 importScripts('./utils/utils.js');
 
 self.onmessage = async ($event) => {
-    if ($event && $event.data === 'listProjectsInvoices') {
-        self.listProjectsInvoices();
+    if ($event && $event.data && $event.data.msg === 'listProjectsInvoices') {
+        await self.listProjectsInvoices();
+    } else if ($event && $event.data && $event.data.msg === 'listProjectInvoice') {
+        await self.listProjectInvoice($event.data.invoices, $event.data.projectId);
     }
 };
 
 self.listProjectsInvoices = async () => {
     const invoices = await idbKeyval.get('invoices');
 
+    await self.listInvoices(invoices, null);
+};
+
+self.listProjectInvoice = async (invoices, projectId) => {
+    await self.listInvoices(invoices, projectId);
+};
+
+self.listInvoices = async (invoices, filterProjectId) => {
     if (!invoices || invoices.length <= 0) {
         self.postMessage([]);
         return;
@@ -31,18 +41,18 @@ self.listProjectsInvoices = async () => {
         return;
     }
 
-    const projectsWithInvoices = await listBillableProjects(invoices, projects, clients);
+    const projectsWithInvoices = await listBillableProjects(invoices, projects, clients, filterProjectId);
 
     const results = reduceAllProjects(projectsWithInvoices);
 
     self.postMessage(results);
 };
 
-async function listBillableProjects(invoices, projects, clients) {
+async function listBillableProjects(invoices, projects, clients, filterProjectId) {
     const promises = [];
 
     invoices.forEach((invoice) => {
-        promises.push(buildProject(invoice, projects, clients));
+        promises.push(buildProject(invoice, projects, clients, filterProjectId));
     });
 
     const results = await Promise.all(promises);
@@ -50,23 +60,34 @@ async function listBillableProjects(invoices, projects, clients) {
     return results;
 }
 
-function buildProject(invoice, projects, clients) {
+function buildProject(invoice, projects, clients, filterProjectId) {
     return new Promise(async (resolve) => {
         const tasks = await idbKeyval.get(`tasks-${invoice}`);
 
-        if (!tasks | tasks.length <= 0) {
+        if (!tasks || tasks.length <= 0) {
             resolve(undefined);
             return;
         }
 
         // Only the tasks which are still not billed
-        const filteredTasks = tasks.filter((task) => {
+        let filteredTasks = tasks.filter((task) => {
             return task.data.invoice.status === 'open';
         });
 
-        if (!filteredTasks | filteredTasks.length <= 0) {
+        if (!filteredTasks || filteredTasks.length <= 0) {
             resolve(undefined);
             return;
+        }
+
+        if (filterProjectId) {
+            filteredTasks = filteredTasks.filter((task) => {
+                return task.data.project_id === filterProjectId;
+            });
+
+            if (!filteredTasks || filteredTasks.length <= 0) {
+                resolve(undefined);
+                return;
+            }
         }
 
         const results = {};
