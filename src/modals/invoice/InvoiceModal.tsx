@@ -9,7 +9,7 @@ import {
     IonItem, IonLabel,
     IonList,
     IonTitle,
-    IonToolbar
+    IonToolbar, isPlatform
 } from '@ionic/react';
 
 import DateFnsUtils from '@date-io/date-fns';
@@ -29,6 +29,7 @@ import {pickerColor} from '../../utils/utils.picker';
 import {ThemeService} from '../../services/theme/theme.service';
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
 import {ExportService} from '../../services/export/export.service';
+import {isChrome} from '../../utils/utils.platform';
 
 interface Props extends RootProps {
     closeAction: Function;
@@ -79,7 +80,13 @@ const InvoiceModal: React.FC<Props> = (props) => {
             return;
         }
 
-        await ExportService.getInstance().export(props.invoice.project_id, from, to, settings.currency);
+        // TODO: Capacitor if mobile
+
+        if (isPlatform('desktop') && isChrome()) {
+            await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency);
+        } else  {
+            await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency);
+        }
     }
 
     async function updateBillable() {
