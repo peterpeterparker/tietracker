@@ -16,6 +16,10 @@
 ## Table of contents
 
 - [Getting Started](#getting-started)
+- [Features](#features)
+- [Reporting](#reporting)
+- [Technical Stack](#technical-stack)
+- [Run Locally](#run-locally) 
 - [License](#license)
 
 ## Getting Started
