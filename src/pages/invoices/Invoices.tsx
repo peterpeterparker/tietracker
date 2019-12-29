@@ -35,7 +35,6 @@ const Invoices: React.FC = () => {
     const [selectedInvoice, setSelectedInvoice] = useState<Invoice | undefined>(undefined);
 
     function closeAndRefresh() {
-
         setSelectedInvoice(undefined);
     }
 

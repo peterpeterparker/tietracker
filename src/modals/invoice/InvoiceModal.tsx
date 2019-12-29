@@ -49,6 +49,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
     const [billable, setBillable] = useState<number | undefined>(undefined);
 
+    const [inProgress, setInProgress] = useState<boolean>(false);
+
     useEffect(() => {
         init();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,12 +83,26 @@ const InvoiceModal: React.FC<Props> = (props) => {
             return;
         }
 
+        setInProgress(true);
+
         // TODO: Capacitor if mobile
 
         if (isPlatform('desktop') && isChrome() && isHttps()) {
             await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, bill);
         } else  {
             await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, bill);
+        }
+
+        if (bill) {
+            setTimeout(async () => {
+                await props.listProjectsInvoices();
+
+                props.closeAction();
+
+                setInProgress(false);
+            }, 1500);
+        } else {
+            setInProgress(false);
         }
     }
 
@@ -177,8 +193,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
                 </IonItem>
             </IonList>
 
-            <IonButton type="submit" className="ion-margin-top" disabled={billable === undefined} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                <IonLabel>Submit</IonLabel>
+            <IonButton type="submit" className="ion-margin-top" disabled={billable === undefined || inProgress} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+                <IonLabel>{inProgress ? "Wait for it..." : "Submit"}</IonLabel>
             </IonButton>
         </form>
     }
