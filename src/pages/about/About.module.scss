@@ -7,11 +7,13 @@
 
 .social {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 
+  margin: 32px;
+
   ion-icon {
-    font-size: 1.4rem;
+    font-size: 2rem;
     margin: 4px;
     color: var(--ion-color-button);
   }
@@ -28,6 +30,10 @@
   align-self: center;
 
   ion-icon {
-    margin-right: 4px;
+    margin-left: 4px;
   }
+}
+
+.terms {
+  margin-top: 64px;
 }

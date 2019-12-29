@@ -61,6 +61,8 @@ import TaskModal from './modals/task/TaskModal';
 import TaskDetails from './pages/details/task/TaskDetails';
 import ClientDetails from './pages/details/client/ClientDetails';
 import About from './pages/about/About';
+import Terms from './pages/terms/Terms';
+import Privacy from './pages/privacy/Privacy';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
 
@@ -110,7 +112,10 @@ const App: React.FC<RootProps> = (props: RootProps) => {
               <Route path="/home" component={Home} />
               <Route path="/invoices" component={Invoices} exact={true} />
               <Route path="/settings" component={Settings} exact={true} />
+
               <Route path="/about" component={About} exact={true} />
+              <Route path="/terms" component={Terms} exact={true} />
+              <Route path="/privacy" component={Privacy} exact={true} />
 
               <Route path="/client/:id" component={ClientDetails} />
               <Route path="/task/:day/:id" component={TaskDetails} />

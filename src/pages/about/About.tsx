@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {IonContent, IonPage, IonLabel, IonIcon} from '@ionic/react';
 
 import Header from '../../components/header/Header';
@@ -45,7 +46,7 @@ const About: React.FC = () => {
 
                     <h1 className="ion-padding-top">Open Source</h1>
 
-                    <p><IonLabel>Tie Tracker is open source and published under the AGPL v3 (or later) licence. Its code is available on <a href="http://github.com/peterpeterparker/tietracker" target="_blank" rel="noopener noreferrer" className={styles.github}><IonIcon icon={logoGithub} area-label="Github"></IonIcon> GitHub</a>.</IonLabel></p>
+                    <p><IonLabel>Tie Tracker is open source and published under the AGPL v3 (or later) licence. Its code is available on <a href="http://github.com/peterpeterparker/tietracker" target="_blank" rel="noopener noreferrer" className={styles.github}>GitHub <IonIcon icon={logoGithub} area-label="Github"></IonIcon></a>.</IonLabel></p>
 
                     <h1 className="ion-padding-top">Author</h1>
 
@@ -53,15 +54,19 @@ const About: React.FC = () => {
 
                     <p className="ion-padding-top"><IonLabel>This app is developed with <a href="https://ionicframework.com" target="_blank" rel="noopener noreferrer">Ionic</a>, <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">React</a>, <a href="https://react-redux.js.org" target="_blank" rel="noopener noreferrer">Redux</a>, Web Workers and other cool stuffs.</IonLabel></p>
 
-                    <p className="ion-padding-top"><IonLabel>To contact me, find some of my blog posts, browse other works or maybe even to hire me, follow these links.</IonLabel></p>
+                    <p className="ion-padding-top"><IonLabel>To contact me, find some of my blog posts, browse other works or maybe even to hire me, checkout the following links.</IonLabel></p>
+
+                    <p className="ion-padding-top"><IonLabel>To infinity and beyond <span role="img" aria-label="rocket">🚀</span></IonLabel></p>
+
+                    <p><IonLabel>David</IonLabel></p>
 
                     <div className={styles.social}>
-                        <a href="https://twitter.com/daviddalbusco" target="_blank" rel="noopener noreferrer">
-                            <IonIcon icon={logoTwitter} area-label="Twitter"></IonIcon>
-                        </a>
-
                         <a href="https://daviddalbusco.com" target="_blank" rel="noopener noreferrer">
                             <IonIcon icon={globe} area-label="Personal blog and website"></IonIcon>
+                        </a>
+
+                        <a href="https://twitter.com/daviddalbusco" target="_blank" rel="noopener noreferrer">
+                            <IonIcon icon={logoTwitter} area-label="Twitter"></IonIcon>
                         </a>
 
                         <a href="https://dev.to/daviddalbusco" target="_blank" rel="noopener noreferrer">
@@ -77,9 +82,7 @@ const About: React.FC = () => {
                         </a>
                     </div>
 
-                    <p className="ion-padding-top"><IonLabel>To infinity and beyond <span role="img" aria-label="rocket">🚀</span></IonLabel></p>
-
-                    <p><IonLabel>David</IonLabel></p>
+                    <p className={styles.terms}><IonLabel><Link to="/terms">Terms of use</Link> - <Link to="/privacy">Privacy Policy</Link></IonLabel></p>
                 </main>
             </IonContent>
         </IonPage>
