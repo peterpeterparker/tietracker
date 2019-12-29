@@ -5,7 +5,7 @@ interface ChooseFileSystemEntriesOptionsAccepts {
 }
 
 interface ChooseFileSystemEntriesOptions {
-    type: 'open-file' | 'save-file' | 'open-directory'
+    type: 'openFile' | 'saveFile' | 'openDirectory'
     accepts: ChooseFileSystemEntriesOptionsAccepts[];
 }
 

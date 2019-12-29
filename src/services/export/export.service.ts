@@ -66,7 +66,7 @@ export class ExportService {
 
     private async getNewFileHandle(): Promise<FileSystemFileHandle> {
         const opts: ChooseFileSystemEntriesOptions = {
-            type: 'save-file',
+            type: 'saveFile',
             accepts: [{
                 description: 'Export',
                 extensions: ['csv'],
