@@ -22,7 +22,7 @@ const About: React.FC = () => {
                         <p><IonLabel><strong>Tie Tracker</strong> - A simple, open source and free time tracking app <span aria-label="stopwatch" role="img">⏱</span>️</IonLabel></p>
                     </div>
 
-                    <p><IonLabel>Tie Tracker is a free and open source time tracking application. Its usage is meant to be simple and has the goal to lets you track work hours across projects.</IonLabel></p>
+                    <p><IonLabel>It is meant to be simple and has the goal to lets you track work hours across projects.</IonLabel></p>
 
                     <h1 className="ion-padding-top">Features</h1>
 
@@ -36,7 +36,7 @@ const About: React.FC = () => {
 
                     <h1 className="ion-padding-top">Reporting</h1>
 
-                    <p><IonLabel>Yet not complicated but effective reporting.</IonLabel></p>
+                    <p><IonLabel>Yet not exhaustive but effective reporting.</IonLabel></p>
 
                     <ul className={styles.list}>
                         <li><span aria-label="checkmark" role="img">✅</span> Weekly work summary</li>
