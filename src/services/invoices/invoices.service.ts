@@ -1,6 +1,7 @@
 import {get} from 'idb-keyval';
 
-import {compareAsc, compareDesc, eachDayOfInterval, format, isAfter, parse} from 'date-fns';
+import {compareAsc, compareDesc, parse} from 'date-fns';
+import {interval} from '../../utils/utils.date';
 
 export interface InvoicesPeriod {
     from: Date;
@@ -40,7 +41,9 @@ export class InvoicesService {
 
     listProjectInvoice(updateStateFunction: Function, projectId: string, from: Date, to: Date): Promise<void> {
         return new Promise<void>((resolve) => {
-            if (!from || !to || isAfter(from, to)) {
+            const invoices: string[] | undefined = interval(from, to);
+
+            if (invoices === undefined) {
                 resolve();
                 return;
             }
@@ -50,11 +53,6 @@ export class InvoicesService {
                     updateStateFunction($event.data.length > 0 ? $event.data[0] : undefined);
                 }
             };
-
-            const days: Date[] = eachDayOfInterval({start: from, end: to});
-            const invoices: string[] = days.map((day: Date) => {
-                return format(day, 'yyyy-MM-dd');
-            });
 
             this.invoicesWorker.postMessage({msg: 'listProjectInvoice', invoices: invoices, projectId: projectId});
 

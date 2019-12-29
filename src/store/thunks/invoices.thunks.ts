@@ -2,7 +2,7 @@ import {RootThunkResult} from './types.thunks';
 
 import {LIST_PROJECTS_INVOICES} from '../types/invoices.types';
 
-import {InvoicesService} from '../../services/invoices/invoices.services';
+import {InvoicesService} from '../../services/invoices/invoices.service';
 
 import {Invoice} from '../interfaces/invoice';
 

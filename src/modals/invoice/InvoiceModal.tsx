@@ -27,7 +27,8 @@ import {formatCurrency} from '../../utils/utils.currency';
 import {pickerColor} from '../../utils/utils.picker';
 
 import {ThemeService} from '../../services/theme/theme.service';
-import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.services';
+import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
+import {ExportService} from '../../services/export/export.service';
 
 interface Props extends RootProps {
     closeAction: Function;
@@ -73,6 +74,12 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
+
+        if (!props.invoice) {
+            return;
+        }
+
+        await ExportService.getInstance().export(props.invoice.project_id, from, to, settings.currency);
     }
 
     async function updateBillable() {
@@ -150,6 +157,10 @@ const InvoiceModal: React.FC<Props> = (props) => {
                                     format="yyyy/MM/dd"/>
                 </IonItem>
             </IonList>
+
+            <IonButton type="submit" className="ion-margin-top" disabled={billable === undefined} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+                <IonLabel>Submit</IonLabel>
+            </IonButton>
         </form>
     }
 
