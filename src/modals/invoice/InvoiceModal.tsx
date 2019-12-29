@@ -2,7 +2,7 @@ import React, {CSSProperties, FormEvent, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {
     IonButton,
-    IonButtons,
+    IonButtons, IonCheckbox,
     IonContent,
     IonHeader,
     IonIcon,
@@ -25,11 +25,11 @@ import {Settings} from '../../models/settings';
 import {contrast} from '../../utils/utils.color';
 import {formatCurrency} from '../../utils/utils.currency';
 import {pickerColor} from '../../utils/utils.picker';
+import {isChrome, isHttps} from '../../utils/utils.platform';
 
 import {ThemeService} from '../../services/theme/theme.service';
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
 import {ExportService} from '../../services/export/export.service';
-import {isChrome} from '../../utils/utils.platform';
 
 interface Props extends RootProps {
     closeAction: Function;
@@ -42,11 +42,14 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
     const [from, setFrom] = useState<Date | undefined>(undefined);
     const [to, setTo] = useState<Date | undefined>(undefined);
+    const [bill, setBill] = useState<boolean>(false);
 
     const color: string | undefined = props.invoice !== undefined && props.invoice.client ? props.invoice.client.color : undefined;
     const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
 
     const [billable, setBillable] = useState<number | undefined>(undefined);
+
+    const [inProgress, setInProgress] = useState<boolean>(false);
 
     useEffect(() => {
         init();
@@ -80,12 +83,26 @@ const InvoiceModal: React.FC<Props> = (props) => {
             return;
         }
 
+        setInProgress(true);
+
         // TODO: Capacitor if mobile
 
-        if (isPlatform('desktop') && isChrome()) {
-            await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency);
+        if (isPlatform('desktop') && isChrome() && isHttps()) {
+            await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, bill);
         } else  {
-            await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency);
+            await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, bill);
+        }
+
+        if (bill) {
+            setTimeout(async () => {
+                await props.listProjectsInvoices();
+
+                props.closeAction();
+
+                setInProgress(false);
+            }, 1500);
+        } else {
+            setInProgress(false);
         }
     }
 
@@ -163,10 +180,21 @@ const InvoiceModal: React.FC<Props> = (props) => {
                     <DatePicker DialogProps={{disableEnforceFocus: true}} value={to} onChange={(date: MaterialUiPickersDate) => setTo(date as Date)}
                                     format="yyyy/MM/dd"/>
                 </IonItem>
+
+                <IonItem className="item-title">
+                    <IonLabel>Close invoice</IonLabel>
+                </IonItem>
+
+                <IonItem className="item-checkbox">
+                    <IonLabel>Set tasks as billed</IonLabel>
+                    <IonCheckbox slot="end" style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
+                                 checked={bill}
+                                 onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}></IonCheckbox>
+                </IonItem>
             </IonList>
 
-            <IonButton type="submit" className="ion-margin-top" disabled={billable === undefined} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                <IonLabel>Submit</IonLabel>
+            <IonButton type="submit" className="ion-margin-top" disabled={billable === undefined || inProgress} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+                <IonLabel>{inProgress ? "Wait for it..." : "Submit"}</IonLabel>
             </IonButton>
         </form>
     }

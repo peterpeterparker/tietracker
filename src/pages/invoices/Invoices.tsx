@@ -4,10 +4,14 @@ import {
     IonContent,
     IonCard,
     IonCardHeader,
-    IonCardSubtitle, IonCardTitle, IonRippleEffect, IonLabel, IonModal
+    IonCardSubtitle, IonCardTitle, IonRippleEffect, IonIcon, IonModal,
+    IonCardContent,
+    IonLabel
 } from '@ionic/react';
 
 import {useSelector} from 'react-redux';
+
+import {cash} from 'ionicons/icons';
 
 import styles from './Invoices.module.scss';
 
@@ -22,7 +26,6 @@ import {Settings} from '../../models/settings';
 import Header from '../../components/header/Header';
 
 import InvoiceModal from '../../modals/invoice/InvoiceModal';
-import {contrast} from '../../utils/utils.color';
 
 const Invoices: React.FC = () => {
 
@@ -32,7 +35,6 @@ const Invoices: React.FC = () => {
     const [selectedInvoice, setSelectedInvoice] = useState<Invoice | undefined>(undefined);
 
     function closeAndRefresh() {
-
         setSelectedInvoice(undefined);
     }
 
@@ -62,16 +64,17 @@ const Invoices: React.FC = () => {
         return <div className={styles.invoices}>
             {
                 invoices.map((invoice: Invoice, i: number) => {
-                    const colorContrast: string = contrast(invoice.client ? invoice.client.color : undefined);
-
                     return <IonCard key={`invoice-${i}`} onClick={() => setSelectedInvoice(invoice)} className="ion-activatable client" color="card">
-                        <div style={{background: invoice.client ? invoice.client.color : undefined, color: colorContrast}}>
-                            <IonLabel>{formatCurrency(invoice.billable, settings.currency)}</IonLabel>
+                        <div style={{background: invoice.client ? invoice.client.color : undefined}}>
+                            <IonIcon icon={cash} />
                         </div>
                         <IonCardHeader>
                             <IonCardSubtitle>{invoice.client ? invoice.client.name : ''}</IonCardSubtitle>
                             <IonCardTitle>{invoice.project ? invoice.project.name : ''}</IonCardTitle>
                         </IonCardHeader>
+                        <IonCardContent>
+                            <IonLabel>{formatCurrency(invoice.billable, settings.currency)}</IonLabel>
+                        </IonCardContent>
                         <IonRippleEffect></IonRippleEffect>
                     </IonCard>
                 })
