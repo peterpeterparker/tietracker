@@ -7,3 +7,11 @@ export function isChrome(): boolean {
 
     return /chrome/i.test(browser);
 }
+
+export function isHttps(): boolean {
+    if (!document || !document.location || !document.location.protocol) {
+        return false;
+    }
+
+    return document.location.protocol.indexOf('https') > -1;
+}

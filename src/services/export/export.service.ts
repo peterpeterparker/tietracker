@@ -20,7 +20,7 @@ export class ExportService {
         return ExportService.instance;
     }
 
-    exportNativeFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string): Promise<void> {
+    exportNativeFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, bill: boolean): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if (invoice === undefined || invoice.project_id === undefined) {
                 reject('No invoice data.');
@@ -53,7 +53,8 @@ export class ExportService {
                     msg: 'export',
                     invoices: invoices,
                     projectId: invoice.project_id,
-                    currency: currency
+                    currency: currency,
+                    bill: bill
                 });
 
                 resolve();
@@ -64,7 +65,7 @@ export class ExportService {
         });
     }
 
-    exportDownload(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string): Promise<void> {
+    exportDownload(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, bill: boolean): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if (invoice === undefined || invoice.project_id === undefined) {
                 reject('No invoice data.');
@@ -91,7 +92,8 @@ export class ExportService {
                     msg: 'export',
                     invoices: invoices,
                     projectId: invoice.project_id,
-                    currency: currency
+                    currency: currency,
+                    bill: bill
                 });
 
                 resolve();

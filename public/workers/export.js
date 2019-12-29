@@ -5,11 +5,11 @@ importScripts('./utils/utils.js');
 
 self.onmessage = async ($event) => {
     if ($event && $event.data && $event.data.msg === 'export') {
-        await self.export($event.data.invoices, $event.data.projectId, $event.data.currency);
+        await self.export($event.data.invoices, $event.data.projectId, $event.data.currency, $event.data.bill);
     }
 };
 
-self.export = async (invoices, filterProjectId, currency) => {
+self.export = async (invoices, filterProjectId, currency, bill) => {
     if (!invoices || invoices.length <= 0) {
         self.postMessage(undefined);
         return;
@@ -22,14 +22,15 @@ self.export = async (invoices, filterProjectId, currency) => {
         return;
     }
 
-    self.exportInvoices(invoices, projects, filterProjectId, currency);
+    self.exportInvoices(invoices, projects, filterProjectId, currency, bill);
+    self.billInvoices(invoices, filterProjectId, bill);
 };
 
-async function exportInvoices(invoices, projects, filterProjectId, currency) {
+async function exportInvoices(invoices, projects, filterProjectId, currency, bill) {
     const promises = [];
 
     invoices.forEach((invoice) => {
-        promises.push(exportInvoice(invoice, projects, filterProjectId, currency));
+        promises.push(exportInvoice(invoice, projects, filterProjectId, currency, bill));
     });
 
     const results = await Promise.all(promises);
@@ -53,6 +54,16 @@ async function exportInvoices(invoices, projects, filterProjectId, currency) {
     });
 
     self.postMessage(joined);
+}
+
+async function billInvoices(invoices, filterProjectId, bill) {
+    const promises = [];
+
+    invoices.forEach((invoice) => {
+        promises.push(billInvoice(invoice, filterProjectId, bill));
+    });
+
+    await Promise.all(promises);
 }
 
 function exportInvoice(invoice, projects, filterProjectId, currency) {
@@ -116,5 +127,32 @@ function exportInvoice(invoice, projects, filterProjectId, currency) {
         });
 
         resolve(joined);
+    });
+}
+
+function billInvoice(invoice, filterProjectId, bill) {
+    return new Promise(async (resolve) => {
+        if (!bill) {
+            resolve();
+            return;
+        }
+
+        const tasks = await idbKeyval.get(`tasks-${invoice}`);
+
+        if (!tasks || tasks.length <= 0) {
+            resolve();
+            return;
+        }
+
+        tasks.forEach((task) => {
+            if (task.data.invoice.status === 'open' && task.data.project_id === filterProjectId) {
+                task.data.invoice.status = 'billed';
+                task.data.updated_at = new Date().getTime();
+            }
+        });
+
+        await idbKeyval.set(`tasks-${invoice}`, tasks);
+
+        resolve();
     });
 }
