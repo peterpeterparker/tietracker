@@ -99,7 +99,7 @@ const Settings: React.FC<RootProps> = (props) => {
             return undefined;
         }
 
-        return <SettingsGeneral settings={settings}></SettingsGeneral>;
+        return <SettingsGeneral></SettingsGeneral>;
     }
 
     function renderSettingsTracker() {

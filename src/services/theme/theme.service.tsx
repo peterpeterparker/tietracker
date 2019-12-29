@@ -5,7 +5,6 @@ export class ThemeService {
     private static instance: ThemeService;
 
     private darkTheme: boolean | undefined = undefined;
-    private updateState: Function | undefined;
 
     private constructor() {
         // Private constructor, singleton
@@ -22,12 +21,8 @@ export class ThemeService {
         return this.darkTheme;
     }
 
-    async switch(dark: boolean | undefined) {
+    private async switch(dark: boolean | undefined) {
         this.darkTheme = dark;
-
-        if (this.updateState) {
-            this.updateState(dark);
-        }
 
         const body: HTMLElement | null = document.querySelector('body');
 
@@ -44,29 +39,30 @@ export class ThemeService {
         }
     }
 
-    setState(initStateFunction: Function) {
-        this.updateState = initStateFunction;
+    async switchTheme(): Promise<boolean | undefined> {
+        await this.switch(!this.darkTheme);
 
-        this.updateState(this.darkTheme);
+        return this.darkTheme;
     }
 
-    async initDarkModePreference(): Promise<void> {
+    async initDarkModePreference(): Promise<boolean> {
         try {
             const savedDarkModePreference: boolean = await get('dark_mode');
 
             // If user already specified once a preference, we use that as default
             if (savedDarkModePreference !== undefined) {
                 this.switch(savedDarkModePreference);
-                return;
+                return savedDarkModePreference;
             }
         } catch (err) {
             this.switch(false);
-            return;
+            return false;
         }
 
         // Otherwise we check the prefers-color-scheme of the OS
         const darkModePreferenceFromMedia: MediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
 
         this.switch(darkModePreferenceFromMedia.matches);
+        return darkModePreferenceFromMedia.matches;
     }
 }

@@ -60,7 +60,6 @@ import { RootProps, rootConnector } from './store/thunks/index.thunks';
 import TaskModal from './modals/task/TaskModal';
 import TaskDetails from './pages/details/task/TaskDetails';
 import ClientDetails from './pages/details/client/ClientDetails';
-import {ThemeService} from './services/theme/theme.service';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
 
@@ -75,17 +74,12 @@ const App: React.FC<RootProps> = (props: RootProps) => {
     promises.push(props.listTasks());
     promises.push(props.listProjectsInvoices());
     promises.push(props.initSettings());
+    promises.push(props.initTheme());
 
     await Promise.all(promises);
   }
 
-  async function initTheme() {
-    await ThemeService.getInstance().initDarkModePreference();
-  }
-
   useEffect(() => {
-    initTheme();
-
     initInitialState();
 
     initSelectedTab();
