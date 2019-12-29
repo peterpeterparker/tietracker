@@ -27,6 +27,14 @@ ion-card.client {
       fill: white;
       mix-blend-mode: screen;
     }
+
+    ion-label {
+      font-size: var(--font-size-big);
+      max-width: calc(100% - 16px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   ion-card-title,

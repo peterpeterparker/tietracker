@@ -1,15 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     IonPage,
     IonContent,
     IonCard,
     IonCardHeader,
-    IonCardSubtitle, IonCardTitle, IonRippleEffect, IonIcon
+    IonCardSubtitle, IonCardTitle, IonRippleEffect, IonLabel, IonModal
 } from '@ionic/react';
 
 import {useSelector} from 'react-redux';
-
-import {cash} from 'ionicons/icons';
 
 import styles from './Invoices.module.scss';
 
@@ -23,10 +21,20 @@ import {Settings} from '../../models/settings';
 
 import Header from '../../components/header/Header';
 
+import InvoiceModal from '../../modals/invoice/InvoiceModal';
+import {contrast} from '../../utils/utils.color';
+
 const Invoices: React.FC = () => {
 
     const invoices: Invoice[] = useSelector((state: RootState) => state.invoices.invoices);
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
+
+    const [selectedInvoice, setSelectedInvoice] = useState<Invoice | undefined>(undefined);
+
+    function closeAndRefresh() {
+
+        setSelectedInvoice(undefined);
+    }
 
     return (
         <IonPage>
@@ -38,6 +46,10 @@ const Invoices: React.FC = () => {
 
                     {renderProjects()}
                 </main>
+
+                <IonModal isOpen={selectedInvoice !== undefined} onDidDismiss={closeAndRefresh} cssClass="fullscreen">
+                    <InvoiceModal closeAction={closeAndRefresh} invoice={selectedInvoice}></InvoiceModal>
+                </IonModal>
             </IonContent>
         </IonPage>
     );
@@ -50,13 +62,15 @@ const Invoices: React.FC = () => {
         return <div className={styles.invoices}>
             {
                 invoices.map((invoice: Invoice, i: number) => {
-                    return <IonCard key={`invoice-${i}`} className="ion-activatable client" color="card">
-                        <div style={{background: invoice.client ? invoice.client.color : undefined}}>
-                            <IonIcon icon={cash} />
+                    const colorContrast: string = contrast(invoice.client ? invoice.client.color : undefined);
+
+                    return <IonCard key={`invoice-${i}`} onClick={() => setSelectedInvoice(invoice)} className="ion-activatable client" color="card">
+                        <div style={{background: invoice.client ? invoice.client.color : undefined, color: colorContrast}}>
+                            <IonLabel>{formatCurrency(invoice.billable, settings.currency)}</IonLabel>
                         </div>
                         <IonCardHeader>
-                            <IonCardSubtitle>{formatCurrency(invoice.billable, settings.currency)}</IonCardSubtitle>
-                            <IonCardTitle>{invoice.client ? invoice.client.name : ''}</IonCardTitle>
+                            <IonCardSubtitle>{invoice.client ? invoice.client.name : ''}</IonCardSubtitle>
+                            <IonCardTitle>{invoice.project ? invoice.project.name : ''}</IonCardTitle>
                         </IonCardHeader>
                         <IonRippleEffect></IonRippleEffect>
                     </IonCard>
