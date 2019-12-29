@@ -65,7 +65,11 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
   const [selectedTab, setSelectedTab] = useState<string>('home');
 
-  async function initInitialState() {
+  async function init() {
+    // Init theme first
+    await props.initTheme();
+
+    // Init data
     const promises = [];
     promises.push(props.initClients());
     promises.push(props.initActiveProjects());
@@ -74,13 +78,13 @@ const App: React.FC<RootProps> = (props: RootProps) => {
     promises.push(props.listTasks());
     promises.push(props.listProjectsInvoices());
     promises.push(props.initSettings());
-    promises.push(props.initTheme());
 
     await Promise.all(promises);
   }
 
+
   useEffect(() => {
-    initInitialState();
+    init();
 
     initSelectedTab();
 
