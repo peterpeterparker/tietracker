@@ -6,6 +6,7 @@ import {tasksReducer} from './tasks.reducer';
 import {summaryReducer} from './summary.reducer';
 import {invoicesReducer} from './invoices.reducer';
 import {settingsReducer} from './settings.reducer';
+import {themeReducer} from './theme.reducer';
 
 export const rootReducer = combineReducers({
     clients: clientsReducer,
@@ -13,7 +14,8 @@ export const rootReducer = combineReducers({
     tasks: tasksReducer,
     summary: summaryReducer,
     invoices: invoicesReducer,
-    settings: settingsReducer
+    settings: settingsReducer,
+    theme: themeReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

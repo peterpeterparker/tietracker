@@ -17,6 +17,7 @@ import { computeSummary } from './summary.thunks';
 import { listProjectsInvoices } from './invoices.thunks';
 import {initSettings, updateSettings} from './settings.thunks';
 import {TaskInProgress} from '../interfaces/task.inprogress';
+import {initTheme, switchTheme} from './theme.thunks';
 
 export type RootThunkDispatch = ThunkDispatch<RootState, undefined, Action>;
 
@@ -26,7 +27,8 @@ const mapState = (state: RootState) => ({
     taskInProgress: state.tasks.taskInProgress,
     summary: state.summary.summary,
     invoices: state.invoices.invoices,
-    settings: state.settings.settings
+    settings: state.settings.settings,
+    dark: state.theme.dark
 });
 
 const mapDispatch = (dispatch: RootThunkDispatch) => ({
@@ -48,7 +50,10 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
     listProjectsInvoices: () => dispatch(listProjectsInvoices()),
 
     initSettings: () => dispatch(initSettings()),
-    updateSettings: (settings: Settings) => dispatch(updateSettings(settings))
+    updateSettings: (settings: Settings) => dispatch(updateSettings(settings)),
+
+    initTheme: () => dispatch(initTheme()),
+    switchTheme: () => dispatch(switchTheme())
 });
 
 export const rootConnector = connect(
