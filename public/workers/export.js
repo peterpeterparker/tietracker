@@ -26,12 +26,33 @@ self.export = async (invoices, filterProjectId, currency) => {
 };
 
 async function exportInvoices(invoices, projects, filterProjectId, currency) {
-    for (let i = 0; i < invoices.length; i++) {
-        await exportInvoice(invoices[i], projects, filterProjectId, currency);
+    const promises = [];
+
+    invoices.forEach((invoice) => {
+        promises.push(exportInvoice(invoice, projects, filterProjectId, currency));
+    });
+
+    const results = await Promise.all(promises);
+
+    if (!results || results.length <= 0) {
+        self.postMessage(undefined);
+        return;
     }
 
-    // Notify end
-    self.postMessage(undefined);
+    const filteredResults = results.filter((tasks) => {
+        return tasks && tasks !== undefined && tasks.length > 0;
+    });
+
+    if (!filteredResults || filteredResults.length <= 0) {
+        self.postMessage(undefined);
+        return;
+    }
+
+    const joined = filteredResults.reduce((a, b) => {
+        return a + '\n' + b;
+    });
+
+    self.postMessage(joined);
 }
 
 function exportInvoice(invoice, projects, filterProjectId, currency) {
@@ -39,7 +60,7 @@ function exportInvoice(invoice, projects, filterProjectId, currency) {
         const tasks = await idbKeyval.get(`tasks-${invoice}`);
 
         if (!tasks || tasks.length <= 0) {
-            resolve();
+            resolve(undefined);
             return;
         }
 
@@ -49,7 +70,7 @@ function exportInvoice(invoice, projects, filterProjectId, currency) {
         });
 
         if (!filteredTasks || filteredTasks.length <= 0) {
-            resolve();
+            resolve(undefined);
             return;
         }
 
@@ -86,7 +107,7 @@ function exportInvoice(invoice, projects, filterProjectId, currency) {
         });
 
         if (!results || results.length <= 0) {
-            resolve();
+            resolve(undefined);
             return;
         }
 
@@ -94,10 +115,6 @@ function exportInvoice(invoice, projects, filterProjectId, currency) {
             return a + '\n' + b;
         });
 
-        if (joined !== undefined && joined.length > 0) {
-            self.postMessage(joined);
-        }
-
-        resolve();
+        resolve(joined);
     });
 }

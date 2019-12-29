@@ -34,19 +34,12 @@ export class ExportService {
                     return;
                 }
 
-                const writer = await fileHandle.createWriter();
-
-                // TODO
-
                 this.exportWorker.onmessage = async ($event: MessageEvent) => {
-                    console.log(writer);
-
                     if ($event && $event.data) {
+                        const writer = await fileHandle.createWriter();
                         await writer.write(0, $event.data);
-                    } else {
                         await writer.close();
                     }
-
                 };
 
                 this.exportWorker.postMessage({
