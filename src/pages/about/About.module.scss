@@ -1,0 +1,39 @@
+.intro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.social {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 32px;
+
+  ion-icon {
+    font-size: 2rem;
+    margin: 4px;
+    color: var(--ion-color-button);
+  }
+}
+
+.list {
+  list-style-type: none;
+  padding: 4px;
+}
+
+.github {
+  display: inline-flex;
+  justify-content: center;
+  align-self: center;
+
+  ion-icon {
+    margin-left: 4px;
+  }
+}
+
+.terms {
+  margin-top: 64px;
+}
