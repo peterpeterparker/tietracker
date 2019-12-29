@@ -182,11 +182,11 @@ const InvoiceModal: React.FC<Props> = (props) => {
                 </IonItem>
 
                 <IonItem className="item-title">
-                    <IonLabel>Status</IonLabel>
+                    <IonLabel>Close invoice</IonLabel>
                 </IonItem>
 
                 <IonItem className="item-checkbox">
-                    <IonLabel>Mark invoices as billed</IonLabel>
+                    <IonLabel>Set tasks as billed</IonLabel>
                     <IonCheckbox slot="end" style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
                                  checked={bill}
                                  onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}></IonCheckbox>
