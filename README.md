@@ -20,7 +20,38 @@
 
 ## Getting Started
 
-Coming soon...
+Tie Tracker is a free and open source time tracking application. Its usage is meant to be simple and has the goal to lets you track work hours across projects.
+
+## Features
+
+Track your productivity and billable hours.
+
+* ✅ Simple work hours tracking
+* ✅ Assign time to clients and projects
+* ✅ Mark entries as billed
+ 
+## Reporting
+
+Yet not complicated but effective reporting.
+
+* ✅ Weekly work summary
+* ✅ Today's list of activities
+* ✅ Export open invoices to CSV timesheets
+
+## Technical Stack
+
+This app is developed with [Ionic](https://ionicframework.com), [React](https://reactjs.org), [React-redux](https://react-redux.js.org), Web Workers and other cool stuffs.
+
+## Run Locally
+
+To develop and run this documentation locally, proceed as following:
+
+```
+git clone https://github.com/peterpeterparker/tietracker
+cd tietracker
+npm install
+ionic serve
+```
  
 ## License
 

@@ -1,0 +1,33 @@
+.intro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.social {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  ion-icon {
+    font-size: 1.4rem;
+    margin: 4px;
+    color: var(--ion-color-button);
+  }
+}
+
+.list {
+  list-style-type: none;
+  padding: 4px;
+}
+
+.github {
+  display: inline-flex;
+  justify-content: center;
+  align-self: center;
+
+  ion-icon {
+    margin-right: 4px;
+  }
+}
