@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
 import { useSelector } from 'react-redux';
 
 import { playCircle } from 'ionicons/icons';
@@ -20,7 +20,7 @@ interface Props extends RootProps {
 
 const Projects: React.FC<Props> = (props: Props) => {
 
-    const projects: Project[] = useSelector((state: RootState) => state.activeProjects.projects);
+    const projects: Project[] | undefined = useSelector((state: RootState) => state.activeProjects.projects);
     const task: Task | undefined = useSelector((state: RootState) => state.tasks.taskInProgress);
     const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
@@ -66,7 +66,7 @@ const Projects: React.FC<Props> = (props: Props) => {
     }
 
     function renderDummyProject() {
-        return <div className={styles.projects}>
+        return <div className={styles.projects} style={projects === undefined ? {visibility: 'hidden', opacity: 0} as CSSProperties : undefined}>
             <IonCard onClick={() => props.addAction()} className="ion-activatable ion-margin-bottom client" color="card">
                 <div style={{ background: 'var(--ion-color-secondary)' }}>
                     <IonIcon icon={playCircle} />

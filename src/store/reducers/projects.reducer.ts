@@ -2,18 +2,18 @@ import { ProjectActionTypes, CREATE_PROJECT, INIT_ACTIVE_PROJECTS } from '../typ
 import { Project } from '../../models/project';
 
 export interface ProjectsState {
-    projects: Project[];
+    projects: Project[] | undefined;
 }
 
 const initialState: ProjectsState = {
-    projects: []
-}
+    projects: undefined
+};
 
 export function projectsReducer(state = initialState, action: ProjectActionTypes): ProjectsState {
     switch (action.type) {
         case CREATE_PROJECT:
             return {
-                projects: [action.payload, ...state.projects]
+                projects: state.projects !== undefined ? [action.payload, ...state.projects] : [action.payload]
             };
         case INIT_ACTIVE_PROJECTS:
             return {

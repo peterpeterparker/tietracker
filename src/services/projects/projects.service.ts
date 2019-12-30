@@ -89,7 +89,7 @@ export class ProjectsService {
                     return new Date(b.data.updated_at as Date | number).getTime() - new Date(a.data.updated_at as Date | number).getTime();
                 });
 
-                resolve(sortedProjects);
+                resolve(sortedProjects !== undefined ? sortedProjects : []);
             } catch (err) {
                 reject(err);
             }
