@@ -11,8 +11,6 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
-import {SplashScreen} from '@capacitor/core';
-
 import { options, card, information } from 'ionicons/icons';
 
 import Home from './pages/home/Home';
@@ -67,6 +65,9 @@ import About from './pages/about/About';
 import Terms from './pages/terms/Terms';
 import Privacy from './pages/privacy/Privacy';
 
+import { Plugins } from '@capacitor/core';
+const { SplashScreen } = Plugins;
+
 const App: React.FC<RootProps> = (props: RootProps) => {
 
   const [selectedTab, setSelectedTab] = useState<string>('home');
@@ -89,7 +90,6 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
     await Promise.all(promises);
   }
-
 
   useEffect(() => {
     init();
