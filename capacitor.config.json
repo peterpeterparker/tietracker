@@ -1,0 +1,8 @@
+{
+  "appId": "com.tietracker.app",
+  "appName": "Tie Tracker",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}
