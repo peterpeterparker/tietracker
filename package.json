@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@capacitor/android": "^1.4.0",
     "@capacitor/core": "^1.4.0",
     "@capacitor/ios": "^1.4.0",
     "@date-io/date-fns": "^1.3.13",
