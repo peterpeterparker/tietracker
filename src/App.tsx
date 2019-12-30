@@ -11,6 +11,8 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
+import {SplashScreen} from '@capacitor/core';
+
 import { options, card, information } from 'ionicons/icons';
 
 import Home from './pages/home/Home';
@@ -72,6 +74,8 @@ const App: React.FC<RootProps> = (props: RootProps) => {
   async function init() {
     // Init theme first
     await props.initTheme();
+
+    await SplashScreen.hide();
 
     // Init data
     const promises = [];
