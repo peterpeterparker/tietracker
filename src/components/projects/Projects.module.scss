@@ -24,3 +24,9 @@
     min-width: 12rem;
   }
 }
+
+.dummyProjectHeader {
+  ion-card-subtitle, ion-card-title {
+    text-transform: inherit;
+  }
+}

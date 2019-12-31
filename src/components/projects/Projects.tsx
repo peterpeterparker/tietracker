@@ -1,18 +1,19 @@
 import React, {CSSProperties} from 'react';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
-import { playCircle } from 'ionicons/icons';
+import {play} from 'ionicons/icons';
 
-import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonRippleEffect } from '@ionic/react';
+import {IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonRippleEffect, IonLabel} from '@ionic/react';
 
 import styles from './Projects.module.scss';
 
-import { Project } from '../../models/project';
-import { Task } from '../../models/task';
+import {Project} from '../../models/project';
+import {Task} from '../../models/task';
 
-import { RootState } from '../../store/reducers';
-import { rootConnector, RootProps } from '../../store/thunks/index.thunks';
+import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {Settings as SettingsModel} from '../../models/settings';
+import {contrast} from '../../utils/utils.color';
 
 interface Props extends RootProps {
     addAction: Function;
@@ -49,9 +50,13 @@ const Projects: React.FC<Props> = (props: Props) => {
             <div>
                 {
                     projects.map((project: Project) => {
-                        return <IonCard key={project.id} onClick={() => startStopTask(project)} className="ion-activatable ion-margin-bottom client" color="card">
-                            <div style={{ background: project.data.client ? project.data.client.color : undefined }}>
-                                <IonIcon icon={playCircle} />
+                        const colorContrast: string = contrast(project.data.client ? project.data.client.color : undefined);
+
+                        return <IonCard key={project.id} onClick={() => startStopTask(project)}
+                                        className="ion-activatable ion-margin-bottom client" color="card">
+                            <div style={{background: project.data.client ? project.data.client.color : undefined, color: colorContrast}}>
+                                <IonLabel>Start</IonLabel>
+                                <IonIcon icon={play}/>
                             </div>
                             <IonCardHeader>
                                 <IonCardSubtitle>{project.data.client ? project.data.client.name : ''}</IonCardSubtitle>
@@ -66,14 +71,17 @@ const Projects: React.FC<Props> = (props: Props) => {
     }
 
     function renderDummyProject() {
-        return <div className={styles.projects} style={projects === undefined ? {visibility: 'hidden', opacity: 0} as CSSProperties : undefined}>
-            <IonCard onClick={() => props.addAction()} className="ion-activatable ion-margin-bottom client" color="card">
-                <div style={{ background: 'var(--ion-color-secondary)' }}>
-                    <IonIcon icon={playCircle} />
+        return <div className={styles.projects}
+                    style={projects === undefined ? {visibility: 'hidden', opacity: 0} as CSSProperties : undefined}>
+            <IonCard onClick={() => props.addAction()} className="ion-activatable ion-margin-bottom client"
+                     color="card">
+                <div>
+                    <IonLabel>Start</IonLabel>
+                    <IonIcon icon={play}/>
                 </div>
-                <IonCardHeader>
-                    <IonCardSubtitle>Start</IonCardSubtitle>
-                    <IonCardTitle>Add your first project</IonCardTitle>
+                <IonCardHeader className={styles.dummyProjectHeader}>
+                    <IonCardSubtitle>Click here</IonCardSubtitle>
+                    <IonCardTitle>Start your first project</IonCardTitle>
                 </IonCardHeader>
                 <IonRippleEffect></IonRippleEffect>
             </IonCard>
