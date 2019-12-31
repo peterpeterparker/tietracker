@@ -5,3 +5,9 @@
 .subtitle {
   text-transform: inherit;
 }
+
+.header {
+  ion-card-subtitle {
+    font-weight: 300;
+  }
+}

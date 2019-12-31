@@ -23,7 +23,7 @@ const Summary: React.FC = () => {
     return (<div className="ion-padding-end ion-padding-top">
         <h1>Weekly Summary</h1>
         <IonCard className={styles.card} color="card">
-            <IonCardHeader>
+            <IonCardHeader className={styles.header}>
                 <IonCardSubtitle className={styles.subtitle}>Tracked: {formatTime(summary !== undefined ? summary.milliseconds : undefined)}</IonCardSubtitle>
                 <IonCardTitle>Billable: {formatCurrency(summary !== undefined ? summary.billable : undefined, settings.currency)}</IonCardTitle>
             </IonCardHeader>
