@@ -43,4 +43,8 @@ ion-card.client {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  ion-card-content {
+    padding-top: 0;
+  }
 }
