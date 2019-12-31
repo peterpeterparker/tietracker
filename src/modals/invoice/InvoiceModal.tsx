@@ -1,6 +1,7 @@
 import React, {CSSProperties, FormEvent, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {
+    getPlatforms,
     IonButton,
     IonButtons, IonCheckbox,
     IonContent,
@@ -85,10 +86,10 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
         setInProgress(true);
 
-        // TODO: Capacitor if mobile
-
         if (isPlatform('desktop') && isChrome() && isHttps()) {
             await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, bill);
+        } else if (isPlatform('mobile')) {
+            await ExportService.getInstance().exportMobileFileSystem(props.invoice, from, to, settings.currency, bill);
         } else  {
             await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, bill);
         }
