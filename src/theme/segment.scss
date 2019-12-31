@@ -1,14 +1,15 @@
 body.dark {
-  ion-segment {
-    ion-segment-button {
-      color: rgba(255,255,255,0.4);
+  ion-toolbar:not(.ion-color) {
+    ion-segment[class*="sc-ion-segment"]:not(.ion-color) {
+      > ion-segment-button {
+        color: rgba(255,255,255,0.4);
 
-      &.segment-button-checked {
-        color: var(--ion-text-color);
-        --border-color: var(--ion-text-color);
-        --indicator-color-checked: var(--ion-text-color);
+        &.segment-button-checked {
+          color: var(--ion-text-color);
+          --border-color: var(--ion-text-color);
+          --indicator-color-checked: var(--ion-text-color);
+        }
       }
     }
   }
-
 }

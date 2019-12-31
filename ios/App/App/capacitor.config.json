@@ -1,0 +1,14 @@
+{
+  "appId": "com.tietracker.app",
+  "appName": "Tie Tracker",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "cordova": {},
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false,
+      "androidScaleType": "CENTER_CROP"
+    }
+  }
+}
