@@ -3,7 +3,10 @@ import {interval} from '../../utils/utils.date';
 import {Invoice} from '../../store/interfaces/invoice';
 import {format} from 'date-fns';
 
+import {SocialSharing } from '@ionic-native/social-sharing';
+
 import {Plugins, FilesystemDirectory, FilesystemEncoding} from '@capacitor/core';
+import {StatResult} from '@capacitor/core/dist/esm/core-plugin-definitions';
 
 const {Filesystem} = Plugins;
 
@@ -129,17 +132,14 @@ export class ExportService {
                     if ($event && $event.data) {
                         await this.makeMobileDir();
 
-                        // await Filesystem.deleteFile({
-                        //     path: `tietracker/${filename}`,
-                        //     directory: FilesystemDirectory.Documents
-                        // });
-
                         await Filesystem.writeFile({
                             path: `tietracker/${filename}`,
                             data: $event.data,
                             directory: FilesystemDirectory.Documents,
                             encoding: FilesystemEncoding.UTF8
                         });
+
+                        await this.shareMobile(invoice, filename);
                     }
                 };
 
@@ -243,5 +243,35 @@ export class ExportService {
                 resolve(false);
             }
         });
+    }
+
+    private shareMobile(invoice: Invoice, filename: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            try {
+                const stat: StatResult = await Filesystem.stat({
+                    path: `tietracker/${filename}`,
+                    directory: FilesystemDirectory.Documents
+                });
+
+                if (!stat || !stat.uri) {
+                    reject('File not found.');
+                    return;
+                }
+
+                await SocialSharing.shareWithOptions({
+                    subject: this.shareSubject(invoice),
+                    files: [stat.uri],
+                    chooserTitle: 'Pick an app'
+                });
+
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    private shareSubject(invoice: Invoice): string {
+        return `Tie Tracker${invoice.client && invoice.client.name ? ` - ${invoice.client.name}` : ''}`
     }
 }
