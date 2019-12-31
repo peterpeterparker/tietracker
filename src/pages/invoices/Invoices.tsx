@@ -6,7 +6,7 @@ import {
     IonCardHeader,
     IonCardSubtitle, IonCardTitle, IonRippleEffect, IonIcon, IonModal,
     IonCardContent,
-    IonLabel
+    IonLabel, IonHeader, IonToolbar
 } from '@ionic/react';
 
 import {useSelector} from 'react-redux';
@@ -44,7 +44,11 @@ const Invoices: React.FC = () => {
                 <Header></Header>
 
                 <main className="ion-padding">
-                    <h1>Open Invoices</h1>
+                    <IonHeader>
+                        <IonToolbar className="title">
+                            <h1>Open Invoices</h1>
+                        </IonToolbar>
+                    </IonHeader>
 
                     {renderProjects()}
                 </main>

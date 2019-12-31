@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {IonContent, IonPage, IonLabel, IonIcon} from '@ionic/react';
+import {IonContent, IonPage, IonLabel, IonIcon, IonHeader, IonToolbar} from '@ionic/react';
 
 import Header from '../../components/header/Header';
 
@@ -16,6 +16,12 @@ const About: React.FC = () => {
                 <Header></Header>
 
                 <main className="ion-padding">
+                    <IonHeader>
+                        <IonToolbar className="title">
+                            <h1>About</h1>
+                        </IonToolbar>
+                    </IonHeader>
+
                     <div className={styles.intro}>
                         <img src="assets/icon/logo.svg" alt="Tie Tracker logo" height="160"/>
 

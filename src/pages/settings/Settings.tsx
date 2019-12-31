@@ -8,7 +8,9 @@ import {
     IonSpinner,
     IonButton,
     IonSegment,
-    IonSegmentButton
+    IonSegmentButton,
+    IonHeader,
+    IonToolbar
 } from '@ionic/react';
 
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
@@ -63,7 +65,12 @@ const Settings: React.FC<RootProps> = (props) => {
                 <Header></Header>
 
                 <main className="ion-padding">
-                    {renderSettingsCategory()}
+                    <IonHeader>
+                        <IonToolbar className="title">
+                            {renderSettingsCategory()}
+                        </IonToolbar>
+                    </IonHeader>
+
                     {renderSettings()}
                 </main>
             </IonContent>
