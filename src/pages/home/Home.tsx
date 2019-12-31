@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {RouteComponentProps} from 'react-router';
 
 import {
@@ -6,10 +6,15 @@ import {
   IonHeader,
   IonPage,
   IonToolbar,
-  IonSearchbar,
   IonButton,
-  IonModal
+  IonModal,
+  IonLabel,
+  useIonViewDidEnter,
+  useIonViewDidLeave,
+  IonIcon
 } from '@ionic/react';
+
+import {search} from 'ionicons/icons';
 
 import { useTranslation } from 'react-i18next';
 
@@ -30,13 +35,29 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   const [showModalClient, setShowModalClient] = useState(false);
   const [showModalClients, setShowModalClients] = useState(false);
 
+  const [modalPresented,setModalPresented] = useState(false);
+
   async function closeAndNavigate($event: CustomEvent) {
     await setShowModalClients(false);
+    await setModalPresented(false);
 
     if ($event && $event.detail && $event.detail.data) {
       props.history.push(`/client/${$event.detail.data}`);
     }
   }
+
+  async function closeClientModal() {
+    await setShowModalClient(false);
+    await setModalPresented(false);
+  }
+
+  useIonViewDidEnter(() => {
+    document.addEventListener('ionModalDidPresent', () => setModalPresented(true), false);
+  });
+
+  useIonViewDidLeave(() => {
+    document.removeEventListener('ionModalDidPresent', () => setModalPresented(true), true);
+  });
 
   return (
     <IonPage>
@@ -44,16 +65,23 @@ const Home: React.FC<RouteComponentProps> = (props) => {
 
         <Header></Header>
 
-        <IonModal isOpen={showModalClient} onDidDismiss={() => setShowModalClient(false)} cssClass="fullscreen">
-          <CreateClientModal closeAction={async () => await setShowModalClient(false)}></CreateClientModal>
+        <IonModal isOpen={showModalClient} onDidDismiss={async () => await closeClientModal()} cssClass="fullscreen">
+          <CreateClientModal closeAction={async () => await closeClientModal()}></CreateClientModal>
         </IonModal>
 
         <IonModal isOpen={showModalClients} onDidDismiss={($event) => closeAndNavigate($event)} cssClass="fullscreen">
-          <ClientsModal isOpen={showModalClients}></ClientsModal>
+          <ClientsModal presented={modalPresented}></ClientsModal>
         </IonModal>
 
         <main className="ion-padding-start ion-padding-bottom ion-padding-top">
-          <IonHeader className="ion-padding-end"><IonToolbar><IonSearchbar placeholder={t('search.clients')} className={styles.searchbar} onIonFocus={() => setShowModalClients(true)}></IonSearchbar></IonToolbar></IonHeader>
+          <IonHeader className="ion-padding-end">
+            <IonToolbar className={styles.toolbar}>
+              <button aria-label={t('search.clients')} className={styles.searchbar} onClick={() => setShowModalClients(true)}>
+                <IonIcon icon={search} />
+                <IonLabel>{t('search.clients')}</IonLabel>
+              </button>
+            </IonToolbar>
+          </IonHeader>
 
           <div className={styles.addclient}>
             <IonButton onClick={() => setShowModalClient(true)} fill="outline" color="medium" size="small">Add a new client</IonButton>

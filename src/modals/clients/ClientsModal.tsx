@@ -20,7 +20,7 @@ import {
 } from '@ionic/react';
 
 interface Props extends RootProps {
-    isOpen: boolean;
+    presented: boolean;
 }
 
 const ClientsModal: React.FC<Props> = (props) => {
@@ -34,16 +34,20 @@ const ClientsModal: React.FC<Props> = (props) => {
     const [filteredClients, setFilteredClients] = useState<Client[] | undefined>(undefined);
 
     useEffect(() => {
-        if (props.isOpen) {
-            // HACK: add a timeout
-            setTimeout(async () => {
-                await filterRef.current.setFocus();
-            }, 100);
-        }
-
         setFilteredClients(clients);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.isOpen, clients]);
+    }, [clients]);
+
+    useEffect(() => {
+        if (props.presented) {
+            focusFilter();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.presented]);
+
+    async function focusFilter() {
+        await filterRef.current.setFocus();
+    }
 
     async function onFilter($event: CustomEvent<KeyboardEvent>) {
         if (!$event) {
