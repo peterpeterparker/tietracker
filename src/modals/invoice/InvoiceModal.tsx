@@ -87,7 +87,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
         if (isPlatform('desktop') && isChrome() && isHttps()) {
             await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, bill);
-        } else if (isPlatform('mobile')) {
+        } else if (isPlatform('hybrid')) {
             await ExportService.getInstance().exportMobileFileSystem(props.invoice, from, to, settings.currency, bill);
         } else  {
             await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, bill);
@@ -194,7 +194,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             </IonList>
 
             <IonButton type="submit" className="ion-margin-top" disabled={billable === undefined || inProgress} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                <IonLabel>{inProgress ? "Wait for it..." : "Submit"}</IonLabel>
+                <IonLabel>{inProgress ? "Wait for it..." : "Export"}</IonLabel>
             </IonButton>
         </form>
     }
