@@ -3,6 +3,8 @@ import {useSelector} from 'react-redux';
 
 import {lightFormat} from 'date-fns';
 
+import styles from './Tasks.module.scss';
+
 import {IonList, IonLabel} from '@ionic/react';
 
 import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
@@ -27,7 +29,7 @@ const Tasks: React.FC = () => {
 
     function renderTasks() {
         if (!tasks || tasks.length <= 0) {
-            return <IonLabel>No tasks achieved yet.</IonLabel>;
+            return <IonLabel className="placeholder">No tasks registered yet.</IonLabel>;
         }
 
         return <IonList>
