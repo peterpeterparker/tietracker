@@ -3,7 +3,7 @@
         "clients": "Search clients"
     },
     "add": {
-        "client": "Add a new client",
-        "start": "Add a client to get started"
+        "client": "Create a client",
+        "start": "Create a client to get started"
     }
 }
