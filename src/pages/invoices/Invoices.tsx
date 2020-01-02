@@ -63,7 +63,7 @@ const Invoices: React.FC = () => {
 
     function renderProjects() {
         if (!invoices || invoices.length <= 0) {
-            return <p>No clients need to be billed.</p>
+            return <IonLabel className="placeholder">No clients need to be billed.</IonLabel>
         }
 
         return <div className={styles.invoices}>

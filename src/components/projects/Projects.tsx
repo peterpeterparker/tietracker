@@ -1,4 +1,4 @@
-import React, {CSSProperties} from 'react';
+import React from 'react';
 import {useSelector} from 'react-redux';
 
 import {play} from 'ionicons/icons';
@@ -36,7 +36,7 @@ const Projects: React.FC<Props> = (props: Props) => {
 
     return (
         <div className="ion-padding-top">
-            <h1 className={styles.title}>Projects</h1>
+            <h1 className={!projects || projects.length <= 0 ? undefined : styles.title}>Projects</h1>
             {renderProjects()}
         </div>
     );
@@ -71,21 +71,7 @@ const Projects: React.FC<Props> = (props: Props) => {
     }
 
     function renderDummyProject() {
-        return <div className={styles.projects}
-                    style={projects === undefined ? {visibility: 'hidden', opacity: 0} as CSSProperties : undefined}>
-            <IonCard onClick={() => props.addAction()} className="ion-activatable ion-margin-bottom client"
-                     color="card">
-                <div>
-                    <IonLabel>Start</IonLabel>
-                    <IonIcon icon={play}/>
-                </div>
-                <IonCardHeader className={styles.dummyProjectHeader}>
-                    <IonCardSubtitle>Click here</IonCardSubtitle>
-                    <IonCardTitle>Start your first project</IonCardTitle>
-                </IonCardHeader>
-                <IonRippleEffect></IonRippleEffect>
-            </IonCard>
-        </div>
+        return <IonLabel className="placeholder">No ongoing projects.</IonLabel>;
     }
 
 };

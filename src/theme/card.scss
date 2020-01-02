@@ -17,15 +17,14 @@ ion-card.client {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    isolation: isolate;
+    flex-direction: row-reverse;
 
     ion-icon {
-      font-size: 2rem;
+      font-size: var(--font-size-big);
     }
 
     ion-label {
-      font-size: var(--font-size-super-big);
+      font-size: var(--font-size-big);
       font-weight: 500;
       margin: 0 4px;
     }
@@ -38,7 +37,8 @@ ion-card.client {
     text-overflow: ellipsis;
   }
 
-  ion-card-subtitle {
+  ion-card-title,
+  ion-card-content {
     font-weight: 300;
   }
 

@@ -27,7 +27,7 @@ const Tasks: React.FC = () => {
 
     function renderTasks() {
         if (!tasks || tasks.length <= 0) {
-            return <IonLabel>No tasks achieved yet.</IonLabel>;
+            return <IonLabel className="placeholder">No tasks registered yet.</IonLabel>;
         }
 
         return <IonList>
