@@ -6,5 +6,10 @@
     "project": "Project (min. 3 characters)",
     "hourly_rate": "Hourly rate (zero or more)",
     "var": "vat"
+  },
+  "search": {
+    "title": "Search Clients",
+    "filter": "Filter clients",
+    "empty": "No matching clients."
   }
 }

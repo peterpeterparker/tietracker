@@ -1,12 +1,6 @@
 import React, {createRef, CSSProperties, RefObject, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 
-import styles from './ClientsModal.module.scss';
-
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {RootState} from '../../store/reducers';
-
-import {Client} from '../../models/client';
 import {
     IonButton,
     IonButtons,
@@ -19,11 +13,22 @@ import {
     IonLabel
 } from '@ionic/react';
 
+import {useTranslation} from 'react-i18next';
+
+import styles from './ClientsModal.module.scss';
+
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
+import {RootState} from '../../store/reducers';
+
+import {Client} from '../../models/client';
+
 interface Props extends RootProps {
     presented: boolean;
 }
 
 const ClientsModal: React.FC<Props> = (props) => {
+
+    const {t} = useTranslation('clients');
 
     const headerRef: RefObject<HTMLIonHeaderElement> = React.createRef();
 
@@ -91,7 +96,7 @@ const ClientsModal: React.FC<Props> = (props) => {
         <IonContent>
             <IonHeader ref={headerRef}>
                 <IonToolbar>
-                    <IonTitle>Search Clients</IonTitle>
+                    <IonTitle>{t('search.title')}</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => closeModal()}>
                             <IonIcon name="close" slot="icon-only"></IonIcon>
@@ -101,7 +106,7 @@ const ClientsModal: React.FC<Props> = (props) => {
             </IonHeader>
 
             <main className="ion-padding">
-                <IonSearchbar debounce={500} placeholder="Filter clients" className={styles.searchbar}
+                <IonSearchbar debounce={500} placeholder={t('search.filter')} className={styles.searchbar}
                               ref={filterRef}
                               onIonInput={($event: CustomEvent<KeyboardEvent>) => onFilter($event)}
                 ></IonSearchbar>
@@ -115,7 +120,7 @@ const ClientsModal: React.FC<Props> = (props) => {
 
     function renderClients() {
         if (!filteredClients || filteredClients.length <= 0) {
-            return <IonItem className={styles.item + ' ' + styles.label} lines="none" detail={false}><IonLabel className="placeholder">No matching clients.</IonLabel></IonItem>;
+            return <IonItem className={styles.item + ' ' + styles.label} lines="none" detail={false}><IonLabel className="placeholder">{t('search.empty')}</IonLabel></IonItem>;
         }
 
         return filteredClients.map((client: Client) => {
