@@ -9,5 +9,10 @@
   "tracker": {
     "stop": "Stop current task",
     "description": "Description of the task"
+  },
+  "details": {
+    "description": "Description",
+    "from": "From",
+    "to": "To"
   }
 }

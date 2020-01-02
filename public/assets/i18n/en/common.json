@@ -5,6 +5,7 @@
     "export": "Export",
     "wait": "Wait for it...",
     "create": "Create",
-    "update": "Update"
+    "update": "Update",
+    "delete": "Delete"
   }
 }
