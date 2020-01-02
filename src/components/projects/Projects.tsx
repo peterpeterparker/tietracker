@@ -14,12 +14,15 @@ import {RootState} from '../../store/reducers';
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {Settings as SettingsModel} from '../../models/settings';
 import {contrast} from '../../utils/utils.color';
+import {useTranslation} from 'react-i18next';
 
 interface Props extends RootProps {
     addAction: Function;
 }
 
 const Projects: React.FC<Props> = (props: Props) => {
+
+    const {t} = useTranslation('projects');
 
     const projects: Project[] | undefined = useSelector((state: RootState) => state.activeProjects.projects);
     const task: Task | undefined = useSelector((state: RootState) => state.tasks.taskInProgress);
@@ -36,7 +39,7 @@ const Projects: React.FC<Props> = (props: Props) => {
 
     return (
         <div className="ion-padding-top">
-            <h1 className={!projects || projects.length <= 0 ? undefined : styles.title}>Projects</h1>
+            <h1 className={!projects || projects.length <= 0 ? undefined : styles.title}>{t('title')}</h1>
             {renderProjects()}
         </div>
     );
@@ -54,7 +57,10 @@ const Projects: React.FC<Props> = (props: Props) => {
 
                         return <IonCard key={project.id} onClick={() => startStopTask(project)}
                                         className="ion-activatable ion-margin-bottom client" color="card">
-                            <div style={{background: project.data.client ? project.data.client.color : undefined, color: colorContrast}}>
+                            <div style={{
+                                background: project.data.client ? project.data.client.color : undefined,
+                                color: colorContrast
+                            }}>
                                 <IonLabel>Start</IonLabel>
                                 <IonIcon icon={play}/>
                             </div>
@@ -71,7 +77,7 @@ const Projects: React.FC<Props> = (props: Props) => {
     }
 
     function renderDummyProject() {
-        return <IonLabel className="placeholder">No ongoing projects.</IonLabel>;
+        return <IonLabel className="placeholder">{t('empty')}</IonLabel>;
     }
 
 };
