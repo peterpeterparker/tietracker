@@ -7,5 +7,11 @@
     "create": "Create",
     "update": "Update",
     "delete": "Delete"
+  },
+  "navigation": {
+    "home": "Home",
+    "invoices": "Invoices",
+    "settings":  "Settings",
+    "about": "About"
   }
 }
