@@ -1,0 +1,32 @@
+{
+  "save": "Save settings",
+  "segments": {
+    "general": "General",
+    "tracker": "Tracker",
+    "templates": "Templates"
+  },
+  "general": {
+    "dark": "Dark",
+    "light": "Light"
+  },
+  "templates": {
+    "title": "Templates for the descriptions of the tasks."
+  },
+  "tracker": {
+    "time": {
+      "title": "Round tracked time",
+      "minute": {
+        "1": "1 minute",
+        "5": "5 mintes",
+        "15": "15 minutes"
+      }
+    },
+    "currency": {
+      "title": "Currency"
+    },
+    "var": {
+      "title": "Vat",
+      "input": "Vat value input"
+    }
+  }
+}
