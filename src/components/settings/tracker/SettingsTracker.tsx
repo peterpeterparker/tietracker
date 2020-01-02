@@ -99,7 +99,7 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
             return undefined;
         }
 
-        return <IonSelect placeholder="Currency" value={props.settings.currency}
+        return <IonSelect interfaceOptions={{header: 'Currency'}} placeholder="Currency" value={props.settings.currency}
                           onIonChange={($event: CustomEvent) => onCurrencyChange($event)}>
             {
                 Object.keys(currencies).map((key: string) => {
