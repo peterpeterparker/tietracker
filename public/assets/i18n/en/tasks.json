@@ -5,5 +5,9 @@
   "today": {
     "title": "Today's entries",
     "empty": "No entries registered yet."
+  },
+  "tracker": {
+    "stop": "Stop current task",
+    "description": "Description of the task"
   }
 }

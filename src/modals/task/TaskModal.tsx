@@ -3,6 +3,8 @@ import {useSelector} from 'react-redux';
 
 import {IonIcon, IonSelectOption, IonSelect} from '@ionic/react';
 
+import {useTranslation} from 'react-i18next';
+
 import styles from './TaskModal.module.scss';
 
 import {checkmarkCircle} from 'ionicons/icons';
@@ -18,6 +20,8 @@ import {contrast} from '../../utils/utils.color';
 import {Settings as SettingsModel} from '../../models/settings';
 
 const TaskModal: React.FC<RootProps> = (props: RootProps) => {
+
+    const {t} = useTranslation('tasks');
 
     const [freeze, setFreeze] = useState<boolean>(false);
 
@@ -80,7 +84,7 @@ const TaskModal: React.FC<RootProps> = (props: RootProps) => {
 
                 {renderTaskDescription()}
 
-                <button onClick={() => stopTask()} aria-label="Stop current task" className="ion-activatable"
+                <button onClick={() => stopTask()} aria-label={t('tracker.stop')} className="ion-activatable"
                         disabled={freeze}>
                     <IonIcon icon={checkmarkCircle}/>
                 </button>
@@ -97,7 +101,7 @@ const TaskModal: React.FC<RootProps> = (props: RootProps) => {
             return undefined;
         }
 
-        return <IonSelect interfaceOptions={{header: 'Description of the task'}} placeholder="Description of the task"
+        return <IonSelect interfaceOptions={{header: t('tracker.description')}} placeholder={t('tracker.description')}
                           value={task.data.description}
                           onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
             {
