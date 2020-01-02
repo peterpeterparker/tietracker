@@ -2,6 +2,8 @@ import React, {createRef, CSSProperties, FormEvent, RefObject, useEffect, useSta
 import {RouteComponentProps} from 'react-router';
 import {useSelector} from 'react-redux';
 
+import {useTranslation} from 'react-i18next';
+
 import styles from './ClientDetails.module.scss';
 
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
@@ -49,6 +51,8 @@ interface ClientDetailsProps extends RouteComponentProps<{
 type Props = RootProps & ClientDetailsProps;
 
 const ClientDetails: React.FC<Props> = (props: Props) => {
+
+    const {t} = useTranslation(['projects', 'common', 'clients']);
 
     const clientColorRef: RefObject<any> = createRef();
 
@@ -204,7 +208,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
             <IonList className={styles.clientList + ' inputs-list'}>
                 <IonItem className="item-title">
-                    <IonLabel>Client</IonLabel>
+                    <IonLabel>{t('clients:details.client')}</IonLabel>
                 </IonItem>
                 <IonItem>
                     <IonInput debounce={500} minlength={3} maxlength={32}
@@ -215,7 +219,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                 </IonItem>
 
                 <IonItem className="item-title ion-margin-top">
-                    <IonLabel>Color</IonLabel>
+                    <IonLabel>{t('clients:create.color')}</IonLabel>
                 </IonItem>
 
                 <div className={styles.color}>
@@ -228,7 +232,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
             <IonList className={styles.projectListTitle + ' inputs-list'}>
                 <IonItem className="item-title ion-no-margin">
-                    <IonLabel>Projects</IonLabel>
+                    <IonLabel>{t('projects:projects.title')}</IonLabel>
                 </IonItem>
             </IonList>
 
@@ -237,19 +241,19 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
             </IonList>
 
             <div className={styles.actions}>
-                <IonButton type="submit" disabled={saving || !valid} aria-label="Update client" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                    <IonLabel>Update</IonLabel>
+                <IonButton type="submit" disabled={saving || !valid} aria-label={t('common:actions.update')} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+                    <IonLabel>{t('common:actions.update')}</IonLabel>
                 </IonButton>
 
-                <button type="button" onClick={() => setProjectModalAction(ProjectModalAction.CREATE)} aria-label="Add a new project"
-                        aria-disabled={saving}><IonLabel>Add a new project</IonLabel></button>
+                <IonButton type="button" fill="outline" color="button" onClick={() => setProjectModalAction(ProjectModalAction.CREATE)} aria-label={t('clients:details.create_project')}
+                        aria-disabled={saving}><IonLabel>{t('clients:details.create_project')}</IonLabel></IonButton>
             </div>
         </form>
     }
 
     function renderProjects() {
         if (!projects || projects.length <= 0) {
-            return <p>No projects.</p>
+            return <p>{t('clients:details.empty')}</p>
         }
 
         return projects.map((project: Project) => {

@@ -11,5 +11,10 @@
     "title": "Search Clients",
     "filter": "Filter clients",
     "empty": "No matching clients."
+  },
+  "details": {
+    "client": "Client",
+    "create_project": "Create another project",
+    "empty": "No projects."
   }
 }
