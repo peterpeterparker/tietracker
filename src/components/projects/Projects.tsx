@@ -39,7 +39,7 @@ const Projects: React.FC<Props> = (props: Props) => {
 
     return (
         <div className="ion-padding-top">
-            <h1 className={!projects || projects.length <= 0 ? undefined : styles.title}>{t('title')}</h1>
+            <h1 className={!projects || projects.length <= 0 ? undefined : styles.title}>{t('projects.title')}</h1>
             {renderProjects()}
         </div>
     );
@@ -77,7 +77,7 @@ const Projects: React.FC<Props> = (props: Props) => {
     }
 
     function renderDummyProject() {
-        return <IonLabel className="placeholder">{t('empty')}</IonLabel>;
+        return <IonLabel className="placeholder">{t('projects.empty')}</IonLabel>;
     }
 
 };

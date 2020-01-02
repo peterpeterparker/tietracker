@@ -1,6 +1,8 @@
 import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 
+import {useTranslation} from 'react-i18next';
+
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
 import {Project, ProjectData} from '../../models/project';
@@ -38,6 +40,8 @@ interface Props extends RootProps {
 }
 
 const ProjectModal: React.FC<Props> = (props) => {
+
+    const {t} = useTranslation(['projects', 'common', 'clients']);
 
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
@@ -190,7 +194,7 @@ const ProjectModal: React.FC<Props> = (props) => {
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
             <IonList className="inputs-list">
                 <IonItem className="item-title">
-                    <IonLabel>Project</IonLabel>
+                    <IonLabel>{t('projects:project.title')}</IonLabel>
                 </IonItem>
                 <IonItem>
                     <IonInput debounce={500} minlength={3} maxlength={32} ref={nameRef}
@@ -201,7 +205,7 @@ const ProjectModal: React.FC<Props> = (props) => {
                 </IonItem>
 
                 <IonItem className="item-title">
-                    <IonLabel>Hourly rate</IonLabel>
+                    <IonLabel>{t('clients:create.hourly_rate')}</IonLabel>
                 </IonItem>
                 <IonItem>
                     <IonInput debounce={500} minlength={1} required={true} ref={rateRef}
@@ -216,7 +220,7 @@ const ProjectModal: React.FC<Props> = (props) => {
                 {renderEnabled()}
             </IonList>
 
-            <IonButton type="submit" disabled={saving || !valid} aria-label="Update project"
+            <IonButton type="submit" disabled={saving || !valid} aria-label={t('projects:project.update')}
                        className="ion-margin-top" style={{
                 '--background': props.color,
                 '--color': props.colorContrast,
@@ -225,7 +229,7 @@ const ProjectModal: React.FC<Props> = (props) => {
                 '--background-activated': props.colorContrast,
                 '--color-activated': props.color
             } as CSSProperties}>
-                <IonLabel>{props.action === ProjectModalAction.CREATE ? 'Create' : 'Update'}</IonLabel>
+                <IonLabel>{props.action === ProjectModalAction.CREATE ? t('common:actions.create') : t('common:actions.update')}</IonLabel>
             </IonButton>
         </form>
     }
@@ -237,7 +241,7 @@ const ProjectModal: React.FC<Props> = (props) => {
 
         return <>
             <IonItem className="item-title">
-                <IonLabel>Vat</IonLabel>
+                <IonLabel>{t('clients:create.vat')}</IonLabel>
             </IonItem>
             <IonItem className="item-checkbox">
                 <IonLabel>{settings.vat}%</IonLabel>
@@ -255,7 +259,7 @@ const ProjectModal: React.FC<Props> = (props) => {
 
         return <>
             <IonItem className="item-title">
-                <IonLabel>Status</IonLabel>
+                <IonLabel>{t('projects:project.status')}</IonLabel>
             </IonItem>
             <IonItem className="item-checkbox">
                 <IonLabel>{enabled ? 'Ongoing' : 'Closed'}</IonLabel>

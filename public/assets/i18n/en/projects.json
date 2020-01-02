@@ -1,4 +1,11 @@
 {
-  "title": "Projects",
-  "empty": "No ongoing projects."
+  "projects": {
+    "title": "Projects",
+    "empty": "No ongoing projects."
+  },
+  "project": {
+    "title": "Project",
+    "update": "Update project",
+    "status": "Status"
+  }
 }
