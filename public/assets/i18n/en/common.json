@@ -1,6 +1,8 @@
 {
   "actions": {
     "save": "Save",
-    "submit": "Submit"
+    "submit": "Submit",
+    "export": "Export",
+    "wait": "Wait for it..."
   }
 }
