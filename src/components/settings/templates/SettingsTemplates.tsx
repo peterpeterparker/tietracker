@@ -13,7 +13,7 @@ export interface SettingsDescriptionProps {
     settings: Settings;
 }
 
-const SettingsTermplates: React.FC<SettingsDescriptionProps> = (props) => {
+const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
 
     const {t} = useTranslation('settings');
 
@@ -65,4 +65,4 @@ const SettingsTermplates: React.FC<SettingsDescriptionProps> = (props) => {
     }
 };
 
-export default SettingsTermplates;
+export default SettingsTemplates;

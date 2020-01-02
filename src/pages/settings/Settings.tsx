@@ -21,7 +21,7 @@ import {RootState} from '../../store/reducers';
 import {Settings as SettingsModel} from '../../models/settings';
 
 import SettingsGeneral from '../../components/settings/general/SettingsGeneral';
-import SettingsTemplates from '../../components/settings/templates/SettingsTermplates';
+import SettingsTemplates from '../../components/settings/templates/SettingsTemplates';
 import SettingsTracker from '../../components/settings/tracker/SettingsTracker';
 
 import Header from '../../components/header/Header';
