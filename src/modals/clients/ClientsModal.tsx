@@ -29,12 +29,12 @@ const ClientsModal: React.FC<Props> = (props) => {
 
     const filterRef: RefObject<any> = createRef();
 
-    const clients: Client[] = useSelector((state: RootState) => state.clients.clients);
+    const clients: Client[] | undefined = useSelector((state: RootState) => state.clients.clients);
 
     const [filteredClients, setFilteredClients] = useState<Client[] | undefined>(undefined);
 
     useEffect(() => {
-        setFilteredClients(clients);
+        setFilteredClients(clients === undefined ? [] : clients);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [clients]);
 
@@ -115,8 +115,7 @@ const ClientsModal: React.FC<Props> = (props) => {
 
     function renderClients() {
         if (!filteredClients || filteredClients.length <= 0) {
-            return <IonItem className={styles.item + ' ' + styles.label} lines="none" detail={false}><IonLabel>No
-                matching clients</IonLabel></IonItem>;
+            return <IonItem className={styles.item + ' ' + styles.label} lines="none" detail={false}><IonLabel className="placeholder">No matching clients.</IonLabel></IonItem>;
         }
 
         return filteredClients.map((client: Client) => {

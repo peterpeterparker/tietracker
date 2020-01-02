@@ -3,8 +3,6 @@ import {useSelector} from 'react-redux';
 
 import {lightFormat} from 'date-fns';
 
-import styles from './Tasks.module.scss';
-
 import {IonList, IonLabel} from '@ionic/react';
 
 import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';

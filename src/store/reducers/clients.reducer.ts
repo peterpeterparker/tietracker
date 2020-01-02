@@ -2,22 +2,22 @@ import { ClientActionTypes, CREATE_CLIENT, INIT_CLIENTS } from '../types/clients
 import { Client } from '../../models/client';
 
 export interface ClientsState {
-    clients: Client[];
+    clients: Client[] | undefined;
 }
 
 const initialState: ClientsState = {
-    clients: []
-}
+    clients: undefined
+};
 
 export function clientsReducer(state = initialState, action: ClientActionTypes): ClientsState {
     switch (action.type) {
         case CREATE_CLIENT:
             return {
-                clients: [...state.clients, action.payload]
+                clients: state.clients !== undefined ? [...state.clients, action.payload] : [action.payload]
             };
         case INIT_CLIENTS:
             return {
-                clients: action.payload ? action.payload : []
+                clients: action.payload ? action.payload : undefined
             };
         default:
             return state;

@@ -27,10 +27,15 @@ import Projects from '../../components/projects/Projects';
 import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
 import Header from '../../components/header/Header';
+import {Client} from '../../models/client';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../store/reducers';
 
 const Home: React.FC<RouteComponentProps> = (props) => {
 
   const { t } = useTranslation('home');
+
+  const clients: Client[] | undefined = useSelector((state: RootState) => state.clients.clients);
 
   const [showModalClient, setShowModalClient] = useState(false);
   const [showModalClients, setShowModalClients] = useState(false);
@@ -84,7 +89,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
           </IonHeader>
 
           <div className={styles.addclient}>
-            <IonButton onClick={() => setShowModalClient(true)} fill="outline" color="medium" size="small">Add a new client</IonButton>
+            {renderClientsAction()}
           </div>
 
           <Summary></Summary>
@@ -96,6 +101,13 @@ const Home: React.FC<RouteComponentProps> = (props) => {
       </IonContent>
     </IonPage>
   );
+
+  function renderClientsAction() {
+      const loading: boolean = clients === undefined;
+      const empty: boolean = !loading && clients !== undefined && clients.length <= 0;
+
+      return <IonButton onClick={() => setShowModalClient(true)} fill={empty ? 'solid' : 'outline'} color={empty ? 'danger' : 'medium'} size="small" style={loading ? {visibility: 'hidden', opacity: 0} : undefined} aria-label="Add a client">{empty ? 'Add a client to get started' : 'Add a new client'}</IonButton>
+  }
 };
 
 export default Home;
