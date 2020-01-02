@@ -16,6 +16,8 @@ import {
 
 import {useSelector} from 'react-redux';
 
+import {useTranslation} from 'react-i18next';
+
 import {more} from 'ionicons/icons';
 
 import styles from './CreateClientModal.module.scss';
@@ -37,6 +39,8 @@ interface Props extends RootProps {
 }
 
 const CreateClientModal: React.FC<Props> = (props: Props) => {
+
+    const {t} = useTranslation(['clients', 'common']);
 
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
     
@@ -226,7 +230,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
         return <IonContent>
             <IonHeader>
                 <IonToolbar style={{'--background': color, '--color': colorContrast, '--ion-toolbar-color': colorContrast} as CSSProperties}>
-                    <IonTitle>Add a new client</IonTitle>
+                    <IonTitle>{t('clients:create.title')}</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => props.closeAction()}>
                             <IonIcon name="close" slot="icon-only"></IonIcon>
@@ -239,7 +243,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                 <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
                     <IonList className="inputs-list">
                         <IonItem className="item-title">
-                            <IonLabel>Client</IonLabel>
+                            <IonLabel>{t('clients:create.client')}</IonLabel>
                         </IonItem>
                         <IonItem>
                             <IonInput ref={clientNameRef} debounce={500} minlength={3} maxlength={32}
@@ -250,7 +254,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                         </IonItem>
 
                         <IonItem disabled={!validClient} className="item-title ion-margin-top">
-                            <IonLabel>Color</IonLabel>
+                            <IonLabel>{t('clients:create.color')}</IonLabel>
                         </IonItem>
 
                         <div className={styles.color + ` ${!validClient ? 'disabled' : ''}`}>
@@ -262,7 +266,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                         </div>
 
                         <IonItem disabled={!validClient} className="item-title ion-margin-top">
-                            <IonLabel>Project</IonLabel>
+                            <IonLabel>{t('clients:create.project')}</IonLabel>
                         </IonItem>
                         <IonItem disabled={!validClient}>
                             <IonInput ref={projectNameRef} debounce={500} minlength={3} maxlength={32}
@@ -273,7 +277,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                         </IonItem>
 
                         <IonItem disabled={!validClient} className="item-title">
-                            <IonLabel>Hourly rate</IonLabel>
+                            <IonLabel>{t('clients:create.hourly_rate')}</IonLabel>
                         </IonItem>
                         <IonItem disabled={!validClient}>
                             <IonInput ref={projectRateRef} debounce={500} minlength={1} required={true}
@@ -287,7 +291,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                     </IonList>
 
                     <IonButton type="submit" className="ion-margin-top" disabled={!valid} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                        <IonLabel>Submit</IonLabel>
+                        <IonLabel>{t('common:actions.submit')}</IonLabel>
                     </IonButton>
                 </form>
             </main>
@@ -301,7 +305,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
 
         return <>
             <IonItem disabled={!validClient} className="item-title">
-                <IonLabel>Vat</IonLabel>
+                <IonLabel>{t('clients:create.vat')}</IonLabel>
             </IonItem>
             <IonItem disabled={!validClient} className="item-checkbox">
                 <IonLabel>{settings.vat}%</IonLabel>

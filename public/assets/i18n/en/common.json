@@ -1,5 +1,6 @@
 {
   "actions": {
-    "save": "Save"
+    "save": "Save",
+    "submit": "Submit"
   }
 }
