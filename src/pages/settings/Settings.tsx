@@ -34,7 +34,7 @@ enum SettingsCategory {
 
 const Settings: React.FC<RootProps> = (props) => {
 
-    const {t} = useTranslation();
+    const {t} = useTranslation(['settings', 'common']);
 
     const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
@@ -102,7 +102,7 @@ const Settings: React.FC<RootProps> = (props) => {
 
         return <IonButton type="submit" disabled={saving} aria-label={t('settings:save')} color="button"
                           className="ion-margin-top">
-            <IonLabel>{t('core:save')}</IonLabel>
+            <IonLabel>{t('common:actions.save')}</IonLabel>
         </IonButton>;
     }
 

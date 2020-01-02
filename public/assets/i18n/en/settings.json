@@ -24,7 +24,7 @@
     "currency": {
       "title": "Currency"
     },
-    "var": {
+    "vat": {
       "title": "Vat",
       "input": "Vat value input"
     }
