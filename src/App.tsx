@@ -1,17 +1,19 @@
 import React, {Suspense, useEffect, useState} from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import {Redirect, Route} from 'react-router-dom';
 import {
-  IonApp,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs
+    IonApp,
+    IonIcon,
+    IonLabel,
+    IonRouterOutlet,
+    IonTabBar,
+    IonTabButton,
+    IonTabs
 } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
+import {IonReactRouter} from '@ionic/react-router';
 
-import { options, card, information } from 'ionicons/icons';
+import {Translation} from 'react-i18next';
+
+import {options, card, information} from 'ionicons/icons';
 
 import Home from './pages/home/Home';
 import Settings from './pages/settings/Settings';
@@ -56,7 +58,7 @@ import './theme/link.scss';
 
 import './helpers/i18n';
 
-import { RootProps, rootConnector } from './store/thunks/index.thunks';
+import {RootProps, rootConnector} from './store/thunks/index.thunks';
 
 import TaskModal from './modals/task/TaskModal';
 import TaskDetails from './pages/details/task/TaskDetails';
@@ -65,96 +67,117 @@ import About from './pages/about/About';
 import Terms from './pages/terms/Terms';
 import Privacy from './pages/privacy/Privacy';
 
-import { Plugins } from '@capacitor/core';
-const { SplashScreen } = Plugins;
+import {Plugins} from '@capacitor/core';
+
+const {SplashScreen} = Plugins;
 
 const App: React.FC<RootProps> = (props: RootProps) => {
 
-  const [selectedTab, setSelectedTab] = useState<string>('home');
+    const [selectedTab, setSelectedTab] = useState<string>('home');
 
-  async function init() {
-    // Init theme first
-    await props.initTheme();
+    async function init() {
+        // Init theme first
+        await props.initTheme();
 
-    await SplashScreen.hide();
+        await SplashScreen.hide();
 
-    // Init data
-    const promises = [];
-    promises.push(props.initClients());
-    promises.push(props.initActiveProjects());
-    promises.push(props.initTask());
-    promises.push(props.computeSummary());
-    promises.push(props.listTasks());
-    promises.push(props.listProjectsInvoices());
-    promises.push(props.initSettings());
+        // Init data
+        const promises = [];
+        promises.push(props.initClients());
+        promises.push(props.initActiveProjects());
+        promises.push(props.initTask());
+        promises.push(props.computeSummary());
+        promises.push(props.listTasks());
+        promises.push(props.listProjectsInvoices());
+        promises.push(props.initSettings());
 
-    await Promise.all(promises);
-  }
-
-  useEffect(() => {
-    init();
-
-    initSelectedTab();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  function initSelectedTab() {
-    const element: HTMLElement | null = document.querySelector('ion-tab-bar');
-
-    if (element) {
-      const selected: string = (element as any).selectedTab;
-      setSelectedTab(selected ? selected : 'home');
+        await Promise.all(promises);
     }
-  }
 
-  return (
-    <Suspense fallback="loading">
-      <IonApp>
-        <IonReactRouter>
-          <IonTabs onIonTabsDidChange={($event) => setSelectedTab($event.detail.tab)}>
-            <IonRouterOutlet>
-              <Route path="/home" component={Home} />
-              <Route path="/invoices" component={Invoices} exact={true} />
-              <Route path="/settings" component={Settings} exact={true} />
+    useEffect(() => {
+        init();
 
-              <Route path="/about" component={About} exact={true} />
-              <Route path="/terms" component={Terms} exact={true} />
-              <Route path="/privacy" component={Privacy} exact={true} />
+        initSelectedTab();
 
-              <Route path="/client/:id" component={ClientDetails} />
-              <Route path="/task/:day/:id" component={TaskDetails} />
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-              <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
-            </IonRouterOutlet>
+    function initSelectedTab() {
+        const element: HTMLElement | null = document.querySelector('ion-tab-bar');
 
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="home" href="/home">
-                {
-                  selectedTab === 'home' ? <IonIcon src="/assets/icon/logo.svg" ariaLabel="Tie Tracker logo" /> : <IonIcon src="/assets/icon/logo-grey.svg" ariaLabel="Tie Tracker logo" />
-                }
-                <IonLabel>Home</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="invoices" href="/invoices">
-                <IonIcon icon={card} />
-                <IonLabel>Invoices</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="settings" href="/settings">
-                <IonIcon icon={options} />
-                <IonLabel>Settings</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="about" href="/about">
-                <IonIcon icon={information} />
-                <IonLabel>About</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonReactRouter>
+        if (element) {
+            const selected: string = (element as any).selectedTab;
+            setSelectedTab(selected ? selected : 'home');
+        }
+    }
 
-        <TaskModal></TaskModal>
-      </IonApp>
-    </Suspense>
-  );
+    return (
+        <Suspense fallback="loading">
+            <IonApp>
+                <IonReactRouter>
+                    <IonTabs onIonTabsDidChange={($event) => setSelectedTab($event.detail.tab)}>
+                        <IonRouterOutlet>
+                            <Route path="/home" component={Home}/>
+                            <Route path="/invoices" component={Invoices} exact={true}/>
+                            <Route path="/settings" component={Settings} exact={true}/>
+
+                            <Route path="/about" component={About} exact={true}/>
+                            <Route path="/terms" component={Terms} exact={true}/>
+                            <Route path="/privacy" component={Privacy} exact={true}/>
+
+                            <Route path="/client/:id" component={ClientDetails}/>
+                            <Route path="/task/:day/:id" component={TaskDetails}/>
+
+                            <Route path="/" render={() => <Redirect to="/home"/>} exact={true}/>
+                        </IonRouterOutlet>
+
+                        <IonTabBar slot="bottom">
+                            <IonTabButton tab="home" href="/home">
+                                {
+                                    selectedTab === 'home' ?
+                                        <IonIcon src="/assets/icon/logo.svg" ariaLabel="Tie Tracker logo"/> :
+                                        <IonIcon src="/assets/icon/logo-grey.svg" ariaLabel="Tie Tracker logo"/>
+                                }
+                                <Translation ns="common">
+                                    {
+                                        (t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>
+                                    }
+                                </Translation>
+                            </IonTabButton>
+                            <IonTabButton tab="invoices" href="/invoices">
+                                <IonIcon icon={card}/>
+                                <IonLabel>
+                                    <Translation ns="common">
+                                        {
+                                            (t, {i18n}) => <IonLabel>{t('navigation.invoices')}</IonLabel>
+                                        }
+                                    </Translation>
+                                </IonLabel>
+                            </IonTabButton>
+                            <IonTabButton tab="settings" href="/settings">
+                                <IonIcon icon={options}/>
+                                <Translation ns="common">
+                                    {
+                                        (t, {i18n}) => <IonLabel>{t('navigation.settings')}</IonLabel>
+                                    }
+                                </Translation>
+                            </IonTabButton>
+                            <IonTabButton tab="about" href="/about">
+                                <IonIcon icon={information}/>
+                                <Translation ns="common">
+                                    {
+                                        (t, {i18n}) => <IonLabel>{t('navigation.about')}</IonLabel>
+                                    }
+                                </Translation>
+                            </IonTabButton>
+                        </IonTabBar>
+                    </IonTabs>
+                </IonReactRouter>
+
+                <TaskModal></TaskModal>
+            </IonApp>
+        </Suspense>
+    );
 }
 
 export default rootConnector(App);

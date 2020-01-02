@@ -15,3 +15,9 @@ ion-item.item-checkbox, ion-item.item-radio {
     margin: 0 0 0 32px;
   }
 }
+
+body.dark {
+  ion-checkbox {
+    --border-color: inherit;
+  }
+}

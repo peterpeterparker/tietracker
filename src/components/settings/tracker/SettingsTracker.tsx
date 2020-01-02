@@ -8,6 +8,8 @@ import {
     IonSelectOption
 } from '@ionic/react';
 
+import {useTranslation} from 'react-i18next';
+
 import {Settings} from '../../../models/settings';
 import {Currencies, SettingsService} from '../../../services/settings/settings.service';
 
@@ -16,6 +18,8 @@ export interface SettingsGeneralProps {
 }
 
 const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
+
+    const {t} = useTranslation('settings');
 
     const [currencies, setCurrencies] = useState<Currencies | undefined>(undefined);
 
@@ -62,21 +66,21 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
     return (
         <IonList className="inputs-list">
             <IonItem className="item-title">
-                <IonLabel>Round tracked time</IonLabel>
+                <IonLabel>{t('tracker.time.title')}</IonLabel>
             </IonItem>
 
             <IonItem className="item-input">
-                <IonSelect interfaceOptions={{header: 'Round tracked time'}} placeholder="Round tracked time"
+                <IonSelect interfaceOptions={{header: t('tracker.time.title')}} placeholder={t('tracker.time.title')}
                            value={props.settings.roundTime}
                            onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
-                    <IonSelectOption value={1}>1 minute</IonSelectOption>
-                    <IonSelectOption value={5}>5 minutes</IonSelectOption>
-                    <IonSelectOption value={15}>15 minutes</IonSelectOption>
+                    <IonSelectOption value={1}>{t('tracker.time.minute.1')}</IonSelectOption>
+                    <IonSelectOption value={5}>{t('tracker.time.minute.5')}</IonSelectOption>
+                    <IonSelectOption value={15}>{t('tracker.time.minute.15')}</IonSelectOption>
                 </IonSelect>
             </IonItem>
 
             <IonItem className="item-title">
-                <IonLabel>Currency</IonLabel>
+                <IonLabel>{t('tracker.currency.title')}</IonLabel>
             </IonItem>
 
             <IonItem className="item-input">
@@ -84,10 +88,10 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
             </IonItem>
 
             <IonItem className="item-title">
-                <IonLabel>Vat</IonLabel>
+                <IonLabel>{t('tracker.vat.title')}</IonLabel>
             </IonItem>
             <IonItem>
-                <IonInput debounce={500} input-mode="text" value={props.settings.vat ? `${props.settings.vat}` : ''}
+                <IonInput debounce={500} input-mode="text" value={props.settings.vat ? `${props.settings.vat}` : ''} aria-label={t('tracker.vat.input')}
                           onIonInput={($event: CustomEvent<KeyboardEvent>) => onVatInput($event)}>
                 </IonInput>
             </IonItem>
@@ -99,7 +103,7 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
             return undefined;
         }
 
-        return <IonSelect interfaceOptions={{header: 'Currency'}} placeholder="Currency" value={props.settings.currency}
+        return <IonSelect interfaceOptions={{header: t('tracker.currency.title')}} placeholder={t('tracker.currency.title')} value={props.settings.currency}
                           onIonChange={($event: CustomEvent) => onCurrencyChange($event)}>
             {
                 Object.keys(currencies).map((key: string) => {

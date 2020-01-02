@@ -5,6 +5,10 @@
 
 .projectItem {
   cursor: pointer;
+
+  ion-label > * {
+    color: var(--ion-text-color);
+  }
 }
 
 .actions {

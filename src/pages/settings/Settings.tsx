@@ -13,13 +13,15 @@ import {
     IonToolbar
 } from '@ionic/react';
 
+import {useTranslation} from 'react-i18next';
+
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
 
 import {Settings as SettingsModel} from '../../models/settings';
 
 import SettingsGeneral from '../../components/settings/general/SettingsGeneral';
-import SettingsTemplates from '../../components/settings/templates/SettingsTermplates';
+import SettingsTemplates from '../../components/settings/templates/SettingsTemplates';
 import SettingsTracker from '../../components/settings/tracker/SettingsTracker';
 
 import Header from '../../components/header/Header';
@@ -31,6 +33,8 @@ enum SettingsCategory {
 }
 
 const Settings: React.FC<RootProps> = (props) => {
+
+    const {t} = useTranslation(['settings', 'common']);
 
     const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
@@ -96,8 +100,9 @@ const Settings: React.FC<RootProps> = (props) => {
             return undefined;
         }
 
-        return <IonButton type="submit" disabled={saving} aria-label="Update task" color="button" className="ion-margin-top">
-            <IonLabel>Save</IonLabel>
+        return <IonButton type="submit" disabled={saving} aria-label={t('settings:save')} color="button"
+                          className="ion-margin-top">
+            <IonLabel>{t('common:actions.save')}</IonLabel>
         </IonButton>;
     }
 
@@ -130,15 +135,19 @@ const Settings: React.FC<RootProps> = (props) => {
             return undefined;
         }
 
-        return <IonSegment mode="md" class="ion-padding-bottom" onIonChange={($event: CustomEvent) => selectCategory($event)}>
-            <IonSegmentButton value={SettingsCategory.GENERAL} checked={category === SettingsCategory.GENERAL} mode="md">
-                <ion-label>General</ion-label>
+        return <IonSegment mode="md" class="ion-padding-bottom"
+                           onIonChange={($event: CustomEvent) => selectCategory($event)}>
+            <IonSegmentButton value={SettingsCategory.GENERAL} checked={category === SettingsCategory.GENERAL}
+                              mode="md">
+                <ion-label>{t('settings:segments.general')}</ion-label>
             </IonSegmentButton>
-            <IonSegmentButton value={SettingsCategory.TRACKER} checked={category === SettingsCategory.TRACKER} mode="md">
-                <ion-label>Tracker</ion-label>
+            <IonSegmentButton value={SettingsCategory.TRACKER} checked={category === SettingsCategory.TRACKER}
+                              mode="md">
+                <ion-label>{t('settings:segments.tracker')}</ion-label>
             </IonSegmentButton>
-            <IonSegmentButton value={SettingsCategory.TEMPLATES} checked={category === SettingsCategory.TEMPLATES} mode="md">
-                <ion-label>Templates</ion-label>
+            <IonSegmentButton value={SettingsCategory.TEMPLATES} checked={category === SettingsCategory.TEMPLATES}
+                              mode="md">
+                <ion-label>{t('settings:segments.templates')}</ion-label>
             </IonSegmentButton>
         </IonSegment>
     }

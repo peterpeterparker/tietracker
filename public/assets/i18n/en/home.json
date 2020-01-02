@@ -2,7 +2,8 @@
     "search": {
         "clients": "Search clients"
     },
-    "week": {
-        "summary": "Weekly summary:"
+    "add": {
+        "client": "Add a new client",
+        "start": "Add a client to get started"
     }
 }

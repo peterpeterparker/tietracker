@@ -71,7 +71,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
         <Header></Header>
 
         <IonModal isOpen={showModalClient} onDidDismiss={async () => await closeClientModal()} cssClass="fullscreen">
-          <CreateClientModal closeAction={async () => await closeClientModal()}></CreateClientModal>
+          <CreateClientModal open={showModalClient} closeAction={async () => await closeClientModal()}></CreateClientModal>
         </IonModal>
 
         <IonModal isOpen={showModalClients} onDidDismiss={($event) => closeAndNavigate($event)} cssClass="fullscreen">
@@ -106,7 +106,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
       const loading: boolean = clients === undefined;
       const empty: boolean = !loading && clients !== undefined && clients.length <= 0;
 
-      return <IonButton onClick={() => setShowModalClient(true)} fill={empty ? 'solid' : 'outline'} color={empty ? 'danger' : 'medium'} size="small" style={loading ? {visibility: 'hidden', opacity: 0} : undefined} aria-label="Add a client">{empty ? 'Add a client to get started' : 'Add a new client'}</IonButton>
+      return <IonButton onClick={() => setShowModalClient(true)} fill={empty ? 'solid' : 'outline'} color={empty ? 'danger' : 'medium'} size="small" style={loading ? {visibility: 'hidden', opacity: 0} : undefined} aria-label={t('add.client')}>{empty ? t('add.start') : t('add.client')}</IonButton>
   }
 };
 

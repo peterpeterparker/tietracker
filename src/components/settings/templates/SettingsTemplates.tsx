@@ -3,6 +3,8 @@ import React from 'react';
 import {IonItem, IonLabel, IonReorderGroup, IonReorder, IonList} from '@ionic/react';
 import {ItemReorderEventDetail} from '@ionic/core';
 
+import {useTranslation} from 'react-i18next';
+
 import styles from './SettingsTemplates.module.scss';
 
 import {Settings} from '../../../models/settings';
@@ -11,7 +13,9 @@ export interface SettingsDescriptionProps {
     settings: Settings;
 }
 
-const SettingsTermplates: React.FC<SettingsDescriptionProps> = (props) => {
+const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
+
+    const {t} = useTranslation('settings');
 
     function doReorder($event: CustomEvent<ItemReorderEventDetail>) {
         if (!$event || !$event.detail) {
@@ -38,7 +42,7 @@ const SettingsTermplates: React.FC<SettingsDescriptionProps> = (props) => {
     return (<>
             <IonList className={`inputs-list ${styles.introduction}`}>
                 <IonItem className="item-title">
-                    <IonLabel>Templates for the descriptions of the tasks</IonLabel>
+                    <IonLabel>{t('templates.title')}</IonLabel>
                 </IonItem>
             </IonList>
             <IonReorderGroup disabled={false} className="reorder-list ion-margin-bottom" onIonItemReorder={doReorder}>
@@ -61,4 +65,4 @@ const SettingsTermplates: React.FC<SettingsDescriptionProps> = (props) => {
     }
 };
 
-export default SettingsTermplates;
+export default SettingsTemplates;

@@ -13,6 +13,8 @@ import {
 } from '@ionic/react';
 import {RouteComponentProps} from 'react-router';
 
+import {useTranslation} from 'react-i18next';
+
 import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 
@@ -44,6 +46,8 @@ interface TaskDetailsProps extends RouteComponentProps<{
 type Props = RootProps & TaskDetailsProps;
 
 const TaskDetails: React.FC<Props> = (props: Props) => {
+
+    const {t} = useTranslation(['tasks', 'common']);
 
     const [task, setTask] = useState<Task | undefined>(undefined);
     const [from, setFrom] = useState<Date | undefined>(undefined);
@@ -199,7 +203,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
             <IonList className="inputs-list">
                 <IonItem className="item-title">
-                    <IonLabel>Description</IonLabel>
+                    <IonLabel>{t('tasks:details.description')}</IonLabel>
                 </IonItem>
                 <IonItem>
                     <IonInput debounce={500} maxlength={256} value={description}
@@ -209,31 +213,31 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
                 </IonItem>
 
                 <IonItem className="item-title">
-                    <IonLabel>From</IonLabel>
+                    <IonLabel>{t('tasks:details.from')}</IonLabel>
                 </IonItem>
 
                 <IonItem className="item-input">
-                    <DateTimePicker value={from} onChange={(date: MaterialUiPickersDate) => setFrom(date as Date)}
+                    <DateTimePicker value={from} onChange={(date: MaterialUiPickersDate) => setFrom(date as Date)} aria-label={t('tasks:details.from')}
                                     ampm={false} hideTabs={true} format="yyyy/MM/dd HH:mm"/>
                 </IonItem>
 
                 <IonItem className="item-title">
-                    <IonLabel>To</IonLabel>
+                    <IonLabel>{t('tasks:details.to')}</IonLabel>
                 </IonItem>
 
                 <IonItem className="item-input">
-                    <DateTimePicker value={to} onChange={(date: MaterialUiPickersDate) => setTo(date as Date)}
+                    <DateTimePicker value={to} onChange={(date: MaterialUiPickersDate) => setTo(date as Date)} aria-label={t('tasks:details.to')}
                                     ampm={false} hideTabs={true} format="yyyy/MM/dd HH:mm"/>
                 </IonItem>
             </IonList>
 
             <div className={styles.actions}>
                 <IonButton type="submit" disabled={saving} aria-label="Update task" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                    <IonLabel>Update</IonLabel>
+                    <IonLabel>{t('common:actions.update')}</IonLabel>
                 </IonButton>
 
-                <button type="button" onClick={() => deleteTask()} aria-label="Delete task"
-                        aria-disabled={saving}><IonLabel>Delete</IonLabel></button>
+                <IonButton type="button" onClick={() => deleteTask()} color="button" fill="outline"
+                        disabled={saving}><IonLabel>{t('common:actions.delete')}</IonLabel></IonButton>
             </div>
         </form>
     }

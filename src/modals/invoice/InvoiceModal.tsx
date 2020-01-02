@@ -12,6 +12,8 @@ import {
     IonToolbar, isPlatform
 } from '@ionic/react';
 
+import {useTranslation} from 'react-i18next';
+
 import DateFnsUtils from '@date-io/date-fns';
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
@@ -37,6 +39,8 @@ interface Props extends RootProps {
 }
 
 const InvoiceModal: React.FC<Props> = (props) => {
+
+    const {t} = useTranslation(['invoices', 'common']);
 
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
@@ -150,21 +154,21 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
     function renderBillable() {
         if (from === undefined || to === undefined) {
-            return <p>No period defined.</p>
+            return <p>{t('invoices:invoice.no_period')}</p>
         }
 
         if (billable === undefined) {
-            return <p>For the selected period nothing can be billed.</p>
+            return <p>{t('invoices:invoice.empty')}</p>
         }
 
-        return <p>For the selected period <strong>{formatCurrency(billable, settings.currency)}</strong> can be billed.</p>
+        return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.billable', {amount: formatCurrency(billable, settings.currency)})}} ></p>
     }
 
     function renderFilter() {
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
             <IonList className="inputs-list">
                 <IonItem className="item-title">
-                    <IonLabel>From</IonLabel>
+                    <IonLabel>{t('invoices:invoice.from')}</IonLabel>
                 </IonItem>
 
                 <IonItem className="item-input">
@@ -173,7 +177,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
                 </IonItem>
 
                 <IonItem className="item-title">
-                    <IonLabel>To</IonLabel>
+                    <IonLabel>{t('invoices:invoice.to')}</IonLabel>
                 </IonItem>
 
                 <IonItem className="item-input">
@@ -182,11 +186,11 @@ const InvoiceModal: React.FC<Props> = (props) => {
                 </IonItem>
 
                 <IonItem className="item-title">
-                    <IonLabel>Close invoice</IonLabel>
+                    <IonLabel>{t('invoices:invoice.close')}</IonLabel>
                 </IonItem>
 
                 <IonItem className="item-checkbox">
-                    <IonLabel>Set tasks as billed</IonLabel>
+                    <IonLabel>{t('invoices:invoice.entries_billed')}</IonLabel>
                     <IonCheckbox slot="end" style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
                                  checked={bill}
                                  onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}></IonCheckbox>
@@ -194,7 +198,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             </IonList>
 
             <IonButton type="submit" className="ion-margin-top" disabled={billable === undefined || inProgress} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                <IonLabel>{inProgress ? "Wait for it..." : "Export"}</IonLabel>
+                <IonLabel>{inProgress ? t('common:actions.wait') : t('common:actions.export')}</IonLabel>
             </IonButton>
         </form>
     }

@@ -1,0 +1,18 @@
+{
+  "item": {
+    "no_description": "Without description"
+  },
+  "today": {
+    "title": "Today's entries",
+    "empty": "No entries registered yet."
+  },
+  "tracker": {
+    "stop": "Stop current task",
+    "description": "Description of the task"
+  },
+  "details": {
+    "description": "Description",
+    "from": "From",
+    "to": "To"
+  }
+}

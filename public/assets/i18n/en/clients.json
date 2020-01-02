@@ -1,0 +1,20 @@
+{
+  "create": {
+    "title": "Create a a new client",
+    "client": "Client (min. 3 characters)",
+    "color": "Color",
+    "project": "Project (min. 3 characters)",
+    "hourly_rate": "Hourly rate (zero or more)",
+    "vat": "Vat"
+  },
+  "search": {
+    "title": "Search Clients",
+    "filter": "Filter clients",
+    "empty": "No matching clients."
+  },
+  "details": {
+    "client": "Client",
+    "create_project": "Create another project",
+    "empty": "No projects."
+  }
+}

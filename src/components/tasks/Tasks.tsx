@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 
+import {useTranslation} from 'react-i18next';
+
 import {lightFormat} from 'date-fns';
 
 import {IonList, IonLabel} from '@ionic/react';
@@ -14,20 +16,22 @@ import TaskItem from '../taskitem/TaskItem';
 
 const Tasks: React.FC = () => {
 
+    const {t} = useTranslation('tasks');
+
     const tasks: TaskItemStore[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
 
     const [tasksDay] = useState<string>(lightFormat(new Date(), 'yyyy-MM-dd'));
 
     return (
         <div className="ion-padding-end ion-padding-top">
-            <h1>Today's Completed</h1>
+            <h1>{t('today.title')}</h1>
             {renderTasks()}
         </div>
     );
 
     function renderTasks() {
         if (!tasks || tasks.length <= 0) {
-            return <IonLabel className="placeholder">No tasks registered yet.</IonLabel>;
+            return <IonLabel className="placeholder">{t('today.empty')}</IonLabel>;
         }
 
         return <IonList>

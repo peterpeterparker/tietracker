@@ -9,6 +9,8 @@ import {
     IonLabel, IonHeader, IonToolbar
 } from '@ionic/react';
 
+import {useTranslation} from 'react-i18next';
+
 import {useSelector} from 'react-redux';
 
 import {download} from 'ionicons/icons';
@@ -30,6 +32,8 @@ import {contrast} from '../../utils/utils.color';
 
 const Invoices: React.FC = () => {
 
+    const {t} = useTranslation('invoices');
+
     const invoices: Invoice[] = useSelector((state: RootState) => state.invoices.invoices);
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
@@ -47,7 +51,7 @@ const Invoices: React.FC = () => {
                 <main className="ion-padding">
                     <IonHeader>
                         <IonToolbar className="title">
-                            <h1>Open Invoices</h1>
+                            <h1>{t('invoices.title')}</h1>
                         </IonToolbar>
                     </IonHeader>
 
@@ -63,7 +67,7 @@ const Invoices: React.FC = () => {
 
     function renderProjects() {
         if (!invoices || invoices.length <= 0) {
-            return <IonLabel className="placeholder">No clients need to be billed.</IonLabel>
+            return <IonLabel className="placeholder">{t('invoices.empty')}</IonLabel>
         }
 
         return <div className={styles.invoices}>

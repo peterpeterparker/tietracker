@@ -3,6 +3,8 @@ import {useSelector} from 'react-redux';
 
 import {IonItem, IonLabel} from '@ionic/react';
 
+import {useTranslation} from 'react-i18next';
+
 import styles from './TaskItem.module.scss';
 
 import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
@@ -21,6 +23,8 @@ interface TaskItemProps extends RootProps {
 
 const TaskItem: React.FC<TaskItemProps> = (props) => {
 
+    const {t} = useTranslation('tasks');
+
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
     return (
@@ -30,7 +34,7 @@ const TaskItem: React.FC<TaskItemProps> = (props) => {
 
             <IonLabel>
                 {
-                    props.task.data.description ? <h2>{props.task.data.description}</h2> : 'Without description'
+                    props.task.data.description ? <h2>{props.task.data.description}</h2> : t('item.no_description')
                 }
                 <p>{formatTime(props.task.data.milliseconds)} - {formatCurrency(props.task.data.billable, settings.currency)}</p>
             </IonLabel>
