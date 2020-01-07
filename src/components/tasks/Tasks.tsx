@@ -8,7 +8,7 @@ import {lightFormat} from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 
-import {IonList, IonLabel, IonIcon} from '@ionic/react';
+import {IonList, IonIcon, IonItem} from '@ionic/react';
 
 import {calendar} from 'ionicons/icons';
 
@@ -68,17 +68,18 @@ const Tasks: React.FC<RootProps> = (props) => {
     }
 
     function renderDatePicker(label: string) {
-        return <div className={styles.picker}>
-            <button className={styles.action} onClick={() => openDatePicker()}>
-                <IonIcon icon={calendar}/>
-                <IonLabel className="placeholder"><span
-                    dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></span></IonLabel>
-            </button>
+        return <>
+            <IonItem className={styles.action} onClick={() => openDatePicker()} lines="none" detail={false}>
+                <IonIcon icon={calendar} slot="start"/>
+                <p dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></p>
+            </IonItem>
 
-            <DatePicker DialogProps={{disableEnforceFocus: true}} value={selecteDay}
-                        onChange={(date: MaterialUiPickersDate) => selectDate(date as Date)}
-                        format="yyyy/MM/dd"/>
-        </div>
+            <div className={styles.picker}>
+                <DatePicker DialogProps={{disableEnforceFocus: true}} value={selecteDay}
+                            onChange={(date: MaterialUiPickersDate) => selectDate(date as Date)}
+                            format="yyyy/MM/dd"/>
+            </div>
+        </>
     }
 
     function renderTasksItems() {

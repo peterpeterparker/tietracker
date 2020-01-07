@@ -2,21 +2,23 @@
   div:global(.MuiFormControl-root) {
     display: none;
   }
-
-  button {
-    text-align: left;
-  }
 }
 
 .action {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  --border-color: transparent;
+  --highlight-color-focused: transparent;
 
-  padding: 8px 0;
+  color: var(--ion-text-color);
+  --color: var(--ion-text-color);
+
+  cursor: pointer;
+
+  p {
+    font-weight: 300;
+  }
 
   ion-icon {
+    color: var(--ion-text-color);
     font-size: 2rem;
-    margin-right: 4px;
   }
 }
