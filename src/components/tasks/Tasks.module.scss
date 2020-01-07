@@ -2,6 +2,10 @@
   div:global(.MuiFormControl-root) {
     display: none;
   }
+
+  button {
+    text-align: left;
+  }
 }
 
 .action {

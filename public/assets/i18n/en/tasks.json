@@ -3,9 +3,9 @@
     "no_description": "Without description"
   },
   "entries": {
-    "title": "Entries",
-    "empty": "No entries for {{selectedDate}}.",
-    "label": "Entries for {{selectedDate}}."
+    "title": "Diary",
+    "empty": "No entries registered on {{selectedDate}}.",
+    "label": "Entries registered on {{selectedDate}}."
   },
   "tracker": {
     "stop": "Stop current task",
