@@ -4,8 +4,8 @@
   },
   "entries": {
     "title": "Entries",
-    "empty": "No registered entries for the {{selectedDate}}",
-    "label": "Entries for the {{selectedDate}}"
+    "empty": "No entries for {{selectedDate}}.",
+    "label": "Entries for {{selectedDate}}."
   },
   "tracker": {
     "stop": "Stop current task",

@@ -1,4 +1,4 @@
-import {eachDayOfInterval, format, isAfter} from 'date-fns';
+import {eachDayOfInterval, format as fnsFormat, isAfter} from 'date-fns';
 
 export function toDateObj(myDate: any): Date | undefined {
     if (!myDate || myDate === undefined) {
@@ -28,8 +28,16 @@ export function interval(from: Date | undefined, to: Date | undefined): string[]
 
     const days: Date[] = eachDayOfInterval({start: from, end: to});
     const results: string[] = days.map((day: Date) => {
-        return format(day, 'yyyy-MM-dd');
+        return fnsFormat(day, 'yyyy-MM-dd');
     });
 
     return results;
+}
+
+export function format(day: Date | undefined): string | undefined {
+    if (!day || day === undefined) {
+        return undefined;
+    }
+
+    return fnsFormat(day, 'EEEE, MMM dd yyyy');
 }

@@ -22,6 +22,8 @@ import {RootState} from '../../store/reducers';
 import TaskItem from '../taskitem/TaskItem';
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 
+import {format} from '../../utils/utils.date';
+
 const Tasks: React.FC<RootProps> = (props) => {
 
     const {t} = useTranslation('tasks');
@@ -72,7 +74,7 @@ const Tasks: React.FC<RootProps> = (props) => {
             <button className={styles.action} onClick={() => openDatePicker()}>
                 <IonIcon icon={calendar}/>
                 <IonLabel className="placeholder"><span
-                    dangerouslySetInnerHTML={{__html: t(label, {selectedDate: lightFormat(selecteDay, 'yyyy-MM-dd')})}}></span></IonLabel>
+                    dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></span></IonLabel>
             </button>
 
             <DatePicker DialogProps={{disableEnforceFocus: true}} value={selecteDay}
