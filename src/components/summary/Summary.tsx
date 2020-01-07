@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 
-import {IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle} from '@ionic/react';
+import {IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonLabel} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -26,12 +26,24 @@ const Summary: React.FC = () => {
 
     return (<div className="ion-padding-end ion-padding-top">
         <h1>{t('title')}</h1>
-        <IonCard className={styles.card} color="card">
-            <IonCardHeader className={styles.header}>
-                <IonCardSubtitle className={styles.subtitle}>{t('tracked')} {formatTime(summary !== undefined ? summary.milliseconds : undefined)}</IonCardSubtitle>
-                <IonCardTitle>{t('billable')} {formatCurrency(summary !== undefined ? summary.billable : undefined, settings.currency)}</IonCardTitle>
-            </IonCardHeader>
-        </IonCard>
+
+        <div className={styles.summary}>
+            <IonCard className={styles.card} color="card">
+                <h2 className={styles.title}>{t('today')}</h2>
+                <IonCardHeader className={styles.header}>
+                    <IonCardSubtitle className={styles.subtitle}>{t('tracked')} {formatTime(summary !== undefined ? summary.total.today.milliseconds : undefined)}</IonCardSubtitle>
+                    <IonCardTitle>{t('billable')} {formatCurrency(summary !== undefined ? summary.total.today.billable : undefined, settings.currency)}</IonCardTitle>
+                </IonCardHeader>
+            </IonCard>
+
+            <IonCard className={styles.card} color="card">
+                <h2 className={styles.title}>{t('week')}</h2>
+                <IonCardHeader className={styles.header}>
+                    <IonCardSubtitle className={styles.subtitle}>{t('tracked')} {formatTime(summary !== undefined ? summary.total.week.milliseconds : undefined)}</IonCardSubtitle>
+                    <IonCardTitle>{t('billable')} {formatCurrency(summary !== undefined ? summary.total.week.billable : undefined, settings.currency)}</IonCardTitle>
+                </IonCardHeader>
+            </IonCard>
+        </div>
     </div>);
 };
 

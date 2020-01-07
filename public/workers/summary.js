@@ -11,21 +11,31 @@ self.compute = async () => {
     const projects = await loadProjectsRate();
 
     if (!projects || projects === undefined) {
-        self.postMessage({
-            milliseconds: 0,
-            billable: 0
-        });
+        self.postEmptyMsg();
 
         return;
     }
 
-    const sum = await computeSum(projects);
+    const result = await computeSum(projects);
 
-    self.postMessage({
-        milliseconds: sum.milliseconds,
-        billable: sum.billable
-    });
+    self.postMessage(result);
 };
+
+function postEmptyMsg() {
+    self.postMessage({
+        days: [],
+        total: {
+            week: {
+                milliseconds: 0,
+                billable: 0
+            },
+            today: {
+                milliseconds: 0,
+                billable: 0
+            }
+        }
+    });
+}
 
 function loadProjectsRate() {
     return new Promise(async (resolve) => {
@@ -50,6 +60,7 @@ async function computeSum(projects) {
 
     const today = new Date();
 
+    // Today first see results
     promises.push(computeDaySum(today, projects));
 
     if (today.getDay() > 1) {
@@ -65,10 +76,7 @@ async function computeSum(projects) {
     const daily = await Promise.all(promises);
 
     if (!daily || daily.length <= 0) {
-        self.postMessage({
-            milliseconds: 0,
-            billable: 0
-        });
+        self.postEmptyMsg();
 
         return;
     }
@@ -82,8 +90,17 @@ async function computeSum(projects) {
     }, 0);
 
     return {
-        milliseconds: sumDuration,
-        billable:sumBillable
+        days: daily,
+        total: {
+            week: {
+                milliseconds: sumDuration,
+                billable:sumBillable
+            },
+            today: {
+                milliseconds: daily[0].milliseconds,
+                billable: daily[0].billable
+            }
+        }
     };
 }
 
@@ -93,6 +110,7 @@ function computeDaySum(day, projects) {
 
         if (!tasks || tasks.length <= 0) {
             resolve({
+                day: day.getTime(),
                 milliseconds: 0,
                 billable: 0
             });
@@ -115,6 +133,7 @@ function computeDaySum(day, projects) {
         }, 0);
 
         resolve({
+            day: day.getTime(),
             milliseconds: milliseconds,
             billable: billable
         });
