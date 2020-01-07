@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 
-import {IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonLabel} from '@ionic/react';
+import {IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
