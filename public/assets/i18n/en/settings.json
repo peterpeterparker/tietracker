@@ -1,5 +1,8 @@
 {
-  "save": "Save settings",
+  "save": {
+    "action": "Save settings",
+    "msg": "Your settings have been saved."
+  },
   "segments": {
     "general": "General",
     "tracker": "Tracker",

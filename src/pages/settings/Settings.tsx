@@ -10,7 +10,8 @@ import {
     IonSegment,
     IonSegmentButton,
     IonHeader,
-    IonToolbar
+    IonToolbar,
+    IonToast
 } from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
@@ -39,6 +40,7 @@ const Settings: React.FC<RootProps> = (props) => {
     const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
     const [saving, setSaving] = useState<boolean>(false);
+    const [showSaveMsg, setShowSaveMsg] = useState<boolean>(false);
 
     const [category, setCategory] = useState<SettingsCategory>(SettingsCategory.GENERAL);
 
@@ -49,6 +51,8 @@ const Settings: React.FC<RootProps> = (props) => {
 
         try {
             await props.updateSettings(settings);
+
+            setShowSaveMsg(true);
         } catch (err) {
             // TODO show err
             console.error(err);
@@ -92,7 +96,18 @@ const Settings: React.FC<RootProps> = (props) => {
             {renderSettingsDescription()}
 
             {renderSave()}
+            {renderSaveMsg()}
         </form>
+    }
+
+    function renderSaveMsg() {
+        return <IonToast
+            isOpen={showSaveMsg}
+            color="primary"
+            onDidDismiss={() => setShowSaveMsg(false)}
+            message={t('settings:save.msg')}
+            duration={500}
+        />;
     }
 
     function renderSave() {
@@ -100,7 +115,7 @@ const Settings: React.FC<RootProps> = (props) => {
             return undefined;
         }
 
-        return <IonButton type="submit" disabled={saving} aria-label={t('settings:save')} color="button"
+        return <IonButton type="submit" disabled={saving} aria-label={t('settings:save.action')} color="button"
                           className="ion-margin-top">
             <IonLabel>{t('common:actions.save')}</IonLabel>
         </IonButton>;
