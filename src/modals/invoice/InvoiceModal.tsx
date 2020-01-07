@@ -89,23 +89,27 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
         setInProgress(true);
 
-        if (isPlatform('desktop') && isChrome() && isHttps()) {
-            await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, bill);
-        } else if (isPlatform('hybrid')) {
-            await ExportService.getInstance().exportMobileFileSystem(props.invoice, from, to, settings.currency, bill);
-        } else  {
-            await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, bill);
-        }
+        try {
+            if (isPlatform('desktop') && isChrome() && isHttps()) {
+                await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, bill);
+            } else if (isPlatform('hybrid')) {
+                await ExportService.getInstance().exportMobileFileSystem(props.invoice, from, to, settings.currency, bill);
+            } else  {
+                await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, bill);
+            }
 
-        if (bill) {
-            setTimeout(async () => {
-                await props.listProjectsInvoices();
+            if (bill) {
+                setTimeout(async () => {
+                    await props.listProjectsInvoices();
 
-                props.closeAction();
+                    props.closeAction();
 
+                    setInProgress(false);
+                }, 1500);
+            } else {
                 setInProgress(false);
-            }, 1500);
-        } else {
+            }
+        } catch (err) {
             setInProgress(false);
         }
     }
