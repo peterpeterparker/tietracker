@@ -33,7 +33,7 @@ self.listTasks = async (day) => {
         return;
     }
 
-    tasks.sort((a, b) => { return b.data.updated_at - a.data.updated_at });
+    tasks.sort((a, b) => { return b.data.from - a.data.from });
 
     self.postMessage(tasks);
 };
