@@ -31,8 +31,6 @@ const Tasks: React.FC<RootProps> = (props) => {
     const tasks: TaskItemStore[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
     const selecteDay: Date = useSelector((state: RootState) => state.tasks.taskItemsSelectedDate);
 
-    const [tasksDay] = useState<string>(lightFormat(new Date(), 'yyyy-MM-dd'));
-
     function openDatePicker() {
         const input: HTMLInputElement | null = document.querySelector('input.MuiInputBase-input');
 
@@ -87,6 +85,8 @@ const Tasks: React.FC<RootProps> = (props) => {
         if (!tasks || tasks.length <= 0) {
             return undefined;
         }
+
+        const tasksDay: string = lightFormat(selecteDay, 'yyyy-MM-dd');
 
         return tasks.map((task: TaskItemStore) => {
             return <TaskItem task={task} tasksDay={tasksDay} key={`task-${task.id}`}></TaskItem>;
