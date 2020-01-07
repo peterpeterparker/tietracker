@@ -8,7 +8,7 @@ export interface SummaryState {
 
 const initialState: SummaryState = {
     summary: undefined
-}
+};
 
 export function summaryReducer(state = initialState, action: SummaryActionTypes): SummaryState {
     switch (action.type) {

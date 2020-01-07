@@ -1,5 +1,15 @@
 .card {
   margin: 16px 0;
+
+  h2 {
+    margin: 0;
+    padding: 8px 16px;
+    background: var(--ion-color-card-summary);
+    color: var(--ion-color-card-summary-contrast);
+
+    font-size: var(--font-size-normal);
+    font-weight: 300;
+  }
 }
 
 .subtitle {
@@ -7,7 +17,25 @@
 }
 
 .header {
+  ion-card-subtitle {
+    font-size: var(--font-size-normal);
+  }
+
   ion-card-title, ion-card-subtitle {
     font-weight: 300;
+  }
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 16px;
+
+  width: calc(100% - 16px);
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 }
