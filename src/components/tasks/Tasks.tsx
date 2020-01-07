@@ -5,7 +5,11 @@ import {useTranslation} from 'react-i18next';
 
 import {lightFormat} from 'date-fns';
 
-import {IonList, IonLabel} from '@ionic/react';
+import {IonList, IonLabel, IonIcon} from '@ionic/react';
+
+import {calendar} from 'ionicons/icons';
+
+import styles from './Tasks.module.scss';
 
 import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
 
@@ -24,19 +28,25 @@ const Tasks: React.FC = () => {
 
     return (
         <div className="ion-padding-end ion-padding-top">
-            <h1>{t('today.title')}</h1>
+            <h1>{t('entries.title')}</h1>
             {renderTasks()}
         </div>
     );
 
     function renderTasks() {
         if (!tasks || tasks.length <= 0) {
-            return <IonLabel className="placeholder">{t('today.empty')}</IonLabel>;
+            return <IonLabel className="placeholder"><span dangerouslySetInnerHTML={{__html: t('entries.empty', {selectedDate: lightFormat(new Date(), 'yyyy-MM-dd')})}}></span></IonLabel>;
         }
 
-        return <IonList>
-            {renderTasksItems()}
-        </IonList>
+        return <>
+            <button className={styles.action}>
+                <IonIcon icon={calendar}/>
+                <IonLabel className="placeholder"><span dangerouslySetInnerHTML={{__html: t('entries.label', {selectedDate: lightFormat(new Date(), 'yyyy-MM-dd')})}}></span></IonLabel>
+            </button>
+            <IonList>
+                {renderTasksItems()}
+            </IonList>
+        </>
     }
 
     function renderTasksItems() {
