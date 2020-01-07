@@ -43,7 +43,7 @@ export function initTask(): RootThunkResult<Promise<void>> {
     };
 }
 
-export function listTasks(forDate?: Date): RootThunkResult<Promise<void>> {
+export function listTasks(forDate: Date): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
         await TasksService.getInstance().list((data: TaskItem[], forDate: Date) => {
             dispatch({

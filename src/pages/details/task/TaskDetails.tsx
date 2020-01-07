@@ -157,7 +157,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
     async function updateStore() {
         await props.computeSummary();
-        await props.listTasks();
+        await props.listTasks(props.taskItemsSelectedDate);
         await props.listProjectsInvoices();
     }
 

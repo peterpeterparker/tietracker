@@ -149,7 +149,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     async function updateStore() {
         await props.initClients();
         await props.initActiveProjects();
-        await props.listTasks();
+        await props.listTasks(props.taskItemsSelectedDate);
         await props.listProjectsInvoices();
         await props.computeSummary();
     }

@@ -25,6 +25,8 @@ const mapState = (state: RootState) => ({
     clients: state.clients.clients,
     activeProjects: state.activeProjects.projects,
     taskInProgress: state.tasks.taskInProgress,
+    taskItems: state.tasks.taskItems,
+    taskItemsSelectedDate: state.tasks.taskItemsSelectedDate,
     summary: state.summary.summary,
     invoices: state.invoices.invoices,
     settings: state.settings.settings,
@@ -45,7 +47,7 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
 
     computeSummary: () => dispatch(computeSummary()),
 
-    listTasks: (forDate?: Date) => dispatch(listTasks(forDate)),
+    listTasks: (forDate: Date) => dispatch(listTasks(forDate)),
 
     listProjectsInvoices: () => dispatch(listProjectsInvoices()),
 
