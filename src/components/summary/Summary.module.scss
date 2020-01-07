@@ -1,11 +1,15 @@
 .card {
   margin: 16px 0;
 
+  border: 1px solid var(--ion-color-card-border);
+  box-shadow: none;
+
   h2 {
     margin: 0;
     padding: 8px 16px;
-    background: var(--ion-color-card-summary);
-    color: var(--ion-color-card-summary-contrast);
+
+    background: var(--ion-color-summary);
+    color: var(--ion-color-summary-contrast);
 
     font-size: var(--font-size-normal);
     font-weight: 300;
