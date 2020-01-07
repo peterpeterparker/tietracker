@@ -2,7 +2,7 @@ import {get, set, del} from 'idb-keyval';
 
 import uuid from 'uuid/v4';
 
-import {addMinutes, getMinutes, isBefore, lightFormat, roundToNearestMinutes, subMinutes} from 'date-fns';
+import {addMinutes, isBefore, lightFormat, roundToNearestMinutes, subMinutes} from 'date-fns';
 
 import {Project} from '../../models/project';
 import {Task} from '../../models/task';
