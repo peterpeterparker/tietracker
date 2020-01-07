@@ -5,6 +5,9 @@ import {useTranslation} from 'react-i18next';
 
 import {lightFormat} from 'date-fns';
 
+import DateFnsUtils from '@date-io/date-fns';
+import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+
 import {IonList, IonLabel, IonIcon} from '@ionic/react';
 
 import {calendar} from 'ionicons/icons';
@@ -13,40 +16,69 @@ import styles from './Tasks.module.scss';
 
 import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
 
-import {rootConnector} from '../../store/thunks/index.thunks';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
 
 import TaskItem from '../taskitem/TaskItem';
+import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 
-const Tasks: React.FC = () => {
+const Tasks: React.FC<RootProps> = (props) => {
 
     const {t} = useTranslation('tasks');
 
     const tasks: TaskItemStore[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
+    const selecteDay: Date = useSelector((state: RootState) => state.tasks.taskItemsSelectedDate);
 
     const [tasksDay] = useState<string>(lightFormat(new Date(), 'yyyy-MM-dd'));
 
+    function openDatePicker() {
+        const input: HTMLInputElement | null = document.querySelector('input.MuiInputBase-input');
+
+        if (!input) {
+            return;
+        }
+
+        input.click();
+    }
+
+    async function selectDate(day: Date) {
+        await props.listTasks(day);
+    }
+
     return (
-        <div className="ion-padding-end ion-padding-top">
-            <h1>{t('entries.title')}</h1>
-            {renderTasks()}
-        </div>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <div className="ion-padding-end ion-padding-top">
+                <h1>{t('entries.title')}</h1>
+                {renderTasks()}
+            </div>
+        </MuiPickersUtilsProvider>
     );
 
     function renderTasks() {
         if (!tasks || tasks.length <= 0) {
-            return <IonLabel className="placeholder"><span dangerouslySetInnerHTML={{__html: t('entries.empty', {selectedDate: lightFormat(new Date(), 'yyyy-MM-dd')})}}></span></IonLabel>;
+            return renderDatePicker('entries.empty');
         }
 
         return <>
-            <button className={styles.action}>
-                <IonIcon icon={calendar}/>
-                <IonLabel className="placeholder"><span dangerouslySetInnerHTML={{__html: t('entries.label', {selectedDate: lightFormat(new Date(), 'yyyy-MM-dd')})}}></span></IonLabel>
-            </button>
+            {renderDatePicker('entries.label')}
             <IonList>
                 {renderTasksItems()}
             </IonList>
         </>
+    }
+
+    function renderDatePicker(label: string) {
+        return <div className={styles.picker}>
+            <button className={styles.action} onClick={() => openDatePicker()}>
+                <IonIcon icon={calendar}/>
+                <IonLabel className="placeholder"><span
+                    dangerouslySetInnerHTML={{__html: t(label, {selectedDate: lightFormat(selecteDay, 'yyyy-MM-dd')})}}></span></IonLabel>
+            </button>
+
+            <DatePicker DialogProps={{disableEnforceFocus: true}} value={selecteDay}
+                        onChange={(date: MaterialUiPickersDate) => selectDate(date as Date)}
+                        format="yyyy/MM/dd"/>
+        </div>
     }
 
     function renderTasksItems() {
@@ -55,7 +87,7 @@ const Tasks: React.FC = () => {
         }
 
         return tasks.map((task: TaskItemStore) => {
-            return <TaskItem task={task} tasksDay={tasksDay} key={`task-${task.id}`} ></TaskItem>;
+            return <TaskItem task={task} tasksDay={tasksDay} key={`task-${task.id}`}></TaskItem>;
         });
     }
 

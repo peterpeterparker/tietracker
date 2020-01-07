@@ -29,13 +29,13 @@ import {Project} from '../../../models/project';
 
 import {toDateObj} from '../../../utils/utils.date';
 import {contrast} from '../../../utils/utils.color';
+import {pickerColor} from '../../../utils/utils.picker';
 
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 
 import {ProjectsService} from '../../../services/projects/projects.service';
 import {ClientsService} from '../../../services/clients/clients.service';
 import {TasksService} from '../../../services/tasks/tasks.service';
-import {pickerColor} from '../../../utils/utils.picker';
 
 interface TaskDetailsProps extends RouteComponentProps<{
     day: string,

@@ -45,7 +45,7 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
 
     computeSummary: () => dispatch(computeSummary()),
 
-    listTasks: () => dispatch(listTasks()),
+    listTasks: (forDate?: Date) => dispatch(listTasks(forDate)),
 
     listProjectsInvoices: () => dispatch(listProjectsInvoices()),
 

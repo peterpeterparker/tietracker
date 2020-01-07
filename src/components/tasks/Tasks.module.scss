@@ -1,3 +1,9 @@
+.picker {
+  div:global(.MuiFormControl-root) {
+    display: none;
+  }
+}
+
 .action {
   display: flex;
   justify-content: flex-start;
