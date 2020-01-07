@@ -38,9 +38,12 @@ export function initTask(task: TaskInProgress): TaskActionTypes {
     }
 }
 
-export function listTasks(tasks: TaskItem[]): TasksActionTypes {
+export function listTasks(data: TaskItem[], forDate: Date): TasksActionTypes {
     return {
         type: LIST_TASKS,
-        payload: tasks
+        payload: {
+            items: data,
+            forDate: forDate
+        }
     }
 }

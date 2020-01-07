@@ -16,4 +16,10 @@ button.MuiButton-text {
 
 button.MuiPickersDay-daySelected, button.MuiPickersDay-daySelected:hover {
   background-color: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+}
+
+button.MuiPickersDay-current:not(.MuiPickersDay-daySelected), button.MuiPickersDay-current:not(.MuiPickersDay-daySelected):hover {
+  background-color: var(--ion-color-medium);
+  color: var(--ion-color-medium-contrast);
 }

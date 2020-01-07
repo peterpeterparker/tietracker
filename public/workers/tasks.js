@@ -4,12 +4,12 @@ importScripts('./libs/dayjs.min.js');
 importScripts('./utils/utils.js');
 
 self.onmessage = async ($event) => {
-    if ($event && $event.data === 'listTasks') {
-        await self.listTasks();
+    if ($event && $event.data && $event.data.msg === 'listTasks') {
+        await self.listTasks($event.data.day);
     }
 };
 
-self.listTasks = async () => {
+self.listTasks = async (day) => {
     const projects = await loadProjects();
 
     if (!projects || projects === undefined) {
@@ -26,7 +26,7 @@ self.listTasks = async () => {
         return;
     }
 
-    const tasks = await listTodayTasks(projects, clients);
+    const tasks = await self.listTasksForDay(projects, clients, day);
 
     if (!tasks || tasks.length <= 0) {
         self.postMessage([]);
@@ -38,9 +38,9 @@ self.listTasks = async () => {
     self.postMessage(tasks);
 };
 
-function listTodayTasks(projects, clients) {
+function listTasksForDay(projects, clients, day) {
     return new Promise(async (resolve) => {
-        const tasks = await idbKeyval.get(`tasks-${new Date().toISOString().substring(0, 10)}`);
+        const tasks = await idbKeyval.get(`tasks-${day}`);
 
         if (!tasks || tasks.length <= 0) {
             resolve([]);

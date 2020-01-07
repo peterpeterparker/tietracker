@@ -14,11 +14,13 @@ import {TaskInProgress} from '../interfaces/task.inprogress';
 export interface TaskState {
     taskInProgress: TaskInProgress | undefined;
     taskItems: TaskItem[] | [];
+    taskItemsSelectedDate: Date;
 }
 
 const initialState: TaskState = {
     taskInProgress: undefined,
-    taskItems: []
+    taskItems: [],
+    taskItemsSelectedDate: new Date()
 };
 
 export function tasksReducer(state = initialState, action: TaskActionTypes | TasksActionTypes): TaskState {
@@ -28,17 +30,20 @@ export function tasksReducer(state = initialState, action: TaskActionTypes | Tas
         case START_TASK:
             return {
                 taskInProgress: action.payload,
-                taskItems: state.taskItems
+                taskItems: state.taskItems,
+                taskItemsSelectedDate: state.taskItemsSelectedDate
             };
         case STOP_TASK:
             return {
                 taskInProgress: undefined,
-                taskItems: state.taskItems
+                taskItems: state.taskItems,
+                taskItemsSelectedDate: state.taskItemsSelectedDate
             };
         case LIST_TASKS:
             return {
                 taskInProgress: state.taskInProgress,
-                taskItems: action.payload
+                taskItems: action.payload.items,
+                taskItemsSelectedDate: action.payload.forDate
             };
         default:
             return state;

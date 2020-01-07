@@ -208,15 +208,15 @@ export class TasksService {
         });
     }
 
-    list(updateStateFunction: Function): Promise<void> {
+    list(updateStateFunction: Function, forDate: Date): Promise<void> {
         return new Promise<void>((resolve) => {
             this.tasksWorker.onmessage = ($event: MessageEvent) => {
                 if ($event && $event.data) {
-                    updateStateFunction($event.data);
+                    updateStateFunction($event.data, forDate);
                 }
             };
 
-            this.tasksWorker.postMessage('listTasks');
+            this.tasksWorker.postMessage({msg: 'listTasks', day: lightFormat(forDate, 'yyyy-MM-dd')});
 
             resolve();
         });

@@ -46,7 +46,7 @@ const TaskModal: React.FC<RootProps> = (props: RootProps) => {
         await props.stopTask(1500, settings.roundTime);
 
         await props.computeSummary();
-        await props.listTasks();
+        await props.listTasks(props.taskItemsSelectedDate);
         await props.listProjectsInvoices();
 
         setTimeout(() => {

@@ -17,9 +17,14 @@ interface StopTaskAction {
     type: typeof STOP_TASK
 }
 
+interface ListTasksActionPayload {
+    items: TaskItem[],
+    forDate: Date;
+}
+
 interface ListTasksAction {
     type: typeof LIST_TASKS;
-    payload: TaskItem[];
+    payload: ListTasksActionPayload;
 }
 
 export type TaskActionTypes = TrackTaskAction | StopTaskAction;

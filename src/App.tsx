@@ -87,7 +87,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
         promises.push(props.initActiveProjects());
         promises.push(props.initTask());
         promises.push(props.computeSummary());
-        promises.push(props.listTasks());
+        promises.push(props.listTasks(new Date()));
         promises.push(props.listProjectsInvoices());
         promises.push(props.initSettings());
 

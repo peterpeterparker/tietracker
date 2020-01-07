@@ -2,9 +2,10 @@
   "item": {
     "no_description": "Without description"
   },
-  "today": {
-    "title": "Today's entries",
-    "empty": "No entries registered yet."
+  "entries": {
+    "title": "Entries",
+    "empty": "No entries for {{selectedDate}}.",
+    "label": "Entries for {{selectedDate}}."
   },
   "tracker": {
     "stop": "Stop current task",
