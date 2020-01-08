@@ -137,7 +137,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
             await updateStore();
 
-            props.history.push('/home');
+            goBack();
         } catch (err) {
             // TODO show err
             console.error(err);
@@ -167,6 +167,10 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     function updateProject(projectId: string) {
         setSelectedProjectId(projectId);
         setProjectModalAction(ProjectModalAction.UPDATE);
+    }
+
+    function goBack() {
+        props.history.push('/home');
     }
 
     return (
@@ -247,6 +251,8 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
                 <IonButton type="button" fill="outline" color="button" onClick={() => setProjectModalAction(ProjectModalAction.CREATE)} aria-label={t('clients:details.create_project')}
                         aria-disabled={saving}><IonLabel>{t('clients:details.create_project')}</IonLabel></IonButton>
+
+                <button type="button" onClick={goBack}>{t('common:actions.cancel')}</button>
             </div>
         </form>
     }
