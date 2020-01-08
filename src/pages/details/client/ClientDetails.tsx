@@ -244,7 +244,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                 {renderProjects()}
             </IonList>
 
-            <div className={styles.actions}>
+            <div className="actions">
                 <IonButton type="submit" disabled={saving || !valid} aria-label={t('common:actions.update')} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
                     <IonLabel>{t('common:actions.update')}</IonLabel>
                 </IonButton>

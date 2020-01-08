@@ -20,8 +20,6 @@ import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 
 import DateFnsUtils from '@date-io/date-fns';
 
-import styles from './TaskDetails.module.scss';
-
 import {Task} from '../../../models/task';
 
 import {Client} from '../../../models/client';
@@ -231,7 +229,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
                 </IonItem>
             </IonList>
 
-            <div className={styles.actions}>
+            <div className="actions">
                 <IonButton type="submit" disabled={saving} aria-label="Update task" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
                     <IonLabel>{t('common:actions.update')}</IonLabel>
                 </IonButton>
