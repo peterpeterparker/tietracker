@@ -220,17 +220,21 @@ const ProjectModal: React.FC<Props> = (props) => {
                 {renderEnabled()}
             </IonList>
 
-            <IonButton type="submit" disabled={saving || !valid} aria-label={t('projects:project.update')}
-                       className="ion-margin-top" style={{
-                '--background': props.color,
-                '--color': props.colorContrast,
-                '--background-hover': props.color,
-                '--color-hover': props.colorContrast,
-                '--background-activated': props.colorContrast,
-                '--color-activated': props.color
-            } as CSSProperties}>
-                <IonLabel>{props.action === ProjectModalAction.CREATE ? t('common:actions.create') : t('common:actions.update')}</IonLabel>
-            </IonButton>
+            <div className="actions">
+                <IonButton type="submit" disabled={saving || !valid} aria-label={t('projects:project.update')}
+                           style={{
+                    '--background': props.color,
+                    '--color': props.colorContrast,
+                    '--background-hover': props.color,
+                    '--color-hover': props.colorContrast,
+                    '--background-activated': props.colorContrast,
+                    '--color-activated': props.color
+                } as CSSProperties}>
+                    <IonLabel>{props.action === ProjectModalAction.CREATE ? t('common:actions.create') : t('common:actions.update')}</IonLabel>
+                </IonButton>
+
+                <button type="button" onClick={() => props.closeAction()}>{t('common:actions.cancel')}</button>
+            </div>
         </form>
     }
 

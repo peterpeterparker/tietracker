@@ -290,9 +290,13 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                         {renderVat(color)}
                     </IonList>
 
-                    <IonButton type="submit" className="ion-margin-top" disabled={!valid} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                        <IonLabel>{t('common:actions.submit')}</IonLabel>
-                    </IonButton>
+                    <div className="actions">
+                        <IonButton type="submit" disabled={!valid} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+                            <IonLabel>{t('common:actions.submit')}</IonLabel>
+                        </IonButton>
+
+                        <button type="button" onClick={() => props.closeAction()}>{t('common:actions.cancel')}</button>
+                    </div>
                 </form>
             </main>
         </IonContent>
