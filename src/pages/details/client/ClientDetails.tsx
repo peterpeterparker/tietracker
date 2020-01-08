@@ -252,7 +252,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                 <IonButton type="button" fill="outline" color="button" onClick={() => setProjectModalAction(ProjectModalAction.CREATE)} aria-label={t('clients:details.create_project')}
                         aria-disabled={saving}><IonLabel>{t('clients:details.create_project')}</IonLabel></IonButton>
 
-                <button type="button" onClick={goBack}>{t('common:actions.cancel')}</button>
+                <button type="button" onClick={goBack} disabled={saving}>{t('common:actions.cancel')}</button>
             </div>
         </form>
     }

@@ -233,7 +233,7 @@ const ProjectModal: React.FC<Props> = (props) => {
                     <IonLabel>{props.action === ProjectModalAction.CREATE ? t('common:actions.create') : t('common:actions.update')}</IonLabel>
                 </IonButton>
 
-                <button type="button" onClick={() => props.closeAction()}>{t('common:actions.cancel')}</button>
+                <button type="button" disabled={saving} onClick={() => props.closeAction()}>{t('common:actions.cancel')}</button>
             </div>
         </form>
     }

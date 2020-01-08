@@ -206,7 +206,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
                     <IonLabel>{inProgress ? t('common:actions.wait') : t('common:actions.export')}</IonLabel>
                 </IonButton>
 
-                <button type="button" onClick={() => props.closeAction()}>{t('common:actions.cancel')}</button>
+                <button type="button" onClick={() => props.closeAction()} disabled={inProgress}>{t('common:actions.cancel')}</button>
             </div>
         </form>
     }

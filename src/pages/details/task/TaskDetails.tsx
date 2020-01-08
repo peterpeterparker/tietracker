@@ -237,7 +237,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
                 <IonButton type="button" onClick={() => deleteTask()} color="button" fill="outline"
                         disabled={saving}><IonLabel>{t('common:actions.delete')}</IonLabel></IonButton>
 
-                <button type="button" onClick={goBack}>{t('common:actions.cancel')}</button>
+                <button type="button" onClick={goBack} disabled={saving}>{t('common:actions.cancel')}</button>
             </div>
         </form>
     }
