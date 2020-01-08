@@ -1,12 +1,13 @@
 ion-button {
   --border-radius: 24px;
   text-transform: inherit;
+  margin: 4px 4px;
 }
 
 button {
   border: none;
   margin: 0;
-  padding: 8px;
+  padding: 8px 4px;
   width: auto;
   outline: none;
 

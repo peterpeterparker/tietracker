@@ -6,7 +6,8 @@
     "wait": "Wait for it...",
     "create": "Create",
     "update": "Update",
-    "delete": "Delete"
+    "delete": "Delete",
+    "cancel": "Cancel"
   },
   "navigation": {
     "home": "Home",
