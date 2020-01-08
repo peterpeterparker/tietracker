@@ -1,3 +1,12 @@
+<a name="0.3.0"></a>
+# 0.3.0 (2020-01-08)
+
+### Features
+
+* display the first action with a box-shadow ([#28](https://github.com/peterpeterparker/tietracker/pull/28))
+* add some cancel buttons to go back ([#27](https://github.com/peterpeterparker/tietracker/pull/27))
+* revert back to display summary before projects ([#26](https://github.com/peterpeterparker/tietracker/pull/26))
+
 <a name="0.2.0"></a>
 # 0.2.0 (2020-01-07)
 
