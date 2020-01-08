@@ -201,9 +201,13 @@ const InvoiceModal: React.FC<Props> = (props) => {
                 </IonItem>
             </IonList>
 
-            <IonButton type="submit" className="ion-margin-top" disabled={billable === undefined || inProgress} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                <IonLabel>{inProgress ? t('common:actions.wait') : t('common:actions.export')}</IonLabel>
-            </IonButton>
+            <div className="actions">
+                <IonButton type="submit" disabled={billable === undefined || inProgress} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+                    <IonLabel>{inProgress ? t('common:actions.wait') : t('common:actions.export')}</IonLabel>
+                </IonButton>
+
+                <button type="button" onClick={() => props.closeAction()}>{t('common:actions.cancel')}</button>
+            </div>
         </form>
     }
 
