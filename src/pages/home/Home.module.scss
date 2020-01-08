@@ -49,3 +49,21 @@
   }
 
 }
+
+.start {
+  animation: startAnimation 2.0s linear infinite;
+}
+
+@keyframes startAnimation {
+  0% {
+    --box-shadow: 0 0 16px rgba(255,119,97,0.2);
+  }
+
+  50% {
+    --box-shadow: 0 0 16px rgba(255,119,97,0.9);
+  }
+
+  100% {
+    --box-shadow: 0 0 16px rgba(255,119,97,0.2);
+  }
+}
