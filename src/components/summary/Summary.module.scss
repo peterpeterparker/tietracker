@@ -21,11 +21,8 @@
 }
 
 .header {
-  ion-card-subtitle {
-    font-size: var(--font-size-normal);
-  }
-
   ion-card-title, ion-card-subtitle {
+    font-size: var(--font-size-normal);
     font-weight: 300;
   }
 }
@@ -38,8 +35,8 @@
   width: calc(100% - 16px);
 
   @media (max-width: 768px) {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+    label {
+      display: none;
+    }
   }
 }
