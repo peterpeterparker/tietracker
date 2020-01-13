@@ -17,8 +17,6 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import {useTranslation} from 'react-i18next';
 
-import styles from './CreateTaskModal.module.scss';
-
 import {contrast} from '../../../utils/utils.color';
 
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
@@ -76,6 +74,13 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
         await props.listProjectsInvoices();
 
         await props.closeAction();
+
+        reset();
+    }
+
+    function reset() {
+        setProject(undefined);
+        setDescription(undefined);
     }
 
     function onProjectChange($event: CustomEvent) {
