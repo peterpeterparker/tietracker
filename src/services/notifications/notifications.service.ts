@@ -5,6 +5,7 @@ import i18next from 'i18next';
 import {Project} from '../../models/project';
 
 import {LocalNotificationPendingList, Plugins} from '@capacitor/core';
+import {Settings} from '../../models/settings';
 const {LocalNotifications} = Plugins;
 
 export class NotificationsService {
@@ -22,7 +23,7 @@ export class NotificationsService {
         return NotificationsService.instance;
     }
 
-    schedule(project: Project): Promise<void> {
+    schedule(project: Project, settings: Settings): Promise<void> {
         return new Promise<void>(async (resolve) => {
             if (!isPlatform('hybrid')) {
                 resolve();
@@ -30,6 +31,11 @@ export class NotificationsService {
             }
 
             if (!project || !project.data) {
+                resolve();
+                return;
+            }
+
+            if (!settings || !settings.notifications || settings.notifications.count === 0) {
                 resolve();
                 return;
             }
@@ -43,8 +49,8 @@ export class NotificationsService {
                         body: i18next.t('notifications:body', { project: project.data.name }),
                         id: 1,
                         schedule: {
-                            every: 'second',
-                            count: 60
+                            every: settings.notifications.every,
+                            count: settings.notifications.count
                         }
                     }
                 ]

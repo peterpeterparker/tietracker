@@ -11,7 +11,7 @@ import {
     IonSegmentButton,
     IonHeader,
     IonToolbar,
-    IonToast
+    IonToast, isPlatform
 } from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
@@ -36,6 +36,8 @@ enum SettingsCategory {
 const Settings: React.FC<RootProps> = (props) => {
 
     const {t} = useTranslation(['settings', 'common']);
+
+    const notifications: boolean = isPlatform('hybrid');
 
     const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
@@ -111,7 +113,7 @@ const Settings: React.FC<RootProps> = (props) => {
     }
 
     function renderSave() {
-        if (category === SettingsCategory.GENERAL) {
+        if (category === SettingsCategory.GENERAL && !notifications) {
             return undefined;
         }
 
@@ -126,7 +128,7 @@ const Settings: React.FC<RootProps> = (props) => {
             return undefined;
         }
 
-        return <SettingsGeneral></SettingsGeneral>;
+        return <SettingsGeneral settings={settings} switchTheme={props.switchTheme}></SettingsGeneral>;
     }
 
     function renderSettingsTracker() {
