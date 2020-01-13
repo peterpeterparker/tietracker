@@ -22,6 +22,8 @@ import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 
 import {format} from '../../utils/utils.date';
 
+import {Project} from '../../models/project';
+
 interface Props extends RootProps {
     addAction: Function;
 }
@@ -32,6 +34,8 @@ const Tasks: React.FC<Props> = (props: Props) => {
 
     const tasks: TaskItemStore[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
     const selecteDay: Date = useSelector((state: RootState) => state.tasks.taskItemsSelectedDate);
+
+    const projects: Project[] | undefined = useSelector((state: RootState) => state.activeProjects.projects);
 
     function openDatePicker() {
         const input: HTMLInputElement | null = document.querySelector('input.MuiInputBase-input');
@@ -68,10 +72,18 @@ const Tasks: React.FC<Props> = (props: Props) => {
                 {t('entries.select_date')}
             </IonButton>
 
-            <IonButton onClick={() => props.addAction()} fill='outline' color='medium' size="small" aria-label={t('entries.add_task')}>
-                {t('entries.add_task')}
-            </IonButton>
+            {renderActionAdd()}
         </div>
+    }
+
+    function renderActionAdd() {
+        if (!projects || projects === undefined || projects.length <= 0) {
+            return undefined;
+        }
+
+        return <IonButton onClick={() => props.addAction()} fill='outline' color='medium' size="small" aria-label={t('entries.add_task')}>
+            {t('entries.add_task')}
+        </IonButton>
     }
 
     function renderTasksInfo() {

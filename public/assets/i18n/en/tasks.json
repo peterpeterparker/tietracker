@@ -19,6 +19,7 @@
     "to": "To"
   },
   "create": {
-    "title": "Create a new task"
+    "title": "Create a new task",
+    "project": "Project"
   }
 }
