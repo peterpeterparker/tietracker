@@ -1,3 +1,15 @@
+<a name="0.4.0"></a>
+# 0.4.0 (2020-01-13)
+
+### Fix
+
+* highlight first call to action for Safari and Firefox ([#29](https://github.com/peterpeterparker/tietracker/pull/29))
+
+### Features
+
+* add manual entry ([#31](https://github.com/peterpeterparker/tietracker/pull/31))
+* add local notifications for reminder ([#30](https://github.com/peterpeterparker/tietracker/pull/30))
+
 <a name="0.3.0"></a>
 # 0.3.0 (2020-01-08)
 
