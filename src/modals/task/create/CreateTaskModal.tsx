@@ -29,6 +29,7 @@ import {Settings as SettingsModel} from '../../../models/settings';
 
 import {ThemeService} from '../../../services/theme/theme.service';
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
+import {TaskData} from '../../../models/task';
 
 interface Props extends RootProps {
     closeAction: Function;
@@ -49,7 +50,32 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
 
+        if (project === undefined || project.data === undefined || project.data.client === undefined || description === undefined || from === undefined || to === undefined) {
+            return;
+        }
 
+        const now: number = new Date().getTime();
+
+        const taskData: TaskData = {
+            from: from,
+            to: to,
+            client_id: project.data.client.id,
+            project_id: project.id,
+            description: description,
+            invoice: {
+                status: 'open'
+            },
+            updated_at: now,
+            created_at: now
+        };
+
+        await props.createTask(taskData, settings.roundTime);
+
+        await props.computeSummary();
+        await props.listTasks(props.taskItemsSelectedDate);
+        await props.listProjectsInvoices();
+
+        await props.closeAction();
     }
 
     function onProjectChange($event: CustomEvent) {
