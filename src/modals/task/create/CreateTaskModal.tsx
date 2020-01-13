@@ -39,8 +39,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
 
     const [project, setProject] = useState<Project | undefined>(undefined);
     const [description, setDescription] = useState<string | undefined>(undefined);
-    const [from, setFrom] = useState<Date | undefined>(undefined);
-    const [to, setTo] = useState<Date | undefined>(undefined);
+    const [from, setFrom] = useState<Date>(new Date());
+    const [to, setTo] = useState<Date>(new Date());
 
     const projects: Project[] | undefined = useSelector((state: RootState) => state.activeProjects.projects);
     const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
@@ -48,15 +48,15 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
 
-        if (project === undefined || project.data === undefined || project.data.client === undefined || description === undefined || from === undefined || to === undefined) {
+        if (project === undefined || project.data === undefined || project.data.client === undefined || description === undefined) {
             return;
         }
 
         const now: number = new Date().getTime();
 
         const taskData: TaskData = {
-            from: from,
-            to: to,
+            from: from.getTime(),
+            to: to.getTime(),
             client_id: project.data.client.id,
             project_id: project.id,
             description: description,
