@@ -24,6 +24,7 @@ import {Project} from '../../../models/project';
 import {ThemeService} from '../../../services/theme/theme.service';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store/reducers';
+import {Settings as SettingsModel} from '../../../models/settings';
 
 
 interface Props extends RootProps {
@@ -35,8 +36,10 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
     const {t} = useTranslation(['tasks', 'common']);
 
     const [project, setProject] = useState<Project | undefined>(undefined);
+    const [description, setDescription] = useState<string | undefined>(undefined);
 
     const projects: Project[] | undefined = useSelector((state: RootState) => state.activeProjects.projects);
+    const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
@@ -48,6 +51,14 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
         }
 
         setProject($event.detail.value);
+    }
+
+    async function onDescriptionChange($event: CustomEvent) {
+        if (!$event || !$event.detail) {
+            return;
+        }
+
+        setDescription($event.detail.value);
     }
 
     return renderContent();
@@ -87,6 +98,14 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
             <IonList className="inputs-list">
                 {renderProjects()}
+
+                <IonItem className="item-title">
+                    <IonLabel>{t('tasks:tracker.description')}</IonLabel>
+                </IonItem>
+
+                <IonItem className="item-input">
+                    {renderTaskDescription()}
+                </IonItem>
             </IonList>
         </form>
     }
@@ -118,6 +137,22 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
 
             return <IonSelectOption value={project} key={project.id}>{client + project.data.name}</IonSelectOption>
         });
+    }
+
+    function renderTaskDescription() {
+        if (!settings || !settings.descriptions || settings.descriptions.length <= 0) {
+            return undefined;
+        }
+
+        return <IonSelect interfaceOptions={{header: t('tasks:tracker.description')}} placeholder={t('tasks:tracker.description')}
+                          value={description}
+                          onIonChange={($event: CustomEvent) => onDescriptionChange($event)}>
+            {
+                settings.descriptions.map((description: string, i: number) => {
+                    return <IonSelectOption value={description} key={`desc-${i}`}>{description}</IonSelectOption>
+                })
+            }
+        </IonSelect>
     }
 
 };

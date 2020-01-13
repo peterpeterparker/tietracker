@@ -54,7 +54,7 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
         }, 1500);
     }
 
-    async function onRoundTimeChange($event: CustomEvent) {
+    async function onDescriptionChange($event: CustomEvent) {
         if (!$event || !$event.detail) {
             return;
         }
@@ -103,7 +103,7 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
 
         return <IonSelect interfaceOptions={{header: t('tracker.description')}} placeholder={t('tracker.description')}
                           value={task.data.description}
-                          onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
+                          onIonChange={($event: CustomEvent) => onDescriptionChange($event)}>
             {
                 settings.descriptions.map((description: string, i: number) => {
                     return <IonSelectOption value={description} key={`desc-${i}`}>{description}</IonSelectOption>
