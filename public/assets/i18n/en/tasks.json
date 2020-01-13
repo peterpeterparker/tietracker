@@ -5,7 +5,8 @@
   "entries": {
     "title": "Diary",
     "empty": "No entries registered on {{selectedDate}}.",
-    "label": "Entries registered on {{selectedDate}}."
+    "label": "Entries registered on {{selectedDate}}.",
+    "select_date": "Select another date"
   },
   "tracker": {
     "stop": "Stop current task",
