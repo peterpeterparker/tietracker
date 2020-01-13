@@ -1,6 +1,6 @@
 import {RootThunkResult} from './types.thunks';
 
-import {START_TASK, STOP_TASK, INIT_TASK, LIST_TASKS, UPDATE_TASK} from '../types/tasks.types';
+import {START_TASK, STOP_TASK, INIT_TASK, LIST_TASKS, UPDATE_TASK, CREATE_TASK} from '../types/tasks.types';
 
 import {TaskInProgress} from '../interfaces/task.inprogress';
 import {TaskItem} from '../interfaces/task.item';
@@ -10,6 +10,7 @@ import {Settings} from '../../models/settings';
 
 import {TasksService} from '../../services/tasks/tasks.service';
 import {NotificationsService} from '../../services/notifications/notifications.service';
+import {TaskData} from '../../models/task';
 
 export function startTask(project: Project, settings: Settings): RootThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
@@ -38,6 +39,14 @@ export function stopTask(delayDispatch: number = 0, roundTime: number): RootThun
         setTimeout(() => {
             dispatch({type: STOP_TASK});
         }, delayDispatch);
+    };
+}
+
+export function createTask(taskData: TaskData, roundTime: number): RootThunkResult<Promise<void>> {
+    return async (dispatch, getState) => {
+        await TasksService.getInstance().create(taskData, roundTime);
+
+        dispatch({type: CREATE_TASK});
     };
 }
 

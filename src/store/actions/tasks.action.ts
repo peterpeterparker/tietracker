@@ -1,4 +1,5 @@
 import {
+    CREATE_TASK,
     INIT_TASK,
     LIST_TASKS,
     START_TASK,
@@ -28,6 +29,12 @@ export function updateTask(task: TaskInProgress): TaskActionTypes {
 export function stopTask(): TaskActionTypes {
     return {
         type: STOP_TASK
+    }
+}
+
+export function createTask(): TaskActionTypes {
+    return {
+        type: CREATE_TASK
     }
 }
 

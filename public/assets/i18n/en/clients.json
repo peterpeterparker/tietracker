@@ -1,6 +1,6 @@
 {
   "create": {
-    "title": "Create a a new client",
+    "title": "Create a new client",
     "client": "Client (min. 3 characters)",
     "color": "Color",
     "project": "Project (min. 3 characters)",

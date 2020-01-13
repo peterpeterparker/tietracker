@@ -8,9 +8,7 @@ import {lightFormat} from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 
-import {IonList, IonIcon, IonItem} from '@ionic/react';
-
-import {calendar} from 'ionicons/icons';
+import {IonList, IonButton} from '@ionic/react';
 
 import styles from './Tasks.module.scss';
 
@@ -24,12 +22,20 @@ import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 
 import {format} from '../../utils/utils.date';
 
-const Tasks: React.FC<RootProps> = (props) => {
+import {Project} from '../../models/project';
+
+interface Props extends RootProps {
+    addAction: Function;
+}
+
+const Tasks: React.FC<Props> = (props: Props) => {
 
     const {t} = useTranslation('tasks');
 
     const tasks: TaskItemStore[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
     const selecteDay: Date = useSelector((state: RootState) => state.tasks.taskItemsSelectedDate);
+
+    const projects: Project[] | undefined = useSelector((state: RootState) => state.activeProjects.projects);
 
     function openDatePicker() {
         const input: HTMLInputElement | null = document.querySelector('input.MuiInputBase-input');
@@ -49,30 +55,48 @@ const Tasks: React.FC<RootProps> = (props) => {
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <div className="ion-padding-end ion-padding-top">
                 <h1>{t('entries.title')}</h1>
-                {renderTasks()}
+                {renderTasksInfo()}
+
+                {renderActions()}
+
+                <IonList>
+                    {renderTasksItems()}
+                </IonList>
             </div>
         </MuiPickersUtilsProvider>
     );
 
-    function renderTasks() {
+    function renderActions() {
+        return <div className={styles.action}>
+            <IonButton onClick={() => openDatePicker()} fill='outline' color='medium' size="small" aria-label={t('entries.select_date')}>
+                {t('entries.select_date')}
+            </IonButton>
+
+            {renderActionAdd()}
+        </div>
+    }
+
+    function renderActionAdd() {
+        if (!projects || projects === undefined || projects.length <= 0) {
+            return undefined;
+        }
+
+        return <IonButton onClick={() => props.addAction()} fill='outline' color='medium' size="small" aria-label={t('entries.add_task')}>
+            {t('entries.add_task')}
+        </IonButton>
+    }
+
+    function renderTasksInfo() {
         if (!tasks || tasks.length <= 0) {
             return renderDatePicker('entries.empty');
         }
 
-        return <>
-            {renderDatePicker('entries.label')}
-            <IonList>
-                {renderTasksItems()}
-            </IonList>
-        </>
+        return renderDatePicker('entries.label')
     }
 
     function renderDatePicker(label: string) {
         return <>
-            <IonItem className={styles.action} onClick={() => openDatePicker()} lines="none" detail={false}>
-                <IonIcon icon={calendar} slot="start"/>
-                <p dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></p>
-            </IonItem>
+            <p dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></p>
 
             <div className={styles.picker}>
                 <DatePicker DialogProps={{disableEnforceFocus: true}} value={selecteDay}

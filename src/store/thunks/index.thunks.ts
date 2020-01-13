@@ -7,7 +7,7 @@ import { RootState } from '../reducers';
 
 import { createClient, initClients } from './clients.thunks';
 import { createProject, initActiveProjects } from './projects.thunks';
-import {startTask, stopTask, initTask, listTasks, updateTask} from './tasks.thunks';
+import {startTask, stopTask, initTask, listTasks, updateTask, createTask} from './tasks.thunks';
 
 import { ClientData, Client } from '../../models/client';
 import { ProjectData, Project } from '../../models/project';
@@ -18,6 +18,7 @@ import { listProjectsInvoices } from './invoices.thunks';
 import {initSettings, updateSettings} from './settings.thunks';
 import {TaskInProgress} from '../interfaces/task.inprogress';
 import {initTheme, switchTheme} from './theme.thunks';
+import {TaskData} from '../../models/task';
 
 export type RootThunkDispatch = ThunkDispatch<RootState, undefined, Action>;
 
@@ -44,6 +45,7 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
     updateTask: (task: TaskInProgress) =>  dispatch(updateTask(task)),
     stopTask: (delayDispatch: number = 0, roundTime: number) => dispatch(stopTask(delayDispatch, roundTime)),
     initTask: () => dispatch(initTask()),
+    createTask: (taskData: TaskData, roundTime: number) => dispatch(createTask(taskData, roundTime)),
 
     computeSummary: () => dispatch(computeSummary()),
 

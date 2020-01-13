@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {useSelector} from 'react-redux';
+
 import {RouteComponentProps} from 'react-router';
 
 import {
@@ -22,13 +24,15 @@ import styles from './Home.module.scss';
 
 import CreateClientModal from '../../modals/client/CreateClientModal';
 import ClientsModal from '../../modals/clients/ClientsModal';
+import CreateTaskModal from '../../modals/task/create/CreateTaskModal';
 
 import Projects from '../../components/projects/Projects';
 import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
 import Header from '../../components/header/Header';
+
 import {Client} from '../../models/client';
-import {useSelector} from 'react-redux';
+
 import {RootState} from '../../store/reducers';
 
 const Home: React.FC<RouteComponentProps> = (props) => {
@@ -39,6 +43,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
 
   const [showModalClient, setShowModalClient] = useState(false);
   const [showModalClients, setShowModalClients] = useState(false);
+  const [showModalTask, setShowModalTask] = useState(false);
 
   const [modalPresented,setModalPresented] = useState(false);
 
@@ -78,6 +83,10 @@ const Home: React.FC<RouteComponentProps> = (props) => {
           <ClientsModal presented={modalPresented}></ClientsModal>
         </IonModal>
 
+        <IonModal isOpen={showModalTask} onDidDismiss={() => setShowModalTask(false)} cssClass="fullscreen">
+          <CreateTaskModal closeAction={() => setShowModalTask(false)}></CreateTaskModal>
+        </IonModal>
+
         <main className="ion-padding-start ion-padding-bottom ion-padding-top">
           <IonHeader className="ion-padding-end">
             <IonToolbar className={styles.toolbar}>
@@ -96,7 +105,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
 
           <Projects addAction={() => setShowModalClient(true)}></Projects>
 
-          <Tasks></Tasks>
+          <Tasks addAction={() => setShowModalTask(true)}></Tasks>
         </main>
       </IonContent>
     </IonPage>

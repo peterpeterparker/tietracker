@@ -1,4 +1,5 @@
 import {
+    CREATE_TASK,
     INIT_TASK,
     LIST_TASKS,
     START_TASK,
@@ -34,6 +35,7 @@ export function tasksReducer(state = initialState, action: TaskActionTypes | Tas
                 taskItemsSelectedDate: state.taskItemsSelectedDate
             };
         case STOP_TASK:
+        case CREATE_TASK:
             return {
                 taskInProgress: undefined,
                 taskItems: state.taskItems,

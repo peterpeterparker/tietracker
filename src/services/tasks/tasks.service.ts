@@ -5,7 +5,7 @@ import uuid from 'uuid/v4';
 import {addMinutes, isBefore, lightFormat, roundToNearestMinutes, subMinutes} from 'date-fns';
 
 import {Project} from '../../models/project';
-import {Task} from '../../models/task';
+import {Task, TaskData} from '../../models/task';
 
 import {TaskInProgress, TaskInProgressData} from '../../store/interfaces/task.inprogress';
 import {Settings} from '../../models/settings';
@@ -58,6 +58,47 @@ export class TasksService {
                     return;
                 }
 
+                await this.saveTaskAndInvoice(task, roundTime);
+
+                await del('task-in-progress');
+
+                resolve(task);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    create(taskData: TaskData, roundTime: number): Promise<Task> {
+        return new Promise<Task>(async (resolve, reject) => {
+            try {
+                if (!taskData) {
+                    reject('No task data provided.');
+                    return;
+                }
+
+                const task: Task = {
+                    id: uuid(),
+                    data: taskData
+                };
+
+                await this.saveTaskAndInvoice(task, roundTime);
+
+                resolve(task);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    private saveTaskAndInvoice(task: Task, roundTime: number): Promise<Task> {
+        return new Promise<Task>(async (resolve, reject) => {
+            try {
+                if (!task || !task.data) {
+                    reject('No task provided.');
+                    return;
+                }
+
                 const now: Date = new Date();
 
                 task.data.updated_at = now.getTime();
@@ -72,8 +113,6 @@ export class TasksService {
 
                 const dayShort: string = lightFormat(now, 'yyyy-MM-dd');
                 await this.addTaskToInvoices(dayShort);
-
-                await del('task-in-progress');
 
                 resolve(task);
             } catch (err) {

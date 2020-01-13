@@ -5,7 +5,9 @@
   "entries": {
     "title": "Diary",
     "empty": "No entries registered on {{selectedDate}}.",
-    "label": "Entries registered on {{selectedDate}}."
+    "label": "Entries registered on {{selectedDate}}.",
+    "select_date": "Select another date",
+    "add_task": "Add an entry"
   },
   "tracker": {
     "stop": "Stop current task",
@@ -15,5 +17,9 @@
     "description": "Description",
     "from": "From",
     "to": "To"
+  },
+  "create": {
+    "title": "Create a new task",
+    "project": "Project"
   }
 }
