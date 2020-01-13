@@ -1,4 +1,5 @@
 import React, {CSSProperties, FormEvent, useState} from 'react';
+import {useSelector} from 'react-redux';
 import {
     IonButton,
     IonButtons,
@@ -11,6 +12,9 @@ import {
     IonToolbar
 } from '@ionic/react';
 
+import {DateTimePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+
 import {useTranslation} from 'react-i18next';
 
 import styles from './CreateTaskModal.module.scss';
@@ -18,14 +22,13 @@ import styles from './CreateTaskModal.module.scss';
 import {contrast} from '../../../utils/utils.color';
 
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
+import {RootState} from '../../../store/reducers';
 
 import {Project} from '../../../models/project';
-
-import {ThemeService} from '../../../services/theme/theme.service';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../store/reducers';
 import {Settings as SettingsModel} from '../../../models/settings';
 
+import {ThemeService} from '../../../services/theme/theme.service';
+import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 
 interface Props extends RootProps {
     closeAction: Function;
@@ -37,6 +40,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
 
     const [project, setProject] = useState<Project | undefined>(undefined);
     const [description, setDescription] = useState<string | undefined>(undefined);
+    const [from, setFrom] = useState<Date | undefined>(undefined);
+    const [to, setTo] = useState<Date | undefined>(undefined);
 
     const projects: Project[] | undefined = useSelector((state: RootState) => state.activeProjects.projects);
     const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
@@ -61,7 +66,11 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
         setDescription($event.detail.value);
     }
 
-    return renderContent();
+    return (
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            {renderContent()}
+        </MuiPickersUtilsProvider>
+    );
 
     function renderContent() {
 
@@ -106,6 +115,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
                 <IonItem className="item-input">
                     {renderTaskDescription()}
                 </IonItem>
+
+                {renderDates()}
             </IonList>
         </form>
     }
@@ -144,7 +155,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
             return undefined;
         }
 
-        return <IonSelect interfaceOptions={{header: t('tasks:tracker.description')}} placeholder={t('tasks:tracker.description')}
+        return <IonSelect interfaceOptions={{header: t('tasks:tracker.description')}}
+                          placeholder={t('tasks:tracker.description')}
                           value={description}
                           onIonChange={($event: CustomEvent) => onDescriptionChange($event)}>
             {
@@ -153,6 +165,28 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
                 })
             }
         </IonSelect>
+    }
+
+    function renderDates() {
+        return <>
+            <IonItem className="item-title">
+                <IonLabel>{t('tasks:details.from')}</IonLabel>
+            </IonItem>
+
+            <IonItem className="item-input">
+                <DateTimePicker value={from} onChange={(date: MaterialUiPickersDate) => setFrom(date as Date)} aria-label={t('tasks:details.from')}
+                                ampm={false} hideTabs={true} format="yyyy/MM/dd HH:mm"/>
+            </IonItem>
+
+            <IonItem className="item-title">
+                <IonLabel>{t('tasks:details.to')}</IonLabel>
+            </IonItem>
+
+            <IonItem className="item-input">
+                <DateTimePicker value={to} onChange={(date: MaterialUiPickersDate) => setTo(date as Date)} aria-label={t('tasks:details.to')}
+                                ampm={false} hideTabs={true} format="yyyy/MM/dd HH:mm"/>
+            </IonItem>
+        </>
     }
 
 };
