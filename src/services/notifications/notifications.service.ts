@@ -1,7 +1,10 @@
-import {LocalNotificationEnabledResult, LocalNotificationPendingList, Plugins} from '@capacitor/core';
 import {isPlatform} from '@ionic/react';
+
+import i18next from 'i18next';
+
 import {Project} from '../../models/project';
 
+import {LocalNotificationPendingList, Plugins} from '@capacitor/core';
 const {LocalNotifications} = Plugins;
 
 export class NotificationsService {
@@ -31,11 +34,13 @@ export class NotificationsService {
                 return;
             }
 
+            await i18next.loadNamespaces('notifications');
+
             await LocalNotifications.schedule({
                 notifications: [
                     {
-                        title: project.data.name,
-                        body: project.data.client ? `Tracking work for ${project.data.client.name}` : 'Tracking work in progress',
+                        title: project.data.client ? `${project.data.client.name}` : i18next.t('notifications:fallback_title'),
+                        body: i18next.t('notifications:body', { project: project.data.name }),
                         id: 1,
                         schedule: {
                             every: 'second',
