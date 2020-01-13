@@ -5,21 +5,21 @@ import {IonIcon, IonSelectOption, IonSelect} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
-import styles from './TaskModal.module.scss';
+import styles from './TrackTaskModal.module.scss';
 
 import {checkmarkCircle} from 'ionicons/icons';
 
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
+import {RootState} from '../../../store/reducers';
+import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 
-import {TaskInProgress, TaskInProgressClientData, TaskInProgressData} from '../../store/interfaces/task.inprogress';
+import {TaskInProgress, TaskInProgressClientData, TaskInProgressData} from '../../../store/interfaces/task.inprogress';
 
-import Spinner from '../../components/spinner/Spinner';
+import Spinner from '../../../components/spinner/Spinner';
 
-import {contrast} from '../../utils/utils.color';
-import {Settings as SettingsModel} from '../../models/settings';
+import {contrast} from '../../../utils/utils.color';
+import {Settings as SettingsModel} from '../../../models/settings';
 
-const TaskModal: React.FC<RootProps> = (props: RootProps) => {
+const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
 
     const {t} = useTranslation('tasks');
 
@@ -114,4 +114,4 @@ const TaskModal: React.FC<RootProps> = (props: RootProps) => {
 
 };
 
-export default rootConnector(TaskModal);
+export default rootConnector(TrackTaskModal);
