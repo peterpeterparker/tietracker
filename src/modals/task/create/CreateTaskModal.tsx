@@ -48,6 +48,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
 
     async function handleSubmit($event: FormEvent<HTMLFormElement>) {
         $event.preventDefault();
+
+
     }
 
     function onProjectChange($event: CustomEvent) {
@@ -94,15 +96,17 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
             </IonHeader>
 
             <main className="ion-padding">
-                {renderForm()}
+                {renderForm(color, colorContrast)}
             </main>
         </IonContent>
     }
 
-    function renderForm() {
+    function renderForm(color: string | undefined, colorContrast: string) {
         if (!projects || projects === undefined || projects.length <= 0) {
             return undefined;
         }
+
+        const valid: boolean = project !== undefined && description !== undefined;
 
         return <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
             <IonList className="inputs-list">
@@ -118,6 +122,14 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
 
                 {renderDates()}
             </IonList>
+
+            <div className="actions">
+                <IonButton type="submit" disabled={!valid} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+                    <IonLabel>{t('common:actions.submit')}</IonLabel>
+                </IonButton>
+
+                <button type="button" onClick={() => props.closeAction()}>{t('common:actions.cancel')}</button>
+            </div>
         </form>
     }
 
