@@ -22,7 +22,11 @@ import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 
 import {format} from '../../utils/utils.date';
 
-const Tasks: React.FC<RootProps> = (props) => {
+interface Props extends RootProps {
+    addAction: Function;
+}
+
+const Tasks: React.FC<Props> = (props: Props) => {
 
     const {t} = useTranslation('tasks');
 
@@ -47,26 +51,35 @@ const Tasks: React.FC<RootProps> = (props) => {
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <div className="ion-padding-end ion-padding-top">
                 <h1>{t('entries.title')}</h1>
-                {renderTasks()}
+                {renderTasksInfo()}
 
-                <IonButton onClick={() => openDatePicker()} fill='outline' color='medium' size="small" aria-label={t('entries.select_date')}>
-                    {t('entries.select_date')}
-                </IonButton>
+                {renderActions()}
+
+                <IonList>
+                    {renderTasksItems()}
+                </IonList>
             </div>
         </MuiPickersUtilsProvider>
     );
 
-    function renderTasks() {
+    function renderActions() {
+        return <div className={styles.action}>
+            <IonButton onClick={() => openDatePicker()} fill='outline' color='medium' size="small" aria-label={t('entries.select_date')}>
+                {t('entries.select_date')}
+            </IonButton>
+
+            <IonButton onClick={() => props.addAction()} fill='outline' color='medium' size="small" aria-label={t('entries.add_task')}>
+                {t('entries.add_task')}
+            </IonButton>
+        </div>
+    }
+
+    function renderTasksInfo() {
         if (!tasks || tasks.length <= 0) {
             return renderDatePicker('entries.empty');
         }
 
-        return <>
-            {renderDatePicker('entries.label')}
-            <IonList>
-                {renderTasksItems()}
-            </IonList>
-        </>
+        return renderDatePicker('entries.label')
     }
 
     function renderDatePicker(label: string) {

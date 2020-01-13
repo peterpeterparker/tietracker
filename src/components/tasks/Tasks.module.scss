@@ -5,20 +5,13 @@
 }
 
 .action {
-  --border-color: transparent;
-  --highlight-color-focused: transparent;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 
-  color: var(--ion-text-color);
-  --color: var(--ion-text-color);
+  margin: 8px 0;
 
-  cursor: pointer;
-
-  p {
-    font-weight: 300;
-  }
-
-  ion-icon {
-    color: var(--ion-text-color);
-    font-size: 2rem;
+  ion-button:first-of-type {
+    margin-left: 0;
   }
 }
