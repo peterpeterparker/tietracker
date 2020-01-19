@@ -28,8 +28,6 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
     const [showPopover, setShowPopover] = useState<boolean>(false);
 
     function onCurrencyChange(currency: string | undefined) {
-        console.log(currency);
-
         if (!currency) {
             setShowPopover(false);
 
@@ -37,8 +35,6 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
         }
 
         props.settings.currency = currency;
-
-        console.log(props.settings);
 
         setShowPopover(false);
     }
@@ -73,7 +69,7 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
 
     return (<>
             <IonModal isOpen={showPopover}  onDidDismiss={() => setShowPopover(false)}>
-                <CurrenciesModal closeAction={(currency?: string) => onCurrencyChange(currency)}></CurrenciesModal>
+                <CurrenciesModal currency={props.settings.currency} closeAction={(currency?: string) => onCurrencyChange(currency)}></CurrenciesModal>
             </IonModal>
 
             <IonList className="inputs-list">

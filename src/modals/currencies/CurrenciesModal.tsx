@@ -21,6 +21,7 @@ import styles from './CurrenciesModal.module.scss';
 
 interface Props {
     closeAction: Function;
+    currency: string;
 }
 
 const CurrenciesModal: React.FC<Props> = (props: Props) => {
@@ -95,7 +96,7 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
 
             <IonContent>
                 <main className="ion-padding">
-                    <IonSearchbar debounce={500} placeholder={t('tracker.currency.filter')}
+                    <IonSearchbar debounce={500} placeholder={t('tracker.currency.filter')} className={styles.searchbar}
                                   onIonInput={($event: CustomEvent<KeyboardEvent>) => onFilter($event)}></IonSearchbar>
 
                     <IonList>
@@ -114,11 +115,11 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
         }
 
         return Object.keys(filteredCurrencies).map((key: string) => {
-            return <IonItem key={`currency-${key}`} className={styles.item} onClick={() => props.closeAction(key)}>
+            return <IonItem key={`${key}`} className={styles.item} onClick={() => props.closeAction(key)}>
                 <IonLabel>{filteredCurrencies[key].name} ({key})</IonLabel>
-                <IonRadio value="cord"/>
+                <IonRadio value={key} checked={key === props.currency}/>
             </IonItem>
-        })
+        });
     }
 
 };
