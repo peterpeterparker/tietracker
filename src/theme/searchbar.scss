@@ -18,3 +18,10 @@ ion-searchbar[class*="sc-ion-searchbar-ios"] {
   height: 36px;
   --background: transparent;
 }
+
+body.dark {
+  ion-searchbar[class*="sc-ion-searchbar"] {
+    --icon-color: white;
+    --clear-button-color: white;
+  }
+}

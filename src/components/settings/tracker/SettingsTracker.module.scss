@@ -1,0 +1,17 @@
+.itemButton {
+  &:global(.ios) {
+    button {
+      height: 36px;
+    }
+  }
+
+  &:global(.md) {
+    button {
+      height: 42px;
+
+      ion-icon {
+        padding: 0 16px;
+      }
+    }
+  }
+}

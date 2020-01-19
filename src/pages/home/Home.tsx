@@ -90,7 +90,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
         <main className="ion-padding-start ion-padding-bottom ion-padding-top">
           <IonHeader className="ion-padding-end">
             <IonToolbar className={styles.toolbar}>
-              <button aria-label={t('search.clients')} className={styles.searchbar} onClick={() => setShowModalClients(true)}>
+              <button aria-label={t('search.clients')} className={styles.searchbar + ' input'} onClick={() => setShowModalClients(true)}>
                 <IonIcon icon={search} />
                 <IonLabel>{t('search.clients')}</IonLabel>
               </button>
