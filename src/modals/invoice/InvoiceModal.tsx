@@ -91,11 +91,11 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
         try {
             if (isPlatform('desktop') && isChrome() && isHttps()) {
-                await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, settings.vat, bill);
+                await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency.currency, settings.vat, bill);
             } else if (isPlatform('hybrid')) {
-                await ExportService.getInstance().exportMobileFileSystem(props.invoice, from, to, settings.currency, settings.vat, bill);
+                await ExportService.getInstance().exportMobileFileSystem(props.invoice, from, to, settings.currency.currency, settings.vat, bill);
             } else  {
-                await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, settings.vat, bill);
+                await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency.currency, settings.vat, bill);
             }
 
             if (bill) {
@@ -165,7 +165,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             return <p>{t('invoices:invoice.empty')}</p>
         }
 
-        return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.billable', {amount: formatCurrency(billable, settings.currency)})}} ></p>
+        return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.billable', {amount: formatCurrency(billable, settings.currency.currency)})}} ></p>
     }
 
     function renderFilter() {

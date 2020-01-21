@@ -36,7 +36,7 @@ const TaskItem: React.FC<TaskItemProps> = (props) => {
                 {
                     props.task.data.description ? <h2>{props.task.data.description}</h2> : t('item.no_description')
                 }
-                <p>{formatTime(props.task.data.milliseconds)} - {formatCurrency(props.task.data.billable, settings.currency)}</p>
+                <p>{formatTime(props.task.data.milliseconds)} - {formatCurrency(props.task.data.billable, settings.currency.currency)}</p>
             </IonLabel>
         </IonItem>
     );
