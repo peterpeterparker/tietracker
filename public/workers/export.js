@@ -53,12 +53,12 @@ async function exportInvoices(invoices, projects, filterProjectId, currency, cli
 
     const concatenedInvoices = filteredInvoices.reduce((a, b) => a.concat(b), []);
 
-    const results = await exportToExcel(concatenedInvoices, client);
+    const results = await exportToExcel(concatenedInvoices, client, currency);
 
     self.postMessage(results);
 }
 
-async function exportToExcel(invoices, client) {
+async function exportToExcel(invoices, client, currency) {
     const workbook = new ExcelJS.Workbook();
 
     workbook.creator = 'Tie Tracker';
@@ -97,14 +97,15 @@ async function exportToExcel(invoices, client) {
         worksheet.getCell(`B${i + 2}`).numFmt = 'yyyy-mm-dd hh:mm:ss';
         worksheet.getCell(`C${i + 2}`).numFmt = 'yyyy-mm-dd hh:mm:ss';
         worksheet.getCell(`D${i + 2}`).numFmt = '0.00';
-        worksheet.getCell(`E${i + 2}`).numFmt = '#,##0.00 \"$\"';
+        worksheet.getCell(`E${i + 2}`).numFmt = `#,##0.00 \"${currency}\"`;
     });
 
-    console.log(worksheet.columns, worksheet.getColumn(1));
+    worksheet.getCell(`E${invoices.length + 2}`).numFmt = `#,##0.00 \"${currency}\"`;
 
     worksheet.getColumn(1).width = 50;
     worksheet.getColumn(2).width = 20;
     worksheet.getColumn(3).width = 20;
+    worksheet.getColumn(5).width = 16;
 
     const buf = await workbook.xlsx.writeBuffer();
 
