@@ -58,7 +58,7 @@ export class TasksService {
                     return;
                 }
 
-                await this.saveTaskAndInvoice(task, roundTime);
+                await this.saveTaskAndInvoice(task, roundTime, true);
 
                 await del('task-in-progress');
 
@@ -82,7 +82,7 @@ export class TasksService {
                     data: taskData
                 };
 
-                await this.saveTaskAndInvoice(task, roundTime);
+                await this.saveTaskAndInvoice(task, roundTime, false);
 
                 resolve(task);
             } catch (err) {
@@ -91,7 +91,7 @@ export class TasksService {
         });
     }
 
-    private saveTaskAndInvoice(task: Task, roundTime: number): Promise<Task> {
+    private saveTaskAndInvoice(task: Task, roundTime: number, endNow: boolean): Promise<Task> {
         return new Promise<Task>(async (resolve, reject) => {
             try {
                 if (!task || !task.data) {
@@ -103,11 +103,13 @@ export class TasksService {
 
                 task.data.updated_at = now.getTime();
 
-                const from: Date = roundToNearestMinutes(task.data.from, { nearestTo: roundTime });
+                const from: Date = roundTime > 0 ? roundToNearestMinutes(task.data.from, { nearestTo: roundTime }) : new Date(task.data.from);
                 task.data.from = from.getTime();
 
-                const to: Date = isBefore(subMinutes(now, roundTime), from) ? addMinutes(from, roundTime) : now;
-                task.data.to = roundToNearestMinutes(to, { nearestTo: roundTime }).getTime();
+                const toCompare: Date = endNow ? now : new Date(task.data.to as number | Date);
+                const to: Date = isBefore(subMinutes(toCompare, roundTime), from) ? addMinutes(from, roundTime) : toCompare;
+
+                task.data.to = roundTime > 0 ? roundToNearestMinutes(to, { nearestTo: roundTime }).getTime() : to.getTime();
 
                 await this.saveTask(task);
 

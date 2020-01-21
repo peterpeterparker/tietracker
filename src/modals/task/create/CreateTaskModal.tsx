@@ -25,6 +25,8 @@ import {RootState} from '../../../store/reducers';
 import {Project} from '../../../models/project';
 import {Settings as SettingsModel} from '../../../models/settings';
 
+import {pickerColor} from '../../../utils/utils.picker';
+
 import {ThemeService} from '../../../services/theme/theme.service';
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 import {TaskData} from '../../../models/task';
@@ -67,7 +69,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
             created_at: now
         };
 
-        await props.createTask(taskData, settings.roundTime);
+        await props.createTask(taskData, 0);
 
         await props.computeSummary();
         await props.listTasks(props.taskItemsSelectedDate);
@@ -109,6 +111,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
 
         const color: string | undefined = project && project.data && project.data.client ? project.data.client.color : undefined;
         const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
+
+        pickerColor(colorContrast, color);
 
         return <IonContent>
             <IonHeader>
