@@ -84,28 +84,35 @@ async function exportToExcel(invoices, client, currency) {
             showRowStripes: true,
         },
         columns: [
-            {name: 'Description', filterButton: true},
-            {name: 'From'},
-            {name: 'To'},
-            {name: 'Duration', totalsRowLabel: 'Totals:'},
+            {name: 'Description', filterButton: true, totalsRowLabel: 'Totals:'},
+            {name: 'Start date'},
+            {name: 'Start time',},
+            {name: 'End date'},
+            {name: 'End time'},
+            {name: 'Duration', totalsRowFunction: 'sum'},
             {name: 'Billable', totalsRowFunction: 'sum'},
         ],
         rows: invoices,
     });
 
     invoices.forEach((invoice, i) => {
-        worksheet.getCell(`B${i + 2}`).numFmt = 'yyyy-mm-dd hh:mm:ss';
-        worksheet.getCell(`C${i + 2}`).numFmt = 'yyyy-mm-dd hh:mm:ss';
-        worksheet.getCell(`D${i + 2}`).numFmt = '0.00';
-        worksheet.getCell(`E${i + 2}`).numFmt = `#,##0.00 \"${currency}\"`;
+        worksheet.getCell(`B${i + 2}`).numFmt = 'yyyy-mm-dd';
+        worksheet.getCell(`C${i + 2}`).numFmt = 'hh:mm:ss';
+        worksheet.getCell(`D${i + 2}`).numFmt = 'yyyy-mm-dd';
+        worksheet.getCell(`E${i + 2}`).numFmt = 'hh:mm:ss';
+        worksheet.getCell(`F${i + 2}`).numFmt = '0.00';
+        worksheet.getCell(`G${i + 2}`).numFmt = `#,##0.00 \"${currency}\"`;
     });
 
-    worksheet.getCell(`E${invoices.length + 2}`).numFmt = `#,##0.00 \"${currency}\"`;
+    worksheet.getCell(`F${invoices.length + 2}`).numFmt = '0.00';
+    worksheet.getCell(`G${invoices.length + 2}`).numFmt = `#,##0.00 \"${currency}\"`;
 
     worksheet.getColumn(1).width = 50;
-    worksheet.getColumn(2).width = 20;
-    worksheet.getColumn(3).width = 20;
-    worksheet.getColumn(5).width = 16;
+    worksheet.getColumn(2).width = 10;
+    worksheet.getColumn(3).width = 10;
+    worksheet.getColumn(4).width = 10;
+    worksheet.getColumn(5).width = 10;
+    worksheet.getColumn(7).width = 16;
 
     const buf = await workbook.xlsx.writeBuffer();
 
@@ -151,6 +158,8 @@ function exportInvoice(invoice, projects, filterProjectId) {
             return [
                 task.data.description ? task.data.description : '',
                 new Date(task.data.from),
+                new Date(task.data.from),
+                new Date(task.data.to),
                 new Date(task.data.to),
                 hours,
                 billable
