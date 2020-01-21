@@ -1,6 +1,8 @@
 importScripts('./libs/idb-keyval-iife.min.js');
 importScripts('./libs/dayjs.min.js');
 
+importScripts('./libs/exceljs.min.js');
+
 importScripts('./utils/utils.js');
 
 self.onmessage = async ($event) => {
@@ -33,27 +35,69 @@ async function exportInvoices(invoices, projects, filterProjectId, currency, bil
         promises.push(exportInvoice(invoice, projects, filterProjectId, currency, bill));
     });
 
-    const results = await Promise.all(promises);
+    const allInvoices = await Promise.all(promises);
 
-    if (!results || results.length <= 0) {
+    if (!allInvoices || allInvoices.length <= 0) {
         self.postMessage(undefined);
         return;
     }
 
-    const filteredResults = results.filter((tasks) => {
+    const filteredInvoices = allInvoices.filter((tasks) => {
         return tasks && tasks !== undefined && tasks.length > 0;
     });
 
-    if (!filteredResults || filteredResults.length <= 0) {
+    if (!filteredInvoices || filteredInvoices.length <= 0) {
         self.postMessage(undefined);
         return;
     }
 
-    const joined = filteredResults.reduce((a, b) => {
-        return a + '\n' + b;
+    const concatenedInvoices = filteredInvoices.reduce((a, b) => a.concat(b), []);
+
+    const results = await exportToExcel(concatenedInvoices);
+
+    self.postMessage(results);
+}
+
+async function exportToExcel(invoices) {
+    const workbook = new ExcelJS.Workbook();
+
+    workbook.creator = 'Tie Tracker';
+    workbook.lastModifiedBy = 'Tie Tracker';
+    workbook.created = new Date();
+    workbook.modified = new Date();
+
+    // Force workbook calculation on load
+    workbook.calcProperties.fullCalcOnLoad = true;
+
+    const worksheet = workbook.addWorksheet('My Sheet', {
+        properties: {tabColor: {argb: 'FFC0000'}},
+        pageSetup:{paperSize: 9, orientation:'landscape'}
     });
 
-    self.postMessage(joined);
+    console.log(invoices);
+
+    worksheet.addTable({
+        name: 'MyTable',
+        ref: 'A1',
+        headerRow: true,
+        totalsRow: true,
+        style: {
+            theme: 'TableStyleDark3',
+            showRowStripes: true,
+        },
+        columns: [
+            {name: 'Description', filterButton: true},
+            {name: 'From', totalsRowLabel: 'Totals:'},
+            {name: 'To', totalsRowLabel: 'Totals:'},
+            {name: 'Duration'},
+            {name: 'Billable', totalsRowFunction: 'sum', filterButton: false},
+        ],
+        rows: invoices,
+    });
+
+    const buf = await workbook.xlsx.writeBuffer();
+
+    return new Blob([buf]);
 }
 
 async function billInvoices(invoices, filterProjectId, bill) {
@@ -85,36 +129,20 @@ function exportInvoice(invoice, projects, filterProjectId, currency) {
             return;
         }
 
-        const results = [];
-
-        filteredTasks.forEach((task) => {
-            let line = task.data.description ? task.data.description : '';
-            line += ',';
-
-            line += dayjs(task.data.from).format('YYYY-MM-DD');
-            line += ',';
-
-            line += dayjs(task.data.from).format('HH:mm:ss');
-            line += ',';
-
-            line += dayjs(task.data.to).format('YYYY-MM-DD');
-            line += ',';
-
-            line += dayjs(task.data.to).format('HH:mm:ss');
-            line += ',';
-
+        const results = filteredTasks.map((task) => {
             const milliseconds = dayjs(task.data.to).diff(new Date(task.data.from));
             const hours = milliseconds > 0 ? milliseconds / (1000 * 60 * 60) : 0;
-
-            line += `${hours}`;
-            line += ',';
 
             const rate = projects[task.data.project_id].rate;
             const billable = rate && rate.hourly > 0 ? hours * rate.hourly : 0;
 
-            line += `${billable}${currency ? ' ' + currency : ''}`;
-
-            results.push(line);
+            return [
+                task.data.description ? task.data.description : '',
+                new Date(task.data.from),
+                new Date(task.data.to),
+                hours,
+                billable
+            ]
         });
 
         if (!results || results.length <= 0) {
@@ -122,11 +150,7 @@ function exportInvoice(invoice, projects, filterProjectId, currency) {
             return;
         }
 
-        const joined = results.reduce((a, b) => {
-            return a + '\n' + b;
-        });
-
-        resolve(joined);
+        resolve(results);
     });
 }
 

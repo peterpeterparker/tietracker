@@ -164,8 +164,8 @@ export class ExportService {
             type: 'saveFile',
             accepts: [{
                 description: filename,
-                extensions: ['csv'],
-                mimeTypes: ['text/csv'],
+                extensions: ['xlsx'],
+                mimeTypes: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
             }],
         };
 
@@ -204,7 +204,7 @@ export class ExportService {
 
     private filename(invoice: Invoice, from: Date | undefined, to: Date | undefined): string {
         const name: string = invoice.client && invoice.client.name ? invoice.client.name : 'export';
-        return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.csv`
+        return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.xlsx`
     }
 
     private makeMobileDir(): Promise<void> {
