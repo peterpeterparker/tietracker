@@ -82,7 +82,7 @@ async function exportToExcel(invoices) {
         headerRow: true,
         totalsRow: true,
         style: {
-            theme: 'TableStyleDark3',
+            theme: 'TableStyleLight1',
             showRowStripes: true,
         },
         columns: [
