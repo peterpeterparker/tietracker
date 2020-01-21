@@ -74,6 +74,34 @@ async function exportToExcel(invoices, client, currency) {
         pageSetup: {paperSize: 9, orientation: 'landscape'}
     });
 
+    extractInvoicesTable(worksheet, invoices, currency);
+
+    generateTotal(worksheet, invoices, currency);
+
+    const buf = await workbook.xlsx.writeBuffer();
+
+    return new Blob([buf]);
+}
+
+function generateTotal(worksheet, invoices, currency) {
+    let index = invoices.length + 4;
+
+    worksheet.mergeCells(`E${index}:F${index}`);
+    worksheet.getCell(`E${index}`).value = 'Total';
+    worksheet.getCell(`G${index}`).value = { formula: `G${invoices.length + 2}` };
+    worksheet.getCell(`G${index}`).numFmt = `#,##0.00 \"${currency}\"`;
+    worksheet.getCell(`G${index}`).font =  {font:{bold: true}};
+
+    index++;
+    index++;
+
+    worksheet.mergeCells(`E${index}:F${index}`);
+    worksheet.getCell(`E${index}`).value = 'Total billable hours';
+    worksheet.getCell(`G${index}`).value = { formula: `F${invoices.length + 2}` };
+    worksheet.getCell(`G${index}`).numFmt = '0.00';
+}
+
+function extractInvoicesTable(worksheet, invoices, currency) {
     worksheet.addTable({
         name: 'Invoice',
         ref: 'A1',
@@ -84,7 +112,7 @@ async function exportToExcel(invoices, client, currency) {
             showRowStripes: true,
         },
         columns: [
-            {name: 'Description', filterButton: true, totalsRowLabel: 'Totals:'},
+            {name: 'Description', filterButton: true, totalsRowLabel: 'Total'},
             {name: 'Start date'},
             {name: 'Start time',},
             {name: 'End date'},
@@ -113,10 +141,6 @@ async function exportToExcel(invoices, client, currency) {
     worksheet.getColumn(4).width = 10;
     worksheet.getColumn(5).width = 10;
     worksheet.getColumn(7).width = 16;
-
-    const buf = await workbook.xlsx.writeBuffer();
-
-    return new Blob([buf]);
 }
 
 async function billInvoices(invoices, filterProjectId, bill) {
