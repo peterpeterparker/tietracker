@@ -69,7 +69,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
             created_at: now
         };
 
-        await props.createTask(taskData, settings.roundTime);
+        await props.createTask(taskData, 0);
 
         await props.computeSummary();
         await props.listTasks(props.taskItemsSelectedDate);
