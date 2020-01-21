@@ -7,11 +7,11 @@ importScripts('./utils/utils.js');
 
 self.onmessage = async ($event) => {
     if ($event && $event.data && $event.data.msg === 'export') {
-        await self.export($event.data.invoices, $event.data.projectId, $event.data.currency, $event.data.bill);
+        await self.export($event.data.invoices, $event.data.projectId, $event.data.currency, $event.data.bill, $event.data.client);
     }
 };
 
-self.export = async (invoices, filterProjectId, currency, bill) => {
+self.export = async (invoices, filterProjectId, currency, bill, client) => {
     if (!invoices || invoices.length <= 0) {
         self.postMessage(undefined);
         return;
@@ -24,15 +24,15 @@ self.export = async (invoices, filterProjectId, currency, bill) => {
         return;
     }
 
-    self.exportInvoices(invoices, projects, filterProjectId, currency, bill);
+    self.exportInvoices(invoices, projects, filterProjectId, currency, client);
     self.billInvoices(invoices, filterProjectId, bill);
 };
 
-async function exportInvoices(invoices, projects, filterProjectId, currency, bill) {
+async function exportInvoices(invoices, projects, filterProjectId, currency, client) {
     const promises = [];
 
     invoices.forEach((invoice) => {
-        promises.push(exportInvoice(invoice, projects, filterProjectId, currency, bill));
+        promises.push(exportInvoice(invoice, projects, filterProjectId));
     });
 
     const allInvoices = await Promise.all(promises);
@@ -53,12 +53,12 @@ async function exportInvoices(invoices, projects, filterProjectId, currency, bil
 
     const concatenedInvoices = filteredInvoices.reduce((a, b) => a.concat(b), []);
 
-    const results = await exportToExcel(concatenedInvoices);
+    const results = await exportToExcel(concatenedInvoices, client);
 
     self.postMessage(results);
 }
 
-async function exportToExcel(invoices) {
+async function exportToExcel(invoices, client) {
     const workbook = new ExcelJS.Workbook();
 
     workbook.creator = 'Tie Tracker';
@@ -69,15 +69,13 @@ async function exportToExcel(invoices) {
     // Force workbook calculation on load
     workbook.calcProperties.fullCalcOnLoad = true;
 
-    const worksheet = workbook.addWorksheet('My Sheet', {
-        properties: {tabColor: {argb: 'FFC0000'}},
-        pageSetup:{paperSize: 9, orientation:'landscape'}
+    const worksheet = workbook.addWorksheet(client.name, {
+        properties: {tabColor: {argb: client.color ? client.color.replace('#', '') : undefined}},
+        pageSetup: {paperSize: 9, orientation: 'landscape'}
     });
 
-    console.log(invoices);
-
     worksheet.addTable({
-        name: 'MyTable',
+        name: 'Invoice',
         ref: 'A1',
         headerRow: true,
         totalsRow: true,
@@ -87,13 +85,26 @@ async function exportToExcel(invoices) {
         },
         columns: [
             {name: 'Description', filterButton: true},
-            {name: 'From', totalsRowLabel: 'Totals:'},
-            {name: 'To', totalsRowLabel: 'Totals:'},
-            {name: 'Duration'},
-            {name: 'Billable', totalsRowFunction: 'sum', filterButton: false},
+            {name: 'From'},
+            {name: 'To'},
+            {name: 'Duration', totalsRowLabel: 'Totals:'},
+            {name: 'Billable', totalsRowFunction: 'sum'},
         ],
         rows: invoices,
     });
+
+    invoices.forEach((invoice, i) => {
+        worksheet.getCell(`B${i + 2}`).numFmt = 'yyyy-mm-dd hh:mm:ss';
+        worksheet.getCell(`C${i + 2}`).numFmt = 'yyyy-mm-dd hh:mm:ss';
+        worksheet.getCell(`D${i + 2}`).numFmt = '0.00';
+        worksheet.getCell(`E${i + 2}`).numFmt = '#,##0.00 \"$\"';
+    });
+
+    console.log(worksheet.columns, worksheet.getColumn(1));
+
+    worksheet.getColumn(1).width = 50;
+    worksheet.getColumn(2).width = 20;
+    worksheet.getColumn(3).width = 20;
 
     const buf = await workbook.xlsx.writeBuffer();
 
@@ -110,7 +121,7 @@ async function billInvoices(invoices, filterProjectId, bill) {
     await Promise.all(promises);
 }
 
-function exportInvoice(invoice, projects, filterProjectId, currency) {
+function exportInvoice(invoice, projects, filterProjectId) {
     return new Promise(async (resolve) => {
         const tasks = await idbKeyval.get(`tasks-${invoice}`);
 

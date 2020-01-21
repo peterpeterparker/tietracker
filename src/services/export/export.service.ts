@@ -56,13 +56,7 @@ export class ExportService {
                     }
                 };
 
-                this.exportWorker.postMessage({
-                    msg: 'export',
-                    invoices: invoices,
-                    projectId: invoice.project_id,
-                    currency: currency,
-                    bill: bill
-                });
+                this.postMessage(invoice, invoices, currency, bill);
 
                 resolve();
             } catch (err) {
@@ -95,13 +89,7 @@ export class ExportService {
                     }
                 };
 
-                this.exportWorker.postMessage({
-                    msg: 'export',
-                    invoices: invoices,
-                    projectId: invoice.project_id,
-                    currency: currency,
-                    bill: bill
-                });
+                this.postMessage(invoice, invoices, currency, bill);
 
                 resolve();
             } catch (err) {
@@ -143,13 +131,7 @@ export class ExportService {
                     }
                 };
 
-                this.exportWorker.postMessage({
-                    msg: 'export',
-                    invoices: invoices,
-                    projectId: invoice.project_id,
-                    currency: currency,
-                    bill: bill
-                });
+                this.postMessage(invoice, invoices, currency, bill);
 
                 resolve();
             } catch (err) {
@@ -273,5 +255,16 @@ export class ExportService {
 
     private shareSubject(invoice: Invoice): string {
         return `Tie Tracker${invoice.client && invoice.client.name ? ` - ${invoice.client.name}` : ''}`
+    }
+
+    private postMessage(invoice: Invoice, invoices: string[], currency: string, bill: boolean) {
+        this.exportWorker.postMessage({
+            msg: 'export',
+            invoices: invoices,
+            projectId: invoice.project_id,
+            client: invoice.client,
+            currency: currency,
+            bill: bill
+        });
     }
 }
