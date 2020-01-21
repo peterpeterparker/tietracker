@@ -1,0 +1,14 @@
+{
+  "total": "Total",
+  "total_vat_excluded": "Total (VAT excluded)",
+  "total_billable_hours": "Total billable hours",
+  "vat": "VAT",
+  "vat_rate": "VAT rate",
+  "description": "Description",
+  "start_date": "Start date",
+  "start_time": "Start time",
+  "end_date": "End date",
+  "end_time": "End time",
+  "duration": "Duration",
+  "billable": "Billable"
+}

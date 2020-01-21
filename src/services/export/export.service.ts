@@ -7,6 +7,7 @@ import {SocialSharing } from '@ionic-native/social-sharing';
 
 import {Plugins, FilesystemDirectory, FilesystemEncoding} from '@capacitor/core';
 import {StatResult} from '@capacitor/core/dist/esm/core-plugin-definitions';
+import i18next from 'i18next';
 
 const {Filesystem} = Plugins;
 
@@ -56,7 +57,7 @@ export class ExportService {
                     }
                 };
 
-                this.postMessage(invoice, invoices, currency, vat, bill);
+                await this.postMessage(invoice, invoices, currency, vat, bill);
 
                 resolve();
             } catch (err) {
@@ -89,7 +90,7 @@ export class ExportService {
                     }
                 };
 
-                this.postMessage(invoice, invoices, currency, vat, bill);
+                await this.postMessage(invoice, invoices, currency, vat, bill);
 
                 resolve();
             } catch (err) {
@@ -131,7 +132,7 @@ export class ExportService {
                     }
                 };
 
-                this.postMessage(invoice, invoices, currency, vat, bill);
+                await this.postMessage(invoice, invoices, currency, vat, bill);
 
                 resolve();
             } catch (err) {
@@ -257,7 +258,10 @@ export class ExportService {
         return `Tie Tracker${invoice.client && invoice.client.name ? ` - ${invoice.client.name}` : ''}`
     }
 
-    private postMessage(invoice: Invoice, invoices: string[], currency: string, vat: number | undefined, bill: boolean) {
+    private async postMessage(invoice: Invoice, invoices: string[], currency: string, vat: number | undefined, bill: boolean) {
+
+        await i18next.loadNamespaces('export');
+
         this.exportWorker.postMessage({
             msg: 'export',
             invoices: invoices,
@@ -265,7 +269,21 @@ export class ExportService {
             client: invoice.client,
             currency: currency,
             vat: vat,
-            bill: bill
+            bill: bill,
+            i18n: {
+                total: i18next.t('export:total'),
+                vat_rate: i18next.t('export:vat_rate'),
+                vat: i18next.t('export:vat'),
+                total_vat_excluded: i18next.t('export:total_vat_excluded'),
+                total_billable_hours: i18next.t('export:total_billable_hours'),
+                description: i18next.t('export:description'),
+                start_date: i18next.t('export:start_date'),
+                start_time: i18next.t('export:start_time'),
+                end_date: i18next.t('export:end_date'),
+                end_time: i18next.t('export:end_time'),
+                duration: i18next.t('export:duration'),
+                billable: i18next.t('export:billable')
+            }
         });
     }
 }
