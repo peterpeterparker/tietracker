@@ -7,11 +7,11 @@ importScripts('./utils/utils.js');
 
 self.onmessage = async ($event) => {
     if ($event && $event.data && $event.data.msg === 'export') {
-        await self.export($event.data.invoices, $event.data.projectId, $event.data.currency, $event.data.bill, $event.data.client);
+        await self.export($event.data.invoices, $event.data.projectId, $event.data.currency, $event.data.vat, $event.data.bill, $event.data.client);
     }
 };
 
-self.export = async (invoices, filterProjectId, currency, bill, client) => {
+self.export = async (invoices, filterProjectId, currency, vat, bill, client) => {
     if (!invoices || invoices.length <= 0) {
         self.postMessage(undefined);
         return;
@@ -24,11 +24,11 @@ self.export = async (invoices, filterProjectId, currency, bill, client) => {
         return;
     }
 
-    self.exportInvoices(invoices, projects, filterProjectId, currency, client);
+    self.exportInvoices(invoices, projects, filterProjectId, currency, vat, client);
     self.billInvoices(invoices, filterProjectId, bill);
 };
 
-async function exportInvoices(invoices, projects, filterProjectId, currency, client) {
+async function exportInvoices(invoices, projects, filterProjectId, currency, vat, client) {
     const promises = [];
 
     invoices.forEach((invoice) => {
@@ -53,12 +53,12 @@ async function exportInvoices(invoices, projects, filterProjectId, currency, cli
 
     const concatenedInvoices = filteredInvoices.reduce((a, b) => a.concat(b), []);
 
-    const results = await exportToExcel(concatenedInvoices, client, currency);
+    const results = await exportToExcel(concatenedInvoices, client, currency, vat);
 
     self.postMessage(results);
 }
 
-async function exportToExcel(invoices, client, currency) {
+async function exportToExcel(invoices, client, currency, vat) {
     const workbook = new ExcelJS.Workbook();
 
     workbook.creator = 'Tie Tracker';
@@ -76,21 +76,50 @@ async function exportToExcel(invoices, client, currency) {
 
     extractInvoicesTable(worksheet, invoices, currency);
 
-    generateTotal(worksheet, invoices, currency);
+    generateTotal(worksheet, invoices, currency, vat);
 
     const buf = await workbook.xlsx.writeBuffer();
 
     return new Blob([buf]);
 }
 
-function generateTotal(worksheet, invoices, currency) {
+function generateTotal(worksheet, invoices, currency, vat) {
     let index = invoices.length + 4;
+
+    const totalRef = `G${invoices.length + 2}`;
 
     worksheet.mergeCells(`E${index}:F${index}`);
     worksheet.getCell(`E${index}`).value = 'Total';
-    worksheet.getCell(`G${index}`).value = { formula: `G${invoices.length + 2}` };
+    worksheet.getCell(`G${index}`).value = { formula: totalRef };
     worksheet.getCell(`G${index}`).numFmt = `#,##0.00 \"${currency}\"`;
     worksheet.getCell(`G${index}`).font =  {font:{bold: true}};
+
+    if (vat > 0) {
+        index++;
+        index++;
+
+        worksheet.mergeCells(`E${index}:F${index}`);
+        worksheet.getCell(`E${index}`).value = 'VAT rate';
+        worksheet.getCell(`G${index}`).value = vat / 100;
+        worksheet.getCell(`G${index}`).numFmt = '0.00%';
+
+        index++;
+        index++;
+
+        const vatRef = `G${index - 2}`;
+
+        worksheet.mergeCells(`E${index}:F${index}`);
+        worksheet.getCell(`E${index}`).value = 'Total (VAT excluded)';
+        worksheet.getCell(`G${index}`).value = { formula: `${totalRef}*100/(100+(${vatRef}*100))` };
+        worksheet.getCell(`G${index}`).numFmt = `#,##0.00 \"${currency}\"`;
+
+        index++;
+
+        worksheet.mergeCells(`E${index}:F${index}`);
+        worksheet.getCell(`E${index}`).value = 'VAT';
+        worksheet.getCell(`G${index}`).value = { formula: `${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100))` };
+        worksheet.getCell(`G${index}`).numFmt = `#,##0.00 \"${currency}\"`;
+    }
 
     index++;
     index++;

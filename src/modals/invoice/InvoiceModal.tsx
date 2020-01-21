@@ -91,11 +91,11 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
         try {
             if (isPlatform('desktop') && isChrome() && isHttps()) {
-                await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, bill);
+                await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, settings.vat, bill);
             } else if (isPlatform('hybrid')) {
-                await ExportService.getInstance().exportMobileFileSystem(props.invoice, from, to, settings.currency, bill);
+                await ExportService.getInstance().exportMobileFileSystem(props.invoice, from, to, settings.currency, settings.vat, bill);
             } else  {
-                await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, bill);
+                await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, settings.vat, bill);
             }
 
             if (bill) {

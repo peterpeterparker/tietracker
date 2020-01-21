@@ -27,7 +27,7 @@ export class ExportService {
         return ExportService.instance;
     }
 
-    exportNativeFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, bill: boolean): Promise<void> {
+    exportNativeFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, vat: number | undefined, bill: boolean): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if (invoice === undefined || invoice.project_id === undefined) {
                 reject('No invoice data.');
@@ -56,7 +56,7 @@ export class ExportService {
                     }
                 };
 
-                this.postMessage(invoice, invoices, currency, bill);
+                this.postMessage(invoice, invoices, currency, vat, bill);
 
                 resolve();
             } catch (err) {
@@ -66,7 +66,7 @@ export class ExportService {
         });
     }
 
-    exportDownload(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, bill: boolean): Promise<void> {
+    exportDownload(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, vat: number | undefined, bill: boolean): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if (invoice === undefined || invoice.project_id === undefined) {
                 reject('No invoice data.');
@@ -89,7 +89,7 @@ export class ExportService {
                     }
                 };
 
-                this.postMessage(invoice, invoices, currency, bill);
+                this.postMessage(invoice, invoices, currency, vat, bill);
 
                 resolve();
             } catch (err) {
@@ -99,7 +99,7 @@ export class ExportService {
         });
     }
 
-    exportMobileFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, bill: boolean): Promise<void> {
+    exportMobileFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, vat: number | undefined, bill: boolean): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if (invoice === undefined || invoice.project_id === undefined) {
                 reject('No invoice data.');
@@ -131,7 +131,7 @@ export class ExportService {
                     }
                 };
 
-                this.postMessage(invoice, invoices, currency, bill);
+                this.postMessage(invoice, invoices, currency, vat, bill);
 
                 resolve();
             } catch (err) {
@@ -257,13 +257,14 @@ export class ExportService {
         return `Tie Tracker${invoice.client && invoice.client.name ? ` - ${invoice.client.name}` : ''}`
     }
 
-    private postMessage(invoice: Invoice, invoices: string[], currency: string, bill: boolean) {
+    private postMessage(invoice: Invoice, invoices: string[], currency: string, vat: number | undefined, bill: boolean) {
         this.exportWorker.postMessage({
             msg: 'export',
             invoices: invoices,
             projectId: invoice.project_id,
             client: invoice.client,
             currency: currency,
+            vat: vat,
             bill: bill
         });
     }
