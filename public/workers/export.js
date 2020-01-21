@@ -1,16 +1,23 @@
 importScripts('./libs/idb-keyval-iife.min.js');
 importScripts('./libs/dayjs.min.js');
 
+importScripts('./libs/exceljs.min.js');
+
 importScripts('./utils/utils.js');
 
 self.onmessage = async ($event) => {
     if ($event && $event.data && $event.data.msg === 'export') {
-        await self.export($event.data.invoices, $event.data.projectId, $event.data.currency, $event.data.bill);
+        await self.export($event.data.invoices, $event.data.projectId, $event.data.currency, $event.data.vat, $event.data.bill, $event.data.client, $event.data.i18n);
     }
 };
 
-self.export = async (invoices, filterProjectId, currency, bill) => {
+self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18n) => {
     if (!invoices || invoices.length <= 0) {
+        self.postMessage(undefined);
+        return;
+    }
+
+    if (!i18n) {
         self.postMessage(undefined);
         return;
     }
@@ -22,38 +29,152 @@ self.export = async (invoices, filterProjectId, currency, bill) => {
         return;
     }
 
-    self.exportInvoices(invoices, projects, filterProjectId, currency, bill);
+    self.exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n);
     self.billInvoices(invoices, filterProjectId, bill);
 };
 
-async function exportInvoices(invoices, projects, filterProjectId, currency, bill) {
+async function exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n) {
     const promises = [];
 
     invoices.forEach((invoice) => {
-        promises.push(exportInvoice(invoice, projects, filterProjectId, currency, bill));
+        promises.push(exportInvoice(invoice, projects, filterProjectId));
     });
 
-    const results = await Promise.all(promises);
+    const allInvoices = await Promise.all(promises);
 
-    if (!results || results.length <= 0) {
+    if (!allInvoices || allInvoices.length <= 0) {
         self.postMessage(undefined);
         return;
     }
 
-    const filteredResults = results.filter((tasks) => {
+    const filteredInvoices = allInvoices.filter((tasks) => {
         return tasks && tasks !== undefined && tasks.length > 0;
     });
 
-    if (!filteredResults || filteredResults.length <= 0) {
+    if (!filteredInvoices || filteredInvoices.length <= 0) {
         self.postMessage(undefined);
         return;
     }
 
-    const joined = filteredResults.reduce((a, b) => {
-        return a + '\n' + b;
+    const concatenedInvoices = filteredInvoices.reduce((a, b) => a.concat(b), []);
+
+    const results = await exportToExcel(concatenedInvoices, client, currency, vat, i18n);
+
+    self.postMessage(results);
+}
+
+async function exportToExcel(invoices, client, currency, vat, i18n) {
+    const workbook = new ExcelJS.Workbook();
+
+    workbook.creator = 'Tie Tracker';
+    workbook.lastModifiedBy = 'Tie Tracker';
+    workbook.created = new Date();
+    workbook.modified = new Date();
+
+    // Force workbook calculation on load
+    workbook.calcProperties.fullCalcOnLoad = true;
+
+    const worksheet = workbook.addWorksheet(client.name, {
+        properties: {tabColor: {argb: client.color ? client.color.replace('#', '') : undefined}},
+        pageSetup: {paperSize: 9, orientation: 'landscape'}
     });
 
-    self.postMessage(joined);
+    extractInvoicesTable(worksheet, invoices, currency, i18n);
+
+    generateTotal(worksheet, invoices, currency, vat, i18n);
+
+    const buf = await workbook.xlsx.writeBuffer();
+
+    return new Blob([buf]);
+}
+
+function generateTotal(worksheet, invoices, currency, vat, i18n) {
+    let index = invoices.length + 4;
+
+    const totalRef = `G${invoices.length + 2}`;
+
+    worksheet.mergeCells(`E${index}:F${index}`);
+    worksheet.getCell(`E${index}`).value = i18n.total;
+    worksheet.getCell(`G${index}`).value = { formula: totalRef };
+    worksheet.getCell(`G${index}`).numFmt = `#,##0.00 \"${currency}\"`;
+    worksheet.getCell(`G${index}`).font =  {font:{bold: true}};
+
+    if (vat > 0) {
+        index++;
+        index++;
+
+        worksheet.mergeCells(`E${index}:F${index}`);
+        worksheet.getCell(`E${index}`).value = i18n.vat_rate;
+        worksheet.getCell(`G${index}`).value = vat / 100;
+        worksheet.getCell(`G${index}`).numFmt = '0.00%';
+
+        index++;
+        index++;
+
+        const vatRef = `G${index - 2}`;
+
+        worksheet.mergeCells(`E${index}:F${index}`);
+        worksheet.getCell(`E${index}`).value = i18n.total_vat_excluded;
+        worksheet.getCell(`G${index}`).value = { formula: `${totalRef}*100/(100+(${vatRef}*100))` };
+        worksheet.getCell(`G${index}`).numFmt = `#,##0.00 \"${currency}\"`;
+
+        index++;
+
+        worksheet.mergeCells(`E${index}:F${index}`);
+        worksheet.getCell(`E${index}`).value = i18n.vat;
+        worksheet.getCell(`G${index}`).value = { formula: `${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100))` };
+        worksheet.getCell(`G${index}`).numFmt = `#,##0.00 \"${currency}\"`;
+    }
+
+    index++;
+    index++;
+
+    worksheet.mergeCells(`E${index}:F${index}`);
+    worksheet.getCell(`E${index}`).value = i18n.total_billable_hours;
+    worksheet.getCell(`G${index}`).value = { formula: `F${invoices.length + 2}` };
+    worksheet.getCell(`G${index}`).numFmt = '0.00';
+}
+
+function extractInvoicesTable(worksheet, invoices, currency, i18n) {
+    worksheet.addTable({
+        name: 'Invoice',
+        ref: 'A1',
+        headerRow: true,
+        totalsRow: true,
+        style: {
+            theme: 'TableStyleLight1',
+            showRowStripes: true,
+        },
+        columns: [
+            {name: i18n.description, filterButton: true, totalsRowLabel: 'Total'},
+            {name: i18n.start_date},
+            {name: i18n.start_time},
+            {name: i18n.end_date},
+            {name: i18n.end_time},
+            {name: i18n.duration, totalsRowFunction: 'sum'},
+            {name: i18n.billable, totalsRowFunction: 'sum'},
+        ],
+        rows: invoices,
+    });
+
+    invoices.forEach((invoice, i) => {
+        worksheet.getCell(`B${i + 2}`).numFmt = 'yyyy-mm-dd';
+        worksheet.getCell(`C${i + 2}`).numFmt = 'hh:mm:ss';
+        worksheet.getCell(`D${i + 2}`).numFmt = 'yyyy-mm-dd';
+        worksheet.getCell(`E${i + 2}`).numFmt = 'hh:mm:ss';
+        worksheet.getCell(`F${i + 2}`).numFmt = '0.00';
+        worksheet.getCell(`G${i + 2}`).numFmt = `#,##0.00 \"${currency}\"`;
+    });
+
+    worksheet.getCell(`F${invoices.length + 2}`).numFmt = '0.00';
+    worksheet.getCell(`G${invoices.length + 2}`).numFmt = `#,##0.00 \"${currency}\"`;
+
+    worksheet.getColumn(1).width = 50;
+    worksheet.getColumn(2).width = 10;
+    worksheet.getColumn(3).width = 10;
+    worksheet.getColumn(4).width = 10;
+    worksheet.getColumn(5).width = 10;
+    worksheet.getColumn(7).width = 16;
 }
 
 async function billInvoices(invoices, filterProjectId, bill) {
@@ -66,7 +187,7 @@ async function billInvoices(invoices, filterProjectId, bill) {
     await Promise.all(promises);
 }
 
-function exportInvoice(invoice, projects, filterProjectId, currency) {
+function exportInvoice(invoice, projects, filterProjectId) {
     return new Promise(async (resolve) => {
         const tasks = await idbKeyval.get(`tasks-${invoice}`);
 
@@ -85,36 +206,22 @@ function exportInvoice(invoice, projects, filterProjectId, currency) {
             return;
         }
 
-        const results = [];
-
-        filteredTasks.forEach((task) => {
-            let line = task.data.description ? task.data.description : '';
-            line += ',';
-
-            line += dayjs(task.data.from).format('YYYY-MM-DD');
-            line += ',';
-
-            line += dayjs(task.data.from).format('HH:mm:ss');
-            line += ',';
-
-            line += dayjs(task.data.to).format('YYYY-MM-DD');
-            line += ',';
-
-            line += dayjs(task.data.to).format('HH:mm:ss');
-            line += ',';
-
+        const results = filteredTasks.map((task) => {
             const milliseconds = dayjs(task.data.to).diff(new Date(task.data.from));
             const hours = milliseconds > 0 ? milliseconds / (1000 * 60 * 60) : 0;
-
-            line += `${hours}`;
-            line += ',';
 
             const rate = projects[task.data.project_id].rate;
             const billable = rate && rate.hourly > 0 ? hours * rate.hourly : 0;
 
-            line += `${billable}${currency ? ' ' + currency : ''}`;
-
-            results.push(line);
+            return [
+                task.data.description ? task.data.description : '',
+                new Date(task.data.from),
+                new Date(task.data.from),
+                new Date(task.data.to),
+                new Date(task.data.to),
+                hours,
+                billable
+            ]
         });
 
         if (!results || results.length <= 0) {
@@ -122,11 +229,7 @@ function exportInvoice(invoice, projects, filterProjectId, currency) {
             return;
         }
 
-        const joined = results.reduce((a, b) => {
-            return a + '\n' + b;
-        });
-
-        resolve(joined);
+        resolve(results);
     });
 }
 

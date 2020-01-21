@@ -7,6 +7,7 @@ import {SocialSharing } from '@ionic-native/social-sharing';
 
 import {Plugins, FilesystemDirectory, FilesystemEncoding} from '@capacitor/core';
 import {StatResult} from '@capacitor/core/dist/esm/core-plugin-definitions';
+import i18next from 'i18next';
 
 const {Filesystem} = Plugins;
 
@@ -27,7 +28,7 @@ export class ExportService {
         return ExportService.instance;
     }
 
-    exportNativeFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, bill: boolean): Promise<void> {
+    exportNativeFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, vat: number | undefined, bill: boolean): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if (invoice === undefined || invoice.project_id === undefined) {
                 reject('No invoice data.');
@@ -56,13 +57,7 @@ export class ExportService {
                     }
                 };
 
-                this.exportWorker.postMessage({
-                    msg: 'export',
-                    invoices: invoices,
-                    projectId: invoice.project_id,
-                    currency: currency,
-                    bill: bill
-                });
+                await this.postMessage(invoice, invoices, currency, vat, bill);
 
                 resolve();
             } catch (err) {
@@ -72,7 +67,7 @@ export class ExportService {
         });
     }
 
-    exportDownload(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, bill: boolean): Promise<void> {
+    exportDownload(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, vat: number | undefined, bill: boolean): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if (invoice === undefined || invoice.project_id === undefined) {
                 reject('No invoice data.');
@@ -95,13 +90,7 @@ export class ExportService {
                     }
                 };
 
-                this.exportWorker.postMessage({
-                    msg: 'export',
-                    invoices: invoices,
-                    projectId: invoice.project_id,
-                    currency: currency,
-                    bill: bill
-                });
+                await this.postMessage(invoice, invoices, currency, vat, bill);
 
                 resolve();
             } catch (err) {
@@ -111,7 +100,7 @@ export class ExportService {
         });
     }
 
-    exportMobileFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, bill: boolean): Promise<void> {
+    exportMobileFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, vat: number | undefined, bill: boolean): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if (invoice === undefined || invoice.project_id === undefined) {
                 reject('No invoice data.');
@@ -143,13 +132,7 @@ export class ExportService {
                     }
                 };
 
-                this.exportWorker.postMessage({
-                    msg: 'export',
-                    invoices: invoices,
-                    projectId: invoice.project_id,
-                    currency: currency,
-                    bill: bill
-                });
+                await this.postMessage(invoice, invoices, currency, vat, bill);
 
                 resolve();
             } catch (err) {
@@ -164,8 +147,8 @@ export class ExportService {
             type: 'saveFile',
             accepts: [{
                 description: filename,
-                extensions: ['csv'],
-                mimeTypes: ['text/csv'],
+                extensions: ['xlsx'],
+                mimeTypes: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
             }],
         };
 
@@ -204,7 +187,7 @@ export class ExportService {
 
     private filename(invoice: Invoice, from: Date | undefined, to: Date | undefined): string {
         const name: string = invoice.client && invoice.client.name ? invoice.client.name : 'export';
-        return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.csv`
+        return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.xlsx`
     }
 
     private makeMobileDir(): Promise<void> {
@@ -273,5 +256,34 @@ export class ExportService {
 
     private shareSubject(invoice: Invoice): string {
         return `Tie Tracker${invoice.client && invoice.client.name ? ` - ${invoice.client.name}` : ''}`
+    }
+
+    private async postMessage(invoice: Invoice, invoices: string[], currency: string, vat: number | undefined, bill: boolean) {
+
+        await i18next.loadNamespaces('export');
+
+        this.exportWorker.postMessage({
+            msg: 'export',
+            invoices: invoices,
+            projectId: invoice.project_id,
+            client: invoice.client,
+            currency: currency,
+            vat: vat,
+            bill: bill,
+            i18n: {
+                total: i18next.t('export:total'),
+                vat_rate: i18next.t('export:vat_rate'),
+                vat: i18next.t('export:vat'),
+                total_vat_excluded: i18next.t('export:total_vat_excluded'),
+                total_billable_hours: i18next.t('export:total_billable_hours'),
+                description: i18next.t('export:description'),
+                start_date: i18next.t('export:start_date'),
+                start_time: i18next.t('export:start_time'),
+                end_date: i18next.t('export:end_date'),
+                end_time: i18next.t('export:end_time'),
+                duration: i18next.t('export:duration'),
+                billable: i18next.t('export:billable')
+            }
+        });
     }
 }
