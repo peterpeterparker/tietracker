@@ -47,7 +47,7 @@ export class NotificationsService {
                     {
                         title: project.data.client ? `${project.data.client.name}` : i18next.t('notifications:fallback_title'),
                         body: i18next.t('notifications:body', { project: project.data.name }),
-                        id: 1,
+                        id: new Date().getTime(),
                         schedule: {
                             every: settings.notifications.every,
                             count: settings.notifications.count
