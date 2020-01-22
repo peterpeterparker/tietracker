@@ -30,7 +30,7 @@ export function tasksReducer(state = initialState, action: TaskActionTypes | Tas
         case UPDATE_TASK:
         case START_TASK:
             return {
-                taskInProgress: action.payload,
+                taskInProgress: action.payload ? {...action.payload} : undefined,
                 taskItems: state.taskItems,
                 taskItemsSelectedDate: state.taskItemsSelectedDate
             };
@@ -44,7 +44,7 @@ export function tasksReducer(state = initialState, action: TaskActionTypes | Tas
         case LIST_TASKS:
             return {
                 taskInProgress: state.taskInProgress,
-                taskItems: action.payload.items,
+                taskItems: [...action.payload.items],
                 taskItemsSelectedDate: action.payload.forDate
             };
         default:

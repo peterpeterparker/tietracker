@@ -14,7 +14,7 @@ export function summaryReducer(state = initialState, action: SummaryActionTypes)
     switch (action.type) {
         case COMPUTE_SUMMARY:
             return {
-                summary: action.payload
+                summary: {...action.payload}
             };
         default:
             return state;

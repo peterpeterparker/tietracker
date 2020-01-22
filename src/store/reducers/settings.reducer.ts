@@ -16,7 +16,7 @@ export function settingsReducer(state = initialState, action: SettingsActionType
         case INIT_SETTINGS:
         case UPDATE_SETTINGS:
             return {
-                settings: action.payload
+                settings: {...action.payload}
             };
         default:
             return state;

@@ -14,7 +14,7 @@ export function invoicesReducer(state = initialState, action: InvoicesActionType
     switch (action.type) {
         case LIST_PROJECTS_INVOICES:
             return {
-                invoices: action.payload
+                invoices: [...action.payload]
             };
         default:
             return state;
