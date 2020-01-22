@@ -52,7 +52,7 @@ const About: React.FC = () => {
 
                     <h1 className="ion-padding-top">Open Source</h1>
 
-                    <p><IonLabel>Tie Tracker is open source and published under the AGPL v3 (or later) licence. Its code is available on <a href="http://github.com/peterpeterparker/tietracker" target="_blank" rel="noopener noreferrer" className={styles.github}>GitHub <IonIcon icon={logoGithub} area-label="Github"></IonIcon></a>.</IonLabel></p>
+                    <p><IonLabel>Tie Tracker is open source and published under the AGPL v3 (or later) licence. Its code is available on <a href="http://github.com/peterpeterparker/tietracker" target="_blank" rel="noopener noreferrer" className={styles.github}>GitHub <IonIcon icon={{md: logoGithub, ios: logoGithub}} area-label="Github"></IonIcon></a>.</IonLabel></p>
 
                     <h1 className="ion-padding-top">Author</h1>
 
@@ -72,7 +72,7 @@ const About: React.FC = () => {
                         </a>
 
                         <a href="https://twitter.com/daviddalbusco" target="_blank" rel="noopener noreferrer">
-                            <IonIcon icon={logoTwitter} area-label="Twitter"></IonIcon>
+                            <IonIcon icon={{ios: logoTwitter, md: logoTwitter}} area-label="Twitter"></IonIcon>
                         </a>
 
                         <a href="https://dev.to/daviddalbusco" target="_blank" rel="noopener noreferrer">
@@ -84,7 +84,7 @@ const About: React.FC = () => {
                         </a>
 
                         <a href="http://github.com/peterpeterparker" target="_blank" rel="noopener noreferrer">
-                            <IonIcon icon={logoGithub} area-label="Github"></IonIcon>
+                            <IonIcon icon={{ios: logoGithub, md: logoGithub}} area-label="Github"></IonIcon>
                         </a>
                     </div>
 
