@@ -1,18 +1,17 @@
-import {interval} from '../../utils/utils.date';
+import {isPlatform} from '@ionic/react';
 
-import {Invoice} from '../../store/interfaces/invoice';
 import {format} from 'date-fns';
 
 import i18next from 'i18next';
 
-import {SocialSharing } from '@ionic-native/social-sharing';
+import {interval} from '../../utils/utils.date';
 
-import {Plugins, FilesystemDirectory, FilesystemEncoding} from '@capacitor/core';
-import {StatResult} from '@capacitor/core/dist/esm/core-plugin-definitions';
+import {Invoice} from '../../store/interfaces/invoice';
+
+import {SocialSharing } from '@ionic-native/social-sharing';
+import {File, IWriteOptions, DirectoryEntry} from '@ionic-native/file';
 
 import {Currency} from '../../definitions/currency';
-
-const {Filesystem} = Plugins;
 
 export class ExportService {
 
@@ -122,18 +121,16 @@ export class ExportService {
 
                 this.exportWorker.onmessage = async ($event: MessageEvent) => {
                     if ($event && $event.data) {
-                        await this.makeMobileDir();
+                        const dir: DirectoryEntry = await this.getMobileDir();
 
-                        const content: string = await this.blobToString($event.data);
+                        const writeOptions: IWriteOptions = {
+                            replace: true,
+                            append: false
+                        };
 
-                        await Filesystem.writeFile({
-                            path: `tietracker/${filename}`,
-                            data: content,
-                            directory: FilesystemDirectory.Documents,
-                            encoding: FilesystemEncoding.UTF8
-                        });
+                        await File.writeFile(dir.nativeURL, filename, $event.data, writeOptions);
 
-                        await this.shareMobile(invoice, filename);
+                        await this.shareMobile(invoice, dir.nativeURL, filename);
                     }
                 };
 
@@ -144,27 +141,6 @@ export class ExportService {
                 console.error(err);
                 reject(err);
             }
-        });
-    }
-
-    private blobToString(data: Blob): Promise<string> {
-        return new Promise<string>((resolve, reject) => {
-            const fileReader: FileReader = new FileReader();
-
-            fileReader.onload = () => {
-                if (!fileReader.result) {
-                    reject('Could not convert blob content.');
-                    return;
-                }
-
-                resolve(fileReader.result as string);
-            };
-
-            fileReader.onerror = (error) => {
-                reject(error);
-            };
-
-            fileReader.readAsText(data);
         });
     }
 
@@ -216,60 +192,28 @@ export class ExportService {
         return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.xlsx`
     }
 
-    private makeMobileDir(): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
+    private getMobileDir(): Promise<DirectoryEntry> {
+        return new Promise<DirectoryEntry>(async (resolve, reject) => {
             try {
-                const exist: boolean = await this.existMobileDir();
+                const rootDir: DirectoryEntry = await File.resolveDirectoryUrl(isPlatform('ios') ? File.syncedDataDirectory : File.dataDirectory);
 
-                if (exist) {
-                    resolve();
-                    return;
-                }
-
-                await Filesystem.mkdir({
-                    path: 'tietracker',
-                    directory: FilesystemDirectory.Documents,
-                    recursive: false
+                rootDir.getDirectory('tietracker', {create: true}, (newDir: DirectoryEntry) => {
+                    resolve(newDir);
+                }, (err) => {
+                    reject(new Error('Directory not found or not created.'));
                 });
-
-                resolve();
             } catch (e) {
                 reject(e);
             }
         });
     }
 
-    private existMobileDir(): Promise<boolean> {
-        return new Promise<boolean>(async (resolve) => {
-            try {
-                await Filesystem.stat({
-                    path: 'tietracker',
-                    directory: FilesystemDirectory.Documents
-                });
-
-                resolve(true);
-            } catch (e) {
-                resolve(false);
-            }
-        });
-    }
-
-    private shareMobile(invoice: Invoice, filename: string): Promise<void> {
+    private shareMobile(invoice: Invoice, path: string, filename: string): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             try {
-                const stat: StatResult = await Filesystem.stat({
-                    path: `tietracker/${filename}`,
-                    directory: FilesystemDirectory.Documents
-                });
-
-                if (!stat || !stat.uri) {
-                    reject('File not found.');
-                    return;
-                }
-
                 await SocialSharing.shareWithOptions({
                     subject: this.shareSubject(invoice),
-                    files: [stat.uri],
+                    files: [`${path}/${filename}`],
                     chooserTitle: 'Pick an app'
                 });
 
