@@ -15,6 +15,8 @@ import {
     IonHeader, IonButtons, IonButton, IonIcon
 } from '@ionic/react';
 
+import {close} from 'ionicons/icons';
+
 import {Currencies, SettingsService} from '../../services/settings/settings.service';
 
 import styles from './CurrenciesModal.module.scss';
@@ -90,7 +92,7 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
                     <IonTitle>{t('tracker.currency.title')}</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => props.closeAction()}>
-                            <IonIcon name="close" slot="icon-only"></IonIcon>
+                            <IonIcon icon={close} slot="icon-only"></IonIcon>
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>

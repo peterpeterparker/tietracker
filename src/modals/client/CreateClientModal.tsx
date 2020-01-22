@@ -18,7 +18,7 @@ import {useSelector} from 'react-redux';
 
 import {useTranslation} from 'react-i18next';
 
-import {more} from 'ionicons/icons';
+import {more, close} from 'ionicons/icons';
 
 import styles from './CreateClientModal.module.scss';
 
@@ -233,7 +233,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                     <IonTitle>{t('clients:create.title')}</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => props.closeAction()}>
-                            <IonIcon name="close" slot="icon-only"></IonIcon>
+                            <IonIcon icon={close} slot="icon-only"></IonIcon>
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>

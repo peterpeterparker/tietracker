@@ -17,6 +17,8 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import {useTranslation} from 'react-i18next';
 
+import {close} from 'ionicons/icons';
+
 import {contrast} from '../../../utils/utils.color';
 
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
@@ -124,7 +126,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
                     <IonTitle>{t('tasks:create.title')}</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => props.closeAction()}>
-                            <IonIcon name="close" slot="icon-only"></IonIcon>
+                            <IonIcon icon={close} slot="icon-only"></IonIcon>
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>

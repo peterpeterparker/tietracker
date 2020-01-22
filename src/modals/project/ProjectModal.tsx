@@ -20,6 +20,8 @@ import {
     IonToolbar
 } from '@ionic/react';
 
+import {close} from 'ionicons/icons';
+
 import {Settings} from '../../models/settings';
 
 import {RootState} from '../../store/reducers';
@@ -174,7 +176,7 @@ const ProjectModal: React.FC<Props> = (props) => {
                     <IonTitle>{name !== undefined ? name : ''}</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => props.closeAction()}>
-                            <IonIcon name="close" slot="icon-only"></IonIcon>
+                            <IonIcon icon={close} slot="icon-only"></IonIcon>
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>

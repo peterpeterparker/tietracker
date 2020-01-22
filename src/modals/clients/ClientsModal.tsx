@@ -15,6 +15,8 @@ import {
 
 import {useTranslation} from 'react-i18next';
 
+import {close} from 'ionicons/icons';
+
 import styles from './ClientsModal.module.scss';
 
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
@@ -99,7 +101,7 @@ const ClientsModal: React.FC<Props> = (props) => {
                     <IonTitle>{t('search.title')}</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => closeModal()}>
-                            <IonIcon name="close" slot="icon-only"></IonIcon>
+                            <IonIcon icon={close} slot="icon-only"></IonIcon>
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>

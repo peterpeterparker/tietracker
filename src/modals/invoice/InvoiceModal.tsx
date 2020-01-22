@@ -12,6 +12,8 @@ import {
     IonToolbar, isPlatform
 } from '@ionic/react';
 
+import {close} from 'ionicons/icons';
+
 import {useTranslation} from 'react-i18next';
 
 import DateFnsUtils from '@date-io/date-fns';
@@ -143,7 +145,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
                     <IonTitle>{props.invoice !== undefined && props.invoice.client && props.invoice.client.name !== undefined ? props.invoice.client.name : ''}</IonTitle>
                     <IonButtons slot="start">
                         <IonButton onClick={() => props.closeAction()}>
-                            <IonIcon name="close" slot="icon-only"></IonIcon>
+                            <IonIcon icon={close} slot="icon-only"></IonIcon>
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>
