@@ -1,4 +1,4 @@
-import React, {CSSProperties, FormEvent, RefObject, useRef, useState} from 'react';
+import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
 import {
     IonBackButton,
     IonButtons,
@@ -12,6 +12,8 @@ import {
     IonSpinner, IonLabel, IonItem, IonButton, IonInput
 } from '@ionic/react';
 import {RouteComponentProps} from 'react-router';
+
+import {isSameDay} from 'date-fns';
 
 import {useTranslation} from 'react-i18next';
 
@@ -55,10 +57,18 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [saving, setSaving] = useState<boolean>(false);
 
+    const [validFrom, setValidFrom] = useState<boolean>(true);
+
     const [client, setClient] = useState<Client | undefined>(undefined);
     const [project, setProject] = useState<Project | undefined>(undefined);
 
     const headerRef: RefObject<any> = useRef();
+
+    useEffect(() => {
+        const selectedDay: Date = new Date(props.match.params.day);
+
+        setValidFrom(from !== undefined && isSameDay(selectedDay, from));
+    }, [from, props.match.params.day]);
 
     useIonViewWillEnter(async () => {
         setSaving(false);
@@ -230,7 +240,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
             </IonList>
 
             <div className="actions">
-                <IonButton type="submit" disabled={saving} aria-label="Update task" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+                <IonButton type="submit" disabled={saving || !validFrom} aria-label="Update task" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
                     <IonLabel>{t('common:actions.update')}</IonLabel>
                 </IonButton>
 

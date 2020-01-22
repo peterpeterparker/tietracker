@@ -113,7 +113,7 @@ export class TasksService {
 
                 await this.saveTask(task);
 
-                const dayShort: string = lightFormat(now, 'yyyy-MM-dd');
+                const dayShort: string = lightFormat(task.data.from, 'yyyy-MM-dd');
                 await this.addTaskToInvoices(dayShort);
 
                 resolve(task);
@@ -230,9 +230,9 @@ export class TasksService {
                 delete (taskToPersist.data as TaskInProgressData)['client'];
                 delete (taskToPersist.data as TaskInProgressData)['project'];
 
-                const today: string = lightFormat(new Date(), 'yyyy-MM-dd');
+                const storeDate: string = lightFormat(task.data.from, 'yyyy-MM-dd');
 
-                let tasks: Task[] = await get(`tasks-${today}`);
+                let tasks: Task[] = await get(`tasks-${storeDate}`);
 
                 if (!tasks || tasks.length <= 0) {
                     tasks = [];
@@ -240,7 +240,7 @@ export class TasksService {
 
                 tasks.push(task);
 
-                await set(`tasks-${today}`, tasks);
+                await set(`tasks-${storeDate}`, tasks);
 
                 resolve();
             } catch (err) {
