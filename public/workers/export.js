@@ -79,16 +79,18 @@ async function exportToExcel(invoices, client, currency, vat, i18n) {
         pageSetup: {paperSize: 9, orientation: 'landscape'}
     });
 
-    extractInvoicesTable(worksheet, invoices, currency, i18n);
+    const currencyFormat = await excelCurrencyFormat(currency);
 
-    generateTotal(worksheet, invoices, currency, vat, i18n);
+    extractInvoicesTable(worksheet, invoices, currencyFormat, i18n);
+
+    generateTotal(worksheet, invoices, currencyFormat, vat, i18n);
 
     const buf = await workbook.xlsx.writeBuffer();
 
     return new Blob([buf]);
 }
 
-function generateTotal(worksheet, invoices, currency, vat, i18n) {
+function generateTotal(worksheet, invoices, currencyFormat, vat, i18n) {
     let index = invoices.length + 4;
 
     const totalRef = `G${invoices.length + 2}`;
@@ -96,7 +98,7 @@ function generateTotal(worksheet, invoices, currency, vat, i18n) {
     worksheet.mergeCells(`E${index}:F${index}`);
     worksheet.getCell(`E${index}`).value = i18n.total;
     worksheet.getCell(`G${index}`).value = { formula: totalRef };
-    worksheet.getCell(`G${index}`).numFmt = `#,##0.00 \"${currency}\"`;
+    worksheet.getCell(`G${index}`).numFmt = currencyFormat;
     worksheet.getCell(`G${index}`).font =  {font:{bold: true}};
 
     if (vat > 0) {
@@ -116,14 +118,14 @@ function generateTotal(worksheet, invoices, currency, vat, i18n) {
         worksheet.mergeCells(`E${index}:F${index}`);
         worksheet.getCell(`E${index}`).value = i18n.total_vat_excluded;
         worksheet.getCell(`G${index}`).value = { formula: `${totalRef}*100/(100+(${vatRef}*100))` };
-        worksheet.getCell(`G${index}`).numFmt = `#,##0.00 \"${currency}\"`;
+        worksheet.getCell(`G${index}`).numFmt = currencyFormat;
 
         index++;
 
         worksheet.mergeCells(`E${index}:F${index}`);
         worksheet.getCell(`E${index}`).value = i18n.vat;
         worksheet.getCell(`G${index}`).value = { formula: `${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100))` };
-        worksheet.getCell(`G${index}`).numFmt = `#,##0.00 \"${currency}\"`;
+        worksheet.getCell(`G${index}`).numFmt = currencyFormat;
     }
 
     index++;
@@ -135,7 +137,7 @@ function generateTotal(worksheet, invoices, currency, vat, i18n) {
     worksheet.getCell(`G${index}`).numFmt = '0.00';
 }
 
-function extractInvoicesTable(worksheet, invoices, currency, i18n) {
+function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n) {
     worksheet.addTable({
         name: 'Invoice',
         ref: 'A1',
@@ -163,11 +165,11 @@ function extractInvoicesTable(worksheet, invoices, currency, i18n) {
         worksheet.getCell(`D${i + 2}`).numFmt = 'yyyy-mm-dd';
         worksheet.getCell(`E${i + 2}`).numFmt = 'hh:mm:ss';
         worksheet.getCell(`F${i + 2}`).numFmt = '0.00';
-        worksheet.getCell(`G${i + 2}`).numFmt = `#,##0.00 \"${currency}\"`;
+        worksheet.getCell(`G${i + 2}`).numFmt = currencyFormat;
     });
 
     worksheet.getCell(`F${invoices.length + 2}`).numFmt = '0.00';
-    worksheet.getCell(`G${invoices.length + 2}`).numFmt = `#,##0.00 \"${currency}\"`;
+    worksheet.getCell(`G${invoices.length + 2}`).numFmt = currencyFormat;
 
     worksheet.getColumn(1).width = 50;
     worksheet.getColumn(2).width = 10;
@@ -175,6 +177,25 @@ function extractInvoicesTable(worksheet, invoices, currency, i18n) {
     worksheet.getColumn(4).width = 10;
     worksheet.getColumn(5).width = 10;
     worksheet.getColumn(7).width = 16;
+}
+
+function excelCurrencyFormat(currency) {
+    return new Promise(async (resolve) => {
+        if (!currency || !currency.currency) {
+            resolve(`#,##0.00 CHF`);
+            return;
+        }
+
+        if (!currency.format || !currency.format.symbol || !currency.format.symbol.template || !currency.format.symbol.grapheme) {
+            resolve(`#,##0.00 \"${currency.currency}\"`);
+            return;
+        }
+
+        const symbol = currency.format.symbol.template.replace('$', currency.format.symbol.grapheme);
+        const format = symbol.replace('1', '#,##0.00');
+
+        resolve(format);
+    });
 }
 
 async function billInvoices(invoices, filterProjectId, bill) {
