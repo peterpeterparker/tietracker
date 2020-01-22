@@ -4,11 +4,11 @@
 ### Fix
 
 * manual entry duration ([#33](https://github.com/peterpeterparker/tietracker/pull/33))
-* fix: refresh observed complex store objects ([#39](https://github.com/peterpeterparker/tietracker/pull/39))
+* refresh observed complex store objects ([#39](https://github.com/peterpeterparker/tietracker/pull/39))
 
 ### Features
 
-* improve export ([#34](https://github.com/peterpeterparker/tietracker/issues/34) and [#35](https://github.com/peterpeterparker/tietracker/issues/35))
+* export to XLSX ([#34](https://github.com/peterpeterparker/tietracker/issues/34) and [#35](https://github.com/peterpeterparker/tietracker/issues/35))
 * select currency in a new modal with a filter option ([#32](https://github.com/peterpeterparker/tietracker/pull/32))
 * update dependencies ([#38](https://github.com/peterpeterparker/tietracker/pull/38))
 * better handle entries dates and storage ([#40](https://github.com/peterpeterparker/tietracker/pull/40))
