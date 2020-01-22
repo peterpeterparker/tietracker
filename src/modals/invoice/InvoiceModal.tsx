@@ -165,7 +165,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             return <p>{t('invoices:invoice.empty')}</p>
         }
 
-        return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.billable', {amount: formatCurrency(billable, settings.currency)})}} ></p>
+        return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.billable', {amount: formatCurrency(billable, settings.currency.currency)})}} ></p>
     }
 
     function renderFilter() {

@@ -85,7 +85,7 @@ const Invoices: React.FC = () => {
                             <IonCardTitle>{invoice.project ? invoice.project.name : ''}</IonCardTitle>
                         </IonCardHeader>
                         <IonCardContent>
-                            <IonLabel>{formatCurrency(invoice.billable, settings.currency)}</IonLabel>
+                            <IonLabel>{formatCurrency(invoice.billable, settings.currency.currency)}</IonLabel>
                         </IonCardContent>
                         <IonRippleEffect></IonRippleEffect>
                     </IonCard>

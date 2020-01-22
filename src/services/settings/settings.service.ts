@@ -54,7 +54,15 @@ export class SettingsService {
     getDefaultSettings(): Settings {
         const now: Date = new Date();
         return {
-            currency: 'CHF',
+            currency: {
+                currency: 'CHF',
+                format: {
+                    name: 'Swiss Franc',
+                    fractionSize: 2,
+                    symbol: null,
+                    uniqSymbol: null
+                }
+            },
             roundTime: 5,
             descriptions: ['Development', 'Meeting', 'Test', 'Communication', 'Release'],
             notifications: {

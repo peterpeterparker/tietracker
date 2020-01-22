@@ -266,7 +266,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
             return <IonItem key={project.id} className={styles.projectItem + ' item-input'} onClick={() => updateProject(project.id)}>
                 <IonLabel>
                     <h2>{project.data.name}</h2>
-                    <p>{formatCurrency(project.data.rate.hourly, settings.currency)}/h</p>
+                    <p>{formatCurrency(project.data.rate.hourly, settings.currency.currency)}/h</p>
                 </IonLabel>
                 <IonIcon slot="end" icon={project.data.disabled ? lock : unlock}/>
             </IonItem>

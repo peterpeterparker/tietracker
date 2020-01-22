@@ -3,11 +3,14 @@ import {interval} from '../../utils/utils.date';
 import {Invoice} from '../../store/interfaces/invoice';
 import {format} from 'date-fns';
 
+import i18next from 'i18next';
+
 import {SocialSharing } from '@ionic-native/social-sharing';
 
 import {Plugins, FilesystemDirectory, FilesystemEncoding} from '@capacitor/core';
 import {StatResult} from '@capacitor/core/dist/esm/core-plugin-definitions';
-import i18next from 'i18next';
+
+import {Currency} from '../../definitions/currency';
 
 const {Filesystem} = Plugins;
 
@@ -28,7 +31,7 @@ export class ExportService {
         return ExportService.instance;
     }
 
-    exportNativeFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, vat: number | undefined, bill: boolean): Promise<void> {
+    exportNativeFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: Currency, vat: number | undefined, bill: boolean): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if (invoice === undefined || invoice.project_id === undefined) {
                 reject('No invoice data.');
@@ -67,7 +70,7 @@ export class ExportService {
         });
     }
 
-    exportDownload(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, vat: number | undefined, bill: boolean): Promise<void> {
+    exportDownload(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: Currency, vat: number | undefined, bill: boolean): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if (invoice === undefined || invoice.project_id === undefined) {
                 reject('No invoice data.');
@@ -100,7 +103,7 @@ export class ExportService {
         });
     }
 
-    exportMobileFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: string, vat: number | undefined, bill: boolean): Promise<void> {
+    exportMobileFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: Currency, vat: number | undefined, bill: boolean): Promise<void> {
         return new Promise<void>(async (resolve, reject) => {
             if (invoice === undefined || invoice.project_id === undefined) {
                 reject('No invoice data.');
@@ -258,7 +261,7 @@ export class ExportService {
         return `Tie Tracker${invoice.client && invoice.client.name ? ` - ${invoice.client.name}` : ''}`
     }
 
-    private async postMessage(invoice: Invoice, invoices: string[], currency: string, vat: number | undefined, bill: boolean) {
+    private async postMessage(invoice: Invoice, invoices: string[], currency: Currency, vat: number | undefined, bill: boolean) {
 
         await i18next.loadNamespaces('export');
 

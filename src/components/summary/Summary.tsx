@@ -32,7 +32,7 @@ const Summary: React.FC = () => {
                 <h2 className={styles.title}>{t('today')}</h2>
                 <IonCardHeader className={styles.header}>
                     <IonCardSubtitle className={styles.subtitle}><label>{t('tracked')} </label>{formatTime(summary !== undefined ? summary.total.today.milliseconds : undefined)}</IonCardSubtitle>
-                    <IonCardTitle><label>{t('billable')} </label>{formatCurrency(summary !== undefined ? summary.total.today.billable : undefined, settings.currency)}</IonCardTitle>
+                    <IonCardTitle><label>{t('billable')} </label>{formatCurrency(summary !== undefined ? summary.total.today.billable : undefined, settings.currency.currency)}</IonCardTitle>
                 </IonCardHeader>
             </IonCard>
 
@@ -40,7 +40,7 @@ const Summary: React.FC = () => {
                 <h2 className={styles.title}>{t('week')}</h2>
                 <IonCardHeader className={styles.header}>
                     <IonCardSubtitle className={styles.subtitle}><label>{t('tracked')} </label>{formatTime(summary !== undefined ? summary.total.week.milliseconds : undefined)}</IonCardSubtitle>
-                    <IonCardTitle><label>{t('billable')} </label>{formatCurrency(summary !== undefined ? summary.total.week.billable : undefined, settings.currency)}</IonCardTitle>
+                    <IonCardTitle><label>{t('billable')} </label>{formatCurrency(summary !== undefined ? summary.total.week.billable : undefined, settings.currency.currency)}</IonCardTitle>
                 </IonCardHeader>
             </IonCard>
         </div>

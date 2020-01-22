@@ -1,10 +1,12 @@
+import {Currency} from '../definitions/currency';
+
 export interface SettingsNotifications {
     count: number;
     every: 'minute';
 }
 
 export interface Settings {
-    currency: string;
+    currency: Currency;
     roundTime: number;
     vat?: number;
 

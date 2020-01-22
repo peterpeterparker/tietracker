@@ -19,9 +19,11 @@ import {Currencies, SettingsService} from '../../services/settings/settings.serv
 
 import styles from './CurrenciesModal.module.scss';
 
+import {Currency} from '../../definitions/currency';
+
 interface Props {
     closeAction: Function;
-    currency: string;
+    currency: Currency;
 }
 
 const CurrenciesModal: React.FC<Props> = (props: Props) => {
@@ -115,9 +117,9 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
         }
 
         return Object.keys(filteredCurrencies).map((key: string) => {
-            return <IonItem key={`${key}`} className={styles.item} onClick={() => props.closeAction(key)}>
+            return <IonItem key={`${key}`} className={styles.item} onClick={() => props.closeAction({currency: key, format: filteredCurrencies[key]})}>
                 <IonLabel>{filteredCurrencies[key].name} ({key})</IonLabel>
-                <IonRadio value={key} checked={key === props.currency}/>
+                <IonRadio value={key} checked={key === props.currency.currency}/>
             </IonItem>
         });
     }

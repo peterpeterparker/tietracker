@@ -13,6 +13,8 @@ import {useTranslation} from 'react-i18next';
 
 import styles from './SettingsTracker.module.scss';
 
+import {Currency} from '../../../definitions/currency';
+
 import {Settings} from '../../../models/settings';
 
 import CurrenciesModal from '../../../modals/currencies/CurrenciesModal';
@@ -27,7 +29,7 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
 
     const [showPopover, setShowPopover] = useState<boolean>(false);
 
-    function onCurrencyChange(currency: string | undefined) {
+    function onCurrencyChange(currency: Currency | undefined) {
         if (!currency) {
             setShowPopover(false);
 
@@ -69,7 +71,7 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
 
     return (<>
             <IonModal isOpen={showPopover}  onDidDismiss={() => setShowPopover(false)}>
-                <CurrenciesModal currency={props.settings.currency} closeAction={(currency?: string) => onCurrencyChange(currency)}></CurrenciesModal>
+                <CurrenciesModal currency={props.settings.currency} closeAction={(currency?: Currency) => onCurrencyChange(currency)}></CurrenciesModal>
             </IonModal>
 
             <IonList className="inputs-list">
@@ -95,7 +97,7 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
                 <IonItem className={styles.itemButton + ' item-input'}>
                     <button aria-label={t('search.clients')} className={'input'}
                             onClick={($event) => openPopover($event)}>
-                        <IonLabel>{props.settings.currency}</IonLabel>
+                        <IonLabel>{props.settings.currency.currency}</IonLabel>
                     </button>
                 </IonItem>
 
