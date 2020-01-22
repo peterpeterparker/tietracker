@@ -58,6 +58,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     const [saving, setSaving] = useState<boolean>(false);
 
     const [validFrom, setValidFrom] = useState<boolean>(true);
+    const [disableActions, setDisableActions] = useState<boolean>(false);
 
     const [client, setClient] = useState<Client | undefined>(undefined);
     const [project, setProject] = useState<Project | undefined>(undefined);
@@ -69,6 +70,10 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
         setValidFrom(from !== undefined && isSameDay(selectedDay, from));
     }, [from, props.match.params.day]);
+
+    useEffect(() => {
+        setDisableActions(task === undefined || !task.data  || (task.data.invoice && task.data.invoice.status === 'billed'));
+    }, [task]);
 
     useIonViewWillEnter(async () => {
         setSaving(false);
@@ -240,12 +245,12 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
             </IonList>
 
             <div className="actions">
-                <IonButton type="submit" disabled={saving || !validFrom} aria-label="Update task" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
+                <IonButton type="submit" disabled={saving || !validFrom || disableActions} aria-label="Update task" style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
                     <IonLabel>{t('common:actions.update')}</IonLabel>
                 </IonButton>
 
                 <IonButton type="button" onClick={() => deleteTask()} color="button" fill="outline"
-                        disabled={saving}><IonLabel>{t('common:actions.delete')}</IonLabel></IonButton>
+                        disabled={saving || disableActions}><IonLabel>{t('common:actions.delete')}</IonLabel></IonButton>
 
                 <button type="button" onClick={goBack} disabled={saving}>{t('common:actions.cancel')}</button>
             </div>
