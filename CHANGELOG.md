@@ -4,6 +4,7 @@
 ### Fix
 
 * manual entry duration ([#33](https://github.com/peterpeterparker/tietracker/pull/33))
+* fix: refresh observed complex store objects ([#39](https://github.com/peterpeterparker/tietracker/pull/39))
 
 ### Features
 
