@@ -124,9 +124,11 @@ export class ExportService {
                     if ($event && $event.data) {
                         await this.makeMobileDir();
 
+                        const content: string = await this.blobToString($event.data);
+
                         await Filesystem.writeFile({
                             path: `tietracker/${filename}`,
-                            data: $event.data,
+                            data: content,
                             directory: FilesystemDirectory.Documents,
                             encoding: FilesystemEncoding.UTF8
                         });
@@ -142,6 +144,27 @@ export class ExportService {
                 console.error(err);
                 reject(err);
             }
+        });
+    }
+
+    private blobToString(data: Blob): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            const fileReader: FileReader = new FileReader();
+
+            fileReader.onload = () => {
+                if (!fileReader.result) {
+                    reject('Could not convert blob content.');
+                    return;
+                }
+
+                resolve(fileReader.result as string);
+            };
+
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+
+            fileReader.readAsText(data);
         });
     }
 
