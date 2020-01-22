@@ -11,7 +11,8 @@
 * improve export ([#34](https://github.com/peterpeterparker/tietracker/issues/34) and [#35](https://github.com/peterpeterparker/tietracker/issues/35))
 * select currency in a new modal with a filter option ([#32](https://github.com/peterpeterparker/tietracker/pull/32))
 * update dependencies ([#38](https://github.com/peterpeterparker/tietracker/pull/38))
-* feat: better handle entries dates and storage ([#40](https://github.com/peterpeterparker/tietracker/pull/40))
+* better handle entries dates and storage ([#40](https://github.com/peterpeterparker/tietracker/pull/40))
+* disable entries actions if billed ([#41](https://github.com/peterpeterparker/tietracker/pull/41))
 
 <a name="0.4.0"></a>
 # 0.4.0 (2020-01-13)
