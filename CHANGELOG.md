@@ -1,3 +1,10 @@
+<a name="0.5.1"></a>
+# 0.5.1 (2020-01-22)
+
+### Fix
+
+* export to XLSX doesn't work on mobile devices ([#42](https://github.com/peterpeterparker/tietracker/issues/42))
+
 <a name="0.5.0"></a>
 # 0.5.0 (2020-01-22)
 
