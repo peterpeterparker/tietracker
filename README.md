@@ -39,8 +39,8 @@ Track your productivity and billable hours.
 Yet not complicated but effective reporting.
 
 * ✅ Weekly work summary
-* ✅ Today's list of activities
-* ✅ Export open invoices to CSV timesheets
+* ✅ Daily list of activities
+* ✅ Export open invoices to XLSX timesheets
 
 ## Technical Stack
 

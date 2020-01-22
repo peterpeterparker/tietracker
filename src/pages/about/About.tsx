@@ -46,8 +46,8 @@ const About: React.FC = () => {
 
                     <ul className={styles.list}>
                         <li><span aria-label="checkmark" role="img">✅</span> Weekly work summary</li>
-                        <li><span aria-label="checkmark" role="img">✅</span> Today's list of activities</li>
-                        <li><span aria-label="checkmark" role="img">✅</span> Export open invoices to CSV timesheets</li>
+                        <li><span aria-label="checkmark" role="img">✅</span> Daily list of entries</li>
+                        <li><span aria-label="checkmark" role="img">✅</span> Export open invoices to XLSX timesheets</li>
                     </ul>
 
                     <h1 className="ion-padding-top">Open Source</h1>
