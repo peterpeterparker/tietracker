@@ -87,7 +87,7 @@ async function exportToExcel(invoices, client, currency, vat, i18n) {
 
     const buf = await workbook.xlsx.writeBuffer();
 
-    return new Blob([buf]);
+    return new Blob([buf], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
 }
 
 function generateTotal(worksheet, invoices, currencyFormat, vat, i18n) {
@@ -97,9 +97,9 @@ function generateTotal(worksheet, invoices, currencyFormat, vat, i18n) {
 
     worksheet.mergeCells(`E${index}:F${index}`);
     worksheet.getCell(`E${index}`).value = i18n.total;
-    worksheet.getCell(`G${index}`).value = { formula: totalRef };
+    worksheet.getCell(`G${index}`).value = {formula: totalRef};
     worksheet.getCell(`G${index}`).numFmt = currencyFormat;
-    worksheet.getCell(`G${index}`).font =  {font:{bold: true}};
+    worksheet.getCell(`G${index}`).font = {font: {bold: true}};
 
     if (vat > 0) {
         index++;
@@ -117,14 +117,14 @@ function generateTotal(worksheet, invoices, currencyFormat, vat, i18n) {
 
         worksheet.mergeCells(`E${index}:F${index}`);
         worksheet.getCell(`E${index}`).value = i18n.total_vat_excluded;
-        worksheet.getCell(`G${index}`).value = { formula: `${totalRef}*100/(100+(${vatRef}*100))` };
+        worksheet.getCell(`G${index}`).value = {formula: `${totalRef}*100/(100+(${vatRef}*100))`};
         worksheet.getCell(`G${index}`).numFmt = currencyFormat;
 
         index++;
 
         worksheet.mergeCells(`E${index}:F${index}`);
         worksheet.getCell(`E${index}`).value = i18n.vat;
-        worksheet.getCell(`G${index}`).value = { formula: `${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100))` };
+        worksheet.getCell(`G${index}`).value = {formula: `${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100))`};
         worksheet.getCell(`G${index}`).numFmt = currencyFormat;
     }
 
@@ -133,7 +133,7 @@ function generateTotal(worksheet, invoices, currencyFormat, vat, i18n) {
 
     worksheet.mergeCells(`E${index}:F${index}`);
     worksheet.getCell(`E${index}`).value = i18n.total_billable_hours;
-    worksheet.getCell(`G${index}`).value = { formula: `F${invoices.length + 2}` };
+    worksheet.getCell(`G${index}`).value = {formula: `F${invoices.length + 2}`};
     worksheet.getCell(`G${index}`).numFmt = '0.00';
 }
 
