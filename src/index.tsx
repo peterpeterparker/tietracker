@@ -9,7 +9,7 @@ import { rootReducer } from './store/reducers/index';
 
 import reduxThunk from 'redux-thunk';
 
-import { applyPolyfills, defineCustomElements, JSX as LocalJSX } from '@deckdeckgo/color/loader';
+import { applyPolyfills, defineCustomElements, JSX as LocalJSX } from '@deckdeckgo/color/dist/loader';
 
 import { DetailedHTMLProps, HTMLAttributes } from 'react';
 
