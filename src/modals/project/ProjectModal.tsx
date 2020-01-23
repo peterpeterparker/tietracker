@@ -93,7 +93,7 @@ const ProjectModal: React.FC<Props> = (props) => {
     }
 
     function handleProjectRateInput($event: CustomEvent<KeyboardEvent>) {
-        setRate(parseInt(($event.target as InputTargetEvent).value));
+        setRate(parseFloat(($event.target as InputTargetEvent).value));
     }
 
     function onVatChange($event: CustomEvent) {
