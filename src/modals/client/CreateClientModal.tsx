@@ -133,13 +133,13 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
 
         if (projectData) {
             data = {...projectData};
-            data.rate.hourly = parseInt(($event.target as InputTargetEvent).value);
+            data.rate.hourly = parseFloat(($event.target as InputTargetEvent).value);
         } else {
             data = {
                 name: '',
                 disabled: false,
                 rate: {
-                    hourly: parseInt(($event.target as InputTargetEvent).value),
+                    hourly: parseFloat(($event.target as InputTargetEvent).value),
                     vat: settings.vat !== undefined
                 }
             };
