@@ -4,6 +4,7 @@
 ### Fix
 
 * add not subtract vat in export to XLSX ([#44](https://github.com/peterpeterparker/tietracker/pull/44))
+* hourly rate could contains cents ([#45](https://github.com/peterpeterparker/tietracker/pull/45))
 
 <a name="0.5.1"></a>
 # 0.5.1 (2020-01-22)
