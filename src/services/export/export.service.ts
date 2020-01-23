@@ -242,6 +242,7 @@ export class ExportService {
             bill: bill,
             i18n: {
                 total: i18next.t('export:total'),
+                billable_subtotal: i18next.t('export:billable_subtotal'),
                 vat_rate: i18next.t('export:vat_rate'),
                 vat: i18next.t('export:vat'),
                 total_vat_excluded: i18next.t('export:total_vat_excluded'),

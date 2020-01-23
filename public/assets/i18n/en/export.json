@@ -1,5 +1,6 @@
 {
   "total": "Total",
+  "billable_subtotal": "Billable subtotal",
   "total_vat_excluded": "Total (VAT excluded)",
   "total_billable_hours": "Total billable hours",
   "vat": "VAT",

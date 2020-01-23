@@ -93,18 +93,17 @@ async function exportToExcel(invoices, client, currency, vat, i18n) {
 function generateTotal(worksheet, invoices, currencyFormat, vat, i18n) {
     let index = invoices.length + 4;
 
-    const totalRef = `G${invoices.length + 2}`;
+    const billableTotalRef = `G${invoices.length + 2}`;
 
     worksheet.mergeCells(`E${index}:F${index}`);
-    worksheet.getCell(`E${index}`).value = i18n.total;
-    worksheet.getCell(`G${index}`).value = {formula: totalRef};
+    worksheet.getCell(`E${index}`).value = i18n.billable_subtotal;
+    worksheet.getCell(`G${index}`).value = {formula: billableTotalRef};
     worksheet.getCell(`G${index}`).numFmt = currencyFormat;
-    worksheet.getCell(`G${index}`).font = {font: {bold: true}};
+
+    index++;
+    index++;
 
     if (vat > 0) {
-        index++;
-        index++;
-
         worksheet.mergeCells(`E${index}:F${index}`);
         worksheet.getCell(`E${index}`).value = i18n.vat_rate;
         worksheet.getCell(`G${index}`).value = vat / 100;
@@ -114,6 +113,20 @@ function generateTotal(worksheet, invoices, currencyFormat, vat, i18n) {
         index++;
 
         const vatRef = `G${index - 2}`;
+
+        worksheet.mergeCells(`E${index}:F${index}`);
+        worksheet.getCell(`E${index}`).value = i18n.total;
+        worksheet.getCell(`E${index}`).font = {bold: true};
+        worksheet.getCell(`E${index}`).border = {bottom: {style:'thin'}};
+        worksheet.getCell(`G${index}`).value = {formula: `${billableTotalRef}+(${billableTotalRef}*${vatRef})`};
+        worksheet.getCell(`G${index}`).numFmt = currencyFormat;
+        worksheet.getCell(`G${index}`).font = {bold: true};
+        worksheet.getCell(`G${index}`).border = {bottom: {style:'thin'}};
+
+        index++;
+        index++;
+
+        const totalRef = `G${index - 2}`;
 
         worksheet.mergeCells(`E${index}:F${index}`);
         worksheet.getCell(`E${index}`).value = i18n.total_vat_excluded;
@@ -126,6 +139,15 @@ function generateTotal(worksheet, invoices, currencyFormat, vat, i18n) {
         worksheet.getCell(`E${index}`).value = i18n.vat;
         worksheet.getCell(`G${index}`).value = {formula: `${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100))`};
         worksheet.getCell(`G${index}`).numFmt = currencyFormat;
+    } else {
+        worksheet.mergeCells(`E${index}:F${index}`);
+        worksheet.getCell(`E${index}`).value = i18n.total;
+        worksheet.getCell(`E${index}`).font = {bold: true};
+        worksheet.getCell(`E${index}`).border = {bottom: {style:'thin'}};
+        worksheet.getCell(`G${index}`).value = {formula: `${billableTotalRef}`};
+        worksheet.getCell(`G${index}`).numFmt = currencyFormat;
+        worksheet.getCell(`G${index}`).font = {bold: true};
+        worksheet.getCell(`G${index}`).border = {bottom: {style:'thin'}};
     }
 
     index++;
@@ -145,10 +167,10 @@ function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n) {
         totalsRow: true,
         style: {
             theme: 'TableStyleLight1',
-            showRowStripes: true,
+            showRowStripes: true
         },
         columns: [
-            {name: i18n.description, filterButton: true, totalsRowLabel: 'Total'},
+            {name: i18n.description, filterButton: true, totalsRowLabel: ''},
             {name: i18n.start_date},
             {name: i18n.start_time},
             {name: i18n.end_date},
