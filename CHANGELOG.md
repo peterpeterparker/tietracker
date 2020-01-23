@@ -1,3 +1,10 @@
+<a name="0.5.2"></a>
+# 0.5.2 (2020-01-23)
+
+### Fix
+
+* add not subtract vat in export to XLSX ([#44](https://github.com/peterpeterparker/tietracker/pull/44))
+
 <a name="0.5.1"></a>
 # 0.5.1 (2020-01-22)
 
