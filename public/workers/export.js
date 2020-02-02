@@ -256,12 +256,16 @@ function exportInvoice(invoice, projects, filterProjectId) {
             const rate = projects[task.data.project_id].rate;
             const billable = rate && rate.hourly > 0 ? hours * rate.hourly : 0;
 
+            // #47: ExcelJS timezone workaround
+            const from = dayjs(task.data.from).add(dayjs().utcOffset(), 'minute').toDate();
+            const to = dayjs(task.data.to).add(dayjs().utcOffset(), 'minute').toDate();
+
             return [
                 task.data.description ? task.data.description : '',
-                new Date(task.data.from),
-                new Date(task.data.from),
-                new Date(task.data.to),
-                new Date(task.data.to),
+                new Date(from),
+                new Date(from),
+                new Date(to),
+                new Date(to),
                 hours,
                 billable
             ]
