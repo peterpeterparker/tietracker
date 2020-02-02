@@ -1,3 +1,11 @@
+<a name="0.5.3"></a>
+# 0.5.3 (2020-02-02)
+
+### Fix
+
+* export to Excel timezone ([#47](https://github.com/peterpeterparker/tietracker/issues/47))
+* local notifications not always canceled on Android ([#46](https://github.com/peterpeterparker/tietracker/issues/46))
+
 <a name="0.5.2"></a>
 # 0.5.2 (2020-01-23)
 
