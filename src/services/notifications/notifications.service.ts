@@ -42,12 +42,14 @@ export class NotificationsService {
 
             await i18next.loadNamespaces('notifications');
 
+            const id: number = Math.floor(Math.random()*10);
+
             await LocalNotifications.schedule({
                 notifications: [
                     {
                         title: project.data.client ? `${project.data.client.name}` : i18next.t('notifications:fallback_title'),
                         body: i18next.t('notifications:body', { project: project.data.name }),
-                        id: new Date().getTime(),
+                        id: id,
                         schedule: {
                             every: settings.notifications.every,
                             count: settings.notifications.count
@@ -69,7 +71,7 @@ export class NotificationsService {
 
             const pendingList: LocalNotificationPendingList = await LocalNotifications.getPending();
 
-            if (!pendingList || !pendingList.notifications || pendingList.notifications.length <= 0) {
+            if (!pendingList) {
                 resolve();
                 return;
             }
