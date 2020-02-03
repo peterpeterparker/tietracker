@@ -1,3 +1,10 @@
+<a name="0.5.4"></a>
+# 0.5.4 (2020-02-03)
+
+### Fix
+
+* local notifications random ID
+
 <a name="0.5.3"></a>
 # 0.5.3 (2020-02-02)
 
