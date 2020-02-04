@@ -4,9 +4,9 @@ import i18next from 'i18next';
 
 import {Project} from '../../models/project';
 
-import {LocalNotificationPendingList, Plugins} from '@capacitor/core';
 import {Settings} from '../../models/settings';
-const {LocalNotifications} = Plugins;
+
+import {LocalNotifications, ELocalNotificationTriggerUnit } from '@ionic-native/local-notifications';
 
 export class NotificationsService {
 
@@ -42,20 +42,12 @@ export class NotificationsService {
 
             await i18next.loadNamespaces('notifications');
 
-            const id: number = Math.floor(Math.random()*10);
-
-            await LocalNotifications.schedule({
-                notifications: [
-                    {
-                        title: project.data.client ? `${project.data.client.name}` : i18next.t('notifications:fallback_title'),
-                        body: i18next.t('notifications:body', { project: project.data.name }),
-                        id: id,
-                        schedule: {
-                            every: settings.notifications.every,
-                            count: settings.notifications.count
-                        }
-                    }
-                ]
+            LocalNotifications.schedule({
+                title: project.data.client ? `${project.data.client.name}` : i18next.t('notifications:fallback_title'),
+                text: i18next.t('notifications:body', { project: project.data.name }),
+                trigger: {
+                    every: ELocalNotificationTriggerUnit.HOUR
+                }
             });
 
             resolve();
@@ -69,14 +61,7 @@ export class NotificationsService {
                 return;
             }
 
-            const pendingList: LocalNotificationPendingList = await LocalNotifications.getPending();
-
-            if (!pendingList) {
-                resolve();
-                return;
-            }
-
-            await LocalNotifications.cancel(pendingList);
+            await LocalNotifications.cancelAll();
 
             resolve();
         });
