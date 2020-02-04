@@ -35,7 +35,7 @@ export class NotificationsService {
                 return;
             }
 
-            if (!settings || !settings.notifications || settings.notifications.count === 0) {
+            if (!settings || !settings.notifications) {
                 resolve();
                 return;
             }

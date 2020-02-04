@@ -65,10 +65,7 @@ export class SettingsService {
             },
             roundTime: 5,
             descriptions: ['Development', 'Meeting', 'Test', 'Communication', 'Release'],
-            notifications: {
-                count: 60,
-                every: 'minute'
-            },
+            notifications: true,
             created_at: now.getTime(),
             updated_at: now.getTime()
         }
