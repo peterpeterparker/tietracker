@@ -1,3 +1,10 @@
+<a name="0.6.0"></a>
+# 0.6.0 (2020-02-04)
+
+### Breaking Changes
+
+* replace and simplify local notifications to fix cancellation reliability ([#46](https://github.com/peterpeterparker/tietracker/issues/46))
+
 <a name="0.5.4"></a>
 # 0.5.4 (2020-02-03)
 
