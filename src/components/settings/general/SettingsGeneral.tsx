@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import {
     IonItem,
     IonLabel,
-    IonList, IonSelect, IonSelectOption,
+    IonList,
     IonToggle, isPlatform,
 } from '@ionic/react';
 
@@ -25,10 +25,10 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
 
     const notifications: boolean = isPlatform('hybrid');
 
-    const [minute, setMinute] = useState<number>(0);
+    const [notificationsOn, setNotificationsOn] = useState<boolean | undefined>(undefined);
 
     useEffect(() => {
-        setMinute(props.settings.notifications ? props.settings.notifications.count : 0);
+        setNotificationsOn(props.settings.notifications !== undefined ? props.settings.notifications : false);
     }, [props.settings]);
 
     const darkTheme: boolean | undefined = useSelector((state: RootState) => {
@@ -39,29 +39,15 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
         await props.switchTheme();
     }
 
-    function onNotificationsTimeChange($event: CustomEvent) {
-        if (!$event || !$event.detail) {
-            return;
-        }
-
-        setMinute($event.detail.value);
-
-        if (props.settings.notifications === undefined) {
-            props.settings.notifications = {
-                count: $event.detail.value,
-                every: 'minute'
-            };
-
-            return;
-        }
-
-        props.settings.notifications.count = $event.detail.value;
+    function toggleNotifications() {
+        props.settings.notifications = !props.settings.notifications;
+        setNotificationsOn(!notificationsOn);
     }
 
     return (
         <IonList className="inputs-list">
             <IonItem className="item-title">
-                <IonLabel>Theme</IonLabel>
+                <IonLabel>{t('general.theme')}</IonLabel>
             </IonItem>
 
             <IonItem className="item-input item-radio with-padding">
@@ -84,17 +70,10 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
                 <IonLabel>{t('general.notifications.title')}</IonLabel>
             </IonItem>
 
-            <IonItem className="item-input">
-                <IonSelect interfaceOptions={{header: t('general.notifications.title'), subHeader: t('general.notifications.body')}}
-                           placeholder={t('general.notifications.title')}
-                           value={minute}
-                           onIonChange={($event: CustomEvent) => onNotificationsTimeChange($event)}>
-                    <IonSelectOption value={0}>{t('general.notifications.minute.0')}</IonSelectOption>
-                    <IonSelectOption value={30}>{t('general.notifications.minute.30')}</IonSelectOption>
-                    <IonSelectOption value={60}>{t('general.notifications.minute.60')}</IonSelectOption>
-                    <IonSelectOption value={120}>{t('general.notifications.minute.120')}</IonSelectOption>
-                    <IonSelectOption value={240}>{t('general.notifications.minute.240')}</IonSelectOption>
-                </IonSelect>
+            <IonItem className="item-input item-radio with-padding">
+                <IonLabel>{notificationsOn ? t('general.notifications.body') : t('general.notifications.dont')}</IonLabel>
+                <IonToggle slot="end" checked={notificationsOn} mode="md" color="medium"
+                           onClick={() => toggleNotifications()}></IonToggle>
             </IonItem>
         </>
     }

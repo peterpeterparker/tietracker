@@ -9,20 +9,15 @@
     "templates": "Templates"
   },
   "general": {
+    "theme": "Theme",
     "mode":  {
       "dark": "Dark",
       "light": "Light"
     },
     "notifications": {
-      "title": "Notifications",
-      "body": "Remind me a task is in progress.",
-      "minute": {
-        "0": "Never",
-        "30": "Every 30 minutes",
-        "60": "Every hour",
-        "120": "Every 2 hours",
-        "240": "Every 4 hours"
-      }
+      "title": "Notifications for tasks in progress",
+      "body": "Remind me every hour",
+      "dont": "Don't remind me"
     }
   },
   "templates": {
