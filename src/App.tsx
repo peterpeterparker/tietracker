@@ -63,9 +63,11 @@ import {RootProps, rootConnector} from './store/thunks/index.thunks';
 import TrackTaskModal from './modals/task/track/TrackTaskModal';
 import TaskDetails from './pages/details/task/TaskDetails';
 import ClientDetails from './pages/details/client/ClientDetails';
+
 import About from './pages/about/About';
 import Terms from './pages/terms/Terms';
 import Privacy from './pages/privacy/Privacy';
+import BackupAlert from './alerts/backup/BackupAlert';
 
 import {Plugins} from '@capacitor/core';
 
@@ -175,6 +177,8 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                 </IonReactRouter>
 
                 <TrackTaskModal></TrackTaskModal>
+
+                <BackupAlert></BackupAlert>
             </IonApp>
         </Suspense>
     );

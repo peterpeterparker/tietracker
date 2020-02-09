@@ -11,5 +11,7 @@
   "end_date": "End date",
   "end_time": "End time",
   "duration": "Duration",
-  "billable": "Billable"
+  "billable": "Billable",
+  "client": "Client",
+  "project": "Project"
 }

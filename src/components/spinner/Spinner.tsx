@@ -1,10 +1,10 @@
-import React, { CSSProperties } from 'react';
+import React, {CSSProperties} from 'react';
 
 import styles from './Spinner.module.scss';
 
-import differenceInSeconds from 'date-fns/differenceInSeconds';
+import {differenceInSeconds} from 'date-fns';
 
-import { RootProps, rootConnector } from '../../store/thunks/index.thunks';
+import {RootProps, rootConnector} from '../../store/thunks/index.thunks';
 
 interface SpinnerProps extends RootProps {
     color: string | undefined;
@@ -24,9 +24,9 @@ class Spinner extends React.Component<SpinnerProps, SpinnerState> {
         super(props);
 
         this.state = {
-          timeElapsed: '00:00:00'
+            timeElapsed: '00:00:00'
         }
-      }
+    }
 
     componentDidMount() {
         this.progressInterval = window.setInterval(() => {
@@ -40,7 +40,7 @@ class Spinner extends React.Component<SpinnerProps, SpinnerState> {
                 const diffMinutes: number = Math.floor(seconds / 60);
                 const diffSeconds: number = seconds % 60;
 
-                this.setState({timeElapsed: `${diffHours >= 99 ? '99' : (diffHours < 10 ? '0' + diffHours: diffHours)}:${diffMinutes < 10 ? '0' + diffMinutes: diffMinutes}:${diffSeconds < 10 ? '0' + diffSeconds: diffSeconds}`})
+                this.setState({timeElapsed: `${diffHours >= 99 ? '99' : (diffHours < 10 ? '0' + diffHours : diffHours)}:${diffMinutes < 10 ? '0' + diffMinutes : diffMinutes}:${diffSeconds < 10 ? '0' + diffSeconds : diffSeconds}`})
             }
         }, 1000);
     }
@@ -63,7 +63,8 @@ class Spinner extends React.Component<SpinnerProps, SpinnerState> {
                 <circle className={styles.path} cx="25" cy="25" r="20"></circle>
             </svg>
             {
-                this.state.timeElapsed !== undefined ? <h1 className={styles.text}>{this.state.timeElapsed}</h1> : undefined
+                this.state.timeElapsed !== undefined ?
+                    <h1 className={styles.text}>{this.state.timeElapsed}</h1> : undefined
             }
         </div>
     }
