@@ -18,6 +18,7 @@
 - [Getting Started](#getting-started)
 - [Features](#features)
 - [Reporting](#reporting)
+- [Goodies](#goodies)
 - [Technical Stack](#technical-stack)
 - [Run Locally](#run-locally) 
 - [License](#license)
@@ -41,6 +42,14 @@ Yet not complicated but effective reporting.
 * ✅ Weekly work summary
 * ✅ Daily list of activities
 * ✅ Export open invoices to XLSX timesheets for Excel, LibreOffice, Numbers, etc.
+
+## Goodies
+
+A simple UX with some extra goodies.
+
+* ✅ Light and dark theme
+* ✅ Weekly backup
+* ✅ Hourly notification for task in progress (only mobile devices)
 
 ## Technical Stack
 
