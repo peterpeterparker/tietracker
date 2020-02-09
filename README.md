@@ -47,9 +47,9 @@ Yet not complicated but effective reporting.
 
 A simple UX with some extra goodies.
 
-* ✅ Light and dark theme
-* ✅ Weekly backup
-* ✅ Hourly notification for task in progress (only mobile devices)
+* Light and dark theme
+* Weekly backup
+* Hourly notification for task in progress (only mobile devices)
 
 ## Technical Stack
 
