@@ -196,7 +196,7 @@ export class TasksService {
     }
 
     private addTaskToInvoices(day: string): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
+        return new Promise<void>(async (resolve) => {
             let invoices: string[] = await get('invoices');
 
             if (invoices && invoices.indexOf(day) > -1) {

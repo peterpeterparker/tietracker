@@ -7,7 +7,7 @@ import {
     IonHeader,
     IonIcon,
     IonItem, IonLabel,
-    IonList,
+    IonList, IonLoading,
     IonTitle,
     IonToolbar, isPlatform
 } from '@ionic/react';
@@ -109,7 +109,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
                     setInProgress(false);
                 }, 1500);
             } else {
-                setInProgress(false);
+                    setInProgress(false);
             }
         } catch (err) {
             setInProgress(false);
@@ -155,6 +155,11 @@ const InvoiceModal: React.FC<Props> = (props) => {
                 {renderBillable()}
                 {renderFilter()}
             </main>
+
+            <IonLoading
+                isOpen={inProgress}
+                message={t('common:actions.wait')}
+            />
         </IonContent>
     }
 
@@ -205,7 +210,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
             <div className="actions">
                 <IonButton type="submit" disabled={billable === undefined || inProgress} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                    <IonLabel>{inProgress ? t('common:actions.wait') : t('common:actions.export')}</IonLabel>
+                    <IonLabel>{t('common:actions.export')}</IonLabel>
                 </IonButton>
 
                 <button type="button" onClick={() => props.closeAction()} disabled={inProgress}>{t('common:actions.cancel')}</button>

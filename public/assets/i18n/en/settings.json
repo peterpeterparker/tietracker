@@ -18,6 +18,11 @@
       "title": "Notifications for tasks in progress",
       "body": "Remind me every hour",
       "dont": "Don't remind me"
+    },
+    "backup": {
+      "title": "Backup",
+      "on": "Remind me every week",
+      "off": "Never remind me"
     }
   },
   "templates": {

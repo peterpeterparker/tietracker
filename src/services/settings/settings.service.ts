@@ -66,6 +66,7 @@ export class SettingsService {
             roundTime: 5,
             descriptions: ['Development', 'Meeting', 'Test', 'Communication', 'Release'],
             notifications: true,
+            backup: true,
             created_at: now.getTime(),
             updated_at: now.getTime()
         }

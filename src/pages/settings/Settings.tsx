@@ -11,7 +11,7 @@ import {
     IonSegmentButton,
     IonHeader,
     IonToolbar,
-    IonToast, isPlatform
+    IonToast
 } from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
@@ -36,8 +36,6 @@ enum SettingsCategory {
 const Settings: React.FC<RootProps> = (props) => {
 
     const {t} = useTranslation(['settings', 'common']);
-
-    const notifications: boolean = isPlatform('hybrid');
 
     const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
@@ -113,10 +111,6 @@ const Settings: React.FC<RootProps> = (props) => {
     }
 
     function renderSave() {
-        if (category === SettingsCategory.GENERAL && !notifications) {
-            return undefined;
-        }
-
         return <IonButton type="submit" disabled={saving} aria-label={t('settings:save.action')} color="button"
                           className="ion-margin-top">
             <IonLabel>{t('common:actions.save')}</IonLabel>
