@@ -1,4 +1,4 @@
-import {get} from 'idb-keyval';
+import {get, set} from 'idb-keyval';
 
 import {differenceInWeeks, format} from 'date-fns';
 
@@ -59,6 +59,10 @@ export class BackupService {
                 resolve(false);
             }
         });
+    }
+
+    async setBackup() {
+        await set('backup', new Date());
     }
 
     exportNativeFileSystem(currency: Currency, vat: number | undefined): Promise<void> {

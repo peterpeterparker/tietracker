@@ -36,9 +36,7 @@ const BackupAlert: React.FC = () => {
     }
 
     async function cancel() {
-        setShowLoading(true);
-
-        // TODO: set backup date
+        await BackupService.getInstance().setBackup();
     }
 
     async function doExport() {
@@ -52,7 +50,7 @@ const BackupAlert: React.FC = () => {
             await BackupService.getInstance().exportDownload(settings.currency, settings.vat);
         }
 
-        // TODO: set backup date
+        await BackupService.getInstance().setBackup();
 
         setShowLoading(false);
     }
