@@ -22,17 +22,15 @@ const BackupAlert: React.FC = () => {
     const [showAlertBackup, setShowAlertBackup] = useState(false);
     const [showLoading, setShowLoading] = useState(false);
 
-    // TODO: Settings on/off
-
     useEffect(() => {
         initBackup();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [settings]);
 
     async function initBackup() {
         const needBackup = await BackupService.getInstance().needBackup();
-        setShowAlertBackup(needBackup);
+        setShowAlertBackup(needBackup && settings.backup === true);
     }
 
     async function cancel() {

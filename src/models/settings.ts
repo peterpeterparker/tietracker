@@ -8,6 +8,7 @@ export interface Settings {
     descriptions?: string[];
 
     notifications?: boolean;
+    backup?: boolean;
 
     created_at: Date | number;
     updated_at: Date | number;

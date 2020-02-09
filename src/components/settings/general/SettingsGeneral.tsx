@@ -26,9 +26,11 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
     const notifications: boolean = isPlatform('hybrid');
 
     const [notificationsOn, setNotificationsOn] = useState<boolean | undefined>(undefined);
+    const [backup, setBackup] = useState<boolean | undefined>(undefined);
 
     useEffect(() => {
         setNotificationsOn(props.settings.notifications !== undefined ? props.settings.notifications : false);
+        setBackup(props.settings.backup !== undefined ? props.settings.backup : true);
     }, [props.settings]);
 
     const darkTheme: boolean | undefined = useSelector((state: RootState) => {
@@ -44,6 +46,11 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
         setNotificationsOn(!notificationsOn);
     }
 
+    function toggleBackup() {
+        props.settings.backup = !props.settings.backup;
+        setBackup(!backup);
+    }
+
     return (
         <IonList className="inputs-list">
             <IonItem className="item-title">
@@ -57,6 +64,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
             </IonItem>
 
             {renderNotifications()}
+            {renderBackup()}
         </IonList>
     );
 
@@ -74,6 +82,20 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
                 <IonLabel>{notificationsOn ? t('general.notifications.body') : t('general.notifications.dont')}</IonLabel>
                 <IonToggle slot="end" checked={notificationsOn} mode="md" color="medium"
                            onClick={() => toggleNotifications()}></IonToggle>
+            </IonItem>
+        </>
+    }
+
+    function renderBackup() {
+        return <>
+            <IonItem className="item-title">
+                <IonLabel>{t('general.backup.title')}</IonLabel>
+            </IonItem>
+
+            <IonItem className="item-input item-radio with-padding">
+                <IonLabel>{notificationsOn ? t('general.backup.on') : t('general.backup.off')}</IonLabel>
+                <IonToggle slot="end" checked={backup} mode="md" color="medium"
+                           onClick={() => toggleBackup()}></IonToggle>
             </IonItem>
         </>
     }
