@@ -88,24 +88,33 @@ function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, backup)
         rows: invoices,
     });
 
+    const col = backup ? 2 : 0;
+
     invoices.forEach((invoice, i) => {
-        worksheet.getCell(`B${i + 2}`).numFmt = 'yyyy-mm-dd';
-        worksheet.getCell(`C${i + 2}`).numFmt = 'hh:mm:ss';
-        worksheet.getCell(`D${i + 2}`).numFmt = 'yyyy-mm-dd';
-        worksheet.getCell(`E${i + 2}`).numFmt = 'hh:mm:ss';
-        worksheet.getCell(`F${i + 2}`).numFmt = '0.00';
-        worksheet.getCell(`G${i + 2}`).numFmt = currencyFormat;
+        // Char ASCII code 66 = B
+        worksheet.getCell(`${String.fromCharCode(66 + col)}${i + 2}`).numFmt = 'yyyy-mm-dd';
+        worksheet.getCell(`${String.fromCharCode(67 + col)}${i + 2}`).numFmt = 'hh:mm:ss';
+        worksheet.getCell(`${String.fromCharCode(68 + col)}${i + 2}`).numFmt = 'yyyy-mm-dd';
+        worksheet.getCell(`${String.fromCharCode(69 + col)}${i + 2}`).numFmt = 'hh:mm:ss';
+        worksheet.getCell(`${String.fromCharCode(70 + col)}${i + 2}`).numFmt = '0.00';
+        worksheet.getCell(`${String.fromCharCode(71 + col)}${i + 2}`).numFmt = currencyFormat;
     });
 
-    worksheet.getCell(`F${invoices.length + 2}`).numFmt = '0.00';
-    worksheet.getCell(`G${invoices.length + 2}`).numFmt = currencyFormat;
+    // Char ASCII code 70 = F
+    worksheet.getCell(`${String.fromCharCode(70 + col)}${invoices.length + 2}`).numFmt = '0.00';
+    worksheet.getCell(`${String.fromCharCode(71 + col)}${invoices.length + 2}`).numFmt = currencyFormat;
 
-    worksheet.getColumn(1).width = 50;
-    worksheet.getColumn(2).width = 10;
-    worksheet.getColumn(3).width = 10;
-    worksheet.getColumn(4).width = 10;
-    worksheet.getColumn(5).width = 10;
-    worksheet.getColumn(7).width = 16;
+    if (backup) {
+        worksheet.getColumn(1).width = 30;
+        worksheet.getColumn(2).width = 30;
+    }
+
+    worksheet.getColumn(1 + col).width = 50;
+    worksheet.getColumn(2 + col).width = 10;
+    worksheet.getColumn(3 + col).width = 10;
+    worksheet.getColumn(4 + col).width = 10;
+    worksheet.getColumn(5 + col).width = 10;
+    worksheet.getColumn(7 + col).width = 16;
 }
 
 function generateTotal(worksheet, invoices, currencyFormat, vat, i18n) {
