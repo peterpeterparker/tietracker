@@ -78,7 +78,6 @@ const BackupAlert: React.FC = () => {
 
         <IonLoading
             isOpen={showLoading}
-            onDidDismiss={() => setShowLoading(false)}
             message={t('common:actions.wait')}
         />
     </>

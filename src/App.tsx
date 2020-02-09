@@ -55,6 +55,7 @@ import './theme/segment.scss';
 import './theme/alert.scss';
 import './theme/toolbar.scss';
 import './theme/link.scss';
+import './theme/loading.scss';
 
 import './helpers/i18n';
 
