@@ -117,71 +117,79 @@ function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, backup)
     worksheet.getColumn(7 + col).width = 16;
 }
 
-function generateTotal(worksheet, invoices, currencyFormat, vat, i18n) {
+function generateTotal(worksheet, invoices, currencyFormat, vat, i18n, backup) {
     let index = invoices.length + 4;
 
-    const billableTotalRef = `G${invoices.length + 2}`;
 
-    worksheet.mergeCells(`E${index}:F${index}`);
-    worksheet.getCell(`E${index}`).value = i18n.billable_subtotal;
-    worksheet.getCell(`G${index}`).value = {formula: billableTotalRef};
-    worksheet.getCell(`G${index}`).numFmt = currencyFormat;
+    // Char ASCII code 69 = E
+    const e = String.fromCharCode(69 + (backup ? 2 : 0));
+    const f = String.fromCharCode(70 + (backup ? 2 : 0));
+
+    // Char ASCII code 71 = G
+    const g = String.fromCharCode(71 + (backup ? 2 : 0));
+
+    const billableTotalRef = `${g}${invoices.length + 2}`;
+
+    worksheet.mergeCells(`${e}${index}:${f}${index}`);
+    worksheet.getCell(`${e}${index}`).value = i18n.billable_subtotal;
+    worksheet.getCell(`${g}${index}`).value = {formula: billableTotalRef};
+    worksheet.getCell(`${g}${index}`).numFmt = currencyFormat;
 
     index++;
     index++;
 
     if (vat > 0) {
-        worksheet.mergeCells(`E${index}:F${index}`);
-        worksheet.getCell(`E${index}`).value = i18n.vat_rate;
-        worksheet.getCell(`G${index}`).value = vat / 100;
-        worksheet.getCell(`G${index}`).numFmt = '0.00%';
+        worksheet.mergeCells(`${e}${index}:${f}${index}`);
+        worksheet.getCell(`${e}${index}`).value = i18n.vat_rate;
+        worksheet.getCell(`${g}${index}`).value = vat / 100;
+        worksheet.getCell(`${g}${index}`).numFmt = '0.00%';
 
         index++;
         index++;
 
-        const vatRef = `G${index - 2}`;
+        const vatRef = `${g}${index - 2}`;
 
-        worksheet.mergeCells(`E${index}:F${index}`);
-        worksheet.getCell(`E${index}`).value = i18n.total;
-        worksheet.getCell(`E${index}`).font = {bold: true};
-        worksheet.getCell(`E${index}`).border = {bottom: {style:'thin'}};
-        worksheet.getCell(`G${index}`).value = {formula: `${billableTotalRef}+(${billableTotalRef}*${vatRef})`};
-        worksheet.getCell(`G${index}`).numFmt = currencyFormat;
-        worksheet.getCell(`G${index}`).font = {bold: true};
-        worksheet.getCell(`G${index}`).border = {bottom: {style:'thin'}};
-
-        index++;
-        index++;
-
-        const totalRef = `G${index - 2}`;
-
-        worksheet.mergeCells(`E${index}:F${index}`);
-        worksheet.getCell(`E${index}`).value = i18n.total_vat_excluded;
-        worksheet.getCell(`G${index}`).value = {formula: `${totalRef}*100/(100+(${vatRef}*100))`};
-        worksheet.getCell(`G${index}`).numFmt = currencyFormat;
+        worksheet.mergeCells(`${e}${index}:${f}${index}`);
+        worksheet.getCell(`${e}${index}`).value = i18n.total;
+        worksheet.getCell(`${e}${index}`).font = {bold: true};
+        worksheet.getCell(`${e}${index}`).border = {bottom: {style:'thin'}};
+        worksheet.getCell(`${g}${index}`).value = {formula: `${billableTotalRef}+(${billableTotalRef}*${vatRef})`};
+        worksheet.getCell(`${g}${index}`).numFmt = currencyFormat;
+        worksheet.getCell(`${g}${index}`).font = {bold: true};
+        worksheet.getCell(`${g}${index}`).border = {bottom: {style:'thin'}};
 
         index++;
+        index++;
 
-        worksheet.mergeCells(`E${index}:F${index}`);
-        worksheet.getCell(`E${index}`).value = i18n.vat;
-        worksheet.getCell(`G${index}`).value = {formula: `${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100))`};
-        worksheet.getCell(`G${index}`).numFmt = currencyFormat;
+        const totalRef = `${g}${index - 2}`;
+
+        worksheet.mergeCells(`${e}${index}:${f}${index}`);
+        worksheet.getCell(`${e}${index}`).value = i18n.total_vat_excluded;
+        worksheet.getCell(`${g}${index}`).value = {formula: `${totalRef}*100/(100+(${vatRef}*100))`};
+        worksheet.getCell(`${g}${index}`).numFmt = currencyFormat;
+
+        index++;
+
+        worksheet.mergeCells(`${e}${index}:${f}${index}`);
+        worksheet.getCell(`${e}${index}`).value = i18n.vat;
+        worksheet.getCell(`${g}${index}`).value = {formula: `${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100))`};
+        worksheet.getCell(`${g}${index}`).numFmt = currencyFormat;
     } else {
-        worksheet.mergeCells(`E${index}:F${index}`);
-        worksheet.getCell(`E${index}`).value = i18n.total;
-        worksheet.getCell(`E${index}`).font = {bold: true};
-        worksheet.getCell(`E${index}`).border = {bottom: {style:'thin'}};
-        worksheet.getCell(`G${index}`).value = {formula: `${billableTotalRef}`};
-        worksheet.getCell(`G${index}`).numFmt = currencyFormat;
-        worksheet.getCell(`G${index}`).font = {bold: true};
-        worksheet.getCell(`G${index}`).border = {bottom: {style:'thin'}};
+        worksheet.mergeCells(`${e}${index}:${f}${index}`);
+        worksheet.getCell(`${e}${index}`).value = i18n.total;
+        worksheet.getCell(`${e}${index}`).font = {bold: true};
+        worksheet.getCell(`${e}${index}`).border = {bottom: {style:'thin'}};
+        worksheet.getCell(`${g}${index}`).value = {formula: `${billableTotalRef}`};
+        worksheet.getCell(`${g}${index}`).numFmt = currencyFormat;
+        worksheet.getCell(`${g}${index}`).font = {bold: true};
+        worksheet.getCell(`${g}${index}`).border = {bottom: {style:'thin'}};
     }
 
     index++;
     index++;
 
-    worksheet.mergeCells(`E${index}:F${index}`);
-    worksheet.getCell(`E${index}`).value = i18n.total_billable_hours;
-    worksheet.getCell(`G${index}`).value = {formula: `F${invoices.length + 2}`};
-    worksheet.getCell(`G${index}`).numFmt = '0.00';
+    worksheet.mergeCells(`${e}${index}:${f}${index}`);
+    worksheet.getCell(`${e}${index}`).value = i18n.total_billable_hours;
+    worksheet.getCell(`${g}${index}`).value = {formula: `${f}${invoices.length + 2}`};
+    worksheet.getCell(`${g}${index}`).numFmt = '0.00';
 }

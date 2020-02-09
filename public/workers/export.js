@@ -84,7 +84,7 @@ async function exportToExcel(invoices, client, currency, vat, i18n) {
 
     extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, false);
 
-    generateTotal(worksheet, invoices, currencyFormat, vat, i18n);
+    generateTotal(worksheet, invoices, currencyFormat, vat, i18n, false);
 
     const buf = await workbook.xlsx.writeBuffer();
 

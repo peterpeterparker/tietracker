@@ -112,7 +112,7 @@ async function backupToExcel(invoices, currency, vat, i18n) {
 
     extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, true);
 
-    generateTotal(worksheet, invoices, currencyFormat, vat, i18n);
+    generateTotal(worksheet, invoices, currencyFormat, vat, i18n, true);
 
     const buf = await workbook.xlsx.writeBuffer();
 
