@@ -21,8 +21,8 @@
     },
     "backup": {
       "title": "Backup",
-      "on": "Remind me every week",
-      "off": "Never remind me"
+      "on": "Once a week",
+      "off": "Never"
     }
   },
   "templates": {
