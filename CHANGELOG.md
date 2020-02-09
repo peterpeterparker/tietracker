@@ -1,3 +1,10 @@
+<a name="0.7.0"></a>
+# 0.7.0 (2020-02-09)
+
+### Features
+
+* once a week, ask if a backup of the current open invoices should be exported ([#50](https://github.com/peterpeterparker/tietracker/issues/50))
+
 <a name="0.6.0"></a>
 # 0.6.0 (2020-02-04)
 
