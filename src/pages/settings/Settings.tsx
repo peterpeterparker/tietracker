@@ -146,17 +146,17 @@ const Settings: React.FC<RootProps> = (props) => {
             return undefined;
         }
 
-        return <IonSegment mode="md" class="ion-padding-bottom"
+        return <IonSegment mode="md" class="ion-padding-bottom" value={category}
                            onIonChange={($event: CustomEvent) => selectCategory($event)}>
-            <IonSegmentButton value={SettingsCategory.GENERAL} checked={category === SettingsCategory.GENERAL}
+            <IonSegmentButton value={SettingsCategory.GENERAL}
                               mode="md">
                 <ion-label>{t('settings:segments.general')}</ion-label>
             </IonSegmentButton>
-            <IonSegmentButton value={SettingsCategory.TRACKER} checked={category === SettingsCategory.TRACKER}
+            <IonSegmentButton value={SettingsCategory.TRACKER}
                               mode="md">
                 <ion-label>{t('settings:segments.tracker')}</ion-label>
             </IonSegmentButton>
-            <IonSegmentButton value={SettingsCategory.TEMPLATES} checked={category === SettingsCategory.TEMPLATES}
+            <IonSegmentButton value={SettingsCategory.TEMPLATES}
                               mode="md">
                 <ion-label>{t('settings:segments.templates')}</ion-label>
             </IonSegmentButton>

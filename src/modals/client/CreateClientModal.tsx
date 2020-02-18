@@ -18,7 +18,7 @@ import {useSelector} from 'react-redux';
 
 import {useTranslation} from 'react-i18next';
 
-import {more, close} from 'ionicons/icons';
+import {ellipsisHorizontal, ellipsisVertical, close} from 'ionicons/icons';
 
 import styles from './CreateClientModal.module.scss';
 
@@ -261,7 +261,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                             <deckgo-color ref={clientColorRef}
                                           className="ion-padding-start ion-padding-end ion-padding-bottom"
                                           more={true}>
-                                <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
+                                <IonIcon ios={ellipsisHorizontal} md={ellipsisVertical} slot="more" aria-label="More" class="more"></IonIcon>
                             </deckgo-color>
                         </div>
 

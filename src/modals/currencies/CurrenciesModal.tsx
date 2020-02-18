@@ -104,7 +104,7 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
                                   onIonInput={($event: CustomEvent<KeyboardEvent>) => onFilter($event)}></IonSearchbar>
 
                     <IonList>
-                        <IonRadioGroup>
+                        <IonRadioGroup value={props.currency.currency}>
                             {renderCurrencies()}
                         </IonRadioGroup>
                     </IonList>
@@ -121,7 +121,7 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
         return Object.keys(filteredCurrencies).map((key: string) => {
             return <IonItem key={`${key}`} className={styles.item} onClick={() => props.closeAction({currency: key, format: filteredCurrencies[key]})}>
                 <IonLabel>{filteredCurrencies[key].name} ({key})</IonLabel>
-                <IonRadio value={key} checked={key === props.currency.currency}/>
+                <IonRadio value={key}/>
             </IonItem>
         });
     }
