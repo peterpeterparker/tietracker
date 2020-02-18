@@ -61,9 +61,11 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     };
 
     useEffect(() => {
-        clientColorRef.current.addEventListener('colorChange', selectColor, false);
+        const ref = clientColorRef.current;
 
-        return () => clientColorRef.current.removeEventListener('colorChange', selectColor, true);
+        ref.addEventListener('colorChange', selectColor, false);
+
+        return () => ref.removeEventListener('colorChange', selectColor, true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
