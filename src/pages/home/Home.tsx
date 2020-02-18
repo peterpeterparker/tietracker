@@ -76,7 +76,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
         <Header></Header>
 
         <IonModal isOpen={showModalClient} onDidDismiss={async () => await closeClientModal()} cssClass="fullscreen">
-          <CreateClientModal open={showModalClient} closeAction={async () => await closeClientModal()}></CreateClientModal>
+          <CreateClientModal closeAction={async () => await closeClientModal()}></CreateClientModal>
         </IonModal>
 
         <IonModal isOpen={showModalClients} onDidDismiss={($event) => closeAndNavigate($event)} cssClass="fullscreen">
