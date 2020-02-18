@@ -18,7 +18,7 @@ import {useSelector} from 'react-redux';
 
 import {useTranslation} from 'react-i18next';
 
-import {more, close} from 'ionicons/icons';
+import {ellipsisHorizontal, ellipsisVertical, close} from 'ionicons/icons';
 
 import styles from './CreateClientModal.module.scss';
 
@@ -35,7 +35,6 @@ import {RootState} from '../../store/reducers';
 
 interface Props extends RootProps {
     closeAction: Function;
-    open: boolean;
 }
 
 const CreateClientModal: React.FC<Props> = (props: Props) => {
@@ -62,14 +61,13 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     };
 
     useEffect(() => {
-        if (props.open) {
-            clientColorRef.current.addEventListener('colorChange', selectColor, false);
-        } else {
-            clientColorRef.current.removeEventListener('colorChange', selectColor, true);
-        }
-        
+        const ref = clientColorRef.current;
+
+        ref.addEventListener('colorChange', selectColor, false);
+
+        return () => ref.removeEventListener('colorChange', selectColor, true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.open]);
+    }, []);
 
     function handleClientNameInput($event: CustomEvent<KeyboardEvent>) {
         let data: ClientData;
@@ -173,22 +171,9 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
 
             await props.closeAction();
 
-            reset();
         } catch (err) {
             console.error(err);
         }
-    }
-
-    function reset() {
-        setClientData(undefined);
-        setProjectData(undefined);
-        setValidProject(false);
-        setValidClient(false);
-
-        clientNameRef.current.value = undefined;
-        clientColorRef.current.value = undefined;
-        projectNameRef.current.value = undefined;
-        projectRateRef.current.value = undefined;
     }
 
     function onVatChange($event: CustomEvent) {
@@ -261,7 +246,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                             <deckgo-color ref={clientColorRef}
                                           className="ion-padding-start ion-padding-end ion-padding-bottom"
                                           more={true}>
-                                <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
+                                <IonIcon ios={ellipsisHorizontal} md={ellipsisVertical} slot="more" aria-label="More" class="more"></IonIcon>
                             </deckgo-color>
                         </div>
 

@@ -27,7 +27,7 @@ import {
     useIonViewWillLeave
 } from '@ionic/react';
 
-import {lock, more, unlock} from 'ionicons/icons';
+import {lockClosed, ellipsisHorizontal, ellipsisVertical, lockOpen} from 'ionicons/icons';
 
 import {formatCurrency} from '../../../utils/utils.currency';
 import {contrast} from '../../../utils/utils.color';
@@ -229,7 +229,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                 <div className={styles.color}>
                     <deckgo-color className="ion-padding-start ion-padding-end ion-padding-bottom" ref={clientColorRef}
                                   more={true} color-hex={`${client.data.color}`}>
-                        <IonIcon icon={more} slot="more" aria-label="More" class="more"></IonIcon>
+                        <IonIcon ios={ellipsisHorizontal} md={ellipsisVertical} slot="more" aria-label="More" class="more"></IonIcon>
                     </deckgo-color>
                 </div>
             </IonList>
@@ -268,7 +268,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                     <h2>{project.data.name}</h2>
                     <p>{formatCurrency(project.data.rate.hourly, settings.currency.currency)}/h</p>
                 </IonLabel>
-                <IonIcon slot="end" icon={project.data.disabled ? lock : unlock}/>
+                <IonIcon slot="end" icon={project.data.disabled ? lockClosed : lockOpen}/>
             </IonItem>
         });
     }
