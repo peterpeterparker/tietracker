@@ -1,3 +1,11 @@
+<a name="0.7.1"></a>
+# 0.7.1 (2020-02-18)
+
+### Features
+
+* update dependencies, Ionic and Ionicons v5 ([338394c](https://github.com/peterpeterparker/tietracker/commit/338394c7653ec8e06a984fab571d5acd5ebd4e30))
+* add Twitter and update og meta tags ([3c6be14](https://github.com/peterpeterparker/tietracker/commit/3c6be14a293a2d686fb9c70b6d24100e54b9a520))
+
 <a name="0.7.0"></a>
 # 0.7.0 (2020-02-09)
 
