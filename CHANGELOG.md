@@ -9,6 +9,7 @@
 ### Fix
 
 * remove event listener for input focus
+* defer backup modal for mobile
 
 <a name="0.7.1"></a>
 # 0.7.1 (2020-02-18)
