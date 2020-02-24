@@ -21,8 +21,6 @@ function convertTasks(tasks, projects, clients) {
             billable
         ];
 
-        console.log(clients && clients.length > 0);
-
         if (clients) {
             return [
                 clients[task.data.client_id] ? clients[task.data.client_id].name : '',
