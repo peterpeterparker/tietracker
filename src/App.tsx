@@ -77,6 +77,7 @@ const {SplashScreen} = Plugins;
 const App: React.FC<RootProps> = (props: RootProps) => {
 
     const [selectedTab, setSelectedTab] = useState<string>('home');
+    const [backup, setBackup] = useState<boolean>(false);
 
     async function init() {
         // Init theme first
@@ -101,6 +102,8 @@ const App: React.FC<RootProps> = (props: RootProps) => {
         init();
 
         initSelectedTab();
+
+        setBackup(true);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -179,7 +182,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
                 <TrackTaskModal></TrackTaskModal>
 
-                <BackupAlert></BackupAlert>
+                { backup ? <BackupAlert></BackupAlert> : undefined }
             </IonApp>
         </Suspense>
     );
