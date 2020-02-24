@@ -82,7 +82,17 @@ function backupInvoice(invoice, projects, clients) {
             return;
         }
 
-        const results = convertTasks(tasks, projects, clients);
+        // Only the tasks which are still not billed
+        const filteredTasks = tasks.filter((task) => {
+            return task.data.invoice.status === 'open';
+        });
+
+        if (!filteredTasks || filteredTasks.length <= 0) {
+            resolve(undefined);
+            return;
+        }
+
+        const results = convertTasks(filteredTasks, projects, clients);
 
         if (!results || results.length <= 0) {
             resolve(undefined);
