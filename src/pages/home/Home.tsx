@@ -62,12 +62,16 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   }
 
   useIonViewDidEnter(() => {
-    document.addEventListener('ionModalDidPresent', () => setModalPresented(true), false);
+    document.addEventListener('ionModalDidPresent', updatePresented, { passive: true });
   });
 
   useIonViewDidLeave(() => {
-    document.removeEventListener('ionModalDidPresent', () => setModalPresented(true), true);
+    document.removeEventListener('ionModalDidPresent', updatePresented, false);
   });
+
+  const updatePresented = () => {
+    setModalPresented(true);
+  };
 
   return (
     <IonPage>
