@@ -45,16 +45,7 @@ export class BackupService {
                     return;
                 }
 
-                if (lastBackup) {
-                    resolve(false);
-                    return;
-                }
-
-                const invoice = invoices.sort((a: string, b: string) => {
-                    return new Date(a).getTime() - new Date(b).getTime();
-                })[0];
-
-                resolve(differenceInWeeks(new Date(invoice), new Date()) > 0);
+                resolve(lastBackup === undefined);
             } catch (err) {
                 resolve(false);
             }

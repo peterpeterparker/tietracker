@@ -1,3 +1,15 @@
+<a name="0.7.2"></a>
+# 0.7.2 (2020-02-24)
+
+### Features
+
+* ask for a backup as soon as one entry has been registered
+* backup only open entries
+
+### Fix
+
+* remove event listener for input focus
+
 <a name="0.7.1"></a>
 # 0.7.1 (2020-02-18)
 
