@@ -4,6 +4,7 @@
 ### Features
 
 * ask for a backup as soon as one entry has been registered
+* backup only open entries
 
 <a name="0.7.1"></a>
 # 0.7.1 (2020-02-18)
