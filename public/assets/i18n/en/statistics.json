@@ -1,8 +1,8 @@
 {
-  "title": "Statistics",
+  "title": "Summary",
   "charts": {
     "week": {
-      "title": "Week Billable Hours"
+      "title": "Current Week (Hours)"
     }
   }
 }
