@@ -2,7 +2,7 @@
   "title": "Statistics",
   "charts": {
     "week": {
-      "title": "Week activities"
+      "title": "Week Billable Hours"
     }
   }
 }
