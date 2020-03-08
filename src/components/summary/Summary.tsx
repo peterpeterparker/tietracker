@@ -28,7 +28,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
     const summary: SummaryData | undefined = useSelector((state: RootState) => state.summary.summary);
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
-    return (<div className="ion-padding-end ion-padding-top">
+    return (<div className="ion-padding-end">
         {
             props.showTitle ? <h1>{t('title')}</h1> : undefined
         }

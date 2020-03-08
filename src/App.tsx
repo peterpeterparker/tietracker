@@ -147,15 +147,17 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                         </IonRouterOutlet>
 
                         <IonTabBar slot="bottom">
-                            <IonTabButton tab="statistics" href="/statistics">
-                                <IonIcon icon={statsChart}/>
-                                <IonLabel>
-                                    <Translation ns="common">
-                                        {
-                                            (t, {i18n}) => <IonLabel>{t('navigation.statistics')}</IonLabel>
-                                        }
-                                    </Translation>
-                                </IonLabel>
+                            <IonTabButton  tab="home" href="/home">
+                                {
+                                    selectedTab === 'home' ?
+                                        <IonIcon src="/assets/icon/logo.svg" ariaLabel="Tie Tracker logo"/> :
+                                        <IonIcon src="/assets/icon/logo-grey.svg" ariaLabel="Tie Tracker logo"/>
+                                }
+                                <Translation ns="common">
+                                    {
+                                        (t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>
+                                    }
+                                </Translation>
                             </IonTabButton>
                             <IonTabButton tab="invoices" href="/invoices">
                                 <IonIcon icon={card}/>
@@ -167,17 +169,15 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                                     </Translation>
                                 </IonLabel>
                             </IonTabButton>
-                            <IonTabButton tab="home" href="/home">
-                                {
-                                    selectedTab === 'home' ?
-                                        <IonIcon src="/assets/icon/logo.svg" ariaLabel="Tie Tracker logo"/> :
-                                        <IonIcon src="/assets/icon/logo-grey.svg" ariaLabel="Tie Tracker logo"/>
-                                }
-                                <Translation ns="common">
-                                    {
-                                        (t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>
-                                    }
-                                </Translation>
+                            <IonTabButton tab="statistics" href="/statistics">
+                                <IonIcon icon={statsChart}/>
+                                <IonLabel>
+                                    <Translation ns="common">
+                                        {
+                                            (t, {i18n}) => <IonLabel>{t('navigation.statistics')}</IonLabel>
+                                        }
+                                    </Translation>
+                                </IonLabel>
                             </IonTabButton>
                             <IonTabButton tab="settings" href="/settings">
                                 <IonIcon icon={options}/>

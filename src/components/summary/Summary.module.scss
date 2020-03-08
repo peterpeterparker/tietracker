@@ -33,6 +33,7 @@
   grid-gap: 16px;
 
   width: calc(100% - 16px);
+  height: 100%;
 
   @media (max-width: 768px) {
     label {
