@@ -1,3 +1,5 @@
+import {eachDayOfInterval, endOfWeek, startOfWeek} from 'date-fns';
+
 export class SummaryService {
 
     private static instance: SummaryService;
@@ -23,9 +25,18 @@ export class SummaryService {
                 }
             };
 
-            this.summaryWorker.postMessage('compute');
+            this.summaryWorker.postMessage({msg: 'compute', days: this.week()});
 
             resolve();
+        });
+    }
+
+    private week(): Date[] {
+        const today: Date = new Date();
+
+        return eachDayOfInterval({
+            start: startOfWeek(today, {weekStartsOn: 1}),
+            end: endOfWeek(today, {weekStartsOn: 1})
         });
     }
 

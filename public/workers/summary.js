@@ -2,12 +2,12 @@ importScripts('./libs/idb-keyval-iife.min.js');
 importScripts('./libs/dayjs.min.js');
 
 self.onmessage = async ($event) => {
-    if ($event && $event.data === 'compute') {
-        await self.compute();
+    if ($event && $event.data && $event.data.msg === 'compute') {
+        await self.compute($event.data.days);
     }
 };
 
-self.compute = async () => {
+self.compute = async (days) => {
     const projects = await loadProjectsRate();
 
     if (!projects || projects === undefined) {
@@ -16,7 +16,7 @@ self.compute = async () => {
         return;
     }
 
-    const result = await computeSum(projects);
+    const result = await computeSum(projects, days);
 
     self.postMessage(result);
 };
@@ -55,23 +55,10 @@ function loadProjectsRate() {
     });
 }
 
-async function computeSum(projects) {
-    const promises = [];
-
-    const today = new Date();
-
-    // Today first see results
-    promises.push(computeDaySum(today, projects));
-
-    if (today.getDay() > 1) {
-        for (let i = 1; i < today.getDay(); i++) {
-            promises.push(computeDaySum(dayjs().add(i * -1, 'day').toDate(), projects));
-        }
-    }
-
-    if (today.getDay() === 0) {
-        promises.push(computeDaySum(dayjs().add(-6, 'day').toDate(), projects));
-    }
+async function computeSum(projects, days) {
+    const promises = days.map((day) => {
+        return computeDaySum(day, projects);
+    });
 
     const daily = await Promise.all(promises);
 
