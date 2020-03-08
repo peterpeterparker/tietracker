@@ -13,11 +13,18 @@ import {IonReactRouter} from '@ionic/react-router';
 
 import {Translation} from 'react-i18next';
 
-import {options, card, information} from 'ionicons/icons';
+import {
+    options,
+    card,
+    information,
+    statsChart
+} from 'ionicons/icons';
 
 import Home from './pages/home/Home';
+
 import Settings from './pages/settings/Settings';
 import Invoices from './pages/invoices/Invoices';
+import Statistics from './pages/statistics/Statistics';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -56,6 +63,7 @@ import './theme/alert.scss';
 import './theme/toolbar.scss';
 import './theme/link.scss';
 import './theme/loading.scss';
+import './theme/charts.scss';
 
 import './helpers/i18n';
 
@@ -124,7 +132,9 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                     <IonTabs onIonTabsDidChange={($event) => setSelectedTab($event.detail.tab)}>
                         <IonRouterOutlet>
                             <Route path="/home" component={Home}/>
+
                             <Route path="/invoices" component={Invoices} exact={true}/>
+                            <Route path="/statistics" component={Statistics} exact={true}/>
                             <Route path="/settings" component={Settings} exact={true}/>
 
                             <Route path="/about" component={About} exact={true}/>
@@ -138,7 +148,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                         </IonRouterOutlet>
 
                         <IonTabBar slot="bottom">
-                            <IonTabButton tab="home" href="/home">
+                            <IonTabButton  tab="home" href="/home">
                                 {
                                     selectedTab === 'home' ?
                                         <IonIcon src="/assets/icon/logo.svg" ariaLabel="Tie Tracker logo"/> :
@@ -156,6 +166,16 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                                     <Translation ns="common">
                                         {
                                             (t, {i18n}) => <IonLabel>{t('navigation.invoices')}</IonLabel>
+                                        }
+                                    </Translation>
+                                </IonLabel>
+                            </IonTabButton>
+                            <IonTabButton tab="statistics" href="/statistics">
+                                <IonIcon icon={statsChart}/>
+                                <IonLabel>
+                                    <Translation ns="common">
+                                        {
+                                            (t, {i18n}) => <IonLabel>{t('navigation.statistics')}</IonLabel>
                                         }
                                     </Translation>
                                 </IonLabel>

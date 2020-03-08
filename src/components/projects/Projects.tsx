@@ -38,7 +38,7 @@ const Projects: React.FC<Props> = (props: Props) => {
     }
 
     return (
-        <div className="ion-padding-top">
+        <div>
             <h1 className={!projects || projects.length <= 0 ? undefined : styles.title}>{t('projects.title')}</h1>
             {renderProjects()}
         </div>

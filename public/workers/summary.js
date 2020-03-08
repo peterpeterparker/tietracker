@@ -2,12 +2,12 @@ importScripts('./libs/idb-keyval-iife.min.js');
 importScripts('./libs/dayjs.min.js');
 
 self.onmessage = async ($event) => {
-    if ($event && $event.data === 'compute') {
-        await self.compute();
+    if ($event && $event.data && $event.data.msg === 'compute') {
+        await self.compute($event.data.days);
     }
 };
 
-self.compute = async () => {
+self.compute = async (days) => {
     const projects = await loadProjectsRate();
 
     if (!projects || projects === undefined) {
@@ -16,7 +16,7 @@ self.compute = async () => {
         return;
     }
 
-    const result = await computeSum(projects);
+    const result = await computeSum(projects, days);
 
     self.postMessage(result);
 };
@@ -55,23 +55,10 @@ function loadProjectsRate() {
     });
 }
 
-async function computeSum(projects) {
-    const promises = [];
-
-    const today = new Date();
-
-    // Today first see results
-    promises.push(computeDaySum(today, projects));
-
-    if (today.getDay() > 1) {
-        for (let i = 1; i < today.getDay(); i++) {
-            promises.push(computeDaySum(dayjs().add(i * -1, 'day').toDate(), projects));
-        }
-    }
-
-    if (today.getDay() === 0) {
-        promises.push(computeDaySum(dayjs().add(-6, 'day').toDate(), projects));
-    }
+async function computeSum(projects, days) {
+    const promises = days.map((day) => {
+        return computeDaySum(day, projects);
+    });
 
     const daily = await Promise.all(promises);
 
@@ -89,6 +76,9 @@ async function computeSum(projects) {
         return a + b.billable;
     }, 0);
 
+    const today = new Date();
+    const index = today.getDay() > 0 ? today.getDay() - 1 : 6;
+
     return {
         days: daily,
         total: {
@@ -97,8 +87,8 @@ async function computeSum(projects) {
                 billable:sumBillable
             },
             today: {
-                milliseconds: daily[0].milliseconds,
-                billable: daily[0].billable
+                milliseconds: daily[index].milliseconds,
+                billable: daily[index].billable
             }
         }
     };
@@ -106,7 +96,12 @@ async function computeSum(projects) {
 
 function computeDaySum(day, projects) {
     return new Promise(async (resolve) => {
-        const tasks = await idbKeyval.get(`tasks-${day.toISOString().substring(0, 10)}`);
+
+        const yearFormatted = day.getFullYear();
+        const monthFormatted = day.getMonth() + 1 < 10 ? `0${day.getMonth() + 1}` : `${day.getMonth() + 1}`;
+        const dayFormatted = day.getDate() < 10 ? `0${day.getDate()}` : `${day.getDate()}`;
+
+        const tasks = await idbKeyval.get(`tasks-${yearFormatted}-${monthFormatted}-${dayFormatted}`);
 
         if (!tasks || tasks.length <= 0) {
             resolve({

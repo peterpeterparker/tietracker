@@ -1,0 +1,12 @@
+deckgo-bar-chart {
+  --deckgo-chart-fill-color-0: var(--ion-color-tertiary);
+
+  --deckgo-chart-axis-color: var(--ion-color-card-border);
+}
+
+body.dark {
+  deckgo-bar-chart {
+    --deckgo-chart-axis-color: var(--ion-color-light);
+    --deckgo-chart-text-color: white;
+  }
+}

@@ -24,9 +24,7 @@ const Summary: React.FC = () => {
     const summary: SummaryData | undefined = useSelector((state: RootState) => state.summary.summary);
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
-    return (<div className="ion-padding-end ion-padding-top">
-        <h1>{t('title')}</h1>
-
+    return (<div className="ion-padding-end">
         <div className={styles.summary}>
             <IonCard className={styles.card} color="card">
                 <h2 className={styles.title}>{t('today')}</h2>
