@@ -8,6 +8,7 @@ import {rootConnector} from '../../store/thunks/index.thunks';
 
 import Header from '../../components/header/Header';
 import Summary from '../../components/summary/Summary';
+import WeekCharts from '../../components/charts/week/WeekCharts';
 
 const Statistics: React.FC = () => {
 
@@ -26,6 +27,8 @@ const Statistics: React.FC = () => {
                     </IonHeader>
 
                     <Summary></Summary>
+
+                    <WeekCharts></WeekCharts>
                 </main>
             </IonContent>
         </IonPage>

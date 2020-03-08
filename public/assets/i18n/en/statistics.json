@@ -1,3 +1,8 @@
 {
-  "title": "Statistics"
+  "title": "Statistics",
+  "charts": {
+    "week": {
+      "title": "Week activities"
+    }
+  }
 }

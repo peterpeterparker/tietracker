@@ -9,7 +9,8 @@ import { rootReducer } from './store/reducers/index';
 
 import reduxThunk from 'redux-thunk';
 
-import { applyPolyfills, defineCustomElements, JSX as LocalJSX } from '@deckdeckgo/color/dist/loader';
+import { applyPolyfills, defineCustomElements as colorDefineCustomElements, JSX as LocalJSX } from '@deckdeckgo/color/dist/loader';
+import { defineCustomElements as chartsDefineCustomElements } from '@deckdeckgo/charts/dist/loader';
 
 import { DetailedHTMLProps, HTMLAttributes } from 'react';
 
@@ -31,8 +32,9 @@ declare global {
     }
 }
 
-applyPolyfills().then(() => {
-    defineCustomElements(window);
+applyPolyfills().then(async () => {
+    await colorDefineCustomElements(window);
+    await chartsDefineCustomElements(window);
 });
 
 const store = createStore(rootReducer, applyMiddleware(reduxThunk));
