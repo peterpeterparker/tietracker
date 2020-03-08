@@ -17,7 +17,7 @@ function convertTasks(tasks, projects, clients) {
             new Date(from),
             new Date(to),
             new Date(to),
-            hours,
+            { formula: 'TEXT(E2-C2,"hh:mm")'},
             billable
         ];
 
@@ -61,7 +61,7 @@ function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, backup)
         {name: i18n.start_time},
         {name: i18n.end_date},
         {name: i18n.end_time},
-        {name: i18n.duration, totalsRowFunction: 'sum'},
+        {name: i18n.duration, totalsRowFunction: 'custom', totalsRowFormula: 'ROUND(SUM(Invoice[Duration]*24),2)'},
         {name: i18n.billable, totalsRowFunction: 'sum'},
     ];
 
@@ -94,12 +94,11 @@ function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, backup)
         worksheet.getCell(`${String.fromCharCode(67 + col)}${i + 2}`).numFmt = 'hh:mm:ss';
         worksheet.getCell(`${String.fromCharCode(68 + col)}${i + 2}`).numFmt = 'yyyy-mm-dd';
         worksheet.getCell(`${String.fromCharCode(69 + col)}${i + 2}`).numFmt = 'hh:mm:ss';
-        worksheet.getCell(`${String.fromCharCode(70 + col)}${i + 2}`).numFmt = '0.00';
+        worksheet.getCell(`${String.fromCharCode(70 + col)}${i + 2}`).alignment = { horizontal: 'right' };
         worksheet.getCell(`${String.fromCharCode(71 + col)}${i + 2}`).numFmt = currencyFormat;
     });
 
-    // Char ASCII code 70 = F
-    worksheet.getCell(`${String.fromCharCode(70 + col)}${invoices.length + 2}`).numFmt = '0.00';
+    // Char ASCII code 71 = G
     worksheet.getCell(`${String.fromCharCode(71 + col)}${invoices.length + 2}`).numFmt = currencyFormat;
 
     if (backup) {
