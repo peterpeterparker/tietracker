@@ -93,7 +93,12 @@ async function computeSum(projects, days) {
 
 function computeDaySum(day, projects) {
     return new Promise(async (resolve) => {
-        const tasks = await idbKeyval.get(`tasks-${day.toISOString().substring(0, 10)}`);
+
+        const yearFormatted = day.getFullYear();
+        const monthFormatted = day.getMonth() + 1 < 10 ? `0${day.getMonth() + 1}` : `${day.getMonth() + 1}`;
+        const dayFormatted = day.getDate() < 10 ? `0${day.getDate()}` : `${day.getDate()}`;
+
+        const tasks = await idbKeyval.get(`tasks-${yearFormatted}-${monthFormatted}-${dayFormatted}`);
 
         if (!tasks || tasks.length <= 0) {
             resolve({
