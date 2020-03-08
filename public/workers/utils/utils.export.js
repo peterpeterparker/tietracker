@@ -151,7 +151,7 @@ function generateTotal(worksheet, invoices, currencyFormat, vat, i18n, backup) {
         worksheet.getCell(`${e}${index}`).value = i18n.total;
         worksheet.getCell(`${e}${index}`).font = {bold: true};
         worksheet.getCell(`${e}${index}`).border = {bottom: {style:'thin'}};
-        worksheet.getCell(`${g}${index}`).value = {formula: `${billableTotalRef}+(${billableTotalRef}*${vatRef})`};
+        worksheet.getCell(`${g}${index}`).value = {formula: `ROUND((${billableTotalRef}+(${billableTotalRef}*${vatRef}))/5,2)*5`};
         worksheet.getCell(`${g}${index}`).numFmt = currencyFormat;
         worksheet.getCell(`${g}${index}`).font = {bold: true};
         worksheet.getCell(`${g}${index}`).border = {bottom: {style:'thin'}};
@@ -163,14 +163,14 @@ function generateTotal(worksheet, invoices, currencyFormat, vat, i18n, backup) {
 
         worksheet.mergeCells(`${e}${index}:${f}${index}`);
         worksheet.getCell(`${e}${index}`).value = i18n.total_vat_excluded;
-        worksheet.getCell(`${g}${index}`).value = {formula: `${totalRef}*100/(100+(${vatRef}*100))`};
+        worksheet.getCell(`${g}${index}`).value = {formula: `ROUND((${totalRef}*100/(100+(${vatRef}*100)))/5,2)*5`};
         worksheet.getCell(`${g}${index}`).numFmt = currencyFormat;
 
         index++;
 
         worksheet.mergeCells(`${e}${index}:${f}${index}`);
         worksheet.getCell(`${e}${index}`).value = i18n.vat;
-        worksheet.getCell(`${g}${index}`).value = {formula: `${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100))`};
+        worksheet.getCell(`${g}${index}`).value = {formula: `ROUND((${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100)))/5,2)*5`};
         worksheet.getCell(`${g}${index}`).numFmt = currencyFormat;
     } else {
         worksheet.mergeCells(`${e}${index}:${f}${index}`);
