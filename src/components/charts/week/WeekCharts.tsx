@@ -107,7 +107,7 @@ const WeekCharts: React.FC = () => {
 
             {/*
             // @ts-ignore */}
-            <deckgo-bar-chart ref={chartsRef} margin-top={0} margin-bottom={0} y-axis-min={8}></deckgo-bar-chart>
+            <deckgo-bar-chart ref={chartsRef} margin-top={0} margin-bottom={0} margin-left={128}  margin-right={0} y-axis-min={8}></deckgo-bar-chart>
         </div>
     )
 };
