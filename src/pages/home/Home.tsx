@@ -105,7 +105,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
             {renderClientsAction()}
           </div>
 
-          <Summary></Summary>
+          <Summary showTitle={true}></Summary>
 
           <Projects addAction={() => setShowModalClient(true)}></Projects>
 

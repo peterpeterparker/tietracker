@@ -17,7 +17,11 @@ import {formatTime} from '../../utils/utils.time';
 
 import {Settings} from '../../models/settings';
 
-const Summary: React.FC = () => {
+export interface SummaryProps {
+    showTitle?: boolean;
+}
+
+const Summary: React.FC<SummaryProps> = (props) => {
 
     const {t} = useTranslation('summary');
 
@@ -25,7 +29,9 @@ const Summary: React.FC = () => {
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
     return (<div className="ion-padding-end ion-padding-top">
-        <h1>{t('title')}</h1>
+        {
+            props.showTitle ? <h1>{t('title')}</h1> : undefined
+        }
 
         <div className={styles.summary}>
             <IonCard className={styles.card} color="card">
