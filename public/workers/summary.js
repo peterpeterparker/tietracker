@@ -76,6 +76,9 @@ async function computeSum(projects, days) {
         return a + b.billable;
     }, 0);
 
+    const today = new Date();
+    const index = today.getDay() > 0 ? today.getDay() - 1 : 6;
+
     return {
         days: daily,
         total: {
@@ -84,8 +87,8 @@ async function computeSum(projects, days) {
                 billable:sumBillable
             },
             today: {
-                milliseconds: daily[0].milliseconds,
-                billable: daily[0].billable
+                milliseconds: daily[index].milliseconds,
+                billable: daily[index].billable
             }
         }
     };
