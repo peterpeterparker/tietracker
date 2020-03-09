@@ -40,7 +40,7 @@ export class BackupService {
 
                 const lastBackup: Date = await get('backup');
 
-                if (lastBackup && differenceInWeeks(lastBackup, new Date()) > 0) {
+                if (lastBackup && differenceInWeeks(new Date(), lastBackup) > 0) {
                     resolve(true);
                     return;
                 }
