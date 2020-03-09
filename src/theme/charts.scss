@@ -4,9 +4,20 @@ deckgo-bar-chart {
   --deckgo-chart-axis-color: var(--ion-color-card-border);
 }
 
+div.chart-container {
+  border: 1px solid var(--ion-color-card-border);
+  border-radius: 4px;
+}
+
 body.dark {
   deckgo-bar-chart {
-    --deckgo-chart-axis-color: var(--ion-color-light);
+    --deckgo-chart-fill-color-0: var(--ion-background-color);
+
+    --deckgo-chart-axis-color: var(--ion-color-card-tint);
     --deckgo-chart-text-color: white;
+  }
+
+  div.chart-container {
+    background: var(--ion-color-card);
   }
 }

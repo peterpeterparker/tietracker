@@ -102,13 +102,15 @@ const WeekCharts: React.FC = () => {
     }
 
     return (
-        <div ref={containerRef} className={styles.container}>
+        <>
             <h1>{t('charts.week.title')}</h1>
-
-            {/*
+            <div ref={containerRef} className={styles.container + ' chart-container'}>
+                {/*
             // @ts-ignore */}
-            <deckgo-bar-chart ref={chartsRef} margin-top={0} margin-bottom={0} margin-left={128}  margin-right={0} y-axis-min={8}></deckgo-bar-chart>
-        </div>
+                <deckgo-bar-chart ref={chartsRef} margin-top={0} margin-bottom={0} margin-left={128} margin-right={0}
+                                  y-axis-min={8}></deckgo-bar-chart>
+            </div>
+        </>
     )
 };
 
