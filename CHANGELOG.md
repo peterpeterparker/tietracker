@@ -1,3 +1,16 @@
+<a name="1.0.0"></a>
+# 1.0.0 (2020-03-09)
+
+### Features
+
+* weekly chart breakdown ([#56](https://github.com/peterpeterparker/tietracker/issues/56))
+* excel export round total ([#55](https://github.com/peterpeterparker/tietracker/issues/55))
+
+### Fix
+
+* weekly backup detection ([#61](https://github.com/peterpeterparker/tietracker/pull/61))
+* excel export time rounding ([#57](https://github.com/peterpeterparker/tietracker/issues/57))
+
 <a name="0.7.2"></a>
 # 0.7.2 (2020-02-24)
 
