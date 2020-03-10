@@ -5,6 +5,10 @@
 
 * move summary back to main screen
 
+### Fix
+
+* charts rerender
+
 <a name="1.0.0"></a>
 # 1.0.0 (2020-03-09)
 
