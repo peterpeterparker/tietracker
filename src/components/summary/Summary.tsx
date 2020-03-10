@@ -24,7 +24,7 @@ const Summary: React.FC = () => {
     const summary: SummaryData | undefined = useSelector((state: RootState) => state.summary.summary);
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
-    return (<>
+    return (<div className="ion-padding-end">
         <h1 className={styles.title}>{t('title')}</h1>
 
         <div className={styles.summary}>
@@ -44,7 +44,7 @@ const Summary: React.FC = () => {
                 </IonCardHeader>
             </IonCard>
         </div>
-    </>);
+    </div>);
 };
 
 export default rootConnector(Summary);
