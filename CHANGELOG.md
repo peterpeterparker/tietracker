@@ -3,6 +3,7 @@
 
 ### Features
 
+* display overall today worked time when task in progress
 * move summary back to main screen
 
 ### Fix
