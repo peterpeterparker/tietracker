@@ -11,7 +11,8 @@
   },
   "tracker": {
     "stop": "Stop current task",
-    "description": "Description of the task"
+    "description": "Description of the task",
+    "today": "Today"
   },
   "details": {
     "description": "Description",

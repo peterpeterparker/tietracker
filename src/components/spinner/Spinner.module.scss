@@ -1,68 +1,77 @@
-  .container {
-    position: relative;
-  }
-  
-  .text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
+.container {
+  position: relative;
+}
 
-    color: var(--progress-color-contrast);
-  }
-  
-  .spinner {
-    animation: rotate 5s linear infinite;
-    animation-play-state: var(--freeze-progress);
+.text, .subtext {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
 
-    width: 10rem;
-    height: 10rem;
-    mix-blend-mode: screen;
+  color: var(--progress-color-contrast);
+}
 
-    height: 70vw;
-    max-height: 40vh;
-    width: 70vw;
-    max-width: 40vh;
-  }
+.text {
+  top: 50%;
+}
 
-  .background {
-    stroke: var(--progress-color);
-    stroke-linecap: round;
-    fill: none;
-    stroke-width: 2.6;
-  }
+.subtext {
+  top: 60%;
 
-  .path {
-    stroke: var(--progress-color-contrast);
-    stroke-linecap: round;
-    
-    animation: dash 2s ease-in-out infinite;
-    animation-play-state: var(--freeze-progress);
+  font-size: 12px;
+  font-weight: 300;
+}
 
-    fill: none;
-    stroke-width: 3;
-  }
+.spinner {
+  animation: rotate 5s linear infinite;
+  animation-play-state: var(--freeze-progress);
 
-  @keyframes rotate {
-    100% {
-      transform: rotate(360deg);
-    }
+  width: 10rem;
+  height: 10rem;
+  mix-blend-mode: screen;
+
+  height: 70vw;
+  max-height: 40vh;
+  width: 70vw;
+  max-width: 40vh;
+}
+
+.background {
+  stroke: var(--progress-color);
+  stroke-linecap: round;
+  fill: none;
+  stroke-width: 2.6;
+}
+
+.path {
+  stroke: var(--progress-color-contrast);
+  stroke-linecap: round;
+
+  animation: dash 2s ease-in-out infinite;
+  animation-play-state: var(--freeze-progress);
+
+  fill: none;
+  stroke-width: 3;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
   }
-  
-  @keyframes dash {
-    0% {
-      stroke-dasharray: 1, 150;
-      stroke-dashoffset: 0;
-    }
-    50% {
-      stroke-dasharray: 90, 150;
-      stroke-dashoffset: -35;
-    }
-    100% {
-      stroke-dasharray: 90, 150;
-      stroke-dashoffset: -124;
-    }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
   }
-  
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
   

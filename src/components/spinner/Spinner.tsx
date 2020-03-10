@@ -1,10 +1,19 @@
-import React, {CSSProperties} from 'react';
+import React, {CSSProperties, useEffect, useState} from 'react';
+import {IonLabel} from '@ionic/react';
+
+import {useSelector} from 'react-redux';
+
+import {useTranslation} from 'react-i18next';
 
 import styles from './Spinner.module.scss';
 
 import {differenceInSeconds} from 'date-fns';
 
 import {RootProps, rootConnector} from '../../store/thunks/index.thunks';
+import {RootState} from '../../store/reducers';
+
+import {Summary as SummaryData} from '../../store/interfaces/summary';
+import {TaskInProgress} from '../../store/interfaces/task.inprogress';
 
 interface SpinnerProps extends RootProps {
     color: string | undefined;
@@ -12,48 +21,62 @@ interface SpinnerProps extends RootProps {
     freeze: boolean;
 }
 
-interface SpinnerState {
-    timeElapsed: string;
-}
+const Spinner: React.FC<SpinnerProps> = (props: SpinnerProps) => {
 
-class Spinner extends React.Component<SpinnerProps, SpinnerState> {
+    const {t} = useTranslation('tasks');
 
-    private progressInterval: number = -1;
+    const taskInProgress: TaskInProgress | undefined = useSelector((state: RootState) => {
+        return state.tasks.taskInProgress;
+    });
 
-    constructor(props: SpinnerProps) {
-        super(props);
+    const summary: SummaryData | undefined = useSelector((state: RootState) => state.summary.summary);
 
-        this.state = {
-            timeElapsed: '00:00:00'
-        }
-    }
+    const [timeElapsed, setTimeElapsed] = useState<string>('00:00:00');
+    const [todayTimeElapsed, setTodayTimeElapse] = useState<string>('00:00:00');
 
-    componentDidMount() {
-        this.progressInterval = window.setInterval(() => {
-            if (this.props.taskInProgress && this.props.taskInProgress.data && !this.props.freeze) {
+    useEffect(() => {
+        const progressInterval = window.setInterval(async () => {
+            if (taskInProgress && taskInProgress.data && !props.freeze) {
                 const now: Date = new Date();
 
-                let seconds: number = differenceInSeconds(now, this.props.taskInProgress.data.from);
+                const seconds: number = differenceInSeconds(now, taskInProgress.data.from);
 
-                const diffHours: number = Math.floor(seconds / 3600);
-                seconds = seconds % 3600;
-                const diffMinutes: number = Math.floor(seconds / 60);
-                const diffSeconds: number = seconds % 60;
+                let todayTimeElapsed: string = await formatTime(0);
 
-                this.setState({timeElapsed: `${diffHours >= 99 ? '99' : (diffHours < 10 ? '0' + diffHours : diffHours)}:${diffMinutes < 10 ? '0' + diffMinutes : diffMinutes}:${diffSeconds < 10 ? '0' + diffSeconds : diffSeconds}`})
+                if (summary && summary.total && summary.total.today.milliseconds > 0) {
+                    const todaySeconds: number = summary.total.today.milliseconds / 1000;
+
+                    todayTimeElapsed = await formatTime(todaySeconds + seconds);
+                }
+
+                setTimeElapsed(await formatTime(seconds));
+                setTodayTimeElapse(todayTimeElapsed);
             }
         }, 1000);
+
+        // eslint-disable-next-line
+        return () => clearInterval(progressInterval);
+    });
+
+
+    async function formatTime(seconds: number): Promise<string> {
+        const diffHours: number = Math.floor(seconds / 3600);
+        seconds = seconds % 3600;
+        const diffMinutes: number = Math.floor(seconds / 60);
+        const diffSeconds: number = seconds % 60;
+
+        return `${diffHours >= 99 ? '99' : (diffHours < 10 ? '0' + diffHours : diffHours)}:${diffMinutes < 10 ? '0' + diffMinutes : diffMinutes}:${diffSeconds < 10 ? '0' + diffSeconds : diffSeconds}`;
     }
 
-    componentWillUnmount() {
-        clearInterval(this.progressInterval);
-    }
+    return (
+        renderSpinner()
+    );
 
-    render() {
-        const inlineStyle = this.props.color !== undefined ? {
-            '--progress-color': this.props.color,
-            '--progress-color-contrast': this.props.contrast ? this.props.contrast : 'white',
-            '--freeze-progress': `${this.props.freeze ? 'paused' : 'running'}`
+    function renderSpinner() {
+        const inlineStyle = props.color !== undefined ? {
+            '--progress-color': props.color,
+            '--progress-color-contrast':props.contrast ? props.contrast : 'white',
+            '--freeze-progress': `${props.freeze ? 'paused' : 'running'}`
         } as CSSProperties : undefined;
 
         // https://codepen.io/supah/pen/BjYLdW
@@ -63,12 +86,17 @@ class Spinner extends React.Component<SpinnerProps, SpinnerState> {
                 <circle className={styles.path} cx="25" cy="25" r="20"></circle>
             </svg>
             {
-                this.state.timeElapsed !== undefined ?
-                    <h1 className={styles.text}>{this.state.timeElapsed}</h1> : undefined
+                timeElapsed !== undefined ?
+                    <h1 className={styles.text}>{timeElapsed}</h1> : undefined
+            }
+
+            {
+                todayTimeElapsed !== undefined && todayTimeElapsed !== '00:00:00' ?
+                    <IonLabel className={styles.subtext}>{t('tracker.today')} {todayTimeElapsed}</IonLabel> : undefined
             }
         </div>
     }
 
-}
+};
 
 export default rootConnector(Spinner);
