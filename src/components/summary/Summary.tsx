@@ -25,6 +25,8 @@ const Summary: React.FC = () => {
     const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
     return (<>
+        <h1 className={styles.title}>{t('title')}</h1>
+
         <div className={styles.summary}>
             <IonCard className={styles.card} color="card">
                 <h2 className={styles.title}>{t('today')}</h2>

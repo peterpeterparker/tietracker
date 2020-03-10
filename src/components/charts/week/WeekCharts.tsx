@@ -14,6 +14,7 @@ import {RootState} from '../../../store/reducers';
 
 import {Summary as SummaryData, SummaryDay} from '../../../store/interfaces/summary';
 import {format, toDateObj} from '../../../utils/utils.date';
+import {IonLabel} from '@ionic/react';
 
 const WeekCharts: React.FC = () => {
 
@@ -103,7 +104,18 @@ const WeekCharts: React.FC = () => {
 
     return (
         <>
-            <h1>{t('charts.week.title')}</h1>
+
+            {renderContent()}
+        </>
+    );
+
+    function renderContent() {
+        if (data === undefined) {
+            return <IonLabel className="placeholder">{t('empty')}</IonLabel>;
+        }
+
+        return <>
+            <IonLabel className="placeholder">{t('charts.week.title')}</IonLabel>
             <div ref={containerRef} className={styles.container + ' chart-container'}>
                 {/*
             // @ts-ignore */}
@@ -111,7 +123,7 @@ const WeekCharts: React.FC = () => {
                                   y-axis-min={8}></deckgo-bar-chart>
             </div>
         </>
-    )
+    }
 };
 
 export default rootConnector(WeekCharts);

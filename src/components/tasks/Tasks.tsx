@@ -96,7 +96,7 @@ const Tasks: React.FC<Props> = (props: Props) => {
 
     function renderDatePicker(label: string) {
         return <>
-            <p dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></p>
+            <p className="placeholder" dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></p>
 
             <div className={styles.picker}>
                 <DatePicker DialogProps={{disableEnforceFocus: true}} value={selecteDay}
