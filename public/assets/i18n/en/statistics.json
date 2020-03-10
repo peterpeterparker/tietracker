@@ -1,8 +1,9 @@
 {
-  "title": "Summary",
+  "title": "Statistics",
+  "empty": "No entries registered this week.",
   "charts": {
     "week": {
-      "title": "Current Week (Hours)"
+      "title": "Current week hours entries."
     }
   }
 }

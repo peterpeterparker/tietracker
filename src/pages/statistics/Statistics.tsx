@@ -7,7 +7,6 @@ import {useTranslation} from 'react-i18next';
 import {rootConnector} from '../../store/thunks/index.thunks';
 
 import Header from '../../components/header/Header';
-import Summary from '../../components/summary/Summary';
 import WeekCharts from '../../components/charts/week/WeekCharts';
 
 const Statistics: React.FC = () => {
@@ -25,8 +24,6 @@ const Statistics: React.FC = () => {
                             <h1>{t('title')}</h1>
                         </IonToolbar>
                     </IonHeader>
-
-                    <Summary></Summary>
 
                     <WeekCharts></WeekCharts>
                 </main>

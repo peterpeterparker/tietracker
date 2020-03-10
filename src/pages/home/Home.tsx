@@ -27,6 +27,7 @@ import ClientsModal from '../../modals/clients/ClientsModal';
 import CreateTaskModal from '../../modals/task/create/CreateTaskModal';
 
 import Projects from '../../components/projects/Projects';
+import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
 import Header from '../../components/header/Header';
 
@@ -103,6 +104,8 @@ const Home: React.FC<RouteComponentProps> = (props) => {
           <div className={styles.addclient}>
             {renderClientsAction()}
           </div>
+
+          <Summary></Summary>
 
           <Projects addAction={() => setShowModalClient(true)}></Projects>
 
