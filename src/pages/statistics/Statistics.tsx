@@ -1,6 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 
-import {IonContent, IonHeader, IonPage, IonToolbar} from '@ionic/react';
+import {
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonToolbar,
+    useIonViewDidLeave,
+    useIonViewWillEnter
+} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -12,6 +19,16 @@ import WeekCharts from '../../components/charts/week/WeekCharts';
 const Statistics: React.FC = () => {
 
     const {t} = useTranslation('statistics');
+
+    const [entered, setEntered] = useState<boolean>(false);
+
+    useIonViewWillEnter(() => {
+        setEntered(true);
+    });
+
+    useIonViewDidLeave(() => {
+        setEntered(false);
+    });
 
     return (
         <IonPage>
@@ -25,7 +42,9 @@ const Statistics: React.FC = () => {
                         </IonToolbar>
                     </IonHeader>
 
-                    <WeekCharts></WeekCharts>
+                    {
+                        entered ? <WeekCharts></WeekCharts> : undefined
+                    }
                 </main>
             </IonContent>
         </IonPage>
