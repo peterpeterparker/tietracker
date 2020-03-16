@@ -1,6 +1,6 @@
 function convertTasks(tasks, projects, clients) {
 
-    const results = tasks.map((task) => {
+    const results = tasks.map((task, index) => {
         const milliseconds = dayjs(task.data.to).diff(new Date(task.data.from));
         const hours = milliseconds > 0 ? milliseconds / (1000 * 60 * 60) : 0;
 
@@ -17,7 +17,7 @@ function convertTasks(tasks, projects, clients) {
             new Date(from),
             new Date(to),
             new Date(to),
-            { formula: 'TEXT(E2-C2,"hh:mm")'},
+            { formula: `TEXT(E${index + 2}-C${index + 2},"hh:mm")`},
             billable
         ];
 
@@ -55,13 +55,17 @@ function excelCurrencyFormat(currency) {
 }
 
 function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, backup) {
+    const sumHours = invoices.map((invoice, i) => {
+        return `F${i + 2}`;
+    }).join('+');
+
     let columns = [
         {name: i18n.description, filterButton: true, totalsRowLabel: ''},
         {name: i18n.start_date},
         {name: i18n.start_time},
         {name: i18n.end_date},
         {name: i18n.end_time},
-        {name: i18n.duration, totalsRowFunction: 'custom', totalsRowFormula: 'ROUND(SUM(Invoice[Duration]*24),2)'},
+        {name: i18n.duration, totalsRowFunction: 'custom', totalsRowFormula: `ROUND((${sumHours})*24,2)`},
         {name: i18n.billable, totalsRowFunction: 'sum'},
     ];
 
