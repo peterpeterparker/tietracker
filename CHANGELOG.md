@@ -1,3 +1,10 @@
+<a name="1.1.1"></a>
+# 1.1.1 (2020-03-16)
+
+### Fix
+
+* duration doesn't amend rows in excel export
+
 <a name="1.1.0"></a>
 # 1.1.0 (2020-03-10)
 
