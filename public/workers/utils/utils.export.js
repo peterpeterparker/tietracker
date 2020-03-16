@@ -1,4 +1,4 @@
-function convertTasks(tasks, projects, clients) {
+function convertTasks(tasks, projects, clients, backup) {
 
     const results = tasks.map((task, index) => {
         const milliseconds = dayjs(task.data.to).diff(new Date(task.data.from));
@@ -17,7 +17,7 @@ function convertTasks(tasks, projects, clients) {
             new Date(from),
             new Date(to),
             new Date(to),
-            { formula: `TEXT(INDIRECT(("E" & ROW()))-INDIRECT(("C" & ROW())),"hh:mm")`},
+            { formula: `TEXT(INDIRECT(("${backup ? 'G' : 'E'}" & ROW()))-INDIRECT(("${backup ? 'E' : 'C'}" & ROW())),"hh:mm")`},
             billable
         ];
 
@@ -56,7 +56,7 @@ function excelCurrencyFormat(currency) {
 
 function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, backup) {
     const sumHours = invoices.map((invoice, i) => {
-        return `F${i + 2}`;
+        return `${backup ? 'H' : 'F'}${i + 2}`;
     }).join('+');
 
     let columns = [

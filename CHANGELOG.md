@@ -3,7 +3,8 @@
 
 ### Fix
 
-* duration rows references in case of multiple days to invoice
+* duration rows references in case of multiple days to invoice (export)
+* columns references to calculate duration for backup
 
 <a name="1.1.1"></a>
 # 1.1.1 (2020-03-16)
