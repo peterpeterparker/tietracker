@@ -1,3 +1,10 @@
+<a name="1.1.2"></a>
+# 1.1.2 (2020-03-16)
+
+### Fix
+
+* duration rows references in case of multiple days to invoice
+
 <a name="1.1.1"></a>
 # 1.1.1 (2020-03-16)
 

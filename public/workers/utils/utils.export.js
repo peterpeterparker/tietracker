@@ -17,7 +17,7 @@ function convertTasks(tasks, projects, clients) {
             new Date(from),
             new Date(to),
             new Date(to),
-            { formula: `TEXT(E${index + 2}-C${index + 2},"hh:mm")`},
+            { formula: `TEXT(INDIRECT(("E" & ROW()))-INDIRECT(("C" & ROW())),"hh:mm")`},
             billable
         ];
 
