@@ -1,6 +1,6 @@
 import {get, set, del} from 'idb-keyval';
 
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 
 import {addMinutes, isBefore, lightFormat, roundToNearestMinutes, subMinutes} from 'date-fns';
 
