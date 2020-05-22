@@ -16,6 +16,8 @@
   "details": {
     "client": "Client",
     "create_project": "Create another project",
-    "empty": "No projects."
+    "empty": "No projects.",
+    "hourly_rate": "Hourly rate",
+    "budget": "Budget"
   }
 }

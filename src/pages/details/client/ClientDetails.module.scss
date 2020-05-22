@@ -6,8 +6,25 @@
 .projectItem {
   cursor: pointer;
 
+  ion-label > h2 {
+    margin-bottom: 4px;
+  }
+
   ion-label > * {
     color: var(--ion-text-color);
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    > ion-icon {
+      margin-right: 4px;
+      color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54);
+    }
+  }
+
+  ion-label > p {
+    font-weight: 300;
   }
 }
 
