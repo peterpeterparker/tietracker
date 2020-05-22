@@ -3,22 +3,11 @@ import {useSelector} from 'react-redux';
 
 import {RouteComponentProps} from 'react-router';
 
-import {
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonToolbar,
-  IonButton,
-  IonModal,
-  IonLabel,
-  useIonViewDidEnter,
-  useIonViewDidLeave,
-  IonIcon
-} from '@ionic/react';
+import {IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonModal, IonLabel, useIonViewDidEnter, useIonViewDidLeave, IonIcon} from '@ionic/react';
 
 import {search} from 'ionicons/icons';
 
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 import styles from './Home.module.scss';
 
@@ -36,8 +25,7 @@ import {Client} from '../../models/client';
 import {RootState} from '../../store/reducers';
 
 const Home: React.FC<RouteComponentProps> = (props) => {
-
-  const { t } = useTranslation('home');
+  const {t} = useTranslation('home');
 
   const clients: Client[] | undefined = useSelector((state: RootState) => state.clients.clients);
 
@@ -45,7 +33,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   const [showModalClients, setShowModalClients] = useState(false);
   const [showModalTask, setShowModalTask] = useState(false);
 
-  const [modalPresented,setModalPresented] = useState(false);
+  const [modalPresented, setModalPresented] = useState(false);
 
   async function closeAndNavigate($event: CustomEvent) {
     await setShowModalClients(false);
@@ -62,7 +50,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   }
 
   useIonViewDidEnter(() => {
-    document.addEventListener('ionModalDidPresent', updatePresented, { passive: true });
+    document.addEventListener('ionModalDidPresent', updatePresented, {passive: true});
   });
 
   useIonViewDidLeave(() => {
@@ -76,7 +64,6 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   return (
     <IonPage>
       <IonContent>
-
         <Header></Header>
 
         <IonModal isOpen={showModalClient} onDidDismiss={async () => await closeClientModal()} cssClass="fullscreen">
@@ -101,9 +88,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
             </IonToolbar>
           </IonHeader>
 
-          <div className={styles.addclient}>
-            {renderClientsAction()}
-          </div>
+          <div className={styles.addclient}>{renderClientsAction()}</div>
 
           <Summary></Summary>
 
@@ -116,12 +101,21 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   );
 
   function renderClientsAction() {
-      const loading: boolean = clients === undefined;
-      const empty: boolean = !loading && clients !== undefined && clients.length <= 0;
+    const loading: boolean = clients === undefined;
+    const empty: boolean = !loading && clients !== undefined && clients.length <= 0;
 
-      return <IonButton onClick={() => setShowModalClient(true)} className={empty ? styles.start : undefined} fill='outline' color='medium' size="small" style={loading ? {visibility: 'hidden', opacity: 0} : undefined} aria-label={t('add.client')}>
+    return (
+      <IonButton
+        onClick={() => setShowModalClient(true)}
+        className={empty ? styles.start : undefined}
+        fill="outline"
+        color="medium"
+        size="small"
+        style={loading ? {visibility: 'hidden', opacity: 0} : undefined}
+        aria-label={t('add.client')}>
         {empty ? t('add.start') : t('add.client')}
       </IonButton>
+    );
   }
 };
 

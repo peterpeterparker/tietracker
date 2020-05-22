@@ -3,20 +3,20 @@ import {LIST_PROJECTS_INVOICES, InvoicesActionTypes} from '../types/invoices.typ
 import {Invoice} from '../interfaces/invoice';
 
 export interface InvoicesState {
-    invoices: Invoice[];
+  invoices: Invoice[];
 }
 
 const initialState: InvoicesState = {
-    invoices: []
+  invoices: [],
 };
 
 export function invoicesReducer(state = initialState, action: InvoicesActionTypes): InvoicesState {
-    switch (action.type) {
-        case LIST_PROJECTS_INVOICES:
-            return {
-                invoices: [...action.payload]
-            };
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case LIST_PROJECTS_INVOICES:
+      return {
+        invoices: [...action.payload],
+      };
+    default:
+      return state;
+  }
 }

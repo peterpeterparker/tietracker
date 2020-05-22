@@ -13,158 +13,170 @@ import {File, IWriteOptions, DirectoryEntry} from '@ionic-native/file';
 import {Currency} from '../../definitions/currency';
 
 export class ExportService {
+  private static instance: ExportService;
 
-    private static instance: ExportService;
+  private exportWorker: Worker = new Worker('./workers/export.js');
 
-    private exportWorker: Worker = new Worker('./workers/export.js');
+  private constructor() {
+    // Private constructor, singleton
+  }
 
-    private constructor() {
-        // Private constructor, singleton
+  static getInstance() {
+    if (!ExportService.instance) {
+      ExportService.instance = new ExportService();
     }
+    return ExportService.instance;
+  }
 
-    static getInstance() {
-        if (!ExportService.instance) {
-            ExportService.instance = new ExportService();
+  exportNativeFileSystem(
+    invoice: Invoice,
+    from: Date | undefined,
+    to: Date | undefined,
+    currency: Currency,
+    vat: number | undefined,
+    bill: boolean
+  ): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      if (invoice === undefined || invoice.project_id === undefined) {
+        reject('No invoice data.');
+        return;
+      }
+
+      const invoices: string[] | undefined = interval(from, to);
+
+      if (invoices === undefined) {
+        reject('No invoices to export.');
+        return;
+      }
+
+      try {
+        const filename: string = this.filename(invoice, from, to);
+        const fileHandle: FileSystemFileHandle = await getNewFileHandle(filename);
+
+        if (!fileHandle) {
+          reject('Cannot access filesystem.');
+          return;
         }
-        return ExportService.instance;
-    }
 
-    exportNativeFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: Currency, vat: number | undefined, bill: boolean): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            if (invoice === undefined || invoice.project_id === undefined) {
-                reject('No invoice data.');
-                return;
-            }
+        this.exportWorker.onmessage = async ($event: MessageEvent) => {
+          if ($event && $event.data) {
+            await writeFile(fileHandle, $event.data);
+          }
+        };
 
-            const invoices: string[] | undefined = interval(from, to);
+        await this.postMessage(invoice, invoices, currency, vat, bill);
 
-            if (invoices === undefined) {
-                reject('No invoices to export.');
-                return;
-            }
+        resolve();
+      } catch (err) {
+        console.error(err);
+        reject(err);
+      }
+    });
+  }
 
-            try {
-                const filename: string = this.filename(invoice, from, to);
-                const fileHandle: FileSystemFileHandle = await getNewFileHandle(filename);
+  exportDownload(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: Currency, vat: number | undefined, bill: boolean): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      if (invoice === undefined || invoice.project_id === undefined) {
+        reject('No invoice data.');
+        return;
+      }
 
-                if (!fileHandle) {
-                    reject('Cannot access filesystem.');
-                    return;
-                }
+      const invoices: string[] | undefined = interval(from, to);
 
-                this.exportWorker.onmessage = async ($event: MessageEvent) => {
-                    if ($event && $event.data) {
-                        await writeFile(fileHandle, $event.data);
-                    }
-                };
+      if (invoices === undefined) {
+        reject('No invoices to export.');
+        return;
+      }
 
-                await this.postMessage(invoice, invoices, currency, vat, bill);
+      try {
+        const filename: string = this.filename(invoice, from, to);
 
-                resolve();
-            } catch (err) {
-                console.error(err);
-                reject(err);
-            }
-        });
-    }
+        this.exportWorker.onmessage = async ($event: MessageEvent) => {
+          if ($event && $event.data) {
+            download(filename, $event.data);
+          }
+        };
 
-    exportDownload(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: Currency, vat: number | undefined, bill: boolean): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            if (invoice === undefined || invoice.project_id === undefined) {
-                reject('No invoice data.');
-                return;
-            }
+        await this.postMessage(invoice, invoices, currency, vat, bill);
 
-            const invoices: string[] | undefined = interval(from, to);
+        resolve();
+      } catch (err) {
+        console.error(err);
+        reject(err);
+      }
+    });
+  }
 
-            if (invoices === undefined) {
-                reject('No invoices to export.');
-                return;
-            }
+  exportMobileFileSystem(
+    invoice: Invoice,
+    from: Date | undefined,
+    to: Date | undefined,
+    currency: Currency,
+    vat: number | undefined,
+    bill: boolean
+  ): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      if (invoice === undefined || invoice.project_id === undefined) {
+        reject('No invoice data.');
+        return;
+      }
 
-            try {
-                const filename: string = this.filename(invoice, from, to);
+      const invoices: string[] | undefined = interval(from, to);
 
-                this.exportWorker.onmessage = async ($event: MessageEvent) => {
-                    if ($event && $event.data) {
-                        download(filename, $event.data);
-                    }
-                };
+      if (invoices === undefined) {
+        reject('No invoices to export.');
+        return;
+      }
 
-                await this.postMessage(invoice, invoices, currency, vat, bill);
+      try {
+        const filename: string = this.filename(invoice, from, to);
 
-                resolve();
-            } catch (err) {
-                console.error(err);
-                reject(err);
-            }
-        });
-    }
+        this.exportWorker.onmessage = async ($event: MessageEvent) => {
+          if ($event && $event.data) {
+            const dir: DirectoryEntry = await getMobileDir();
 
-    exportMobileFileSystem(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: Currency, vat: number | undefined, bill: boolean): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            if (invoice === undefined || invoice.project_id === undefined) {
-                reject('No invoice data.');
-                return;
-            }
+            const writeOptions: IWriteOptions = {
+              replace: true,
+              append: false,
+            };
 
-            const invoices: string[] | undefined = interval(from, to);
+            await File.writeFile(dir.nativeURL, filename, $event.data, writeOptions);
 
-            if (invoices === undefined) {
-                reject('No invoices to export.');
-                return;
-            }
+            await shareMobile(this.shareSubject(invoice), dir.nativeURL, filename);
+          }
+        };
 
-            try {
-                const filename: string = this.filename(invoice, from, to);
+        await this.postMessage(invoice, invoices, currency, vat, bill);
 
-                this.exportWorker.onmessage = async ($event: MessageEvent) => {
-                    if ($event && $event.data) {
-                        const dir: DirectoryEntry = await getMobileDir();
+        resolve();
+      } catch (err) {
+        console.error(err);
+        reject(err);
+      }
+    });
+  }
 
-                        const writeOptions: IWriteOptions = {
-                            replace: true,
-                            append: false
-                        };
+  private shareSubject(invoice: Invoice): string {
+    return `Tie Tracker${invoice.client && invoice.client.name ? ` - ${invoice.client.name}` : ''}`;
+  }
 
-                        await File.writeFile(dir.nativeURL, filename, $event.data, writeOptions);
+  private filename(invoice: Invoice, from: Date | undefined, to: Date | undefined): string {
+    const name: string = invoice.client && invoice.client.name ? invoice.client.name : 'export';
+    return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.xlsx`;
+  }
 
-                        await shareMobile(this.shareSubject(invoice), dir.nativeURL, filename);
-                    }
-                };
+  private async postMessage(invoice: Invoice, invoices: string[], currency: Currency, vat: number | undefined, bill: boolean) {
+    await i18next.loadNamespaces('export');
 
-                await this.postMessage(invoice, invoices, currency, vat, bill);
-
-                resolve();
-            } catch (err) {
-                console.error(err);
-                reject(err);
-            }
-        });
-    }
-
-    private shareSubject(invoice: Invoice): string {
-        return `Tie Tracker${invoice.client && invoice.client.name ? ` - ${invoice.client.name}` : ''}`
-    }
-
-    private filename(invoice: Invoice, from: Date | undefined, to: Date | undefined): string {
-        const name: string = invoice.client && invoice.client.name ? invoice.client.name : 'export';
-        return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.xlsx`
-    }
-
-    private async postMessage(invoice: Invoice, invoices: string[], currency: Currency, vat: number | undefined, bill: boolean) {
-
-        await i18next.loadNamespaces('export');
-
-        this.exportWorker.postMessage({
-            msg: 'export',
-            invoices: invoices,
-            projectId: invoice.project_id,
-            client: invoice.client,
-            currency: currency,
-            vat: vat,
-            bill: bill,
-            i18n: xlsxLabels()
-        });
-    }
+    this.exportWorker.postMessage({
+      msg: 'export',
+      invoices: invoices,
+      projectId: invoice.project_id,
+      client: invoice.client,
+      currency: currency,
+      vat: vat,
+      bill: bill,
+      i18n: xlsxLabels(),
+    });
+  }
 }

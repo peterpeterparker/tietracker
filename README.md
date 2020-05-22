@@ -12,7 +12,6 @@
   [![Tweet](https://img.shields.io/twitter/url?url=https%3A%2F%tietracker.com)](https://twitter.com/intent/tweet?url=https%3A%2F%2Ftietracker.com&text=Tie%20Tracker+-+A+simple%2C+open+source+and+free+time+tracking+app+%E2%8F%B1%EF%B8%8F)
 </div>
 
-
 ## Table of contents
 
 - [Getting Started](#getting-started)
@@ -20,7 +19,7 @@
 - [Reporting](#reporting)
 - [Goodies](#goodies)
 - [Technical Stack](#technical-stack)
-- [Run Locally](#run-locally) 
+- [Run Locally](#run-locally)
 - [License](#license)
 
 ## Getting Started
@@ -31,25 +30,25 @@ Tie Tracker is a free and open source time tracking application. Its usage is me
 
 Track your productivity and billable hours.
 
-* ✅ Simple work hours tracking
-* ✅ Assign time to clients and projects
-* ✅ Mark entries as billed
- 
+- ✅ Simple work hours tracking
+- ✅ Assign time to clients and projects
+- ✅ Mark entries as billed
+
 ## Reporting
 
 Yet not complicated but effective reporting.
 
-* ✅ Weekly work summary
-* ✅ Daily list of activities
-* ✅ Export open invoices to XLSX timesheets for Excel, LibreOffice, Numbers, etc.
+- ✅ Weekly work summary
+- ✅ Daily list of activities
+- ✅ Export open invoices to XLSX timesheets for Excel, LibreOffice, Numbers, etc.
 
 ## Goodies
 
 A simple UX with some extra goodies.
 
-* Light and dark theme
-* Weekly backup
-* Hourly notification for task in progress (only mobile devices)
+- Light and dark theme
+- Weekly backup
+- Hourly notification for task in progress (only mobile devices)
 
 ## Technical Stack
 
@@ -65,9 +64,9 @@ cd tietracker
 npm install
 ionic serve
 ```
- 
+
 ## License
 
 This application is released under the GNU Affero General Public License. Copyright [David Dal Busco](mailto:david.dalbusco@outlook.com). See [COPYING](./COPYING) for more details.
 
-[Tie Tracker]: https://tietracker.com
+[tie tracker]: https://tietracker.com

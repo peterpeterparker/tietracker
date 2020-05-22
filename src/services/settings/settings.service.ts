@@ -4,109 +4,108 @@ import {Settings} from '../../models/settings';
 
 // Source MIT: https://github.com/xsolla/currency-format
 export interface Currency {
-    name: string;
-    fractionSize: number;
-    symbol: {
-        grapheme: string;
-        template: string;
-        rtl: boolean;
-    };
-    uniqSymbol: boolean;
+  name: string;
+  fractionSize: number;
+  symbol: {
+    grapheme: string;
+    template: string;
+    rtl: boolean;
+  };
+  uniqSymbol: boolean;
 }
 
 export interface Currencies {
-    [currency: string]: Currency;
+  [currency: string]: Currency;
 }
 
 export class SettingsService {
+  private static instance: SettingsService;
 
-    private static instance: SettingsService;
+  private constructor() {
+    // Private constructor, singleton
+  }
 
-    private constructor() {
-        // Private constructor, singleton
+  static getInstance() {
+    if (!SettingsService.instance) {
+      SettingsService.instance = new SettingsService();
     }
+    return SettingsService.instance;
+  }
 
-    static getInstance() {
-        if (!SettingsService.instance) {
-            SettingsService.instance = new SettingsService();
+  init(): Promise<Settings> {
+    return new Promise<Settings>(async (resolve) => {
+      try {
+        let settings: Settings = await get('settings');
+
+        if (!settings) {
+          settings = this.getDefaultSettings();
+
+          await set('settings', settings);
         }
-        return SettingsService.instance;
-    }
 
-    init(): Promise<Settings> {
-        return new Promise<Settings>(async (resolve) => {
-            try {
-                let settings: Settings = await get('settings');
+        resolve(settings);
+      } catch (err) {
+        resolve(this.getDefaultSettings());
+      }
+    });
+  }
 
-                if (!settings) {
-                    settings = this.getDefaultSettings();
+  getDefaultSettings(): Settings {
+    const now: Date = new Date();
+    return {
+      currency: {
+        currency: 'CHF',
+        format: {
+          name: 'Swiss Franc',
+          fractionSize: 2,
+          symbol: null,
+          uniqSymbol: null,
+        },
+      },
+      roundTime: 5,
+      descriptions: ['Development', 'Meeting', 'Test', 'Communication', 'Release'],
+      notifications: true,
+      backup: true,
+      created_at: now.getTime(),
+      updated_at: now.getTime(),
+    };
+  }
 
-                    await set('settings', settings);
-                }
+  currencies(): Promise<Currencies | undefined> {
+    return new Promise<Currencies | undefined>(async (resolve) => {
+      try {
+        const res: Response = await fetch('./assets/currency/currency.json');
 
-                resolve(settings);
-            } catch (err) {
-                resolve(this.getDefaultSettings());
-            }
-        });
-    }
-
-    getDefaultSettings(): Settings {
-        const now: Date = new Date();
-        return {
-            currency: {
-                currency: 'CHF',
-                format: {
-                    name: 'Swiss Franc',
-                    fractionSize: 2,
-                    symbol: null,
-                    uniqSymbol: null
-                }
-            },
-            roundTime: 5,
-            descriptions: ['Development', 'Meeting', 'Test', 'Communication', 'Release'],
-            notifications: true,
-            backup: true,
-            created_at: now.getTime(),
-            updated_at: now.getTime()
+        if (!res) {
+          resolve(undefined);
+          return;
         }
-    }
 
-    currencies(): Promise<Currencies | undefined> {
-        return new Promise<Currencies | undefined>(async (resolve) => {
-            try {
-                const res: Response = await fetch('./assets/currency/currency.json');
+        const currencies: Currencies = await res.json();
 
-                if (!res) {
-                    resolve(undefined);
-                    return;
-                }
+        resolve(currencies);
+      } catch (err) {
+        resolve(undefined);
+      }
+    });
+  }
 
-                const currencies: Currencies = await res.json();
+  update(settings: Settings): Promise<Settings> {
+    return new Promise<Settings>(async (resolve, reject) => {
+      try {
+        if (!settings) {
+          reject('Settings not defined.');
+          return;
+        }
 
-                resolve(currencies);
-             } catch (err) {
-                resolve(undefined);
-            }
-        });
-    }
+        settings.updated_at = new Date().getTime();
 
-    update(settings: Settings): Promise<Settings> {
-        return new Promise<Settings>(async (resolve, reject) => {
-            try {
-                if (!settings) {
-                    reject('Settings not defined.');
-                    return;
-                }
+        await set('settings', settings);
 
-                settings.updated_at = new Date().getTime();
-
-                await set('settings', settings);
-
-                resolve(settings);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
+        resolve(settings);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }
