@@ -18,6 +18,7 @@
     "create_project": "Create another project",
     "empty": "No projects.",
     "hourly_rate": "Hourly rate",
-    "budget": "Budget"
+    "billed": "Billed",
+    "budget": "of budget"
   }
 }

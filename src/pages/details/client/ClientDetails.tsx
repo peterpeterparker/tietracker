@@ -27,7 +27,7 @@ import {
   useIonViewWillLeave,
 } from '@ionic/react';
 
-import {lockClosed, ellipsisHorizontal, ellipsisVertical, lockOpen, cashOutline, stopwatchOutline} from 'ionicons/icons';
+import {lockClosed, ellipsisHorizontal, ellipsisVertical, lockOpen, walletOutline, stopwatchOutline} from 'ionicons/icons';
 
 import {formatCurrency} from '../../../utils/utils.currency';
 import {contrast} from '../../../utils/utils.color';
@@ -42,6 +42,7 @@ import {ProjectsService} from '../../../services/projects/projects.service';
 import {RootState} from '../../../store/reducers';
 
 import ProjectModal, {ProjectModalAction} from '../../../modals/project/ProjectModal';
+import {budgetUsed} from '../../../utils/utils.budget';
 
 interface ClientDetailsProps
   extends RouteComponentProps<{
@@ -301,16 +302,44 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
               <IonIcon icon={stopwatchOutline} aria-label={t('clients:details.hourly_rate')} />{' '}
               {formatCurrency(project.data.rate.hourly, settings.currency.currency)}/h
             </p>
-            {project.data.budget && project.data.budget.budget > 0 ? (
-              <p>
-                <IonIcon icon={cashOutline} aria-label={t('clients:details.budget')} /> {formatCurrency(project.data.budget.budget, settings.currency.currency)}
-              </p>
-            ) : undefined}
+            {renderBilled(project)}
           </IonLabel>
           <IonIcon slot="end" icon={project.data.disabled ? lockClosed : lockOpen} />
         </IonItem>
       );
     });
+  }
+
+  function renderBilled(project: Project) {
+    if (!project.data || !project.data.budget || project.data.budget.billed <= 0) {
+      return undefined;
+    }
+
+    return (
+      <p>
+        <IonIcon icon={walletOutline} aria-label={t('clients:details.billed')} /> {formatCurrency(project.data.budget.billed, settings.currency.currency)}
+        &nbsp;
+        {renderBudgetUsed(project)}
+      </p>
+    );
+  }
+
+  function renderBudgetUsed(project: Project) {
+    if (!project.data || !project.data.budget) {
+      return undefined;
+    }
+
+    const used: string | undefined = budgetUsed(project.data.budget.budget, project.data.budget.billed);
+
+    if (!used) {
+      return undefined;
+    }
+
+    return (
+      <small>
+        ({used} {t('clients:details.budget')})
+      </small>
+    );
   }
 };
 
