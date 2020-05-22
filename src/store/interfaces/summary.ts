@@ -1,20 +1,20 @@
 export interface SummaryDay {
-    day: Date | number;
-    milliseconds: number;
-    billable: number;
+  day: Date | number;
+  milliseconds: number;
+  billable: number;
 }
 
 export interface SummaryTotalValues {
-    milliseconds: number;
-    billable: number;
+  milliseconds: number;
+  billable: number;
 }
 
 export interface SummaryTotal {
-    week: SummaryTotalValues;
-    today: SummaryTotalValues;
+  week: SummaryTotalValues;
+  today: SummaryTotalValues;
 }
 
 export interface Summary {
-    days: SummaryDay[];
-    total: SummaryTotal;
+  days: SummaryDay[];
+  total: SummaryTotal;
 }

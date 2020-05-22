@@ -1,13 +1,5 @@
 import React, {useState} from 'react';
-import {
-    IonInput,
-    IonItem,
-    IonLabel,
-    IonList,
-    IonSelect,
-    IonSelectOption,
-    IonModal
-} from '@ionic/react';
+import {IonInput, IonItem, IonLabel, IonList, IonSelect, IonSelectOption, IonModal} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -20,100 +12,101 @@ import {Settings} from '../../../models/settings';
 import CurrenciesModal from '../../../modals/currencies/CurrenciesModal';
 
 export interface SettingsGeneralProps {
-    settings: Settings;
+  settings: Settings;
 }
 
 const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
+  const {t} = useTranslation('settings');
 
-    const {t} = useTranslation('settings');
+  const [showPopover, setShowPopover] = useState<boolean>(false);
 
-    const [showPopover, setShowPopover] = useState<boolean>(false);
+  function onCurrencyChange(currency: Currency | undefined) {
+    if (!currency) {
+      setShowPopover(false);
 
-    function onCurrencyChange(currency: Currency | undefined) {
-        if (!currency) {
-            setShowPopover(false);
-
-            return;
-        }
-
-        props.settings.currency = currency;
-
-        setShowPopover(false);
+      return;
     }
 
-    function onRoundTimeChange($event: CustomEvent) {
-        if (!$event || !$event.detail) {
-            return;
-        }
+    props.settings.currency = currency;
 
-        props.settings.roundTime = $event.detail.value;
+    setShowPopover(false);
+  }
+
+  function onRoundTimeChange($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
     }
 
-    function onVatInput($event: CustomEvent<KeyboardEvent>) {
-        if (!$event) {
-            return;
-        }
+    props.settings.roundTime = $event.detail.value;
+  }
 
-        const input: string = ($event.target as InputTargetEvent).value;
-
-        if (!input || input === undefined || input === '') {
-            delete props.settings['vat'];
-        } else {
-            props.settings.vat = parseFloat(($event.target as InputTargetEvent).value);
-        }
+  function onVatInput($event: CustomEvent<KeyboardEvent>) {
+    if (!$event) {
+      return;
     }
 
-    function openPopover($event: any) {
-        $event.preventDefault();
+    const input: string = ($event.target as InputTargetEvent).value;
 
-        setShowPopover(true);
+    if (!input || input === undefined || input === '') {
+      delete props.settings['vat'];
+    } else {
+      props.settings.vat = parseFloat(($event.target as InputTargetEvent).value);
     }
+  }
 
-    return (<>
-            <IonModal isOpen={showPopover}  onDidDismiss={() => setShowPopover(false)}>
-                <CurrenciesModal currency={props.settings.currency} closeAction={(currency?: Currency) => onCurrencyChange(currency)}></CurrenciesModal>
-            </IonModal>
+  function openPopover($event: any) {
+    $event.preventDefault();
 
-            <IonList className="inputs-list">
-                <IonItem className="item-title">
-                    <IonLabel>{t('tracker.time.title')}</IonLabel>
-                </IonItem>
+    setShowPopover(true);
+  }
 
-                <IonItem className="item-input">
-                    <IonSelect interfaceOptions={{header: t('tracker.time.title')}}
-                               placeholder={t('tracker.time.title')}
-                               value={props.settings.roundTime}
-                               onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
-                        <IonSelectOption value={1}>{t('tracker.time.minute.1')}</IonSelectOption>
-                        <IonSelectOption value={5}>{t('tracker.time.minute.5')}</IonSelectOption>
-                        <IonSelectOption value={15}>{t('tracker.time.minute.15')}</IonSelectOption>
-                    </IonSelect>
-                </IonItem>
+  return (
+    <>
+      <IonModal isOpen={showPopover} onDidDismiss={() => setShowPopover(false)}>
+        <CurrenciesModal currency={props.settings.currency} closeAction={(currency?: Currency) => onCurrencyChange(currency)}></CurrenciesModal>
+      </IonModal>
 
-                <IonItem className="item-title">
-                    <IonLabel>{t('tracker.currency.title')}</IonLabel>
-                </IonItem>
+      <IonList className="inputs-list">
+        <IonItem className="item-title">
+          <IonLabel>{t('tracker.time.title')}</IonLabel>
+        </IonItem>
 
-                <IonItem className={styles.itemButton + ' item-input'}>
-                    <button aria-label={t('search.clients')} className={'input'}
-                            onClick={($event) => openPopover($event)}>
-                        <IonLabel>{props.settings.currency.currency}</IonLabel>
-                    </button>
-                </IonItem>
+        <IonItem className="item-input">
+          <IonSelect
+            interfaceOptions={{header: t('tracker.time.title')}}
+            placeholder={t('tracker.time.title')}
+            value={props.settings.roundTime}
+            onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
+            <IonSelectOption value={1}>{t('tracker.time.minute.1')}</IonSelectOption>
+            <IonSelectOption value={5}>{t('tracker.time.minute.5')}</IonSelectOption>
+            <IonSelectOption value={15}>{t('tracker.time.minute.15')}</IonSelectOption>
+          </IonSelect>
+        </IonItem>
 
-                <IonItem className="item-title">
-                    <IonLabel>{t('tracker.vat.title')}</IonLabel>
-                </IonItem>
-                <IonItem>
-                    <IonInput debounce={500} input-mode="text" value={props.settings.vat ? `${props.settings.vat}` : ''}
-                              aria-label={t('tracker.vat.input')}
-                              onIonInput={($event: CustomEvent<KeyboardEvent>) => onVatInput($event)}>
-                    </IonInput>
-                </IonItem>
-            </IonList>
-        </>
-    );
+        <IonItem className="item-title">
+          <IonLabel>{t('tracker.currency.title')}</IonLabel>
+        </IonItem>
 
+        <IonItem className={styles.itemButton + ' item-input'}>
+          <button aria-label={t('search.clients')} className={'input'} onClick={($event) => openPopover($event)}>
+            <IonLabel>{props.settings.currency.currency}</IonLabel>
+          </button>
+        </IonItem>
+
+        <IonItem className="item-title">
+          <IonLabel>{t('tracker.vat.title')}</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonInput
+            debounce={500}
+            input-mode="text"
+            value={props.settings.vat ? `${props.settings.vat}` : ''}
+            aria-label={t('tracker.vat.input')}
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => onVatInput($event)}></IonInput>
+        </IonItem>
+      </IonList>
+    </>
+  );
 };
 
 export default SettingsTracker;

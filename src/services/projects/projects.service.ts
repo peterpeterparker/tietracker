@@ -1,223 +1,222 @@
 import {get, set} from 'idb-keyval';
 
-import uuid from 'uuid/v4';
+import {v4 as uuid} from 'uuid';
 
 import {Project, ProjectData} from '../../models/project';
 import {Client} from '../../models/client';
 
 export class ProjectsService {
+  private static instance: ProjectsService;
 
-    private static instance: ProjectsService;
+  private constructor() {
+    // Private constructor, singleton
+  }
 
-    private constructor() {
-        // Private constructor, singleton
+  static getInstance() {
+    if (!ProjectsService.instance) {
+      ProjectsService.instance = new ProjectsService();
     }
+    return ProjectsService.instance;
+  }
 
-    static getInstance() {
-        if (!ProjectsService.instance) {
-            ProjectsService.instance = new ProjectsService();
+  create(client: Client | undefined, data: ProjectData): Promise<Project> {
+    return new Promise<Project>(async (resolve, reject) => {
+      try {
+        if (!client || client === undefined) {
+          reject('Client not defined.');
+          return;
         }
-        return ProjectsService.instance;
-    }
 
-    create(client: Client | undefined, data: ProjectData): Promise<Project> {
-        return new Promise<Project>(async (resolve, reject) => {
-            try {
-                if (!client || client === undefined) {
-                    reject('Client not defined.');
-                    return;
-                }
+        let projects: Project[] = await get('projects');
 
-                let projects: Project[] = await get('projects');
+        if (!projects || projects.length <= 0) {
+          projects = [];
+        }
 
-                if (!projects || projects.length <= 0) {
-                    projects = [];
-                }
+        data.client = {
+          id: client.id as string,
+          name: client.data.name,
+          color: client.data.color as string,
+        };
 
-                data.client = {
-                    id: client.id as string,
-                    name: client.data.name,
-                    color: client.data.color as string
-                };
+        const now: number = new Date().getTime();
 
-                const now: number = new Date().getTime();
+        data.created_at = now;
+        data.updated_at = now;
 
-                data.created_at = now;
-                data.updated_at = now;
+        const project: Project = {
+          id: uuid(),
+          data: data,
+        };
 
-                const project: Project = {
-                    id: uuid(),
-                    data: data
-                };
+        projects.push(project);
 
-                projects.push(project);
+        await set('projects', projects);
 
-                await set('projects', projects);
+        resolve(project);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 
-                resolve(project);
-            } catch (err) {
-                reject(err);
-            }
+  list(filterActive: boolean = true): Promise<Project[]> {
+    return new Promise<Project[]>(async (resolve, reject) => {
+      try {
+        const projects: Project[] = await get('projects');
+
+        if (!projects || projects.length <= 0) {
+          resolve([]);
+          return;
+        }
+
+        if (!filterActive) {
+          resolve(projects);
+          return;
+        }
+
+        const filteredProjects: Project[] = projects.filter((project: Project) => {
+          return !project.data.disabled;
         });
-    }
 
-    list(filterActive: boolean = true): Promise<Project[]> {
-        return new Promise<Project[]>(async (resolve, reject) => {
-            try {
-                const projects: Project[] = await get('projects');
+        if (!filteredProjects || filteredProjects.length <= 0) {
+          resolve([]);
+          return;
+        }
 
-                if (!projects || projects.length <= 0) {
-                    resolve([]);
-                    return;
-                }
-
-                if (!filterActive) {
-                    resolve(projects);
-                    return;
-                }
-
-                const filteredProjects: Project[] = projects.filter((project: Project) => {
-                    return !project.data.disabled;
-                });
-
-                if (!filteredProjects || filteredProjects.length <= 0) {
-                    resolve([]);
-                    return;
-                }
-
-                const sortedProjects: Project[] = filteredProjects.sort((a: Project, b: Project) => {
-                    return new Date(b.data.updated_at as Date | number).getTime() - new Date(a.data.updated_at as Date | number).getTime();
-                });
-
-                resolve(sortedProjects !== undefined ? sortedProjects : []);
-            } catch (err) {
-                reject(err);
-            }
+        const sortedProjects: Project[] = filteredProjects.sort((a: Project, b: Project) => {
+          return new Date(b.data.updated_at as Date | number).getTime() - new Date(a.data.updated_at as Date | number).getTime();
         });
-    }
 
-    find(id: string | undefined): Promise<Project | undefined> {
-        return new Promise<Project | undefined>(async (resolve) => {
-            try {
-                const projects: Project[] = await get('projects');
+        resolve(sortedProjects !== undefined ? sortedProjects : []);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 
-                if (!projects || projects.length <= 0) {
-                    resolve(undefined);
-                    return;
-                }
+  find(id: string | undefined): Promise<Project | undefined> {
+    return new Promise<Project | undefined>(async (resolve) => {
+      try {
+        const projects: Project[] = await get('projects');
 
-                const project: Project | undefined = projects.find((filteredProject: Project) => {
-                    return filteredProject.id === id;
-                });
+        if (!projects || projects.length <= 0) {
+          resolve(undefined);
+          return;
+        }
 
-                resolve(project);
-            } catch (err) {
-                resolve(undefined);
-            }
+        const project: Project | undefined = projects.find((filteredProject: Project) => {
+          return filteredProject.id === id;
         });
-    }
 
-    listForClient(clientId: string): Promise<Project[]> {
-        return new Promise<Project[]>(async (resolve, reject) => {
-            try {
-                if (!clientId || clientId === undefined) {
-                    reject('Client not defined.');
-                    return;
-                }
+        resolve(project);
+      } catch (err) {
+        resolve(undefined);
+      }
+    });
+  }
 
-                const projects: Project[] = await get('projects');
+  listForClient(clientId: string): Promise<Project[]> {
+    return new Promise<Project[]>(async (resolve, reject) => {
+      try {
+        if (!clientId || clientId === undefined) {
+          reject('Client not defined.');
+          return;
+        }
 
-                if (!projects || projects.length <= 0) {
-                    resolve([]);
-                    return;
-                }
+        const projects: Project[] = await get('projects');
 
-                const filteredProjects: Project[] = projects.filter((project: Project) => {
-                    return project.data.client !== undefined && project.data.client.id === clientId;
-                });
+        if (!projects || projects.length <= 0) {
+          resolve([]);
+          return;
+        }
 
-                if (!filteredProjects || filteredProjects.length <= 0) {
-                    resolve([]);
-                    return;
-                }
-
-                resolve(filteredProjects);
-            } catch (err) {
-                reject(err);
-            }
+        const filteredProjects: Project[] = projects.filter((project: Project) => {
+          return project.data.client !== undefined && project.data.client.id === clientId;
         });
-    }
 
-    updateForClient(client: Client): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                if (!client || !client.id) {
-                    reject('Client not defined.');
-                    return;
-                }
+        if (!filteredProjects || filteredProjects.length <= 0) {
+          resolve([]);
+          return;
+        }
 
-                const projects: Project[] = await get('projects');
+        resolve(filteredProjects);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 
-                if (!projects || projects.length <= 0) {
-                    resolve();
-                    return;
-                }
+  updateForClient(client: Client): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        if (!client || !client.id) {
+          reject('Client not defined.');
+          return;
+        }
 
-                projects.forEach((project: Project) => {
-                   if (project.data.client && project.data.client.id === client.id) {
-                       project.data.client = {
-                           id: client.id as string,
-                           name: client.data.name,
-                           color: client.data.color as string
-                       };
+        const projects: Project[] = await get('projects');
 
-                       project.data.updated_at = new Date().getTime();
-                   }
-                });
+        if (!projects || projects.length <= 0) {
+          resolve();
+          return;
+        }
 
-                await set('projects', projects);
+        projects.forEach((project: Project) => {
+          if (project.data.client && project.data.client.id === client.id) {
+            project.data.client = {
+              id: client.id as string,
+              name: client.data.name,
+              color: client.data.color as string,
+            };
 
-                resolve();
-            } catch (err) {
-                reject(err);
-            }
+            project.data.updated_at = new Date().getTime();
+          }
         });
-    }
 
-    update(project: Project | undefined): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                if (!project || !project.data) {
-                    reject('Project is not defined.');
-                    return;
-                }
+        await set('projects', projects);
 
-                const projects: Project[] = await get('projects');
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 
-                if (!projects || projects.length <= 0) {
-                    reject('No projects found.');
-                    return;
-                }
+  update(project: Project | undefined): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        if (!project || !project.data) {
+          reject('Project is not defined.');
+          return;
+        }
 
-                const index: number = projects.findIndex((filteredProject: Project) => {
-                    return filteredProject.id === project.id;
-                });
+        const projects: Project[] = await get('projects');
 
-                if (index < 0) {
-                    reject('Project not found.');
-                    return;
-                }
+        if (!projects || projects.length <= 0) {
+          reject('No projects found.');
+          return;
+        }
 
-                project.data.updated_at = new Date().getTime();
-
-                projects[index] = project;
-
-                await set(`projects`, projects);
-
-                resolve();
-            } catch (err) {
-                reject(err);
-            }
+        const index: number = projects.findIndex((filteredProject: Project) => {
+          return filteredProject.id === project.id;
         });
-    }
+
+        if (index < 0) {
+          reject('Project not found.');
+          return;
+        }
+
+        project.data.updated_at = new Date().getTime();
+
+        projects[index] = project;
+
+        await set(`projects`, projects);
+
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }

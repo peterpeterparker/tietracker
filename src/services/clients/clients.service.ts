@@ -1,130 +1,129 @@
 import {get, set} from 'idb-keyval';
 
-import uuid from 'uuid/v4';
+import {v4 as uuid} from 'uuid';
 
 import {Client, ClientData} from '../../models/client';
 
 export class ClientsService {
+  private static instance: ClientsService;
 
-    private static instance: ClientsService;
+  private constructor() {
+    // Private constructor, singleton
+  }
 
-    private constructor() {
-        // Private constructor, singleton
+  static getInstance() {
+    if (!ClientsService.instance) {
+      ClientsService.instance = new ClientsService();
     }
+    return ClientsService.instance;
+  }
 
-    static getInstance() {
-        if (!ClientsService.instance) {
-            ClientsService.instance = new ClientsService();
+  create(data: ClientData): Promise<Client> {
+    return new Promise<Client>(async (resolve, reject) => {
+      try {
+        let clients: Client[] = await get('clients');
+
+        if (!clients || clients.length <= 0) {
+          clients = [];
         }
-        return ClientsService.instance;
-    }
 
-    create(data: ClientData): Promise<Client> {
-        return new Promise<Client>(async (resolve, reject) => {
-            try {
-                let clients: Client[] = await get('clients');
+        const now: number = new Date().getTime();
 
-                if (!clients || clients.length <= 0) {
-                    clients = [];
-                }
+        data.created_at = now;
+        data.updated_at = now;
 
-                const now: number = new Date().getTime();
+        if (!data.color) {
+          data.color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+        }
 
-                data.created_at = now;
-                data.updated_at = now;
+        const client: Client = {
+          id: uuid(),
+          data: data,
+        };
 
-                if (!data.color) {
-                    data.color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-                }
+        clients.push(client);
 
-                const client: Client = {
-                    id: uuid(),
-                    data: data
-                }
+        await set('clients', clients);
 
-                clients.push(client);
+        resolve(client);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 
-                await set('clients', clients);
+  list(): Promise<Client[]> {
+    return new Promise<Client[]>(async (resolve, reject) => {
+      try {
+        const clients: Client[] = await get('clients');
 
-                resolve(client);
-            } catch (err) {
-                reject(err);
-            }
+        if (!clients || clients.length <= 0) {
+          resolve([]);
+          return;
+        }
+
+        resolve(clients);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  find(id: string): Promise<Client | undefined> {
+    return new Promise<Client | undefined>(async (resolve) => {
+      try {
+        const clients: Client[] = await get('clients');
+
+        if (!clients || clients.length <= 0) {
+          resolve(undefined);
+          return;
+        }
+
+        const client: Client | undefined = clients.find((filteredClient: Client) => {
+          return filteredClient.id === id;
         });
-    }
 
-    list(): Promise<Client[]> {
-        return new Promise<Client[]>(async (resolve, reject) => {
-            try {
-                const clients: Client[] = await get('clients');
+        resolve(client);
+      } catch (err) {
+        resolve(undefined);
+      }
+    });
+  }
 
-                if (!clients || clients.length <= 0) {
-                    resolve([]);
-                    return;
-                }
+  update(client: Client | undefined): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        if (!client || !client.data) {
+          reject('Client is not defined.');
+          return;
+        }
 
-                resolve(clients);
-            } catch (err) {
-                reject(err);
-            }
+        const clients: Client[] = await get('clients');
+
+        if (!clients || clients.length <= 0) {
+          reject('No clients found.');
+          return;
+        }
+
+        const index: number = clients.findIndex((filteredClient: Client) => {
+          return filteredClient.id === client.id;
         });
-    }
 
-    find(id: string): Promise<Client | undefined> {
-        return new Promise<Client | undefined>(async (resolve) => {
-            try {
-                const clients: Client[] = await get('clients');
+        if (index < 0) {
+          reject('Client not found.');
+          return;
+        }
 
-                if (!clients || clients.length <= 0) {
-                    resolve(undefined);
-                    return;
-                }
+        client.data.updated_at = new Date().getTime();
 
-                const client: Client | undefined = clients.find((filteredClient: Client) => {
-                    return filteredClient.id === id;
-                });
+        clients[index] = client;
 
-                resolve(client);
-            } catch (err) {
-                resolve(undefined);
-            }
-        });
-    }
+        await set(`clients`, clients);
 
-    update(client: Client | undefined): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                if (!client || !client.data) {
-                    reject('Client is not defined.');
-                    return;
-                }
-
-                const clients: Client[] = await get('clients');
-
-                if (!clients || clients.length <= 0) {
-                    reject('No clients found.');
-                    return;
-                }
-
-                const index: number = clients.findIndex((filteredClient: Client) => {
-                    return filteredClient.id === client.id;
-                });
-
-                if (index < 0) {
-                    reject('Client not found.');
-                    return;
-                }
-
-                client.data.updated_at = new Date().getTime();
-
-                clients[index] = client;
-
-                await set(`clients`, clients);
-
-                resolve();
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }

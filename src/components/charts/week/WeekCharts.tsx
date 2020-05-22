@@ -17,113 +17,112 @@ import {format, toDateObj} from '../../../utils/utils.date';
 import {IonLabel} from '@ionic/react';
 
 const WeekCharts: React.FC = () => {
+  const {t} = useTranslation('statistics');
 
-    const {t} = useTranslation('statistics');
+  const chartsRef: RefObject<any> = useRef();
+  const containerRef: RefObject<any> = useRef();
 
-    const chartsRef: RefObject<any> = useRef();
-    const containerRef: RefObject<any> = useRef();
+  const summary: SummaryData | undefined = useSelector((state: RootState) => state.summary.summary);
 
-    const summary: SummaryData | undefined = useSelector((state: RootState) => state.summary.summary);
+  const [data, setData] = useState<DeckdeckgoBarChartData[] | undefined>(undefined);
 
-    const [data, setData] = useState<DeckdeckgoBarChartData[] | undefined>(undefined);
-
-    useEffect(() => {
-        if (window) {
-            window.addEventListener('resize', debounce(drawChart));
-        }
-
-        return () => {
-            if (window) {
-                window.removeEventListener('resize', debounce(drawChart));
-            }
-        }
-    }, []);
-
-    useEffect(() => {
-        loadChartsData();
-
-        // eslint-disable-next-line
-    }, [summary]);
-
-    useEffect(() => {
-        if (chartsRef && chartsRef.current) {
-            chartsRef.current.data = data;
-
-            drawChart();
-        }
-
-        // eslint-disable-next-line
-    }, [data, chartsRef]);
-
-    useEffect(() => {
-        drawChart();
-
-        // eslint-disable-next-line
-    }, [containerRef, chartsRef]);
-
-    async function drawChart() {
-        if (!containerRef || !containerRef.current) {
-            return;
-        }
-
-        if (!chartsRef || !chartsRef.current) {
-            return;
-        }
-
-        const width: number = containerRef.current.offsetWidth - 64;
-
-        if (width <= 0) {
-            return;
-        }
-
-        const height: number = Math.min(width * 9 / 16, 264);
-
-        await chartsRef.current.draw(width, height);
+  useEffect(() => {
+    if (window) {
+      window.addEventListener('resize', debounce(drawChart));
     }
 
-    async function loadChartsData() {
-        if (summary && summary.days && summary.days.length > 0) {
-            await i18next.loadNamespaces('statistics');
+    return () => {
+      if (window) {
+        window.removeEventListener('resize', debounce(drawChart));
+      }
+    };
+  }, []);
 
-            setData(summary.days.map((day: SummaryDay, index) => {
-                const label: string | undefined = format(toDateObj(day.day));
+  useEffect(() => {
+    loadChartsData();
 
-                return {
-                    label: label !== undefined ? label : `${index}`,
-                    values: [{
-                        key: 0,
-                        label: label !== undefined ? label : `${index}`,
-                        value: day.milliseconds / 1000 / 60 / 60
-                    }]
-                }
-            }));
-        } else {
-            setData(undefined);
-        }
+    // eslint-disable-next-line
+  }, [summary]);
+
+  useEffect(() => {
+    if (chartsRef && chartsRef.current) {
+      chartsRef.current.data = data;
+
+      drawChart();
+    }
+
+    // eslint-disable-next-line
+  }, [data, chartsRef]);
+
+  useEffect(() => {
+    drawChart();
+
+    // eslint-disable-next-line
+  }, [containerRef, chartsRef]);
+
+  async function drawChart() {
+    if (!containerRef || !containerRef.current) {
+      return;
+    }
+
+    if (!chartsRef || !chartsRef.current) {
+      return;
+    }
+
+    const width: number = containerRef.current.offsetWidth - 64;
+
+    if (width <= 0) {
+      return;
+    }
+
+    const height: number = Math.min((width * 9) / 16, 264);
+
+    await chartsRef.current.draw(width, height);
+  }
+
+  async function loadChartsData() {
+    if (summary && summary.days && summary.days.length > 0) {
+      await i18next.loadNamespaces('statistics');
+
+      setData(
+        summary.days.map((day: SummaryDay, index) => {
+          const label: string | undefined = format(toDateObj(day.day));
+
+          return {
+            label: label !== undefined ? label : `${index}`,
+            values: [
+              {
+                key: 0,
+                label: label !== undefined ? label : `${index}`,
+                value: day.milliseconds / 1000 / 60 / 60,
+              },
+            ],
+          };
+        })
+      );
+    } else {
+      setData(undefined);
+    }
+  }
+
+  return <>{renderContent()}</>;
+
+  function renderContent() {
+    if (data === undefined) {
+      return <IonLabel className="placeholder">{t('empty')}</IonLabel>;
     }
 
     return (
-        <>
-
-            {renderContent()}
-        </>
-    );
-
-    function renderContent() {
-        if (data === undefined) {
-            return <IonLabel className="placeholder">{t('empty')}</IonLabel>;
-        }
-
-        return <>
-            <IonLabel className="placeholder">{t('charts.week.title')}</IonLabel>
-            <div ref={containerRef} className={styles.container + ' chart-container'}>
-                {/*
+      <>
+        <IonLabel className="placeholder">{t('charts.week.title')}</IonLabel>
+        <div ref={containerRef} className={styles.container + ' chart-container'}>
+          {/*
             // @ts-ignore */}
-                <deckgo-bar-chart ref={chartsRef} margin-top={0} margin-bottom={0} margin-left={128} margin-right={0}
-                                  y-axis-min={8}></deckgo-bar-chart>
-            </div>
-        </>
-    }
+          <deckgo-bar-chart ref={chartsRef} margin-top={0} margin-bottom={0} margin-left={128} margin-right={0} y-axis-min={8}></deckgo-bar-chart>
+        </div>
+      </>
+    );
+  }
 };
 
 export default rootConnector(WeekCharts);

@@ -1,18 +1,5 @@
 import React, {FormEvent, RefObject, CSSProperties, useEffect, useState, useRef} from 'react';
-import {
-    IonHeader,
-    IonContent,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
-    IonButton,
-    IonIcon,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonInput,
-    IonCheckbox
-} from '@ionic/react';
+import {IonHeader, IonContent, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonInput, IonCheckbox} from '@ionic/react';
 
 import {useSelector} from 'react-redux';
 
@@ -34,277 +21,305 @@ import {Settings} from '../../models/settings';
 import {RootState} from '../../store/reducers';
 
 interface Props extends RootProps {
-    closeAction: Function;
+  closeAction: Function;
 }
 
 const CreateClientModal: React.FC<Props> = (props: Props) => {
+  const {t} = useTranslation(['clients', 'common']);
 
-    const {t} = useTranslation(['clients', 'common']);
+  const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
-    const settings: Settings = useSelector((state: RootState) => state.settings.settings);
-    
-    const clientNameRef: RefObject<any> = useRef();
-    const clientColorRef: RefObject<any> = useRef();
-    const projectNameRef: RefObject<any> = useRef();
-    const projectRateRef: RefObject<any> = useRef();
-    
-    const [projectData, setProjectData] = useState<ProjectData | undefined>(undefined);
-    const [validClient, setValidClient] = useState<boolean>(false);
-    const [validProject, setValidProject] = useState<boolean>(false);
+  const clientNameRef: RefObject<any> = useRef();
+  const clientColorRef: RefObject<any> = useRef();
+  const projectNameRef: RefObject<any> = useRef();
+  const projectRateRef: RefObject<any> = useRef();
 
-    // Access state in event listener trick: https://medium.com/geographit/accessing-react-state-in-event-listeners-with-usestate-and-useref-hooks-8cceee73c559
-    const [clientData, _setClientData] = useState<ClientData | undefined>(undefined);
-    const clientDataRef = useRef<ClientData | undefined>(clientData);
-    const setClientData = (data: ClientData | undefined) => {
-        clientDataRef.current = data;
-        _setClientData(data);
-    };
+  const [projectData, setProjectData] = useState<ProjectData | undefined>(undefined);
+  const [validClient, setValidClient] = useState<boolean>(false);
+  const [validProject, setValidProject] = useState<boolean>(false);
 
-    useEffect(() => {
-        const ref = clientColorRef.current;
+  // Access state in event listener trick: https://medium.com/geographit/accessing-react-state-in-event-listeners-with-usestate-and-useref-hooks-8cceee73c559
+  const [clientData, _setClientData] = useState<ClientData | undefined>(undefined);
+  const clientDataRef = useRef<ClientData | undefined>(clientData);
+  const setClientData = (data: ClientData | undefined) => {
+    clientDataRef.current = data;
+    _setClientData(data);
+  };
 
-        ref.addEventListener('colorChange', selectColor, false);
+  useEffect(() => {
+    const ref = clientColorRef.current;
 
-        return () => ref.removeEventListener('colorChange', selectColor, true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    ref.addEventListener('colorChange', selectColor, false);
 
-    function handleClientNameInput($event: CustomEvent<KeyboardEvent>) {
-        let data: ClientData;
+    return () => ref.removeEventListener('colorChange', selectColor, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-        if (clientData) {
-            data = {...clientData};
-            data.name = ($event.target as InputTargetEvent).value;
-        } else {
-            data = {
-                name: ($event.target as InputTargetEvent).value
-            };
-        }
+  function handleClientNameInput($event: CustomEvent<KeyboardEvent>) {
+    let data: ClientData;
 
-        setClientData(data);
+    if (clientData) {
+      data = {...clientData};
+      data.name = ($event.target as InputTargetEvent).value;
+    } else {
+      data = {
+        name: ($event.target as InputTargetEvent).value,
+      };
     }
 
-    function validateClientName() {
-        setValidClient(clientData !== undefined && clientData.name !== undefined && clientData.name.length >= 3);
+    setClientData(data);
+  }
+
+  function validateClientName() {
+    setValidClient(clientData !== undefined && clientData.name !== undefined && clientData.name.length >= 3);
+  }
+
+  const selectColor = ($event: CustomEvent) => {
+    if (!clientDataRef.current) {
+      return;
     }
 
-    const selectColor = ($event: CustomEvent) => {
-        if (!clientDataRef.current) {
-            return;
-        }
+    const data: ClientData = {...clientDataRef.current};
+    data.color = $event.detail.hex;
+    setClientData(data);
+  };
 
-        const data: ClientData = {...clientDataRef.current};
-        data.color = $event.detail.hex;
-        setClientData(data);
-    };
-
-    function handleProjectNameInput($event: CustomEvent<KeyboardEvent>) {
-        if (!clientData) {
-            return;
-        }
-
-        let data: ProjectData;
-
-        if (projectData) {
-            data = {...projectData};
-            data.name = ($event.target as InputTargetEvent).value;
-        } else {
-            data = {
-                name: ($event.target as InputTargetEvent).value,
-                disabled: false,
-                rate: {
-                    hourly: 0,
-                    vat: settings.vat !== undefined
-                }
-            };
-        }
-
-        setProjectData(data);
+  function handleProjectNameInput($event: CustomEvent<KeyboardEvent>) {
+    if (!clientData) {
+      return;
     }
 
-    function handleProjectRateInput($event: CustomEvent<KeyboardEvent>) {
-        if (!clientData) {
-            return;
-        }
+    let data: ProjectData;
 
-        let data: ProjectData;
-
-        if (projectData) {
-            data = {...projectData};
-            data.rate.hourly = parseFloat(($event.target as InputTargetEvent).value);
-        } else {
-            data = {
-                name: '',
-                disabled: false,
-                rate: {
-                    hourly: parseFloat(($event.target as InputTargetEvent).value),
-                    vat: settings.vat !== undefined
-                }
-            };
-        }
-
-        setProjectData(data);
+    if (projectData) {
+      data = {...projectData};
+      data.name = ($event.target as InputTargetEvent).value;
+    } else {
+      data = {
+        name: ($event.target as InputTargetEvent).value,
+        disabled: false,
+        rate: {
+          hourly: 0,
+          vat: settings.vat !== undefined,
+        },
+      };
     }
 
-    function validateProject() {
-        setValidProject(projectData !== undefined && projectData.name !== undefined && projectData.name.length >= 3 && projectData.rate && projectData.rate.hourly >= 0);
+    setProjectData(data);
+  }
+
+  function handleProjectRateInput($event: CustomEvent<KeyboardEvent>) {
+    if (!clientData) {
+      return;
     }
 
-    async function handleSubmit($event: FormEvent<HTMLFormElement>) {
-        $event.preventDefault();
+    let data: ProjectData;
 
-        if (clientData === undefined || projectData === undefined) {
-            return;
-        }
-
-        try {
-            const persistedClient: Client = await props.createClient(clientData);
-
-            if (!persistedClient || persistedClient === undefined || !persistedClient.id || persistedClient.id === undefined) {
-                // TODO: Error management
-                // And what if client withtout project? duplicated? -> delete whatever function
-                console.error('Client not created');
-                return;
-            }
-
-            await props.createProject(persistedClient, projectData);
-
-            await props.closeAction();
-
-        } catch (err) {
-            console.error(err);
-        }
+    if (projectData) {
+      data = {...projectData};
+      data.rate.hourly = parseFloat(($event.target as InputTargetEvent).value);
+    } else {
+      data = {
+        name: '',
+        disabled: false,
+        rate: {
+          hourly: parseFloat(($event.target as InputTargetEvent).value),
+          vat: settings.vat !== undefined,
+        },
+      };
     }
 
-    function onVatChange($event: CustomEvent) {
-        if (!$event || !$event.detail) {
-            return;
-        }
+    setProjectData(data);
+  }
 
-        if (!clientData) {
-            return;
-        }
+  function validateProject() {
+    setValidProject(
+      projectData !== undefined && projectData.name !== undefined && projectData.name.length >= 3 && projectData.rate && projectData.rate.hourly >= 0
+    );
+  }
 
-        let data: ProjectData;
+  async function handleSubmit($event: FormEvent<HTMLFormElement>) {
+    $event.preventDefault();
 
-        if (projectData) {
-            data = {...projectData};
-            data.rate.vat = $event.detail.checked;
-        } else {
-            data = {
-                name: '',
-                disabled: false,
-                rate: {
-                    hourly: 0,
-                    vat: $event.detail.checked
-                }
-            };
-        }
-        
-        setProjectData(data);
+    if (clientData === undefined || projectData === undefined) {
+      return;
     }
 
-    return renderContent();
+    try {
+      const persistedClient: Client = await props.createClient(clientData);
 
-    function renderContent() {
-        const valid: boolean = validClient && validProject;
+      if (!persistedClient || persistedClient === undefined || !persistedClient.id || persistedClient.id === undefined) {
+        // TODO: Error management
+        // And what if client withtout project? duplicated? -> delete whatever function
+        console.error('Client not created');
+        return;
+      }
 
-        const color: string | undefined = clientData ? clientData.color : undefined;
-        const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
+      await props.createProject(persistedClient, projectData);
 
-        return <IonContent>
-            <IonHeader>
-                <IonToolbar style={{'--background': color, '--color': colorContrast, '--ion-toolbar-color': colorContrast} as CSSProperties}>
-                    <IonTitle>{t('clients:create.title')}</IonTitle>
-                    <IonButtons slot="start">
-                        <IonButton onClick={() => props.closeAction()}>
-                            <IonIcon icon={close} slot="icon-only"></IonIcon>
-                        </IonButton>
-                    </IonButtons>
-                </IonToolbar>
-            </IonHeader>
+      await props.closeAction();
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
-            <main className="ion-padding">
-                <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
-                    <IonList className="inputs-list">
-                        <IonItem className="item-title">
-                            <IonLabel>{t('clients:create.client')}</IonLabel>
-                        </IonItem>
-                        <IonItem>
-                            <IonInput ref={clientNameRef} debounce={500} minlength={3} maxlength={32}
-                                      required={true} input-mode="text"
-                                      onIonInput={($event: CustomEvent<KeyboardEvent>) => handleClientNameInput($event)}
-                                      onIonChange={() => validateClientName()}>
-                            </IonInput>
-                        </IonItem>
-
-                        <IonItem disabled={!validClient} className="item-title ion-margin-top">
-                            <IonLabel>{t('clients:create.color')}</IonLabel>
-                        </IonItem>
-
-                        <div className={styles.color + ` ${!validClient ? 'disabled' : ''}`}>
-                            <deckgo-color ref={clientColorRef}
-                                          className="ion-padding-start ion-padding-end ion-padding-bottom"
-                                          more={true}>
-                                <IonIcon ios={ellipsisHorizontal} md={ellipsisVertical} slot="more" aria-label="More" class="more"></IonIcon>
-                            </deckgo-color>
-                        </div>
-
-                        <IonItem disabled={!validClient} className="item-title ion-margin-top">
-                            <IonLabel>{t('clients:create.project')}</IonLabel>
-                        </IonItem>
-                        <IonItem disabled={!validClient}>
-                            <IonInput ref={projectNameRef} debounce={500} minlength={3} maxlength={32}
-                                      required={true} input-mode="text"
-                                      onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectNameInput($event)}
-                                      onIonChange={() => validateProject()}>
-                            </IonInput>
-                        </IonItem>
-
-                        <IonItem disabled={!validClient} className="item-title">
-                            <IonLabel>{t('clients:create.hourly_rate')}</IonLabel>
-                        </IonItem>
-                        <IonItem disabled={!validClient}>
-                            <IonInput ref={projectRateRef} debounce={500} minlength={1} required={true}
-                                      input-mode="text"
-                                      onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectRateInput($event)}
-                                      onIonChange={() => validateProject()}>
-                            </IonInput>
-                        </IonItem>
-
-                        {renderVat(color)}
-                    </IonList>
-
-                    <div className="actions">
-                        <IonButton type="submit" disabled={!valid} style={{'--background': color, '--color': colorContrast, '--background-hover': color, '--color-hover': colorContrast, '--background-activated': colorContrast, '--color-activated': color} as CSSProperties}>
-                            <IonLabel>{t('common:actions.submit')}</IonLabel>
-                        </IonButton>
-
-                        <button type="button" onClick={() => props.closeAction()}>{t('common:actions.cancel')}</button>
-                    </div>
-                </form>
-            </main>
-        </IonContent>
+  function onVatChange($event: CustomEvent) {
+    if (!$event || !$event.detail) {
+      return;
     }
 
-    function renderVat(color: string | undefined) {
-        if (!settings.vat || settings.vat === undefined) {
-            return undefined;
-        }
-
-        return <>
-            <IonItem disabled={!validClient} className="item-title">
-                <IonLabel>{t('clients:create.vat')}</IonLabel>
-            </IonItem>
-            <IonItem disabled={!validClient} className="item-checkbox">
-                <IonLabel>{settings.vat}%</IonLabel>
-                <IonCheckbox slot="end" style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
-                             checked={projectData ? projectData.rate.vat : false}
-                             onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
-            </IonItem>
-        </>
+    if (!clientData) {
+      return;
     }
 
+    let data: ProjectData;
+
+    if (projectData) {
+      data = {...projectData};
+      data.rate.vat = $event.detail.checked;
+    } else {
+      data = {
+        name: '',
+        disabled: false,
+        rate: {
+          hourly: 0,
+          vat: $event.detail.checked,
+        },
+      };
+    }
+
+    setProjectData(data);
+  }
+
+  return renderContent();
+
+  function renderContent() {
+    const valid: boolean = validClient && validProject;
+
+    const color: string | undefined = clientData ? clientData.color : undefined;
+    const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
+
+    return (
+      <IonContent>
+        <IonHeader>
+          <IonToolbar style={{'--background': color, '--color': colorContrast, '--ion-toolbar-color': colorContrast} as CSSProperties}>
+            <IonTitle>{t('clients:create.title')}</IonTitle>
+            <IonButtons slot="start">
+              <IonButton onClick={() => props.closeAction()}>
+                <IonIcon icon={close} slot="icon-only"></IonIcon>
+              </IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+
+        <main className="ion-padding">
+          <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
+            <IonList className="inputs-list">
+              <IonItem className="item-title">
+                <IonLabel>{t('clients:create.client')}</IonLabel>
+              </IonItem>
+              <IonItem>
+                <IonInput
+                  ref={clientNameRef}
+                  debounce={500}
+                  minlength={3}
+                  maxlength={32}
+                  required={true}
+                  input-mode="text"
+                  onIonInput={($event: CustomEvent<KeyboardEvent>) => handleClientNameInput($event)}
+                  onIonChange={() => validateClientName()}></IonInput>
+              </IonItem>
+
+              <IonItem disabled={!validClient} className="item-title ion-margin-top">
+                <IonLabel>{t('clients:create.color')}</IonLabel>
+              </IonItem>
+
+              <div className={styles.color + ` ${!validClient ? 'disabled' : ''}`}>
+                <deckgo-color ref={clientColorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true}>
+                  <IonIcon ios={ellipsisHorizontal} md={ellipsisVertical} slot="more" aria-label="More" class="more"></IonIcon>
+                </deckgo-color>
+              </div>
+
+              <IonItem disabled={!validClient} className="item-title ion-margin-top">
+                <IonLabel>{t('clients:create.project')}</IonLabel>
+              </IonItem>
+              <IonItem disabled={!validClient}>
+                <IonInput
+                  ref={projectNameRef}
+                  debounce={500}
+                  minlength={3}
+                  maxlength={32}
+                  required={true}
+                  input-mode="text"
+                  onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectNameInput($event)}
+                  onIonChange={() => validateProject()}></IonInput>
+              </IonItem>
+
+              <IonItem disabled={!validClient} className="item-title">
+                <IonLabel>{t('clients:create.hourly_rate')}</IonLabel>
+              </IonItem>
+              <IonItem disabled={!validClient}>
+                <IonInput
+                  ref={projectRateRef}
+                  debounce={500}
+                  minlength={1}
+                  required={true}
+                  input-mode="text"
+                  onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectRateInput($event)}
+                  onIonChange={() => validateProject()}></IonInput>
+              </IonItem>
+
+              {renderVat(color)}
+            </IonList>
+
+            <div className="actions">
+              <IonButton
+                type="submit"
+                disabled={!valid}
+                style={
+                  {
+                    '--background': color,
+                    '--color': colorContrast,
+                    '--background-hover': color,
+                    '--color-hover': colorContrast,
+                    '--background-activated': colorContrast,
+                    '--color-activated': color,
+                  } as CSSProperties
+                }>
+                <IonLabel>{t('common:actions.submit')}</IonLabel>
+              </IonButton>
+
+              <button type="button" onClick={() => props.closeAction()}>
+                {t('common:actions.cancel')}
+              </button>
+            </div>
+          </form>
+        </main>
+      </IonContent>
+    );
+  }
+
+  function renderVat(color: string | undefined) {
+    if (!settings.vat || settings.vat === undefined) {
+      return undefined;
+    }
+
+    return (
+      <>
+        <IonItem disabled={!validClient} className="item-title">
+          <IonLabel>{t('clients:create.vat')}</IonLabel>
+        </IonItem>
+        <IonItem disabled={!validClient} className="item-checkbox">
+          <IonLabel>{settings.vat}%</IonLabel>
+          <IonCheckbox
+            slot="end"
+            style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
+            checked={projectData ? projectData.rate.vat : false}
+            onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
+        </IonItem>
+      </>
+    );
+  }
 };
 
 export default rootConnector(CreateClientModal);

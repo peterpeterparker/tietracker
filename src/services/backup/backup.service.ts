@@ -12,141 +12,139 @@ import {DirectoryEntry, File, IWriteOptions} from '@ionic-native/file';
 import i18next from 'i18next';
 
 export class BackupService {
+  private static instance: BackupService;
 
-    private static instance: BackupService;
+  private backupWorker: Worker = new Worker('./workers/backup.js');
 
-    private backupWorker: Worker = new Worker('./workers/backup.js');
+  private constructor() {
+    // Private constructor, singleton
+  }
 
-    private constructor() {
-        // Private constructor, singleton
+  static getInstance() {
+    if (!BackupService.instance) {
+      BackupService.instance = new BackupService();
     }
+    return BackupService.instance;
+  }
 
-    static getInstance() {
-        if (!BackupService.instance) {
-            BackupService.instance = new BackupService();
+  needBackup(): Promise<boolean> {
+    return new Promise<boolean>(async (resolve) => {
+      try {
+        const invoices: string[] = await get('invoices');
+
+        if (!invoices || invoices.length <= 0) {
+          resolve(false);
+          return;
         }
-        return BackupService.instance;
-    }
 
-    needBackup(): Promise<boolean> {
-        return new Promise<boolean>(async (resolve) => {
-            try {
-                const invoices: string[] = await get('invoices');
+        const lastBackup: Date = await get('backup');
 
-                if (!invoices || invoices.length <= 0) {
-                    resolve(false);
-                    return;
-                }
+        if (lastBackup && differenceInWeeks(new Date(), lastBackup) > 0) {
+          resolve(true);
+          return;
+        }
 
-                const lastBackup: Date = await get('backup');
+        resolve(lastBackup === undefined);
+      } catch (err) {
+        resolve(false);
+      }
+    });
+  }
 
-                if (lastBackup && differenceInWeeks(new Date(), lastBackup) > 0) {
-                    resolve(true);
-                    return;
-                }
+  async setBackup() {
+    await set('backup', new Date());
+  }
 
-                resolve(lastBackup === undefined);
-            } catch (err) {
-                resolve(false);
-            }
-        });
-    }
+  exportNativeFileSystem(currency: Currency, vat: number | undefined): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const filename: string = this.filename();
+        const fileHandle: FileSystemFileHandle = await getNewFileHandle(filename);
 
-    async setBackup() {
-        await set('backup', new Date());
-    }
+        if (!fileHandle) {
+          reject('Cannot access filesystem.');
+          return;
+        }
 
-    exportNativeFileSystem(currency: Currency, vat: number | undefined): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                const filename: string = this.filename();
-                const fileHandle: FileSystemFileHandle = await getNewFileHandle(filename);
+        this.backupWorker.onmessage = async ($event: MessageEvent) => {
+          if ($event && $event.data) {
+            await writeFile(fileHandle, $event.data);
+          }
+        };
 
-                if (!fileHandle) {
-                    reject('Cannot access filesystem.');
-                    return;
-                }
+        await this.postMessage(currency, vat);
 
-                this.backupWorker.onmessage = async ($event: MessageEvent) => {
-                    if ($event && $event.data) {
-                        await writeFile(fileHandle, $event.data);
-                    }
-                };
+        resolve();
+      } catch (err) {
+        console.error(err);
+        reject(err);
+      }
+    });
+  }
 
-                await this.postMessage(currency, vat);
+  exportMobileFileSystem(currency: Currency, vat: number | undefined): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const filename: string = this.filename();
 
-                resolve();
-            } catch (err) {
-                console.error(err);
-                reject(err);
-            }
-        });
-    }
+        this.backupWorker.onmessage = async ($event: MessageEvent) => {
+          if ($event && $event.data) {
+            const dir: DirectoryEntry = await getMobileDir();
 
-    exportMobileFileSystem(currency: Currency, vat: number | undefined): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                const filename: string = this.filename();
+            const writeOptions: IWriteOptions = {
+              replace: true,
+              append: false,
+            };
 
-                this.backupWorker.onmessage = async ($event: MessageEvent) => {
-                    if ($event && $event.data) {
-                        const dir: DirectoryEntry = await getMobileDir();
+            await File.writeFile(dir.nativeURL, filename, $event.data, writeOptions);
 
-                        const writeOptions: IWriteOptions = {
-                            replace: true,
-                            append: false
-                        };
+            await shareMobile(`Tie Tracker - Backup - ${format(new Date(), 'yyyy-MM-dd')}`, dir.nativeURL, filename);
+          }
+        };
 
-                        await File.writeFile(dir.nativeURL, filename, $event.data, writeOptions);
+        await this.postMessage(currency, vat);
 
-                        await shareMobile(`Tie Tracker - Backup - ${format(new Date(), 'yyyy-MM-dd')}`, dir.nativeURL, filename);
-                    }
-                };
+        resolve();
+      } catch (err) {
+        console.error(err);
+        reject(err);
+      }
+    });
+  }
 
-                await this.postMessage(currency, vat);
+  exportDownload(currency: Currency, vat: number | undefined): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const filename: string = this.filename();
 
-                resolve();
-            } catch (err) {
-                console.error(err);
-                reject(err);
-            }
-        });
-    }
+        this.backupWorker.onmessage = async ($event: MessageEvent) => {
+          if ($event && $event.data) {
+            download(filename, $event.data);
+          }
+        };
 
-    exportDownload(currency: Currency, vat: number | undefined): Promise<void> {
-        return new Promise<void>(async (resolve, reject) => {
-            try {
-                const filename: string = this.filename();
+        await this.postMessage(currency, vat);
 
-                this.backupWorker.onmessage = async ($event: MessageEvent) => {
-                    if ($event && $event.data) {
-                        download(filename, $event.data);
-                    }
-                };
+        resolve();
+      } catch (err) {
+        console.error(err);
+        reject(err);
+      }
+    });
+  }
 
-                await this.postMessage(currency, vat);
+  private filename(): string {
+    return `Tie_Tracker-Backup-${format(new Date(), 'yyyy-MM-dd')}.xlsx`;
+  }
 
-                resolve();
-            } catch (err) {
-                console.error(err);
-                reject(err);
-            }
-        });
-    }
+  private async postMessage(currency: Currency, vat: number | undefined) {
+    await i18next.loadNamespaces('export');
 
-    private filename(): string {
-        return `Tie_Tracker-Backup-${format(new Date(), 'yyyy-MM-dd')}.xlsx`
-    }
-
-    private async postMessage(currency: Currency, vat: number | undefined) {
-
-        await i18next.loadNamespaces('export');
-
-        this.backupWorker.postMessage({
-            msg: 'backup',
-            currency: currency,
-            vat: vat,
-            i18n: xlsxLabels()
-        });
-    }
+    this.backupWorker.postMessage({
+      msg: 'backup',
+      currency: currency,
+      vat: vat,
+      i18n: xlsxLabels(),
+    });
+  }
 }

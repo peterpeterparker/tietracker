@@ -17,30 +17,27 @@ import {formatCurrency} from '../../utils/utils.currency';
 import {Settings} from '../../models/settings';
 
 interface TaskItemProps extends RootProps {
-    task: TaskItemStore;
-    tasksDay: string | undefined;
+  task: TaskItemStore;
+  tasksDay: string | undefined;
 }
 
 const TaskItem: React.FC<TaskItemProps> = (props) => {
+  const {t} = useTranslation('tasks');
 
-    const {t} = useTranslation('tasks');
+  const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
-    const settings: Settings = useSelector((state: RootState) => state.settings.settings);
+  return (
+    <IonItem className={styles.item} lines="none" detail={false} routerLink={`/task/${props.tasksDay}/${props.task.id}`}>
+      <div slot="start" style={{background: props.task.data.client.color} as CSSProperties}></div>
 
-    return (
-        <IonItem className={styles.item} lines="none" detail={false}
-                 routerLink={`/task/${props.tasksDay}/${props.task.id}`}>
-            <div slot="start" style={{'background': props.task.data.client.color} as CSSProperties}></div>
-
-            <IonLabel>
-                {
-                    props.task.data.description ? <h2>{props.task.data.description}</h2> : t('item.no_description')
-                }
-                <p>{formatTime(props.task.data.milliseconds)} - {formatCurrency(props.task.data.billable, settings.currency.currency)}</p>
-            </IonLabel>
-        </IonItem>
-    );
-
+      <IonLabel>
+        {props.task.data.description ? <h2>{props.task.data.description}</h2> : t('item.no_description')}
+        <p>
+          {formatTime(props.task.data.milliseconds)} - {formatCurrency(props.task.data.billable, settings.currency.currency)}
+        </p>
+      </IonLabel>
+    </IonItem>
+  );
 };
 
 export default rootConnector(TaskItem);
