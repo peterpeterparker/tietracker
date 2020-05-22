@@ -4,6 +4,7 @@
 ### Features
 
 * update libs
+* use prettier to format code
 
 <a name="1.1.2"></a>
 # 1.1.2 (2020-03-16)
