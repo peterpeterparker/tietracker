@@ -61,9 +61,13 @@ const ProjectModal: React.FC<Props> = (props) => {
   const [rate, setRate] = useState<number | undefined>(undefined);
   const [vat, setVat] = useState<boolean>(false);
   const [enabled, setEnabled] = useState<boolean>(true);
+  const [budget, setBudget] = useState<number | undefined>(undefined);
+  const [billed, setBilled] = useState<number | undefined>(undefined);
 
   const nameRef: RefObject<any> = useRef();
   const rateRef: RefObject<any> = useRef();
+  const budgetRef: RefObject<any> = useRef();
+  const billedRef: RefObject<any> = useRef();
 
   useEffect(() => {
     setLoading(true);
@@ -85,9 +89,17 @@ const ProjectModal: React.FC<Props> = (props) => {
     setVat(project && project.data !== undefined && project.data.rate !== undefined ? project.data.rate.vat : false);
     setEnabled(project && project.data !== undefined ? !project.data.disabled : false);
 
+    setBudget(project && project.data !== undefined && project.data.budget !== undefined ? project.data.budget.budget : undefined);
+    setBilled(project && project.data !== undefined && project.data.budget !== undefined ? project.data.budget.billed : undefined);
+
     if (!project || project.data === undefined) {
       nameRef.current.value = undefined;
       rateRef.current.value = undefined;
+      budgetRef.current.value = undefined;
+
+      if (billedRef && billedRef.current) {
+        billedRef.current.value = undefined;
+      }
     }
   }
 
@@ -97,6 +109,14 @@ const ProjectModal: React.FC<Props> = (props) => {
 
   function handleProjectRateInput($event: CustomEvent<KeyboardEvent>) {
     setRate(parseFloat(($event.target as InputTargetEvent).value));
+  }
+
+  function handleProjectBudgetInput($event: CustomEvent<KeyboardEvent>) {
+    setBudget(parseFloat(($event.target as InputTargetEvent).value));
+  }
+
+  function handleProjectBilledInput($event: CustomEvent<KeyboardEvent>) {
+    setBilled(parseFloat(($event.target as InputTargetEvent).value));
   }
 
   function onVatChange($event: CustomEvent) {
@@ -152,6 +172,10 @@ const ProjectModal: React.FC<Props> = (props) => {
         hourly: rate,
         vat: vat,
       },
+      budget: {
+        budget: budget !== undefined && budget >= 0 ? budget : 0,
+        billed: 0,
+      },
     };
 
     await ProjectsService.getInstance().create(props.client, data);
@@ -168,6 +192,16 @@ const ProjectModal: React.FC<Props> = (props) => {
     projectToUpdate.data.rate.hourly = rate as number;
     projectToUpdate.data.rate.vat = vat;
     projectToUpdate.data.disabled = !enabled;
+
+    if (projectToUpdate.data.budget) {
+      projectToUpdate.data.budget.budget = budget !== undefined && budget >= 0 ? budget : 0;
+      projectToUpdate.data.budget.billed = billed !== undefined && billed >= 0 ? billed : 0;
+    } else {
+      projectToUpdate.data.budget = {
+        budget: budget !== undefined && budget >= 0 ? budget : 0,
+        billed: billed !== undefined && billed >= 0 ? billed : 0,
+      };
+    }
 
     await ProjectsService.getInstance().update(projectToUpdate);
   }
@@ -232,6 +266,9 @@ const ProjectModal: React.FC<Props> = (props) => {
               onIonChange={() => validateProject()}></IonInput>
           </IonItem>
 
+          {renderBudget()}
+          {renderBilled()}
+
           {renderVat()}
 
           {renderEnabled()}
@@ -260,6 +297,48 @@ const ProjectModal: React.FC<Props> = (props) => {
           </button>
         </div>
       </form>
+    );
+  }
+
+  function renderBudget() {
+    return (
+      <>
+        <IonItem className="item-title">
+          <IonLabel>{t('clients:create.budget')}</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonInput
+            debounce={500}
+            minlength={1}
+            ref={budgetRef}
+            input-mode="text"
+            value={`${budget ? budget : ''}`}
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetInput($event)}></IonInput>
+        </IonItem>
+      </>
+    );
+  }
+
+  function renderBilled() {
+    if (props.action !== ProjectModalAction.UPDATE) {
+      return undefined;
+    }
+
+    return (
+      <>
+        <IonItem className="item-title">
+          <IonLabel>{t('projects:project.billed')}</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonInput
+            debounce={500}
+            minlength={1}
+            ref={billedRef}
+            input-mode="text"
+            value={`${billed ? billed : ''}`}
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBilledInput($event)}></IonInput>
+        </IonItem>
+      </>
     );
   }
 
@@ -296,7 +375,7 @@ const ProjectModal: React.FC<Props> = (props) => {
           <IonLabel>{t('projects:project.status')}</IonLabel>
         </IonItem>
         <IonItem className="item-checkbox">
-          <IonLabel>{enabled ? 'Ongoing' : 'Closed'}</IonLabel>
+          <IonLabel>{enabled ? t('projects:project.ongoing') : t('projects:project.closed')}</IonLabel>
           <IonCheckbox
             slot="end"
             style={{'--background-checked': props.color, '--border-color-checked': props.color} as CSSProperties}
