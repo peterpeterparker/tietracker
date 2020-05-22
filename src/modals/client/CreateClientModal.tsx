@@ -33,6 +33,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
   const clientColorRef: RefObject<any> = useRef();
   const projectNameRef: RefObject<any> = useRef();
   const projectRateRef: RefObject<any> = useRef();
+  const projectBudgetRef: RefObject<any> = useRef();
 
   const [projectData, setProjectData] = useState<ProjectData | undefined>(undefined);
   const [validClient, setValidClient] = useState<boolean>(false);
@@ -117,19 +118,54 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
 
     if (projectData) {
       data = {...projectData};
-      data.rate.hourly = parseFloat(($event.target as InputTargetEvent).value);
+      data.rate.hourly = inputMinZero($event);
     } else {
       data = {
         name: '',
         disabled: false,
         rate: {
-          hourly: parseFloat(($event.target as InputTargetEvent).value),
+          hourly: inputMinZero($event),
           vat: settings.vat !== undefined,
         },
       };
     }
 
     setProjectData(data);
+  }
+
+  function handleProjectBudgetInput($event: CustomEvent<KeyboardEvent>) {
+    if (!clientData) {
+      return;
+    }
+
+    let data;
+    if (!projectData) {
+      data = {
+        name: '',
+        disabled: false,
+        rate: {
+          hourly: 0,
+          vat: settings.vat !== undefined,
+        },
+      };
+    } else {
+      data = {...projectData};
+    }
+
+    if (!data.budget) {
+      data.budget = {
+        budget: inputMinZero($event),
+        billed: 0,
+      };
+    } else {
+      data.budget.budget = inputMinZero($event);
+    }
+
+    setProjectData(data);
+  }
+
+  function inputMinZero($event: CustomEvent<KeyboardEvent>): number {
+    return ($event.target as InputTargetEvent).value ? parseFloat(($event.target as InputTargetEvent).value) : 0;
   }
 
   function validateProject() {
@@ -267,6 +303,18 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   input-mode="text"
                   onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectRateInput($event)}
                   onIonChange={() => validateProject()}></IonInput>
+              </IonItem>
+
+              <IonItem disabled={!validClient} className="item-title">
+                <IonLabel>{t('clients:create.budget')}</IonLabel>
+              </IonItem>
+              <IonItem disabled={!validClient}>
+                <IonInput
+                  ref={projectBudgetRef}
+                  debounce={500}
+                  minlength={1}
+                  input-mode="text"
+                  onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetInput($event)}></IonInput>
               </IonItem>
 
               {renderVat(color)}

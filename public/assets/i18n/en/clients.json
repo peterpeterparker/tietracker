@@ -5,7 +5,8 @@
     "color": "Color",
     "project": "Project (min. 3 characters)",
     "hourly_rate": "Hourly rate (zero or more)",
-    "vat": "Vat"
+    "vat": "Vat",
+    "budget": "Budget"
   },
   "search": {
     "title": "Search Clients",
