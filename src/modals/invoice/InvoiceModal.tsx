@@ -34,6 +34,7 @@ import {contrast} from '../../utils/utils.color';
 import {formatCurrency} from '../../utils/utils.currency';
 import {pickerColor} from '../../utils/utils.picker';
 import {isChrome, isHttps} from '../../utils/utils.platform';
+import {budgetRatio} from '../../utils/utils.budget';
 
 import {ThemeService} from '../../services/theme/theme.service';
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
@@ -160,6 +161,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
         <main className="ion-padding">
           {renderBillable()}
+          {renderBudget()}
           {renderFilter()}
         </main>
 
@@ -178,6 +180,22 @@ const InvoiceModal: React.FC<Props> = (props) => {
     }
 
     return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.billable', {amount: formatCurrency(billable, settings.currency.currency)})}}></p>;
+  }
+
+  function renderBudget() {
+    if (!props.invoice || !props.invoice.project || !props.invoice.project.budget || billable === undefined) {
+      return undefined;
+    }
+
+    const billed: number = props.invoice.project.budget.billed !== undefined ? props.invoice.project.budget.billed : 0;
+    const cumulated: string = formatCurrency(billed + billable, settings.currency.currency);
+    let ratio: string | undefined = budgetRatio(props.invoice.project.budget.budget, props.invoice.project.budget.billed, billable);
+
+    if (ratio === undefined) {
+      ratio = '0%';
+    }
+
+    return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.budget', {amount: cumulated, ratio: ratio})}}></p>;
   }
 
   function renderFilter() {

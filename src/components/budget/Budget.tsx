@@ -10,7 +10,7 @@ import {ProjectDataBudget} from '../../models/project';
 import {trendingUpOutline, pricetagOutline} from 'ionicons/icons';
 
 import {formatCurrency} from '../../utils/utils.currency';
-import {budgetUsed} from '../../utils/utils.budget';
+import {budgetRatio} from '../../utils/utils.budget';
 
 interface BudgetProps extends RootProps {
   budget: ProjectDataBudget | undefined;
@@ -59,7 +59,7 @@ const Budget: React.FC<BudgetProps> = (props) => {
       return undefined;
     }
 
-    const used: string | undefined = budgetUsed(props.budget.budget, billed);
+    const used: string | undefined = budgetRatio(props.budget.budget, billed);
 
     if (!used) {
       return undefined;
