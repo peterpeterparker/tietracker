@@ -62,7 +62,13 @@ const About: React.FC = () => {
               <span aria-label="checkmark" role="img">
                 ✅
               </span>{' '}
-              Mark entries as billed
+              Define budget per projects
+            </li>
+            <li>
+              <span aria-label="checkmark" role="img">
+                ✅
+              </span>{' '}
+              Mark entries as charges
             </li>
           </ul>
 

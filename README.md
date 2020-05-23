@@ -32,6 +32,7 @@ Track your productivity and billable hours.
 
 - ✅ Simple work hours tracking
 - ✅ Assign time to clients and projects
+- ✅ Define budget per projects
 - ✅ Mark entries as billed
 
 ## Reporting
