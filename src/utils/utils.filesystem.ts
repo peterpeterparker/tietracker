@@ -6,7 +6,7 @@ import {SocialSharing} from '@ionic-native/social-sharing';
 
 export async function getNewFileHandle(filename: string): Promise<FileSystemFileHandle> {
   const opts: ChooseFileSystemEntriesOptions = {
-    type: 'saveFile',
+    type: 'save-file',
     accepts: [
       {
         description: filename,
