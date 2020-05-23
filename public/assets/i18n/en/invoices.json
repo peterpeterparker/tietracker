@@ -7,6 +7,7 @@
     "to": "To",
     "close": "Close invoice",
     "entries_billed": "Set entries as 'billed'.",
+    "billed": "{{amount}} will have been invoiced.",
     "budget": "{{amount}} will have been invoiced, i.e. <strong>{{ratio}}</strong> of the budget."
   },
   "invoices": {
