@@ -239,7 +239,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
           </IonItem>
 
           <div className={styles.color}>
-            <deckgo-color className="ion-padding-start ion-padding-end ion-padding-bottom" ref={clientColorRef} more={true} color-hex={`${client.data.color}`}>
+            <deckgo-color className="ion-padding-start ion-padding-end ion-padding-bottom" ref={clientColorRef} more={true} label={false} color-hex={`${client.data.color}`}>
               <IonIcon ios={ellipsisHorizontal} md={ellipsisVertical} slot="more" aria-label="More" class="more"></IonIcon>
             </deckgo-color>
           </div>

@@ -271,7 +271,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
               </IonItem>
 
               <div className={styles.color + ` ${!validClient ? 'disabled' : ''}`}>
-                <deckgo-color ref={clientColorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true}>
+                <deckgo-color ref={clientColorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true} label={false}>
                   <IonIcon ios={ellipsisHorizontal} md={ellipsisVertical} slot="more" aria-label="More" class="more"></IonIcon>
                 </deckgo-color>
               </div>
