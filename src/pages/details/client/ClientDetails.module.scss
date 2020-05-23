@@ -4,8 +4,10 @@
 }
 
 .summary {
+  padding: 0 0 4px 0;
+
   h2 {
-    margin-bottom: 6px;
+    margin: 0 0 6px;
   }
 
   ion-label[class*="sc-ion-label"] {
@@ -25,9 +27,15 @@
 
 .projectItem {
   cursor: pointer;
+
+  &:not(:first-child) {
+    margin-top: 8px;
+  }
 }
 
-.projectListTitle, .projectList, .clientList {
+.projectListTitle,
+.projectList,
+.clientList {
   margin-bottom: 2px;
 }
 
