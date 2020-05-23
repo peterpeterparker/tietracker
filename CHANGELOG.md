@@ -7,6 +7,7 @@
 - introduces budget for projects ([#63](https://github.com/peterpeterparker/tietracker/issues/63))
 - deprecated saveFile should be replaced with save-file ([#71](https://github.com/peterpeterparker/tietracker/issues/71))
 - update dependencies
+- update Capacitor 2.0 and Android Studio 3.6
 - use prettier to format code
 
 #### Release Notes
