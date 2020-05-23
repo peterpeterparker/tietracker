@@ -5,6 +5,7 @@
 ### Features
 
 - introduces budget for projects ([#63](https://github.com/peterpeterparker/tietracker/issues/63))
+- deprecated saveFile should be replaced with save-file ([#71](https://github.com/peterpeterparker/tietracker/issues/71))
 - update dependencies
 - use prettier to format code
 
