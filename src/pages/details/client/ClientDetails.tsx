@@ -27,7 +27,7 @@ import {
   useIonViewWillLeave,
 } from '@ionic/react';
 
-import {lockClosed, ellipsisHorizontal, ellipsisVertical, lockOpen} from 'ionicons/icons';
+import {lockClosed, ellipsisHorizontal, ellipsisVertical, lockOpen, stopwatchOutline} from 'ionicons/icons';
 
 import {formatCurrency} from '../../../utils/utils.currency';
 import {contrast} from '../../../utils/utils.color';
@@ -42,6 +42,8 @@ import {ProjectsService} from '../../../services/projects/projects.service';
 import {RootState} from '../../../store/reducers';
 
 import ProjectModal, {ProjectModalAction} from '../../../modals/project/ProjectModal';
+
+import Budget from '../../../components/budget/Budget';
 
 interface ClientDetailsProps
   extends RouteComponentProps<{
@@ -295,10 +297,15 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     return projects.map((project: Project) => {
       return (
         <IonItem key={project.id} className={styles.projectItem + ' item-input'} onClick={() => updateProject(project.id)}>
-          <IonLabel>
+          <div className={styles.summary}>
             <h2>{project.data.name}</h2>
-            <p>{formatCurrency(project.data.rate.hourly, settings.currency.currency)}/h</p>
-          </IonLabel>
+            <IonLabel>
+              <IonIcon icon={stopwatchOutline} aria-label={t('clients:details.hourly_rate')} />{' '}
+              {formatCurrency(project.data.rate.hourly, settings.currency.currency)}/h
+            </IonLabel>
+
+            {project && project.data ? <Budget budget={project.data.budget}></Budget> : undefined}
+          </div>
           <IonIcon slot="end" icon={project.data.disabled ? lockClosed : lockOpen} />
         </IonItem>
       );

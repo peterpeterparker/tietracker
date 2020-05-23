@@ -5,6 +5,7 @@ importScripts('./libs/exceljs.min.js');
 
 importScripts('./utils/utils.js');
 importScripts('./utils/utils.export.js');
+importScripts('./utils/utils.budget.js');
 
 self.onmessage = async ($event) => {
   if ($event && $event.data && $event.data.msg === 'export') {
@@ -38,8 +39,14 @@ self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18
     return;
   }
 
-  self.exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n);
-  self.billInvoices(invoices, filterProjectId, bill);
+  const results = await self.exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n);
+
+  await updateBudget(results.invoices, filterProjectId, bill);
+
+  // We set all invoices as billed regardless if they contain or not tasks
+  await self.billInvoices(invoices, filterProjectId, bill);
+
+  self.postMessage(results.excel);
 };
 
 async function exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n) {
@@ -52,8 +59,10 @@ async function exportInvoices(invoices, projects, filterProjectId, currency, vat
   const allInvoices = await Promise.all(promises);
 
   if (!allInvoices || allInvoices.length <= 0) {
-    self.postMessage(undefined);
-    return;
+    return {
+      excel: undefined,
+      invoices: undefined,
+    };
   }
 
   const filteredInvoices = allInvoices.filter((tasks) => {
@@ -61,15 +70,20 @@ async function exportInvoices(invoices, projects, filterProjectId, currency, vat
   });
 
   if (!filteredInvoices || filteredInvoices.length <= 0) {
-    self.postMessage(undefined);
-    return;
+    return {
+      excel: undefined,
+      invoices: undefined,
+    };
   }
 
   const concatenedInvoices = filteredInvoices.reduce((a, b) => a.concat(b), []);
 
   const results = await exportToExcel(concatenedInvoices, client, currency, vat, i18n);
 
-  self.postMessage(results);
+  return {
+    excel: results,
+    invoices: concatenedInvoices,
+  };
 }
 
 async function exportToExcel(invoices, client, currency, vat, i18n) {

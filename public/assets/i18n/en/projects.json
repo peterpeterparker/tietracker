@@ -6,6 +6,9 @@
   "project": {
     "title": "Project",
     "update": "Update project",
-    "status": "Status"
+    "status": "Status",
+    "ongoing": "Ongoing",
+    "closed": "Closed",
+    "billed": "Already billed"
   }
 }

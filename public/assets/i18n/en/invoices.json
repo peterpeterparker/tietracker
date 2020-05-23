@@ -6,10 +6,13 @@
     "from": "From",
     "to": "To",
     "close": "Close invoice",
-    "entries_billed": "Set entries as 'billed'."
+    "entries_billed": "Set entries as 'billed'.",
+    "billed": "{{amount}} will have been invoiced.",
+    "budget": "{{amount}} will have been invoiced, i.e. <strong>{{ratio}}</strong> of the budget."
   },
   "invoices": {
     "title": "Open Invoices",
-    "empty": "No clients can be billed."
+    "empty": "No clients can be billed.",
+    "open_bill": "Open bill"
   }
 }

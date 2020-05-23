@@ -10,6 +10,11 @@ export interface ProjectDataRate {
   vat: boolean;
 }
 
+export interface ProjectDataBudget {
+  budget: number;
+  billed: number;
+}
+
 export interface ProjectData {
   name: string;
 
@@ -18,6 +23,8 @@ export interface ProjectData {
   rate: ProjectDataRate;
 
   client?: ProjectClientData;
+
+  budget?: ProjectDataBudget;
 
   created_at?: Date | number;
   updated_at?: Date | number;

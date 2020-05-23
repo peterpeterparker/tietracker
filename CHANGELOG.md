@@ -1,11 +1,20 @@
 <a name="1.2.0"></a>
 
-# 1.2.0 (2020-05-22)
+# 1.2.0 (2020-05-23)
 
 ### Features
 
-- update libs
+- introduces budget for projects ([#63](https://github.com/peterpeterparker/tietracker/issues/63))
+- update dependencies
 - use prettier to format code
+
+#### Release Notes
+
+The new optional budget is based, for performance reason, on a counter.
+That is why, if you wish to use it for your ongoing projects, you have to enter once manually what has been charged so far for the selected project.
+For new project, this is going to be calculated automatically each time you are going to bill your projects.
+
+Both "budget" and "already billed" find places in the project details, accessible through the client details.
 
 <a name="1.1.2"></a>
 

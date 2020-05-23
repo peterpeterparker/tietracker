@@ -3,12 +3,28 @@
   --deckgo-button-more-border: 1px solid var(--ion-color-medium);
 }
 
+.summary {
+  h2 {
+    margin-bottom: 6px;
+  }
+
+  ion-label[class*="sc-ion-label"] {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    font-weight: 300;
+    font-size: var(--font-size-small);
+
+    ion-icon {
+      margin-right: 4px;
+      color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54);
+    }
+  }
+}
+
 .projectItem {
   cursor: pointer;
-
-  ion-label > * {
-    color: var(--ion-text-color);
-  }
 }
 
 .projectListTitle, .projectList, .clientList {
