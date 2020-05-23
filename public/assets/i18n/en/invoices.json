@@ -10,6 +10,7 @@
   },
   "invoices": {
     "title": "Open Invoices",
-    "empty": "No clients can be billed."
+    "empty": "No clients can be billed.",
+    "open_bill": "Open bill"
   }
 }

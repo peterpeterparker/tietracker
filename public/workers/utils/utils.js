@@ -33,6 +33,7 @@ function loadProjects() {
       result[value.id] = {
         name: value.data.name,
         rate: value.data.rate ? value.data.rate : {hourly: 0, vat: false},
+        budget: value.data.budget ? value.data.budget : undefined,
       };
     });
 

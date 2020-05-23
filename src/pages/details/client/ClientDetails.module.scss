@@ -3,29 +3,28 @@
   --deckgo-button-more-border: 1px solid var(--ion-color-medium);
 }
 
-.projectItem {
-  cursor: pointer;
-
-  ion-label > h2 {
-    margin-bottom: 4px;
+.summary {
+  h2 {
+    margin-bottom: 6px;
   }
 
-  ion-label > * {
-    color: var(--ion-text-color);
-
+  ion-label[class*="sc-ion-label"] {
     display: flex;
     justify-content: flex-start;
     align-items: center;
 
-    > ion-icon {
+    font-weight: 300;
+    font-size: var(--font-size-small);
+
+    ion-icon {
       margin-right: 4px;
       color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54);
     }
   }
+}
 
-  ion-label > p {
-    font-weight: 300;
-  }
+.projectItem {
+  cursor: pointer;
 }
 
 .projectListTitle, .projectList, .clientList {

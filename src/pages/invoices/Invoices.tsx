@@ -19,7 +19,7 @@ import {useTranslation} from 'react-i18next';
 
 import {useSelector} from 'react-redux';
 
-import {download} from 'ionicons/icons';
+import {download, cashOutline} from 'ionicons/icons';
 
 import styles from './Invoices.module.scss';
 
@@ -91,7 +91,9 @@ const Invoices: React.FC = () => {
                 <IonCardTitle>{invoice.project ? invoice.project.name : ''}</IonCardTitle>
               </IonCardHeader>
               <IonCardContent>
-                <IonLabel>{formatCurrency(invoice.billable, settings.currency.currency)}</IonLabel>
+                <IonLabel>
+                  <IonIcon icon={cashOutline} aria-label={t('invoices.open_bill')} /> {formatCurrency(invoice.billable, settings.currency.currency)}
+                </IonLabel>
               </IonCardContent>
               <IonRippleEffect></IonRippleEffect>
             </IonCard>
