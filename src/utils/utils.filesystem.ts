@@ -23,7 +23,7 @@ export async function writeFile(fileHandle: FileSystemFileHandle, contents: stri
   // Create a writer (request permission if necessary).
   const writer = await fileHandle.createWritable();
   // Write the full length of the contents
-  await writer.write(0, contents);
+  await writer.write(contents);
   // Close the file and write the contents to disk
   await writer.close();
 }
