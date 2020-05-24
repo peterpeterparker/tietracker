@@ -1,3 +1,11 @@
+<a name="1.2.1"></a>
+
+# 1.2.1 (2020-05-24)
+
+### Features
+
+- update for Native File System API V2 trial
+
 <a name="1.2.0"></a>
 
 # 1.2.0 (2020-05-23)
