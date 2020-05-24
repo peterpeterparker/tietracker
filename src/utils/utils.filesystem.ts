@@ -21,7 +21,7 @@ export async function getNewFileHandle(filename: string): Promise<FileSystemFile
 
 export async function writeFile(fileHandle: FileSystemFileHandle, contents: string | BufferSource | Blob) {
   // Create a writer (request permission if necessary).
-  const writer = await fileHandle.createWriter();
+  const writer = await fileHandle.createWritable();
   // Write the full length of the contents
   await writer.write(0, contents);
   // Close the file and write the contents to disk

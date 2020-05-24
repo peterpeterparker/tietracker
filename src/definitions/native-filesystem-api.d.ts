@@ -17,7 +17,7 @@ interface FileSystemHandle {
 
 interface FileSystemFileHandle extends FileSystemHandle {
   getFile(): Promisey<File>;
-  createWriter(): Promise<FileSystemWriter>;
+  createWritable(): Promise<FileSystemWriter>;
 }
 
 function chooseFileSystemEntries(opts: ChooseFileSystemEntriesOptions): Promise<FileSystemFileHandle>;
