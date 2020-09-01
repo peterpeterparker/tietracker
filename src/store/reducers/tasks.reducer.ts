@@ -5,13 +5,13 @@ import {TaskInProgress} from '../interfaces/task.inprogress';
 
 export interface TaskState {
   taskInProgress: TaskInProgress | undefined;
-  taskItems: TaskItem[] | [];
+  taskItems: TaskItem[];
   taskItemsSelectedDate: Date;
 }
 
 const initialState: TaskState = {
   taskInProgress: undefined,
-  taskItems: [],
+  taskItems: [] as TaskItem[],
   taskItemsSelectedDate: new Date(),
 };
 
