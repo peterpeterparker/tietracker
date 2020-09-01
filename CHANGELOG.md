@@ -5,6 +5,7 @@
 ### Features
 
 - feat: display total billable hours on export modal ([#77](https://github.com/peterpeterparker/tietracker/issues/77))
+- update dependencies
 
 <a name="1.2.1"></a>
 
