@@ -2,7 +2,7 @@
   "invoice": {
     "no_period": "No period defined.",
     "empty": "For the selected period nothing can be billed.",
-    "billable": "For the selected period <strong>{{amount}}</strong> can be billed.",
+    "billable": "For the selected period <strong>{{amount}}</strong> can be billed, i.e. {{hours}}.",
     "from": "From",
     "to": "To",
     "close": "Close invoice",
