@@ -115,7 +115,7 @@ const About: React.FC = () => {
 
           <p>
             <IonLabel>
-              I, David Dal Busco, am the developer behind this application. I am a freelancer, full stack developer Web, PWA and Mobile iOS/Android, UX and IT
+              I, David Dal Busco, am the developer behind this application. I am a freelancer, web developer Web, PWA and Mobile iOS/Android, UX and IT
               consultant by day and the creator of{' '}
               <a href="https://deckdeckgo.com" target="_blank" rel="noopener noreferrer">
                 DeckDeckGo
