@@ -1,3 +1,11 @@
+<a name="1.3.0"></a>
+
+# 1.3.0 (2020-09-01)
+
+### Features
+
+- feat: display total billable hours on export modal ([#77](https://github.com/peterpeterparker/tietracker/issues/77))
+
 <a name="1.2.1"></a>
 
 # 1.2.1 (2020-05-24)

@@ -35,6 +35,7 @@ import {formatCurrency} from '../../utils/utils.currency';
 import {pickerColor} from '../../utils/utils.picker';
 import {isChrome, isHttps} from '../../utils/utils.platform';
 import {budgetRatio} from '../../utils/utils.budget';
+import {formatTime} from '../../utils/utils.time';
 
 import {ThemeService} from '../../services/theme/theme.service';
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
@@ -43,6 +44,11 @@ import {ExportService} from '../../services/export/export.service';
 interface Props extends RootProps {
   closeAction: Function;
   invoice: Invoice | undefined;
+}
+
+interface Billable {
+  billable: number;
+  hours: number;
 }
 
 const InvoiceModal: React.FC<Props> = (props) => {
@@ -57,7 +63,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
   const color: string | undefined = props.invoice !== undefined && props.invoice.client ? props.invoice.client.color : undefined;
   const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
 
-  const [billable, setBillable] = useState<number | undefined>(undefined);
+  const [billable, setBillable] = useState<Billable | undefined>(undefined);
 
   const [inProgress, setInProgress] = useState<boolean>(false);
 
@@ -78,7 +84,14 @@ const InvoiceModal: React.FC<Props> = (props) => {
       setFrom(period ? period.from : undefined);
       setTo(period ? period.to : undefined);
 
-      setBillable(props.invoice ? props.invoice.billable : undefined);
+      setBillable(
+        props.invoice
+          ? {
+              billable: props.invoice.billable,
+              hours: props.invoice.hours,
+            }
+          : undefined
+      );
     } else {
       setFrom(undefined);
       setTo(undefined);
@@ -131,7 +144,14 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
     await InvoicesService.getInstance().listProjectInvoice(
       (data: Invoice) => {
-        setBillable(data !== undefined ? data.billable : undefined);
+        setBillable(
+          data !== undefined
+            ? {
+                billable: data.billable,
+                hours: data.hours,
+              }
+            : undefined
+        );
       },
       props.invoice.project_id,
       from,
@@ -179,7 +199,15 @@ const InvoiceModal: React.FC<Props> = (props) => {
       return <p>{t('invoices:invoice.empty')}</p>;
     }
 
-    return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.billable', {amount: formatCurrency(billable, settings.currency.currency)})}}></p>;
+    return (
+      <p
+        dangerouslySetInnerHTML={{
+          __html: t('invoices:invoice.billable', {
+            amount: formatCurrency(billable.billable, settings.currency.currency),
+            hours: formatTime(billable.hours * 3600 * 1000),
+          }),
+        }}></p>
+    );
   }
 
   function renderBudget() {
@@ -188,12 +216,12 @@ const InvoiceModal: React.FC<Props> = (props) => {
     }
 
     const billed: number = props.invoice.project.budget.billed !== undefined ? props.invoice.project.budget.billed : 0;
-    const cumulated: string = formatCurrency(billed + billable, settings.currency.currency);
+    const cumulated: string = formatCurrency(billed + billable.billable, settings.currency.currency);
 
     if (props.invoice.project.budget.budget === undefined || props.invoice.project.budget.budget <= 0) {
       return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.billed', {amount: cumulated})}}></p>;
     } else {
-      let ratio: string | undefined = budgetRatio(props.invoice.project.budget.budget, props.invoice.project.budget.billed, billable);
+      let ratio: string | undefined = budgetRatio(props.invoice.project.budget.budget, props.invoice.project.budget.billed, billable.billable);
 
       if (ratio === undefined) {
         ratio = '0%';
