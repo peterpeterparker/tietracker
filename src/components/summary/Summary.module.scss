@@ -19,6 +19,10 @@
 .title {
   margin-bottom: 0;
   padding-top: 12px;
+
+  &:global(.extended) {
+    margin-top: 0;
+  }
 }
 
 .subtitle {
@@ -39,6 +43,12 @@
 
   width: calc(100% - 16px);
   height: 100%;
+
+  @media (min-width: 768px) {
+    &:global(.extended) {
+      grid-template-columns: repeat(3, calc(100% / 3));
+    }
+  }
 
   @media (max-width: 768px) {
     label {

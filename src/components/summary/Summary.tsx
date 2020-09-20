@@ -60,9 +60,9 @@ const Summary: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="ion-padding-end">
-      <h1 className={styles.title}>{t('title')}</h1>
+      <h1 className={`${styles.title} ${props.extended ? 'extended' : ''}`}>{t('title')}</h1>
 
-      <div className={styles.summary}>
+      <div className={`${styles.summary} ${props.extended ? 'extended' : ''}`}>
         <IonCard className={styles.card} color="card">
           <h2 className={styles.title}>{t('today')}</h2>
           <IonCardHeader className={styles.header}>
