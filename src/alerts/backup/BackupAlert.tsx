@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 
-import {IonAlert, IonLoading, isPlatform} from '@ionic/react';
+import {IonAlert, IonLoading} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
-
-import {isChrome, isHttps} from '../../utils/utils.platform';
 
 import {rootConnector} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
@@ -39,15 +37,7 @@ const BackupAlert: React.FC = () => {
   async function doExport() {
     setShowLoading(true);
 
-    if (isPlatform('desktop') && isChrome() && isHttps()) {
-      await BackupService.getInstance().exportNativeFileSystem(settings.currency, settings.vat);
-    } else if (isPlatform('hybrid')) {
-      await BackupService.getInstance().exportMobileFileSystem(settings.currency, settings.vat);
-    } else {
-      await BackupService.getInstance().exportDownload(settings.currency, settings.vat);
-    }
-
-    await BackupService.getInstance().setBackup();
+    await BackupService.getInstance().backup(settings);
 
     setShowLoading(false);
   }

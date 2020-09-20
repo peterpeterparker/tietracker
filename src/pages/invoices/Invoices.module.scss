@@ -14,8 +14,22 @@
 
             ion-icon {
                 margin-right: 4px;
-                color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54);
+                color: rgba(var(--ion-color-button-rgb, 0, 0, 0), 0.54);
             }
         }
     }
 }
+
+.backup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    ion-label {
+        font-size: var(--font-size-small);
+        margin: 4px 0;
+        color: var(--ion-color-button);
+    }
+}
+

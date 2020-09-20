@@ -4,6 +4,7 @@
 
 ### Features
 
+- backup on demand ([#80](https://github.com/peterpeterparker/tietracker/issues/80))
 - display the total of the open invoices ([#81](https://github.com/peterpeterparker/tietracker/issues/81))
 - add the summary to the stats tab
 
