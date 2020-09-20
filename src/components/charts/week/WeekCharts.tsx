@@ -1,7 +1,5 @@
 import React, {RefObject, useEffect, useRef, useState} from 'react';
 
-import {IonLabel} from '@ionic/react';
-
 import {debounce} from '@deckdeckgo/utils';
 
 import {useSelector} from 'react-redux';
