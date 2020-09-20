@@ -110,7 +110,7 @@ const WeekCharts: React.FC = () => {
 
   function renderContent() {
     if (data === undefined) {
-      return <IonLabel className="placeholder">{t('empty')}</IonLabel>;
+      return undefined;
     }
 
     return (

@@ -1,6 +1,5 @@
 {
   "title": "Statistics",
-  "empty": "No entries registered this week.",
   "charts": {
     "week": {
       "title": "Week Entries <small>(hours/day)</small>"
