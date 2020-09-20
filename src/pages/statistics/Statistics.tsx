@@ -1,17 +1,14 @@
 import React, {useState} from 'react';
 
-import {IonContent, IonHeader, IonPage, IonToolbar, useIonViewDidLeave, useIonViewWillEnter} from '@ionic/react';
-
-import {useTranslation} from 'react-i18next';
+import {IonContent, IonPage, useIonViewDidLeave, useIonViewWillEnter} from '@ionic/react';
 
 import {rootConnector} from '../../store/thunks/index.thunks';
 
 import Header from '../../components/header/Header';
 import WeekCharts from '../../components/charts/week/WeekCharts';
+import Summary from '../../components/summary/Summary';
 
 const Statistics: React.FC = () => {
-  const {t} = useTranslation('statistics');
-
   const [entered, setEntered] = useState<boolean>(false);
 
   useIonViewWillEnter(() => {
@@ -28,11 +25,7 @@ const Statistics: React.FC = () => {
         <Header></Header>
 
         <main className="ion-padding">
-          <IonHeader>
-            <IonToolbar className="title">
-              <h1>{t('title')}</h1>
-            </IonToolbar>
-          </IonHeader>
+          <Summary extended={true}></Summary>
 
           {entered ? <WeekCharts></WeekCharts> : undefined}
         </main>

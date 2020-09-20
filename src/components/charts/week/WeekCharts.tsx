@@ -1,5 +1,7 @@
 import React, {RefObject, useEffect, useRef, useState} from 'react';
 
+import {IonLabel} from '@ionic/react';
+
 import {debounce} from '@deckdeckgo/utils';
 
 import {useSelector} from 'react-redux';
@@ -11,10 +13,9 @@ import styles from './WeekCharts.module.scss';
 
 import {rootConnector} from '../../../store/thunks/index.thunks';
 import {RootState} from '../../../store/reducers';
-
 import {Summary as SummaryData, SummaryDay} from '../../../store/interfaces/summary';
+
 import {format, toDateObj} from '../../../utils/utils.date';
-import {IonLabel} from '@ionic/react';
 
 const WeekCharts: React.FC = () => {
   const {t} = useTranslation('statistics');
@@ -114,7 +115,10 @@ const WeekCharts: React.FC = () => {
 
     return (
       <>
-        <IonLabel className="placeholder">{t('charts.week.title')}</IonLabel>
+        <h1
+          dangerouslySetInnerHTML={{
+            __html: t('charts.week.title'),
+          }}></h1>
         <div ref={containerRef} className={styles.container + ' chart-container'}>
           {/*
             // @ts-ignore */}
