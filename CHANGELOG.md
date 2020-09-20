@@ -8,6 +8,10 @@
 - display the total of the open invoices ([#81](https://github.com/peterpeterparker/tietracker/issues/81))
 - add the summary to the stats tab
 
+### Fix
+
+- excel export "duration" column references in case of backup
+
 <a name="1.3.0"></a>
 
 # 1.3.0 (2020-09-01)

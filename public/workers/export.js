@@ -142,7 +142,7 @@ function exportInvoice(invoice, projects, filterProjectId) {
       return;
     }
 
-    const results = convertTasks(filteredTasks, projects, undefined);
+    const results = convertTasks(filteredTasks, projects, undefined, false);
 
     if (!results || results.length <= 0) {
       resolve(undefined);

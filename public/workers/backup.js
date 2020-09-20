@@ -91,7 +91,7 @@ function backupInvoice(invoice, projects, clients) {
       return;
     }
 
-    const results = convertTasks(filteredTasks, projects, clients);
+    const results = convertTasks(filteredTasks, projects, clients, true);
 
     if (!results || results.length <= 0) {
       resolve(undefined);
