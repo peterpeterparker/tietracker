@@ -1,5 +1,7 @@
 import React, {RefObject, useEffect, useRef, useState} from 'react';
 
+import {IonLabel} from '@ionic/react';
+
 import {debounce} from '@deckdeckgo/utils';
 
 import {useSelector} from 'react-redux';
@@ -11,12 +13,9 @@ import styles from './WeekCharts.module.scss';
 
 import {rootConnector} from '../../../store/thunks/index.thunks';
 import {RootState} from '../../../store/reducers';
-
 import {Summary as SummaryData, SummaryDay} from '../../../store/interfaces/summary';
+
 import {format, toDateObj} from '../../../utils/utils.date';
-import {IonLabel} from '@ionic/react';
-import {formatCurrency} from '../../../utils/utils.currency';
-import {formatTime} from '../../../utils/utils.time';
 
 const WeekCharts: React.FC = () => {
   const {t} = useTranslation('statistics');

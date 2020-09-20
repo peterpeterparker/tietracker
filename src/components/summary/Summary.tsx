@@ -54,6 +54,8 @@ const Summary: React.FC<Props> = (props: Props) => {
 
       setOpen(openSum);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [invoices]);
 
   return (
