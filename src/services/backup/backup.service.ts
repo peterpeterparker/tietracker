@@ -1,15 +1,20 @@
+import {isPlatform} from '@ionic/react';
+
 import {get, set} from 'idb-keyval';
 
 import {differenceInWeeks, format} from 'date-fns';
 
-import {download, getMobileDir, getNewFileHandle, shareMobile, writeFile} from '../../utils/utils.filesystem';
-import {xlsxLabels} from '../../utils/utils.export';
-
-import {Currency} from '../../definitions/currency';
+import i18next from 'i18next';
 
 import {DirectoryEntry, File, IWriteOptions} from '@ionic-native/file';
 
-import i18next from 'i18next';
+import {download, getMobileDir, getNewFileHandle, shareMobile, writeFile} from '../../utils/utils.filesystem';
+import {xlsxLabels} from '../../utils/utils.export';
+import {isChrome, isHttps} from '../../utils/utils.platform';
+
+import {Currency} from '../../definitions/currency';
+
+import {Settings} from '../../models/settings';
 
 export class BackupService {
   private static instance: BackupService;
@@ -53,6 +58,18 @@ export class BackupService {
 
   async setBackup() {
     await set('backup', new Date());
+  }
+
+  async backup(settings: Settings) {
+    if (isPlatform('desktop') && isChrome() && isHttps()) {
+      await this.exportNativeFileSystem(settings.currency, settings.vat);
+    } else if (isPlatform('hybrid')) {
+      await this.exportMobileFileSystem(settings.currency, settings.vat);
+    } else {
+      await this.exportDownload(settings.currency, settings.vat);
+    }
+
+    await this.setBackup();
   }
 
   exportNativeFileSystem(currency: Currency, vat: number | undefined): Promise<void> {

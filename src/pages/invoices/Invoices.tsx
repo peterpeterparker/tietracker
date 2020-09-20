@@ -13,13 +13,16 @@ import {
   IonLabel,
   IonHeader,
   IonToolbar,
+  IonFab,
+  IonFabButton,
+  IonLoading,
 } from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
 import {useSelector} from 'react-redux';
 
-import {download, cashOutline} from 'ionicons/icons';
+import {download, cashOutline, saveOutline} from 'ionicons/icons';
 
 import styles from './Invoices.module.scss';
 
@@ -28,24 +31,36 @@ import {RootState} from '../../store/reducers';
 import {Invoice} from '../../store/interfaces/invoice';
 
 import {formatCurrency} from '../../utils/utils.currency';
+import {contrast} from '../../utils/utils.color';
 
 import {Settings} from '../../models/settings';
 
 import Header from '../../components/header/Header';
 
 import InvoiceModal from '../../modals/invoice/InvoiceModal';
-import {contrast} from '../../utils/utils.color';
+
+import {BackupService} from '../../services/backup/backup.service';
 
 const Invoices: React.FC = () => {
-  const {t} = useTranslation('invoices');
+  const {t} = useTranslation(['invoices', 'common']);
 
   const invoices: Invoice[] = useSelector((state: RootState) => state.invoices.invoices);
   const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | undefined>(undefined);
 
+  const [showLoading, setShowLoading] = useState(false);
+
   function closeAndRefresh() {
     setSelectedInvoice(undefined);
+  }
+
+  async function doExport() {
+    setShowLoading(true);
+
+    await BackupService.getInstance().backup(settings);
+
+    setShowLoading(false);
   }
 
   return (
@@ -56,7 +71,7 @@ const Invoices: React.FC = () => {
         <main className="ion-padding">
           <IonHeader>
             <IonToolbar className="title">
-              <h1>{t('invoices.title')}</h1>
+              <h1>{t('invoices:invoices.title')}</h1>
             </IonToolbar>
           </IonHeader>
 
@@ -66,13 +81,29 @@ const Invoices: React.FC = () => {
         <IonModal isOpen={selectedInvoice !== undefined} onDidDismiss={closeAndRefresh} cssClass="fullscreen">
           <InvoiceModal closeAction={closeAndRefresh} invoice={selectedInvoice}></InvoiceModal>
         </IonModal>
+
+        {renderBackup()}
+
+        <IonLoading isOpen={showLoading} message={t('common:actions.wait')} />
       </IonContent>
     </IonPage>
   );
 
+  function renderBackup() {
+    return (
+      <IonFab vertical="bottom" horizontal="end" slot="fixed" className={`${styles.backup}`}>
+        <IonFabButton onClick={() => doExport()} color="button">
+          <IonIcon icon={saveOutline} />
+        </IonFabButton>
+
+        <IonLabel>{t('invoices:invoices.backup')}</IonLabel>
+      </IonFab>
+    );
+  }
+
   function renderProjects() {
     if (!invoices || invoices.length <= 0) {
-      return <IonLabel className="placeholder">{t('invoices.empty')}</IonLabel>;
+      return <IonLabel className="placeholder">{t('invoices:invoices.empty')}</IonLabel>;
     }
 
     return (
@@ -92,7 +123,7 @@ const Invoices: React.FC = () => {
               </IonCardHeader>
               <IonCardContent>
                 <IonLabel>
-                  <IonIcon icon={cashOutline} aria-label={t('invoices.open_bill')} /> {formatCurrency(invoice.billable, settings.currency.currency)}
+                  <IonIcon icon={cashOutline} aria-label={t('invoices:invoices.open_bill')} /> {formatCurrency(invoice.billable, settings.currency.currency)}
                 </IonLabel>
               </IonCardContent>
               <IonRippleEffect></IonRippleEffect>
