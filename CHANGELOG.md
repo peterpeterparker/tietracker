@@ -1,3 +1,12 @@
+<a name="1.4.0"></a>
+
+# 1.4.0 (2020-09-20)
+
+### Features
+
+- display the total of the open invoices ([#81](https://github.com/peterpeterparker/tietracker/issues/81))
+- add the summary to the stats tab
+
 <a name="1.3.0"></a>
 
 # 1.3.0 (2020-09-01)
