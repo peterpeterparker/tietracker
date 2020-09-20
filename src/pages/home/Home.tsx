@@ -90,7 +90,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
 
           <div className={styles.addclient}>{renderClientsAction()}</div>
 
-          <Summary></Summary>
+          <Summary extended={false}></Summary>
 
           <Projects addAction={() => setShowModalClient(true)}></Projects>
 
