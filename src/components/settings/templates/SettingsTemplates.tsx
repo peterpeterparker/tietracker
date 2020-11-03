@@ -79,10 +79,13 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
         {renderDescriptions()}
       </IonReorderGroup>
       <div>
-        <button type="button" onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event)}>
+        <button
+          type="button"
+          onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event)}
+          className={`${styles.templateAction} ion-margin-end`}>
           <IonIcon icon={addOutline} /> Add a template
         </button>
-        <button type="button" onClick={($event: React.MouseEvent | React.TouchEvent) => toggleReorder($event)}>
+        <button type="button" onClick={($event: React.MouseEvent | React.TouchEvent) => toggleReorder($event)} className={styles.templateAction}>
           <IonIcon icon={repeatOutline} /> Reorder
         </button>
       </div>
