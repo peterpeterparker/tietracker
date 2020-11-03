@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 
-import {IonItem, IonLabel, IonReorderGroup, IonReorder, IonList} from '@ionic/react';
+import {IonItem, IonLabel, IonReorderGroup, IonReorder, IonList, IonIcon, IonAlert} from '@ionic/react';
 import {ItemReorderEventDetail} from '@ionic/core';
+
+import {addOutline, pencilOutline, repeatOutline} from 'ionicons/icons';
 
 import {useTranslation} from 'react-i18next';
 
@@ -15,6 +17,10 @@ export interface SettingsDescriptionProps {
 
 const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
   const {t} = useTranslation('settings');
+
+  const [showAlert4, setShowAlert4] = useState(false);
+
+  const [reorder, setReorder] = useState<boolean>(false);
 
   function doReorder($event: CustomEvent<ItemReorderEventDetail>) {
     if (!$event || !$event.detail) {
@@ -38,6 +44,30 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
     $event.detail.complete();
   }
 
+  function toggleReorder($event: React.MouseEvent | React.TouchEvent) {
+    $event.stopPropagation();
+
+    setReorder(!reorder);
+  }
+
+  function openAddTemplate($event: React.MouseEvent | React.TouchEvent) {
+    $event.stopPropagation();
+
+    setShowAlert4(true);
+  }
+
+  async function addTemplate($event: {template: string}) {
+    if (!$event || !$event.template || $event.template === '') {
+      return;
+    }
+
+    if (!props.settings || !props.settings.descriptions || props.settings.descriptions.length <= 0) {
+      props.settings.descriptions = [];
+    }
+
+    props.settings.descriptions.push($event.template);
+  }
+
   return (
     <>
       <IonList className={`inputs-list ${styles.introduction}`}>
@@ -45,9 +75,19 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
           <IonLabel>{t('templates.title')}</IonLabel>
         </IonItem>
       </IonList>
-      <IonReorderGroup disabled={false} className="reorder-list ion-margin-bottom" onIonItemReorder={doReorder}>
+      <IonReorderGroup disabled={!reorder} className="reorder-list ion-margin-bottom" onIonItemReorder={doReorder}>
         {renderDescriptions()}
       </IonReorderGroup>
+      <div>
+        <button type="button" onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event)}>
+          <IonIcon icon={addOutline} /> Add a template
+        </button>
+        <button type="button" onClick={($event: React.MouseEvent | React.TouchEvent) => toggleReorder($event)}>
+          <IonIcon icon={repeatOutline} /> Reorder
+        </button>
+      </div>
+
+      {renderAddTemplate()}
     </>
   );
 
@@ -58,12 +98,45 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
 
     return props.settings.descriptions.map((description: string) => {
       return (
-        <IonItem key={description}>
+        <IonItem key={description} onClick={() => console.log('yo')}>
           <IonLabel>{description}</IonLabel>
-          <IonReorder slot="end" />
+          {reorder ? <IonReorder slot="end" /> : <IonIcon icon={pencilOutline} slot="end" />}
         </IonItem>
       );
     });
+  }
+
+  function renderAddTemplate() {
+    return (
+      <IonAlert
+        isOpen={showAlert4}
+        onDidDismiss={() => setShowAlert4(false)}
+        header={'Add a new template'}
+        inputs={[
+          {
+            name: 'template',
+            type: 'text',
+            placeholder: 'Description of the task',
+          },
+        ]}
+        buttons={[
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              // Do nothing
+            },
+          },
+          {
+            text: 'Add',
+            handler: async ($event: {template: string}) => {
+              await addTemplate($event);
+            },
+          },
+        ]}
+      />
+    );
   }
 };
 
