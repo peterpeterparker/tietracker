@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {IonItem, IonLabel, IonReorderGroup, IonReorder, IonList, IonIcon, IonAlert} from '@ionic/react';
+import {IonItem, IonLabel, IonReorderGroup, IonReorder, IonList, IonIcon, IonModal} from '@ionic/react';
 import {ItemReorderEventDetail} from '@ionic/core';
 
 import {addOutline, pencilOutline, repeatOutline} from 'ionicons/icons';
@@ -11,6 +11,8 @@ import styles from './SettingsTemplates.module.scss';
 
 import {Settings} from '../../../models/settings';
 
+import TemplateModal from '../../../modals/template/TemplateModal';
+
 export interface SettingsDescriptionProps {
   settings: Settings;
 }
@@ -18,7 +20,7 @@ export interface SettingsDescriptionProps {
 const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
   const {t} = useTranslation('settings');
 
-  const [showAlert4, setShowAlert4] = useState(false);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
 
   const [reorder, setReorder] = useState<boolean>(false);
 
@@ -53,11 +55,11 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
   function openAddTemplate($event: React.MouseEvent | React.TouchEvent) {
     $event.stopPropagation();
 
-    setShowAlert4(true);
+    setShowTemplateModal(true);
   }
 
-  async function addTemplate($event: {template: string}) {
-    if (!$event || !$event.template || $event.template === '') {
+  async function addTemplate(template?: string) {
+    if (!template || template === undefined || template === '') {
       return;
     }
 
@@ -65,7 +67,13 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
       props.settings.descriptions = [];
     }
 
-    props.settings.descriptions.push($event.template);
+    props.settings.descriptions.push(template);
+  }
+
+  async function closeTemplateModal(template?: string) {
+    setShowTemplateModal(false);
+
+    await addTemplate(template);
   }
 
   return (
@@ -83,10 +91,10 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
           type="button"
           onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event)}
           className={`${styles.templateAction} ion-margin-end`}>
-          <IonIcon icon={addOutline} /> Add a template
+          <IonIcon icon={addOutline} /> {t('templates.actions.add')}
         </button>
         <button type="button" onClick={($event: React.MouseEvent | React.TouchEvent) => toggleReorder($event)} className={styles.templateAction}>
-          <IonIcon icon={repeatOutline} /> Reorder
+          <IonIcon icon={repeatOutline} /> {t('templates.actions.reorder')}
         </button>
       </div>
 
@@ -111,34 +119,9 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
 
   function renderAddTemplate() {
     return (
-      <IonAlert
-        isOpen={showAlert4}
-        onDidDismiss={() => setShowAlert4(false)}
-        header={'Add a new template'}
-        inputs={[
-          {
-            name: 'template',
-            type: 'text',
-            placeholder: 'Description of the task',
-          },
-        ]}
-        buttons={[
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: () => {
-              // Do nothing
-            },
-          },
-          {
-            text: 'Add',
-            handler: async ($event: {template: string}) => {
-              await addTemplate($event);
-            },
-          },
-        ]}
-      />
+      <IonModal isOpen={showTemplateModal} onDidDismiss={async () => await closeTemplateModal()} cssClass="fullscreen">
+        <TemplateModal closeAction={async (template?: string) => await closeTemplateModal(template)}></TemplateModal>
+      </IonModal>
     );
   }
 };
