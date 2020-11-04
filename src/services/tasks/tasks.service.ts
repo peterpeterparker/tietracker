@@ -2,7 +2,7 @@ import {get, set, del} from 'idb-keyval';
 
 import {v4 as uuid} from 'uuid';
 
-import {addMinutes, isBefore, lightFormat, roundToNearestMinutes, subMinutes} from 'date-fns';
+import {addMinutes, isBefore, lightFormat, roundToNearestMinutes, setSeconds, subMinutes} from 'date-fns';
 
 import {Project} from '../../models/project';
 import {Task, TaskData} from '../../models/task';
@@ -102,13 +102,13 @@ export class TasksService {
 
         task.data.updated_at = now.getTime();
 
-        const from: Date = roundTime > 0 ? roundToNearestMinutes(task.data.from, {nearestTo: roundTime}) : new Date(task.data.from);
+        const from: Date = roundTime > 0 ? roundToNearestMinutes(task.data.from, {nearestTo: roundTime}) : setSeconds(new Date(task.data.from), 0);
         task.data.from = from.getTime();
 
         const toCompare: Date = endNow ? now : new Date(task.data.to as number | Date);
         const to: Date = isBefore(subMinutes(toCompare, roundTime), from) ? addMinutes(from, roundTime) : toCompare;
 
-        task.data.to = roundTime > 0 ? roundToNearestMinutes(to, {nearestTo: roundTime}).getTime() : to.getTime();
+        task.data.to = roundTime > 0 ? roundToNearestMinutes(to, {nearestTo: roundTime}).getTime() : setSeconds(to.getTime(), 0);
 
         await this.saveTask(task);
 
