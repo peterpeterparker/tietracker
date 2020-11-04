@@ -60,15 +60,11 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
       return;
     }
 
-    if (props.settings.descriptions === undefined || props.settings.descriptions.length <= 0) {
-      return;
-    }
+    const newTemplates: Template[] = [...templates];
 
-    const newDescriptions: string[] = [...props.settings.descriptions];
+    newTemplates.splice($event.detail.to, 0, ...newTemplates.splice($event.detail.from, 1));
 
-    newDescriptions.splice($event.detail.to, 0, ...newDescriptions.splice($event.detail.from, 1));
-
-    props.settings.descriptions = [...newDescriptions];
+    setTemplates([...newTemplates]);
 
     $event.detail.complete();
   }
@@ -80,6 +76,10 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
   }
 
   function openAddTemplate($event: React.MouseEvent | React.TouchEvent, template: Template | undefined) {
+    if (reorder) {
+      return;
+    }
+
     $event.stopPropagation();
 
     setSelectedTemplate(template);
@@ -121,10 +121,18 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
           type="button"
           onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event, undefined)}
           className={`${styles.templateAction} ion-margin-end`}>
-          <IonIcon icon={addOutline} /> {t('templates.actions.add')}
+          <IonIcon icon={addOutline} className={styles.icon} /> {t('templates.actions.add')}
         </button>
         <button type="button" onClick={($event: React.MouseEvent | React.TouchEvent) => toggleReorder($event)} className={styles.templateAction}>
-          <IonIcon icon={repeatOutline} /> {t('templates.actions.reorder')}
+          {!reorder ? (
+            <>
+              <IonIcon icon={repeatOutline} className={styles.icon} /> {t('templates.actions.reorder')}
+            </>
+          ) : (
+            <>
+              <IonIcon icon={pencilOutline} className={styles.icon} /> {t('templates.actions.edit')}
+            </>
+          )}
         </button>
       </div>
 
@@ -135,7 +143,11 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
   function renderDescriptions() {
     return templates.map((template: Template) => {
       return (
-        <IonItem key={template.key} onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event, template)}>
+        <IonItem
+          button={!reorder}
+          detail={false}
+          key={template.key}
+          onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event, template)}>
           <IonLabel>{template.description}</IonLabel>
           {reorder ? <IonReorder slot="end" /> : <IonIcon icon={pencilOutline} slot="end" />}
         </IonItem>
