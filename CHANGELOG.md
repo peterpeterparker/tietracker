@@ -6,6 +6,10 @@
 
 - add, remove and edit the templates ([#86](https://github.com/peterpeterparker/tietracker/issues/86))
 
+### Fix
+
+- round seconds on manual entry ([#85](https://github.com/peterpeterparker/tietracker/issues/85))
+
 <a name="1.4.0"></a>
 
 # 1.4.0 (2020-09-20)
