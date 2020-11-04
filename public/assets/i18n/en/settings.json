@@ -26,7 +26,15 @@
     }
   },
   "templates": {
-    "title": "Templates for the descriptions of the tasks."
+    "title": "Templates for the descriptions of the tasks.",
+    "actions": {
+      "add": "Add a template",
+      "reorder": "Reorder",
+      "edit": "Edit templates"
+    },
+    "edit": {
+      "title": "Template"
+    }
   },
   "tracker": {
     "time": {
