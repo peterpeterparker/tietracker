@@ -1,27 +1,34 @@
-import React, {FormEvent, useState} from 'react';
+import React, {FormEvent, useEffect, useState} from 'react';
 
 import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonTitle, IonToolbar} from '@ionic/react';
 
 import {close} from 'ionicons/icons';
 
+import {v4 as uuid} from 'uuid';
+
 import {useTranslation} from 'react-i18next';
 
 interface Props {
-  closeAction: (template?: string) => Promise<void>;
+  closeAction: (template?: Template) => Promise<void>;
+  template: Template | undefined;
 }
 
 const TemplateModal: React.FC<Props> = (props: Props) => {
   const {t} = useTranslation(['settings', 'common']);
 
-  const [template, setTemplate] = useState<string | undefined>(undefined);
+  const [description, setDescription] = useState<string | undefined>(undefined);
   const [valid, setValid] = useState<boolean>(false);
 
+  useEffect(() => {
+    setDescription(props.template ? props.template.description : undefined);
+  }, [props.template]);
+
   function handleTemplateInput($event: CustomEvent<KeyboardEvent>) {
-    setTemplate(($event.target as InputTargetEvent).value);
+    setDescription(($event.target as InputTargetEvent).value);
   }
 
   function validateTemplate() {
-    setValid(template !== undefined && template.length >= 3);
+    setValid(description !== undefined && description.length >= 3);
   }
 
   async function handleSubmit($event: FormEvent<HTMLFormElement>) {
@@ -33,7 +40,10 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
     }
 
     try {
-      await props.closeAction(template);
+      await props.closeAction({
+        key: props.template ? props.template.key : uuid(),
+        description: description as string,
+      });
     } catch (err) {
       console.error(err);
     }
@@ -66,6 +76,7 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
                   maxlength={32}
                   required={true}
                   input-mode="text"
+                  value={description}
                   onIonInput={($event: CustomEvent<KeyboardEvent>) => handleTemplateInput($event)}
                   onIonChange={() => validateTemplate()}></IonInput>
               </IonItem>
