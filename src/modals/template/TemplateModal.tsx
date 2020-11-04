@@ -9,7 +9,7 @@ import {v4 as uuid} from 'uuid';
 import {useTranslation} from 'react-i18next';
 
 interface Props {
-  closeAction: (template?: Template) => Promise<void>;
+  closeAction: (template?: Template, action?: 'edit' | 'delete') => Promise<void>;
   template: Template | undefined;
 }
 
@@ -39,14 +39,20 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
       return;
     }
 
-    try {
-      await props.closeAction({
+    await props.closeAction(
+      {
         key: props.template ? props.template.key : uuid(),
         description: description as string,
-      });
-    } catch (err) {
-      console.error(err);
-    }
+      },
+      'edit'
+    );
+  }
+
+  async function deleteTemplate($event: React.MouseEvent | React.TouchEvent) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    await props.closeAction(props.template, 'delete');
   }
 
   return (
@@ -87,6 +93,8 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
                 <IonLabel>{t('common:actions.submit')}</IonLabel>
               </IonButton>
 
+              {renderDelete()}
+
               <button type="button" onClick={() => props.closeAction()}>
                 {t('common:actions.cancel')}
               </button>
@@ -96,6 +104,23 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
       </IonContent>
     </>
   );
+
+  function renderDelete() {
+    if (!props.template) {
+      return undefined;
+    }
+
+    return (
+      <IonButton
+        type="button"
+        onClick={($event: React.MouseEvent | React.TouchEvent) => deleteTemplate($event)}
+        color="button"
+        fill="outline"
+        disabled={props.template === undefined}>
+        <IonLabel>{t('common:actions.delete')}</IonLabel>
+      </IonButton>
+    );
+  }
 };
 
 export default TemplateModal;
