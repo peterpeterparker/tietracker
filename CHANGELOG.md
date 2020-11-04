@@ -5,6 +5,7 @@
 ### Features
 
 - add, remove and edit the templates ([#86](https://github.com/peterpeterparker/tietracker/issues/86))
+- cuter suspense loading spinner ([#89](https://github.com/peterpeterparker/tietracker/issues/89))
 
 ### Fix
 

@@ -64,6 +64,7 @@ import About from './pages/about/About';
 import Terms from './pages/terms/Terms';
 import Privacy from './pages/privacy/Privacy';
 import BackupAlert from './alerts/backup/BackupAlert';
+import Loading from './components/loading/Loading';
 
 import {Plugins} from '@capacitor/core';
 
@@ -112,7 +113,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
   }
 
   return (
-    <Suspense fallback="loading">
+    <Suspense fallback={<Loading />}>
       <IonApp>
         <IonReactRouter>
           <IonTabs onIonTabsDidChange={($event) => setSelectedTab($event.detail.tab)}>
