@@ -175,7 +175,7 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
 
   function renderAddTemplate() {
     return (
-      <IonModal isOpen={showTemplateModal} onDidDismiss={() => setShowTemplateModal(false)} cssClass="fullscreen">
+      <IonModal isOpen={showTemplateModal} onDidDismiss={() => setShowTemplateModal(false)}>
         <TemplateModal
           template={selectedTemplate}
           closeAction={async (template?: Template, action?: 'edit' | 'delete') => await editTemplateModal(template, action)}></TemplateModal>

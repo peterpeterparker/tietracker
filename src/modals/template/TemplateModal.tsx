@@ -89,7 +89,7 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
             </IonList>
 
             <div className="actions">
-              <IonButton type="submit" disabled={!valid}>
+              <IonButton type="submit" color="button" disabled={!valid}>
                 <IonLabel>{t('common:actions.submit')}</IonLabel>
               </IonButton>
 
