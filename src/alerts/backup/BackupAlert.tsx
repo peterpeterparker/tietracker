@@ -37,7 +37,11 @@ const BackupAlert: React.FC = () => {
   async function doExport() {
     setShowLoading(true);
 
-    await BackupService.getInstance().backup(settings);
+    try {
+      await BackupService.getInstance().backup(settings);
+    } catch (err) {
+      // Error printed in the console
+    }
 
     setShowLoading(false);
   }
