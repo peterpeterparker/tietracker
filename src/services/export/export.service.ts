@@ -50,8 +50,7 @@ export class ExportService {
       }
 
       try {
-        const filename: string = this.filename(invoice, from, to);
-        const fileHandle: FileSystemFileHandle = await getNewFileHandle(filename);
+        const fileHandle: FileSystemFileHandle = await getNewFileHandle();
 
         if (!fileHandle) {
           reject('Cannot access filesystem.');

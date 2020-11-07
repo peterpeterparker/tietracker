@@ -75,8 +75,7 @@ export class BackupService {
   exportNativeFileSystem(currency: Currency, vat: number | undefined): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const filename: string = this.filename();
-        const fileHandle: FileSystemFileHandle = await getNewFileHandle(filename);
+        const fileHandle: FileSystemFileHandle = await getNewFileHandle();
 
         if (!fileHandle) {
           reject('Cannot access filesystem.');

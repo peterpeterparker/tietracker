@@ -4,11 +4,11 @@ import {DirectoryEntry, File} from '@ionic-native/file';
 
 import {SocialSharing} from '@ionic-native/social-sharing';
 
-export async function getNewFileHandle(filename: string): Promise<FileSystemFileHandle> {
+export async function getNewFileHandle(): Promise<FileSystemFileHandle> {
   const opts: SaveFilePickerOptions = {
     types: [
       {
-        description: filename,
+        description: 'Excel Files',
         accept: {
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
         },
