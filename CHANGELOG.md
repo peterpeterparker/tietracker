@@ -10,6 +10,7 @@
 ### Fix
 
 - round seconds on manual entry ([#85](https://github.com/peterpeterparker/tietracker/issues/85))
+- timezone date comparison in entry editing ([#87](https://github.com/peterpeterparker/tietracker/issues/87)) 
 
 <a name="1.4.0"></a>
 
