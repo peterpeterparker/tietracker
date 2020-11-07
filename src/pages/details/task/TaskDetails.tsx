@@ -17,7 +17,7 @@ import {
 } from '@ionic/react';
 import {RouteComponentProps} from 'react-router';
 
-import {isSameDay} from 'date-fns';
+import {isSameDay, parse} from 'date-fns';
 
 import {useTranslation} from 'react-i18next';
 
@@ -69,7 +69,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
   const headerRef: RefObject<any> = useRef();
 
   useEffect(() => {
-    const selectedDay: Date = new Date(props.match.params.day);
+    const selectedDay: Date = parse(props.match.params.day, 'yyyy-MM-dd', new Date());
 
     setValidFrom(from !== undefined && isSameDay(selectedDay, from));
   }, [from, props.match.params.day]);
