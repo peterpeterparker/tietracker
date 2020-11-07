@@ -5,18 +5,18 @@ import {DirectoryEntry, File} from '@ionic-native/file';
 import {SocialSharing} from '@ionic-native/social-sharing';
 
 export async function getNewFileHandle(filename: string): Promise<FileSystemFileHandle> {
-  const opts: ChooseFileSystemEntriesOptions = {
-    type: 'save-file',
-    accepts: [
+  const opts: SaveFilePickerOptions = {
+    types: [
       {
         description: filename,
-        extensions: ['xlsx'],
-        mimeTypes: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+        accept: {
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
+        },
       },
     ],
   };
 
-  return chooseFileSystemEntries(opts);
+  return showSaveFilePicker(opts);
 }
 
 export async function writeFile(fileHandle: FileSystemFileHandle, contents: string | BufferSource | Blob) {
