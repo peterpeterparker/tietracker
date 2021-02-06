@@ -12,7 +12,7 @@ const liveArea = {
 
 const cellPadding = 16;
 const textHeight = 3;
-const headerLineHeight = 1;
+const headerLineHeight = 0.3;
 
 const fontSize = 8;
 
