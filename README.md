@@ -19,7 +19,8 @@
 - [Reporting](#reporting)
 - [Goodies](#goodies)
 - [Technical Stack](#technical-stack)
-- [Run Locally](#run-locally)
+- [Data](#data)
+- [Development](#development)
 - [License](#license)
 
 ## Getting Started
@@ -41,7 +42,7 @@ Yet not complicated but effective reporting.
 
 - ✅ Weekly work summary
 - ✅ Daily list of activities
-- ✅ Export open invoices to XLSX timesheets for Excel, LibreOffice, Numbers, etc.
+- ✅ Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc) and PDF.
 
 ## Goodies
 
@@ -55,14 +56,20 @@ A simple UX with some extra goodies.
 
 This app is developed with [Ionic](https://ionicframework.com), [React](https://reactjs.org), [React-redux](https://react-redux.js.org), Web Workers and other cool stuffs.
 
-## Run Locally
+## Data
+
+It works offline, data are saved with IndexedDB.
+
+No analytics nor tracking are implemented.
+
+## Development
 
 To develop and run this documentation locally, proceed as following:
 
 ```
 git clone https://github.com/peterpeterparker/tietracker
 cd tietracker
-npm install
+npm ci
 ionic serve
 ```
 
