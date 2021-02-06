@@ -21,7 +21,7 @@ export class ClientsService {
   create(data: ClientData): Promise<Client> {
     return new Promise<Client>(async (resolve, reject) => {
       try {
-        let clients: Client[] = await get('clients');
+        let clients: Client[] | undefined = await get('clients');
 
         if (!clients || clients.length <= 0) {
           clients = [];
@@ -55,7 +55,7 @@ export class ClientsService {
   list(): Promise<Client[]> {
     return new Promise<Client[]>(async (resolve, reject) => {
       try {
-        const clients: Client[] = await get('clients');
+        const clients: Client[] | undefined = await get('clients');
 
         if (!clients || clients.length <= 0) {
           resolve([]);
@@ -72,7 +72,7 @@ export class ClientsService {
   find(id: string): Promise<Client | undefined> {
     return new Promise<Client | undefined>(async (resolve) => {
       try {
-        const clients: Client[] = await get('clients');
+        const clients: Client[] | undefined = await get('clients');
 
         if (!clients || clients.length <= 0) {
           resolve(undefined);
@@ -98,7 +98,7 @@ export class ClientsService {
           return;
         }
 
-        const clients: Client[] = await get('clients');
+        const clients: Client[] | undefined = await get('clients');
 
         if (!clients || clients.length <= 0) {
           reject('No clients found.');

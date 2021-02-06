@@ -62,7 +62,7 @@ export class InvoicesService {
   period(): Promise<InvoicesPeriod | undefined> {
     return new Promise<InvoicesPeriod | undefined>(async (resolve) => {
       try {
-        const invoices: string[] = await get('invoices');
+        const invoices: string[] | undefined = await get('invoices');
 
         if (!invoices || invoices.length <= 0) {
           resolve(undefined);

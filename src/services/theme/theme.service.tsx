@@ -44,15 +44,15 @@ export class ThemeService {
 
   async initDarkModePreference(): Promise<boolean> {
     try {
-      const savedDarkModePreference: boolean = await get('dark_mode');
+      const savedDarkModePreference: boolean | undefined = await get('dark_mode');
 
       // If user already specified once a preference, we use that as default
       if (savedDarkModePreference !== undefined) {
-        this.switch(savedDarkModePreference);
+        await this.switch(savedDarkModePreference);
         return savedDarkModePreference;
       }
     } catch (err) {
-      this.switch(false);
+      await this.switch(false);
       return false;
     }
 

@@ -27,7 +27,7 @@ export class ProjectsService {
           return;
         }
 
-        let projects: Project[] = await get('projects');
+        let projects: Project[] | undefined = await get('projects');
 
         if (!projects || projects.length <= 0) {
           projects = [];
@@ -63,7 +63,7 @@ export class ProjectsService {
   list(filterActive: boolean = true): Promise<Project[]> {
     return new Promise<Project[]>(async (resolve, reject) => {
       try {
-        const projects: Project[] = await get('projects');
+        const projects: Project[] | undefined = await get('projects');
 
         if (!projects || projects.length <= 0) {
           resolve([]);
@@ -98,7 +98,7 @@ export class ProjectsService {
   find(id: string | undefined): Promise<Project | undefined> {
     return new Promise<Project | undefined>(async (resolve) => {
       try {
-        const projects: Project[] = await get('projects');
+        const projects: Project[] | undefined = await get('projects');
 
         if (!projects || projects.length <= 0) {
           resolve(undefined);
@@ -124,7 +124,7 @@ export class ProjectsService {
           return;
         }
 
-        const projects: Project[] = await get('projects');
+        const projects: Project[] | undefined = await get('projects');
 
         if (!projects || projects.length <= 0) {
           resolve([]);
@@ -155,7 +155,7 @@ export class ProjectsService {
           return;
         }
 
-        const projects: Project[] = await get('projects');
+        const projects: Project[] | undefined = await get('projects');
 
         if (!projects || projects.length <= 0) {
           resolve();
@@ -191,7 +191,7 @@ export class ProjectsService {
           return;
         }
 
-        const projects: Project[] = await get('projects');
+        const projects: Project[] | undefined = await get('projects');
 
         if (!projects || projects.length <= 0) {
           reject('No projects found.');

@@ -15,8 +15,8 @@ export interface TaskInProgressProjectData {
 }
 
 export interface TaskInProgressData extends TaskData {
-  client: TaskInProgressClientData;
-  project: TaskInProgressProjectData;
+  client?: TaskInProgressClientData;
+  project?: TaskInProgressProjectData;
 }
 
 export interface TaskInProgress {
