@@ -163,15 +163,11 @@ const buildPdfTotal = (doc, total, columns, i18n, currency, vat, y) => {
   // Total
   y = y + textHeight + textHeight + cellPadding;
 
-  doc.setFont('helvetica', 'bold');
-  textTwoColumns(i18n.total, doc, columns[4], columns[5], y);
-
-  const billableTotal = formatCurrency(total.sum, i18n, currency);
-  text(billableTotal, doc, columns[6], y);
-
-  y = y + textHeight + cellPadding;
-
-  doc.line(columns[4].x, y, liveArea.width, y);
+  if (vat > 0) {
+    y = buildPdfTotalVat(doc, total, columns, i18n, currency, vat, y);
+  } else {
+    y = buildPdfTotalNoVat(doc, total.sum, columns, i18n, currency, y);
+  }
 
   // Billable hours
   y = y + cellPadding;
@@ -181,6 +177,53 @@ const buildPdfTotal = (doc, total, columns, i18n, currency, vat, y) => {
 
   const billableHours = printMilliseconds(total.duration);
   text(billableHours, doc, columns[6], y);
+};
+
+const buildPdfTotalNoVat = (doc, sum, columns, i18n, currency, y) => {
+  doc.setFont('helvetica', 'bold');
+  textTwoColumns(i18n.total, doc, columns[4], columns[5], y);
+
+  const billableTotal = formatCurrency(sum, i18n, currency);
+  text(billableTotal, doc, columns[6], y);
+
+  y = y + textHeight + cellPadding;
+
+  doc.line(columns[4].x, y, liveArea.width, y);
+
+  return y;
+};
+
+const buildPdfTotalVat = (doc, total, columns, i18n, currency, vat, y) => {
+  textTwoColumns(i18n.vat_rate, doc, columns[4], columns[5], y);
+  text(`${vat}%`, doc, columns[6], y);
+
+  // Total
+  y = y + textHeight + textHeight + textHeight + textHeight + cellPadding;
+
+  const totalWithVat = total.sum * (vat / 100) + total.sum;
+
+  y = buildPdfTotalNoVat(doc, totalWithVat, columns, i18n, currency, y);
+
+  // Total vat
+  y = y + textHeight + cellPadding;
+
+  doc.setFont('helvetica', 'normal');
+  textTwoColumns(i18n.total_vat_excluded, doc, columns[4], columns[5], y);
+
+  const totalVatExcluded = formatCurrency(total.sum, i18n, currency);
+  text(totalVatExcluded, doc, columns[6], y);
+
+  // Vat
+  y = y + textHeight + cellPadding;
+
+  textTwoColumns(i18n.vat, doc, columns[4], columns[5], y);
+
+  const totalVat = formatCurrency(total.sum * (vat / 100), i18n, currency);
+  text(totalVat, doc, columns[6], y);
+
+  y = y + textHeight + cellPadding;
+
+  return y;
 };
 
 const formatCurrency = (value, i18n, currency) => {
