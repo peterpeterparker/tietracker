@@ -9,7 +9,7 @@ import i18next from 'i18next';
 import {DirectoryEntry, File, IWriteOptions} from '@ionic-native/file';
 
 import {download, getMobileDir, getNewFileHandle, shareMobile, writeFile} from '../../utils/utils.filesystem';
-import {xlsxLabels} from '../../utils/utils.export';
+import {exportLabels} from '../../utils/utils.export';
 import {isChrome, isHttps} from '../../utils/utils.platform';
 
 import {Currency} from '../../definitions/currency';
@@ -160,7 +160,7 @@ export class BackupService {
       msg: 'backup',
       currency: currency,
       vat: vat,
-      i18n: xlsxLabels(),
+      i18n: exportLabels(),
     });
   }
 }

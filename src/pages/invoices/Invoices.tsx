@@ -100,7 +100,7 @@ const Invoices: React.FC = () => {
           <IonIcon icon={saveOutline} />
         </IonFabButton>
 
-        <IonLabel>{t('invoices:invoices.backup')}</IonLabel>
+        <IonLabel>{t('invoices:export.backup')}</IonLabel>
       </IonFab>
     );
   }

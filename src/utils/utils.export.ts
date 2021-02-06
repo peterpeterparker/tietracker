@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 
-export function xlsxLabels() {
+export function exportLabels() {
   return {
     total: i18next.t('export:total'),
     billable_subtotal: i18next.t('export:billable_subtotal'),

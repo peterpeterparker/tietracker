@@ -13,7 +13,11 @@
   "invoices": {
     "title": "Open Invoices",
     "empty": "No clients can be billed.",
-    "open_bill": "Open bill",
-    "backup": "Backup"
+    "open_bill": "Open bill"
+  },
+  "export": {
+    "backup": "Backup",
+    "pdf": "Export to PDF",
+    "excel": "Export to Excel"
   }
 }
