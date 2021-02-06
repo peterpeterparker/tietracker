@@ -47,7 +47,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prettier": "prettier --write 'src/**/*.{ts,js,css,html,jsx,tsx}' && prettier --write 'public/workers/**/*.{ts,js,css,html,jsx,tsx}' && prettier --write '*.md'",
-    "postinstall": "jetifier"
+    "postinstall": "jetifier",
+    "libs": "node ./scripts/download-libs.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -77,6 +78,7 @@
     "@types/uuid": "^8.3.0",
     "@types/wicg-native-file-system": "^2020.6.0",
     "jetifier": "^1.6.6",
+    "node-fetch": "^2.6.1",
     "node-sass": "^5.0.0",
     "prettier": "2.2.1",
     "typescript": "^4.1.3"
