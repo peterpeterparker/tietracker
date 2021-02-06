@@ -21,6 +21,16 @@ const download = async ({url, path}) => {
       url: 'https://raw.githubusercontent.com/jakearchibald/idb-keyval/master/dist/iife/index-min.js',
       path: './public/workers/libs/idb-keyval-iife.min.js',
     });
+
+    await download({
+      url: 'https://unpkg.com/dayjs@latest/dayjs.min.js',
+      path: './public/workers/libs/dayjs.min.js',
+    });
+
+    await download({
+      url: 'https://unpkg.com/exceljs@latest/dist/exceljs.min.js',
+      path: './public/workers/libs/exceljs.min.js',
+    });
   } catch (err) {
     console.error(err);
   }
