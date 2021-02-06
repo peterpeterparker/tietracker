@@ -22,13 +22,24 @@ button {
 }
 
 div.actions {
-  margin-top: 16px;
+  margin: auto;
 
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: center;
 
-  flex-wrap: wrap;
+  width: fit-content;
+  min-width: 128px;
+
+  ion-button {
+    margin-bottom: 8px;
+    width: 100%;
+
+    &:first-of-type {
+      margin-top: 32px;
+    }
+  }
 }
 
 button.input {

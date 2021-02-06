@@ -2,11 +2,16 @@
 
 # 1.6.0 (2021-12-07)
 
+### Features
+
 - export invoices to PDF
 - signature (text) for the exported documents (footer) 
 - update dependencies
 
-### Features
+### Styles
+
+- actions buttons centered
+- cards ios mode
 
 <a name="1.5.0"></a>
 

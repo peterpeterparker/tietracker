@@ -98,9 +98,11 @@ const Settings: React.FC<RootProps> = (props) => {
 
   function renderSave() {
     return (
-      <IonButton type="submit" disabled={saving} aria-label={t('settings:save.action')} color="button" className="ion-margin-top">
-        <IonLabel>{t('common:actions.save')}</IonLabel>
-      </IonButton>
+      <div className="actions">
+        <IonButton type="submit" disabled={saving} aria-label={t('settings:save.action')} color="button">
+          <IonLabel>{t('common:actions.save')}</IonLabel>
+        </IonButton>
+      </div>
     );
   }
 
