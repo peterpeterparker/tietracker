@@ -1,3 +1,11 @@
+<a name="1.6.0"></a>
+
+# 1.6.0 (2021-12-07)
+
+- update dependencies
+
+### Features
+
 <a name="1.5.0"></a>
 
 # 1.5.0 (2020-11-07)

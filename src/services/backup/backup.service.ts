@@ -35,14 +35,14 @@ export class BackupService {
   needBackup(): Promise<boolean> {
     return new Promise<boolean>(async (resolve) => {
       try {
-        const invoices: string[] = await get('invoices');
+        const invoices: string[] | undefined = await get('invoices');
 
         if (!invoices || invoices.length <= 0) {
           resolve(false);
           return;
         }
 
-        const lastBackup: Date = await get('backup');
+        const lastBackup: Date | undefined = await get('backup');
 
         if (lastBackup && differenceInWeeks(new Date(), lastBackup) > 0) {
           resolve(true);

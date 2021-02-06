@@ -35,7 +35,7 @@ export class SettingsService {
   init(): Promise<Settings> {
     return new Promise<Settings>(async (resolve) => {
       try {
-        let settings: Settings = await get('settings');
+        let settings: Settings | undefined = await get('settings');
 
         if (!settings) {
           settings = this.getDefaultSettings();

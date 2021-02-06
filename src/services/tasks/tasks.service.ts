@@ -29,7 +29,7 @@ export class TasksService {
   start(project: Project, settings: Settings): Promise<TaskInProgress> {
     return new Promise<TaskInProgress>(async (resolve, reject) => {
       try {
-        const taskInProgress: TaskInProgress = await get('task-in-progress');
+        const taskInProgress: TaskInProgress | undefined = await get('task-in-progress');
 
         if (taskInProgress) {
           reject('Only one task at a time.');
@@ -50,7 +50,7 @@ export class TasksService {
   stop(roundTime: number): Promise<Task> {
     return new Promise<Task>(async (resolve, reject) => {
       try {
-        let task: Task = await get('task-in-progress');
+        let task: Task | undefined = await get('task-in-progress');
 
         if (!task || !task.data) {
           reject('No task in progress found.');
@@ -144,7 +144,7 @@ export class TasksService {
   current(): Promise<TaskInProgress | undefined> {
     return new Promise<TaskInProgress | undefined>(async (resolve, reject) => {
       try {
-        const task: TaskInProgress = await get('task-in-progress');
+        const task: TaskInProgress | undefined = await get('task-in-progress');
 
         resolve(task);
       } catch (err) {
@@ -196,7 +196,7 @@ export class TasksService {
 
   private addTaskToInvoices(day: string): Promise<void> {
     return new Promise<void>(async (resolve) => {
-      let invoices: string[] = await get('invoices');
+      let invoices: string[] | undefined = await get('invoices');
 
       if (invoices && invoices.indexOf(day) > -1) {
         resolve();
@@ -231,7 +231,7 @@ export class TasksService {
 
         const storeDate: string = lightFormat(task.data.from, 'yyyy-MM-dd');
 
-        let tasks: Task[] = await get(`tasks-${storeDate}`);
+        let tasks: Task[] | undefined = await get(`tasks-${storeDate}`);
 
         if (!tasks || tasks.length <= 0) {
           tasks = [];
@@ -338,7 +338,7 @@ export class TasksService {
 
   private load(day: string): Promise<Task[]> {
     return new Promise<Task[]>(async (resolve, reject) => {
-      let tasks: Task[] = await get(`tasks-${day}`);
+      let tasks: Task[] | undefined = await get(`tasks-${day}`);
 
       if (!tasks || tasks.length <= 0) {
         reject('No tasks found for the specific day.');
@@ -350,13 +350,13 @@ export class TasksService {
   }
 
   find(id: string, day: string): Promise<Task | undefined> {
-    return new Promise<Task>(async (resolve) => {
+    return new Promise<Task | undefined>(async (resolve) => {
       if (!id || id === undefined || !day || day === undefined) {
         resolve(undefined);
         return;
       }
 
-      const tasks: Task[] = await get(`tasks-${day}`);
+      const tasks: Task[] | undefined = await get(`tasks-${day}`);
 
       if (!tasks || tasks.length <= 0) {
         resolve(undefined);
