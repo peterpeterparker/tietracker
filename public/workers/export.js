@@ -2,11 +2,13 @@ importScripts('./libs/idb-keyval-iife.min.js');
 importScripts('./libs/dayjs.min.js');
 
 importScripts('./libs/exceljs.min.js');
+importScripts('./libs/jspdf.umd.min.js');
 
 importScripts('./utils/utils.js');
 importScripts('./utils/utils.export.js');
 importScripts('./utils/utils.budget.js');
 importScripts('./utils/utils.excel.js');
+importScripts('./utils/utils.pdf.js');
 
 self.onmessage = async ($event) => {
   if ($event && $event.data && $event.data.msg === 'export') {
@@ -80,6 +82,9 @@ async function exportInvoices(invoices, projects, filterProjectId, currency, vat
   const concatenedInvoices = filteredInvoices.reduce((a, b) => a.concat(b), []);
 
   const results = await exportToExcel(concatenedInvoices, client, currency, vat, i18n);
+
+  // TODO
+  // const results = await exportToPdf(concatenedInvoices, client, currency, vat, i18n);
 
   return {
     excel: results,

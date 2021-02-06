@@ -39,25 +39,7 @@ function excelCurrencyFormat(currency) {
 }
 
 function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, backup) {
-  const sumHours = invoices
-    .map((invoice, i) => {
-      return `${backup ? 'H' : 'F'}${i + 2}`;
-    })
-    .join('+');
-
-  let columns = [
-    {name: i18n.description, filterButton: true, totalsRowLabel: ''},
-    {name: i18n.start_date},
-    {name: i18n.start_time},
-    {name: i18n.end_date},
-    {name: i18n.end_time},
-    {name: i18n.duration, totalsRowFunction: 'custom', totalsRowFormula: `ROUND((${sumHours})*24,2)`},
-    {name: i18n.billable, totalsRowFunction: 'sum'},
-  ];
-
-  if (backup) {
-    columns = [{name: i18n.client, filterButton: true, totalsRowLabel: ''}, {name: i18n.project, filterButton: true, totalsRowLabel: ''}, ...columns];
-  }
+  const columns = initColumns(invoices, i18n, backup);
 
   worksheet.addTable({
     name: 'Invoice',
