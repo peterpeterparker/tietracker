@@ -10,6 +10,7 @@
   },
   "general": {
     "theme": "Theme",
+    "signature": "Signature for exported documents",
     "mode":  {
       "dark": "Dark",
       "light": "Light"
@@ -26,7 +27,7 @@
     }
   },
   "templates": {
-    "title": "Templates for the descriptions of the tasks.",
+    "title": "Templates for the descriptions of the tasks",
     "actions": {
       "add": "Add a template",
       "reorder": "Reorder",

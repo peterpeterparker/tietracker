@@ -57,3 +57,9 @@ const initColumns = (invoices, i18n, backup) => {
 
   return columns;
 };
+
+const footerText = (signature) => {
+  const today = dayjs().format('YYYY-MM-DD');
+
+  return `${signature} - ${today}`;
+};

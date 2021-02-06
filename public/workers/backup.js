@@ -9,11 +9,11 @@ importScripts('./utils/utils.excel.js');
 
 self.onmessage = async ($event) => {
   if ($event && $event.data && $event.data.msg === 'backup') {
-    await self.backup($event.data.currency, $event.data.vat, $event.data.i18n);
+    await self.backup($event.data.currency, $event.data.vat, $event.data.i18n, $event.data.signature);
   }
 };
 
-self.backup = async (currency, vat, i18n) => {
+self.backup = async (currency, vat, i18n, signature) => {
   const invoices = await idbKeyval.get('invoices');
 
   if (!invoices || invoices.length <= 0) {
@@ -40,10 +40,10 @@ self.backup = async (currency, vat, i18n) => {
     return;
   }
 
-  self.backupInvoices(invoices, projects, clients, currency, vat, i18n);
+  self.backupInvoices(invoices, projects, clients, currency, vat, i18n, signature);
 };
 
-async function backupInvoices(invoices, projects, clients, currency, vat, i18n) {
+async function backupInvoices(invoices, projects, clients, currency, vat, i18n, signature) {
   const promises = [];
 
   invoices.forEach((invoice) => {
@@ -68,7 +68,7 @@ async function backupInvoices(invoices, projects, clients, currency, vat, i18n) 
 
   const concatenedInvoices = filteredInvoices.reduce((a, b) => a.concat(b), []);
 
-  const results = await backupToExcel(concatenedInvoices, currency, vat, i18n);
+  const results = await backupToExcel(concatenedInvoices, currency, vat, i18n, signature);
 
   self.postMessage(results);
 }

@@ -16,11 +16,16 @@ const headerLineHeight = 0.3;
 
 const fontSize = 8;
 
-const exportToPdf = async (invoices, client, currency, vat, i18n) => {
+const exportToPdf = async (invoices, client, currency, vat, i18n, signature) => {
   const doc = new jspdf.jsPDF({
     orientation: 'l',
     unit: 'pt',
     format: 'a4',
+  });
+
+  doc.setProperties({
+    author: signature,
+    creator: signature,
   });
 
   initPDFFonts(doc);
@@ -36,6 +41,8 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
   cursorY = buildPdfTableLinesTotal(doc, total, columns, i18n, currency, cursorY);
 
   buildPdfTotal(doc, total, columns, i18n, currency, vat, cursorY);
+
+  buildFooters(doc, signature);
 
   return new Blob([doc.output('blob')], {type: 'application/pdf'});
 };
@@ -255,4 +262,17 @@ const initPDFFonts = (doc) => {
 
 const roundCurrency = (value) => {
   return parseFloat((Math.ceil(value * 20 - 0.5) / 20).toFixed(2));
+};
+
+const buildFooters = (doc, signature) => {
+  const pageCount = doc.internal.getNumberOfPages();
+
+  doc.setFont('helvetica', 'normal');
+
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.text(footerText(signature), doc.internal.pageSize.width / 2, liveArea.height, {
+      align: 'center',
+    });
+  }
 };

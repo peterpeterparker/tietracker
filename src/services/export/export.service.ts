@@ -35,7 +35,7 @@ export class ExportService {
     currency: Currency,
     vat: number | undefined,
     bill: boolean,
-    type: 'xlsx' | 'pdf'
+    type: 'xlsx' | 'pdf', signature: string | undefined
   ): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (invoice === undefined || invoice.project_id === undefined) {
@@ -64,7 +64,7 @@ export class ExportService {
           }
         };
 
-        await this.postMessage(invoice, invoices, currency, vat, bill, type);
+        await this.postMessage(invoice, invoices, currency, vat, bill, type, signature);
 
         resolve();
       } catch (err) {
@@ -81,7 +81,7 @@ export class ExportService {
     currency: Currency,
     vat: number | undefined,
     bill: boolean,
-    type: 'xlsx' | 'pdf'
+    type: 'xlsx' | 'pdf', signature: string | undefined
   ): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (invoice === undefined || invoice.project_id === undefined) {
@@ -105,7 +105,7 @@ export class ExportService {
           }
         };
 
-        await this.postMessage(invoice, invoices, currency, vat, bill, type);
+        await this.postMessage(invoice, invoices, currency, vat, bill, type, signature);
 
         resolve();
       } catch (err) {
@@ -122,7 +122,8 @@ export class ExportService {
     currency: Currency,
     vat: number | undefined,
     bill: boolean,
-    type: 'xlsx' | 'pdf'
+    type: 'xlsx' | 'pdf',
+    signature: string | undefined
   ): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (invoice === undefined || invoice.project_id === undefined) {
@@ -155,7 +156,7 @@ export class ExportService {
           }
         };
 
-        await this.postMessage(invoice, invoices, currency, vat, bill, type);
+        await this.postMessage(invoice, invoices, currency, vat, bill, type, signature);
 
         resolve();
       } catch (err) {
@@ -174,7 +175,7 @@ export class ExportService {
     return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.${type}`;
   }
 
-  private async postMessage(invoice: Invoice, invoices: string[], currency: Currency, vat: number | undefined, bill: boolean, type: 'xlsx' | 'pdf') {
+  private async postMessage(invoice: Invoice, invoices: string[], currency: Currency, vat: number | undefined, bill: boolean, type: 'xlsx' | 'pdf', signature: string | undefined) {
     await i18next.loadNamespaces('export');
 
     this.exportWorker.postMessage({
@@ -187,6 +188,7 @@ export class ExportService {
       bill: bill,
       i18n: exportLabels(),
       type,
+      signature
     });
   }
 }
