@@ -66,7 +66,7 @@ const printMilliseconds = (milliseconds) => {
 
 const buildPdfTableColumns = (doc, columns) => {
   columns.forEach((column) => {
-    doc.text(column.name, column.x, pageMargin);
+    doc.text(column.name, column.x + cellPadding / 2, pageMargin);
   });
 
   doc.line(pageMargin, pageMargin + textHeight, liveArea.width, pageMargin + textHeight);
