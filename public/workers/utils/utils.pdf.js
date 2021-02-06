@@ -71,6 +71,8 @@ const printMilliseconds = (milliseconds) => {
 };
 
 const buildPdfTableColumns = (doc, columns) => {
+  doc.setFont('helvetica', 'bold');
+
   columns.forEach((column) => {
     doc.text(column.name, column.x + cellPadding / 2, pageMargin);
   });
@@ -79,6 +81,8 @@ const buildPdfTableColumns = (doc, columns) => {
 };
 
 const buildPdfTableLines = (doc, invoices, columns, i18n, currency) => {
+  doc.setFont('helvetica', 'normal');
+
   const baseYPosForRows = pageMargin + textHeight + headerLineHeight;
 
   let y = baseYPosForRows;
@@ -250,5 +254,5 @@ const initPDFFonts = (doc) => {
 };
 
 const roundCurrency = (value) => {
-  return parseFloat((Math.ceil(value * 20) / 20).toFixed(2));
+  return parseFloat((Math.ceil(value * 20 - 0.5) / 20).toFixed(2));
 };
