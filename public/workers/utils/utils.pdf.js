@@ -28,22 +28,32 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
   const baseYPosForRows = pageMargin + padding;
   let nextYPos = baseYPosForRows;
 
-  invoices.forEach((invoice) => {
-    columns.forEach((column, columnIndex) => {
-      const value = invoice[columnIndex];
+  invoices
+    .map((invoice) => [
+      invoice[0],
+      dayjs(invoice[1]).format('YYYY-MM-DD'),
+      dayjs(invoice[2]).format('HH:mm:ss'),
+      dayjs(invoice[3]).format('YYYY-MM-DD'),
+      dayjs(invoice[4]).format('HH:mm:ss'),
+      invoice[5],
+      invoice[6],
+    ])
+    .forEach((invoice) => {
+      columns.forEach((column, columnIndex) => {
+        const value = invoice[columnIndex];
 
-      const longText = doc.splitTextToSize('' + value, column.width);
+        const longText = doc.splitTextToSize('' + value, column.width);
 
-      doc.text(longText, column.x, nextYPos);
+        doc.text(longText, column.x, nextYPos);
+      });
+
+      nextYPos = nextYPos + padding + 30;
+
+      if (nextYPos > liveArea.height) {
+        doc.addPage();
+        nextYPos = baseYPosForRows;
+      }
     });
-
-    nextYPos = nextYPos + padding + 30;
-
-    if (nextYPos > liveArea.height) {
-      doc.addPage();
-      nextYPos = baseYPosForRows;
-    }
-  });
 
   return new Blob([doc.output('blob')], {type: 'application/pdf'});
 };
