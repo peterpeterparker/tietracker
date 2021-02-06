@@ -6,6 +6,7 @@ importScripts('./libs/exceljs.min.js');
 importScripts('./utils/utils.js');
 importScripts('./utils/utils.export.js');
 importScripts('./utils/utils.budget.js');
+importScripts('./utils/utils.excel.js');
 
 self.onmessage = async ($event) => {
   if ($event && $event.data && $event.data.msg === 'export') {
@@ -84,33 +85,6 @@ async function exportInvoices(invoices, projects, filterProjectId, currency, vat
     excel: results,
     invoices: concatenedInvoices,
   };
-}
-
-async function exportToExcel(invoices, client, currency, vat, i18n) {
-  const workbook = new ExcelJS.Workbook();
-
-  workbook.creator = 'Tie Tracker';
-  workbook.lastModifiedBy = 'Tie Tracker';
-  workbook.created = new Date();
-  workbook.modified = new Date();
-
-  // Force workbook calculation on load
-  workbook.calcProperties.fullCalcOnLoad = true;
-
-  const worksheet = workbook.addWorksheet(client.name, {
-    properties: {tabColor: {argb: client.color ? client.color.replace('#', '') : undefined}},
-    pageSetup: {paperSize: 9, orientation: 'landscape'},
-  });
-
-  const currencyFormat = await excelCurrencyFormat(currency);
-
-  extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, false);
-
-  generateTotal(worksheet, invoices, currencyFormat, vat, i18n, false);
-
-  const buf = await workbook.xlsx.writeBuffer();
-
-  return new Blob([buf], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
 }
 
 async function billInvoices(invoices, filterProjectId, bill) {
