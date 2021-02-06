@@ -28,8 +28,6 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
   const baseYPosForRows = pageMargin + padding;
   let nextYPos = baseYPosForRows;
 
-  console.log(currency);
-
   invoices
     .map((invoice) => [
       invoice[0],
@@ -37,7 +35,7 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
       dayjs(invoice[2]).format('HH:mm:ss'),
       dayjs(invoice[3]).format('YYYY-MM-DD'),
       dayjs(invoice[4]).format('HH:mm:ss'),
-      invoice[5],
+      printMilliseconds(dayjs(invoice[4]).diff(invoice[2])),
       new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency}).format(invoice[6]),
     ])
     .forEach((invoice) => {
@@ -49,7 +47,7 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
         doc.text(longText, column.x, nextYPos);
       });
 
-      nextYPos = nextYPos + padding + 30;
+      nextYPos = nextYPos + padding;
 
       if (nextYPos > liveArea.height) {
         doc.addPage();
@@ -72,7 +70,7 @@ const initPdfColumns = (invoices, i18n) => {
   const columns = initColumns(invoices, i18n, false);
 
   // 30% width
-  const firstColumnLength = (liveArea.width - (padding * columns.length - 1)) * 0.3;
+  const firstColumnLength = (liveArea.width - (padding * columns.length - 1)) * 0.28;
   // 10% width
   const columnLength = (liveArea.width - (padding * columns.length - 1)) * 0.1;
   // 20% width
@@ -89,4 +87,14 @@ const initPdfColumns = (invoices, i18n) => {
   });
 
   return pdfColumns;
+};
+
+const printMilliseconds = (milliseconds) => {
+  const seconds = Math.floor(milliseconds / 1000);
+  let minutes = Math.floor(seconds / 60);
+
+  const hours = Math.floor(minutes / 60);
+  minutes = minutes % 60;
+
+  return `${hours >= 10 ? hours : '0' + hours}:${minutes >= 10 ? minutes : '0' + minutes}`;
 };
