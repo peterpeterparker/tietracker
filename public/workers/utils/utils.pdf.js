@@ -200,7 +200,7 @@ const buildPdfTotalVat = (doc, total, columns, i18n, currency, vat, y) => {
   // Total
   y = y + textHeight + textHeight + textHeight + textHeight + cellPadding;
 
-  const totalWithVat = total.sum * (vat / 100) + total.sum;
+  const totalWithVat = roundCurrency(total.sum * (vat / 100) + total.sum);
 
   y = buildPdfTotalNoVat(doc, totalWithVat, columns, i18n, currency, y);
 
@@ -210,7 +210,10 @@ const buildPdfTotalVat = (doc, total, columns, i18n, currency, vat, y) => {
   doc.setFont('helvetica', 'normal');
   textTwoColumns(i18n.total_vat_excluded, doc, columns[4], columns[5], y);
 
-  const totalVatExcluded = formatCurrency(total.sum, i18n, currency);
+  const totalVat = roundCurrency(total.sum * (vat / 100));
+  const totalRound = totalWithVat - totalVat;
+
+  const totalVatExcluded = formatCurrency(totalRound, i18n, currency);
   text(totalVatExcluded, doc, columns[6], y);
 
   // Vat
@@ -218,8 +221,7 @@ const buildPdfTotalVat = (doc, total, columns, i18n, currency, vat, y) => {
 
   textTwoColumns(i18n.vat, doc, columns[4], columns[5], y);
 
-  const totalVat = formatCurrency(total.sum * (vat / 100), i18n, currency);
-  text(totalVat, doc, columns[6], y);
+  text(formatCurrency(totalVat, i18n, currency), doc, columns[6], y);
 
   y = y + textHeight + cellPadding;
 
@@ -245,4 +247,8 @@ const textTwoColumns = (value, doc, columStart, columnEnd, y) => {
 const initPDFFonts = (doc) => {
   doc.setFontSize(fontSize);
   doc.setFont('helvetica');
+};
+
+const roundCurrency = (value) => {
+  return parseFloat((Math.ceil(value * 20) / 20).toFixed(2));
 };
