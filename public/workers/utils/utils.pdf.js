@@ -23,42 +23,14 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
 
   const columns = initPdfColumns(invoices, i18n, false);
 
-  buildPdfHeader(doc, columns);
+  buildPdfTableColumns(doc, columns);
 
-  const baseYPosForRows = pageMargin + padding;
-  let nextYPos = baseYPosForRows;
-
-  invoices
-    .map((invoice) => [
-      invoice[0],
-      dayjs(invoice[1]).format('YYYY-MM-DD'),
-      dayjs(invoice[2]).format('HH:mm:ss'),
-      dayjs(invoice[3]).format('YYYY-MM-DD'),
-      dayjs(invoice[4]).format('HH:mm:ss'),
-      printMilliseconds(dayjs(invoice[4]).diff(invoice[2])),
-      new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency}).format(invoice[6]),
-    ])
-    .forEach((invoice) => {
-      columns.forEach((column, columnIndex) => {
-        const value = invoice[columnIndex];
-
-        const longText = doc.splitTextToSize('' + value, column.width);
-
-        doc.text(longText, column.x, nextYPos);
-      });
-
-      nextYPos = nextYPos + padding;
-
-      if (nextYPos > liveArea.height) {
-        doc.addPage();
-        nextYPos = baseYPosForRows;
-      }
-    });
+  buildPdfTableLines(doc, invoices, columns, i18n, currency);
 
   return new Blob([doc.output('blob')], {type: 'application/pdf'});
 };
 
-const buildPdfHeader = (doc, columns) => {
+const buildPdfTableColumns = (doc, columns) => {
   columns.forEach((column) => {
     doc.text(column.name, column.x, pageMargin);
   });
@@ -97,4 +69,36 @@ const printMilliseconds = (milliseconds) => {
   minutes = minutes % 60;
 
   return `${hours >= 10 ? hours : '0' + hours}:${minutes >= 10 ? minutes : '0' + minutes}`;
+};
+
+const buildPdfTableLines = (doc, invoices, columns, i18n, currency) => {
+  const baseYPosForRows = pageMargin + padding;
+  let nextYPos = baseYPosForRows;
+
+  invoices
+    .map((invoice) => [
+      invoice[0],
+      dayjs(invoice[1]).format('YYYY-MM-DD'),
+      dayjs(invoice[2]).format('HH:mm:ss'),
+      dayjs(invoice[3]).format('YYYY-MM-DD'),
+      dayjs(invoice[4]).format('HH:mm:ss'),
+      printMilliseconds(dayjs(invoice[4]).diff(invoice[2])),
+      new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency}).format(invoice[6]),
+    ])
+    .forEach((invoice) => {
+      columns.forEach((column, columnIndex) => {
+        const value = invoice[columnIndex];
+
+        const longText = doc.splitTextToSize('' + value, column.width);
+
+        doc.text(longText, column.x, nextYPos);
+      });
+
+      nextYPos = nextYPos + padding;
+
+      if (nextYPos > liveArea.height) {
+        doc.addPage();
+        nextYPos = baseYPosForRows;
+      }
+    });
 };
