@@ -29,9 +29,13 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
 
   buildPdfTableColumns(doc, columns);
 
-  const cursorY = buildPdfTableLines(doc, invoices, columns, i18n, currency);
+  let cursorY = buildPdfTableLines(doc, invoices, columns, i18n, currency);
 
-  buildPdfTableLinesTotal(doc, invoices, columns, i18n, currency, cursorY);
+  const total = totalInvoices(invoices);
+
+  cursorY = buildPdfTableLinesTotal(doc, total, columns, i18n, currency, cursorY);
+
+  buildPdfTotal(doc, total, columns, i18n, currency, vat, cursorY);
 
   return new Blob([doc.output('blob')], {type: 'application/pdf'});
 };
@@ -114,7 +118,7 @@ const buildPdfTableLines = (doc, invoices, columns, i18n, currency) => {
   return y;
 };
 
-const buildPdfTableLinesTotal = (doc, invoices, columns, i18n, currency, y) => {
+const totalInvoices = (invoices) => {
   const totalDuration = invoices.reduce((accumulator, invoice) => {
     return accumulator + dayjs(invoice[4]).diff(invoice[2]);
   }, 0);
@@ -123,8 +127,15 @@ const buildPdfTableLinesTotal = (doc, invoices, columns, i18n, currency, y) => {
     return accumulator + invoice[6];
   }, 0);
 
-  const duration = printMilliseconds(totalDuration);
-  const billable = formatCurrency(sumBillable, i18n, currency);
+  return {
+    duration: totalDuration,
+    sum: sumBillable,
+  };
+};
+
+const buildPdfTableLinesTotal = (doc, total, columns, i18n, currency, y) => {
+  const duration = printMilliseconds(total.duration);
+  const billable = formatCurrency(total.sum, i18n, currency);
 
   doc.setFont('helvetica', 'bold');
   text(duration, doc, columns[5], y);
@@ -139,6 +150,39 @@ const buildPdfTableLinesTotal = (doc, invoices, columns, i18n, currency, y) => {
   return y;
 };
 
+const buildPdfTotal = (doc, total, columns, i18n, currency, vat, y) => {
+  y = y + textHeight + cellPadding;
+
+  // Billable subtotal
+  doc.setFont('helvetica', 'normal');
+  textTwoColumns(i18n.billable_subtotal, doc, columns[4], columns[5], y);
+
+  const billableSubtotal = formatCurrency(total.sum, i18n, currency);
+  text(billableSubtotal, doc, columns[6], y);
+
+  // Total
+  y = y + textHeight + textHeight + cellPadding;
+
+  doc.setFont('helvetica', 'bold');
+  textTwoColumns(i18n.total, doc, columns[4], columns[5], y);
+
+  const billableTotal = formatCurrency(total.sum, i18n, currency);
+  text(billableTotal, doc, columns[6], y);
+
+  y = y + textHeight + cellPadding;
+
+  doc.line(columns[4].x, y, liveArea.width, y);
+
+  // Billable hours
+  y = y + cellPadding;
+
+  doc.setFont('helvetica', 'normal');
+  textTwoColumns(i18n.total_billable_hours, doc, columns[4], columns[5], y);
+
+  const billableHours = printMilliseconds(total.duration);
+  text(billableHours, doc, columns[6], y);
+};
+
 const formatCurrency = (value, i18n, currency) => {
   return new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency}).format(value);
 };
@@ -146,6 +190,11 @@ const formatCurrency = (value, i18n, currency) => {
 const text = (value, doc, column, y) => {
   const longText = doc.splitTextToSize(value, column.width - cellPadding / 2);
   doc.text(longText, column.x + cellPadding / 2, y + (textHeight + cellPadding / 2));
+};
+
+const textTwoColumns = (value, doc, columStart, columnEnd, y) => {
+  const longText = doc.splitTextToSize(value, columStart.width + columnEnd.width - cellPadding / 2);
+  doc.text(longText, columStart.x + cellPadding / 2, y + (textHeight + cellPadding / 2));
 };
 
 // Convert: https://peckconsulting.s3.amazonaws.com/fontconverter/fontconverter.html
