@@ -1,7 +1,9 @@
 import i18next from 'i18next';
+import i18n from 'i18next';
 
 export function exportLabels() {
   return {
+    language: i18n.language,
     total: i18next.t('export:total'),
     billable_subtotal: i18next.t('export:billable_subtotal'),
     vat_rate: i18next.t('export:vat_rate'),

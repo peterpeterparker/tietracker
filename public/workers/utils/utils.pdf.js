@@ -28,6 +28,8 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
   const baseYPosForRows = pageMargin + padding;
   let nextYPos = baseYPosForRows;
 
+  console.log(currency);
+
   invoices
     .map((invoice) => [
       invoice[0],
@@ -36,7 +38,7 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
       dayjs(invoice[3]).format('YYYY-MM-DD'),
       dayjs(invoice[4]).format('HH:mm:ss'),
       invoice[5],
-      invoice[6],
+      new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency}).format(invoice[6]),
     ])
     .forEach((invoice) => {
       columns.forEach((column, columnIndex) => {
