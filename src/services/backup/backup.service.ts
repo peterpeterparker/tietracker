@@ -62,17 +62,17 @@ export class BackupService {
 
   async backup(settings: Settings) {
     if (isPlatform('desktop') && isChrome() && isHttps()) {
-      await this.exportNativeFileSystem(settings.currency, settings.vat);
+      await this.exportNativeFileSystem(settings.currency, settings.vat, settings.signature);
     } else if (isPlatform('hybrid')) {
-      await this.exportMobileFileSystem(settings.currency, settings.vat);
+      await this.exportMobileFileSystem(settings.currency, settings.vat, settings.signature);
     } else {
-      await this.exportDownload(settings.currency, settings.vat);
+      await this.exportDownload(settings.currency, settings.vat, settings.signature);
     }
 
     await this.setBackup();
   }
 
-  exportNativeFileSystem(currency: Currency, vat: number | undefined): Promise<void> {
+  exportNativeFileSystem(currency: Currency, vat: number | undefined, signature: string | undefined): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const fileHandle: FileSystemFileHandle = await getNewFileHandle();
@@ -88,7 +88,7 @@ export class BackupService {
           }
         };
 
-        await this.postMessage(currency, vat);
+        await this.postMessage(currency, vat, signature);
 
         resolve();
       } catch (err) {
@@ -98,7 +98,7 @@ export class BackupService {
     });
   }
 
-  exportMobileFileSystem(currency: Currency, vat: number | undefined): Promise<void> {
+  exportMobileFileSystem(currency: Currency, vat: number | undefined, signature: string | undefined): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const filename: string = this.filename();
@@ -118,7 +118,7 @@ export class BackupService {
           }
         };
 
-        await this.postMessage(currency, vat);
+        await this.postMessage(currency, vat, signature);
 
         resolve();
       } catch (err) {
@@ -128,7 +128,7 @@ export class BackupService {
     });
   }
 
-  exportDownload(currency: Currency, vat: number | undefined): Promise<void> {
+  exportDownload(currency: Currency, vat: number | undefined, signature: string | undefined): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const filename: string = this.filename();
@@ -139,7 +139,7 @@ export class BackupService {
           }
         };
 
-        await this.postMessage(currency, vat);
+        await this.postMessage(currency, vat, signature);
 
         resolve();
       } catch (err) {
@@ -153,14 +153,15 @@ export class BackupService {
     return `Tie_Tracker-Backup-${format(new Date(), 'yyyy-MM-dd')}.xlsx`;
   }
 
-  private async postMessage(currency: Currency, vat: number | undefined) {
+  private async postMessage(currency: Currency, vat: number | undefined, signature: string | undefined) {
     await i18next.loadNamespaces('export');
 
     this.backupWorker.postMessage({
       msg: 'backup',
       currency: currency,
-      vat: vat,
+      vat,
       i18n: exportLabels(),
+      signature,
     });
   }
 }

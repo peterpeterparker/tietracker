@@ -5,6 +5,8 @@ export interface Settings {
   roundTime: number;
   vat?: number;
 
+  signature?: string;
+
   descriptions?: string[];
 
   notifications?: boolean;

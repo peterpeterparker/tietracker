@@ -20,12 +20,13 @@ self.onmessage = async ($event) => {
       $event.data.bill,
       $event.data.client,
       $event.data.i18n,
-      $event.data.type
+      $event.data.type,
+      $event.data.signature
     );
   }
 };
 
-self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18n, type) => {
+self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18n, type, signature) => {
   if (!invoices || invoices.length <= 0) {
     self.postMessage(undefined);
     return;
@@ -43,7 +44,7 @@ self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18
     return;
   }
 
-  const results = await self.exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n, type);
+  const results = await self.exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n, type, signature);
 
   await updateBudget(results.invoices, filterProjectId, bill);
 
@@ -53,7 +54,7 @@ self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18
   self.postMessage(results.excel);
 };
 
-async function exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n, type) {
+async function exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n, type, signature) {
   const promises = [];
 
   invoices.forEach((invoice) => {
@@ -83,7 +84,9 @@ async function exportInvoices(invoices, projects, filterProjectId, currency, vat
   const concatenedInvoices = filteredInvoices.reduce((a, b) => a.concat(b), []);
 
   const results =
-    type === 'pdf' ? await exportToPdf(concatenedInvoices, client, currency, vat, i18n) : await exportToExcel(concatenedInvoices, client, currency, vat, i18n);
+    type === 'pdf'
+      ? await exportToPdf(concatenedInvoices, client, currency, vat, i18n, signature)
+      : await exportToExcel(concatenedInvoices, client, currency, vat, i18n);
 
   return {
     excel: results,

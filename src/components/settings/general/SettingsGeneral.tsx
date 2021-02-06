@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 
-import {IonItem, IonLabel, IonList, IonToggle, isPlatform} from '@ionic/react';
+import {IonInput, IonItem, IonLabel, IonList, IonToggle, isPlatform} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -45,6 +45,15 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
     setBackup(!backup);
   }
 
+  function onSignatureInput($event: CustomEvent<KeyboardEvent>) {
+    if (!$event) {
+      return;
+    }
+
+    const input: string = ($event.target as InputTargetEvent).value;
+    props.settings.signature = input;
+  }
+
   return (
     <IonList className="inputs-list">
       <IonItem className="item-title">
@@ -60,6 +69,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
 
       {renderNotifications()}
       {renderBackup()}
+      {renderSignature()}
     </IonList>
   );
 
@@ -92,6 +102,24 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
         <IonItem className="item-input item-radio with-padding">
           <IonLabel>{backup ? t('general.backup.on') : t('general.backup.off')}</IonLabel>
           <IonToggle slot="end" checked={backup} mode="md" color="medium" onClick={() => toggleBackup()}></IonToggle>
+        </IonItem>
+      </>
+    );
+  }
+
+  function renderSignature() {
+    return (
+      <>
+        <IonItem className="item-title">
+          <IonLabel>{t('general.signature')}</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonInput
+            debounce={500}
+            input-mode="text"
+            value={props.settings.signature ? `${props.settings.signature}` : ''}
+            aria-label={t('general.signature')}
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => onSignatureInput($event)}></IonInput>
         </IonItem>
       </>
     );
