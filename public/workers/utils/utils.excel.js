@@ -1,19 +1,25 @@
-async function exportToExcel(invoices, client, currency, vat, i18n) {
+async function exportToExcel(invoices, client, currency, vat, i18n, signature) {
   const workbook = initWorkbook();
+
+  const footer = footerText(signature);
 
   const worksheet = workbook.addWorksheet(client.name, {
     properties: {tabColor: {argb: client.color ? client.color.replace('#', '') : undefined}},
     pageSetup: {paperSize: 9, orientation: 'landscape'},
+    headerFooter: {firstFooter: footer, oddFooter: footer},
   });
 
   return exportExcelTable(workbook, worksheet, invoices, currency, i18n, vat, false);
 }
 
-async function backupToExcel(invoices, currency, vat, i18n) {
+async function backupToExcel(invoices, currency, vat, i18n, signature) {
   const workbook = initWorkbook();
+
+  const footer = footerText(signature);
 
   const worksheet = workbook.addWorksheet('Tie Tracker Backup', {
     pageSetup: {paperSize: 9, orientation: 'landscape'},
+    headerFooter: {firstFooter: footer, oddFooter: footer},
   });
 
   return exportExcelTable(workbook, worksheet, invoices, currency, i18n, vat, true);

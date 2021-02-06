@@ -269,11 +269,9 @@ const buildFooters = (doc, signature) => {
 
   doc.setFont('helvetica', 'normal');
 
-  const today = dayjs().format('YYYY-MM-DD');
-
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
-    doc.text(`${signature} - ${today}`, doc.internal.pageSize.width / 2, liveArea.height, {
+    doc.text(footerText(signature), doc.internal.pageSize.width / 2, liveArea.height, {
       align: 'center',
     });
   }

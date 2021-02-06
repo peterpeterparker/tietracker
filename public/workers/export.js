@@ -86,7 +86,7 @@ async function exportInvoices(invoices, projects, filterProjectId, currency, vat
   const results =
     type === 'pdf'
       ? await exportToPdf(concatenedInvoices, client, currency, vat, i18n, signature)
-      : await exportToExcel(concatenedInvoices, client, currency, vat, i18n);
+      : await exportToExcel(concatenedInvoices, client, currency, vat, i18n, signature);
 
   return {
     excel: results,
