@@ -11,6 +11,7 @@
 ### Styles
 
 - actions buttons centered
+- cards ios mode
 
 <a name="1.5.0"></a>
 
