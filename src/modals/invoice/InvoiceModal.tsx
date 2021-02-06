@@ -99,9 +99,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
     }
   }
 
-  async function handleSubmit($event: FormEvent<HTMLFormElement>) {
-    $event.preventDefault();
-
+  async function exportInvoice(type: 'xlsx' | 'pdf') {
     if (!props.invoice) {
       return;
     }
@@ -110,11 +108,11 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
     try {
       if (isPlatform('desktop') && isChrome() && isHttps()) {
-        await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, settings.vat, bill);
+        await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, settings.vat, bill, type);
       } else if (isPlatform('hybrid')) {
-        await ExportService.getInstance().exportMobileFileSystem(props.invoice, from, to, settings.currency, settings.vat, bill);
+        await ExportService.getInstance().exportMobileFileSystem(props.invoice, from, to, settings.currency, settings.vat, bill, type);
       } else {
-        await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, settings.vat, bill);
+        await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, settings.vat, bill, type);
       }
 
       if (bill) {
@@ -233,7 +231,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
   function renderFilter() {
     return (
-      <form onSubmit={($event: FormEvent<HTMLFormElement>) => handleSubmit($event)}>
+      <>
         <IonList className="inputs-list">
           <IonItem className="item-title">
             <IonLabel>{t('invoices:invoice.from')}</IonLabel>
@@ -276,27 +274,59 @@ const InvoiceModal: React.FC<Props> = (props) => {
         </IonList>
 
         <div className="actions">
-          <IonButton
-            type="submit"
-            disabled={billable === undefined || inProgress}
-            style={
-              {
-                '--background': color,
-                '--color': colorContrast,
-                '--background-hover': color,
-                '--color-hover': colorContrast,
-                '--background-activated': colorContrast,
-                '--color-activated': color,
-              } as CSSProperties
-            }>
-            <IonLabel>{t('common:actions.export')}</IonLabel>
-          </IonButton>
+          {renderExportExcel()}
+
+          {renderExportPdf()}
 
           <button type="button" onClick={() => props.closeAction()} disabled={inProgress}>
             {t('common:actions.cancel')}
           </button>
         </div>
-      </form>
+      </>
+    );
+  }
+
+  function renderExportExcel() {
+    return (
+      <IonButton
+        type="button"
+        onClick={() => exportInvoice('xlsx')}
+        disabled={billable === undefined || inProgress}
+        style={
+          {
+            '--background': color,
+            '--color': colorContrast,
+            '--background-hover': color,
+            '--color-hover': colorContrast,
+            '--background-activated': colorContrast,
+            '--color-activated': color,
+          } as CSSProperties
+        }>
+        <IonLabel>{t('invoices:export.excel')}</IonLabel>
+      </IonButton>
+    );
+  }
+
+  function renderExportPdf() {
+    return (
+      <IonButton
+        type="button"
+        onClick={() => exportInvoice('pdf')}
+        fill="outline"
+        disabled={billable === undefined || inProgress}
+        style={
+          {
+            '--border-color': color,
+            '--background': 'transparent',
+            '--color': 'inherit',
+            '--background-hover': color,
+            '--color-hover': colorContrast,
+            '--background-activated': colorContrast,
+            '--color-activated': color,
+          } as CSSProperties
+        }>
+        <IonLabel>{t('invoices:export.pdf')}</IonLabel>
+      </IonButton>
     );
   }
 };

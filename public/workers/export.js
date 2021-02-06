@@ -2,10 +2,13 @@ importScripts('./libs/idb-keyval-iife.min.js');
 importScripts('./libs/dayjs.min.js');
 
 importScripts('./libs/exceljs.min.js');
+importScripts('./libs/jspdf.umd.min.js');
 
 importScripts('./utils/utils.js');
 importScripts('./utils/utils.export.js');
 importScripts('./utils/utils.budget.js');
+importScripts('./utils/utils.excel.js');
+importScripts('./utils/utils.pdf.js');
 
 self.onmessage = async ($event) => {
   if ($event && $event.data && $event.data.msg === 'export') {
@@ -16,12 +19,13 @@ self.onmessage = async ($event) => {
       $event.data.vat,
       $event.data.bill,
       $event.data.client,
-      $event.data.i18n
+      $event.data.i18n,
+      $event.data.type
     );
   }
 };
 
-self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18n) => {
+self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18n, type) => {
   if (!invoices || invoices.length <= 0) {
     self.postMessage(undefined);
     return;
@@ -39,7 +43,7 @@ self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18
     return;
   }
 
-  const results = await self.exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n);
+  const results = await self.exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n, type);
 
   await updateBudget(results.invoices, filterProjectId, bill);
 
@@ -49,7 +53,7 @@ self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18
   self.postMessage(results.excel);
 };
 
-async function exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n) {
+async function exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n, type) {
   const promises = [];
 
   invoices.forEach((invoice) => {
@@ -78,39 +82,13 @@ async function exportInvoices(invoices, projects, filterProjectId, currency, vat
 
   const concatenedInvoices = filteredInvoices.reduce((a, b) => a.concat(b), []);
 
-  const results = await exportToExcel(concatenedInvoices, client, currency, vat, i18n);
+  const results =
+    type === 'pdf' ? await exportToPdf(concatenedInvoices, client, currency, vat, i18n) : await exportToExcel(concatenedInvoices, client, currency, vat, i18n);
 
   return {
     excel: results,
     invoices: concatenedInvoices,
   };
-}
-
-async function exportToExcel(invoices, client, currency, vat, i18n) {
-  const workbook = new ExcelJS.Workbook();
-
-  workbook.creator = 'Tie Tracker';
-  workbook.lastModifiedBy = 'Tie Tracker';
-  workbook.created = new Date();
-  workbook.modified = new Date();
-
-  // Force workbook calculation on load
-  workbook.calcProperties.fullCalcOnLoad = true;
-
-  const worksheet = workbook.addWorksheet(client.name, {
-    properties: {tabColor: {argb: client.color ? client.color.replace('#', '') : undefined}},
-    pageSetup: {paperSize: 9, orientation: 'landscape'},
-  });
-
-  const currencyFormat = await excelCurrencyFormat(currency);
-
-  extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, false);
-
-  generateTotal(worksheet, invoices, currencyFormat, vat, i18n, false);
-
-  const buf = await workbook.xlsx.writeBuffer();
-
-  return new Blob([buf], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
 }
 
 async function billInvoices(invoices, filterProjectId, bill) {

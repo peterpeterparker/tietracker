@@ -5,6 +5,7 @@ importScripts('./libs/exceljs.min.js');
 
 importScripts('./utils/utils.js');
 importScripts('./utils/utils.export.js');
+importScripts('./utils/utils.excel.js');
 
 self.onmessage = async ($event) => {
   if ($event && $event.data && $event.data.msg === 'backup') {
@@ -100,30 +101,4 @@ function backupInvoice(invoice, projects, clients) {
 
     resolve(results);
   });
-}
-
-async function backupToExcel(invoices, currency, vat, i18n) {
-  const workbook = new ExcelJS.Workbook();
-
-  workbook.creator = 'Tie Tracker';
-  workbook.lastModifiedBy = 'Tie Tracker';
-  workbook.created = new Date();
-  workbook.modified = new Date();
-
-  // Force workbook calculation on load
-  workbook.calcProperties.fullCalcOnLoad = true;
-
-  const worksheet = workbook.addWorksheet('Tie Tracker Backup', {
-    pageSetup: {paperSize: 9, orientation: 'landscape'},
-  });
-
-  const currencyFormat = await excelCurrencyFormat(currency);
-
-  extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, true);
-
-  generateTotal(worksheet, invoices, currencyFormat, vat, i18n, true);
-
-  const buf = await workbook.xlsx.writeBuffer();
-
-  return new Blob([buf], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
 }

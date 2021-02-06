@@ -4,7 +4,7 @@ import i18next from 'i18next';
 
 import {interval} from '../../utils/utils.date';
 import {download, getMobileDir, getNewFileHandle, shareMobile, writeFile} from '../../utils/utils.filesystem';
-import {xlsxLabels} from '../../utils/utils.export';
+import {exportLabels} from '../../utils/utils.export';
 
 import {Invoice} from '../../store/interfaces/invoice';
 
@@ -34,7 +34,8 @@ export class ExportService {
     to: Date | undefined,
     currency: Currency,
     vat: number | undefined,
-    bill: boolean
+    bill: boolean,
+    type: 'xlsx' | 'pdf'
   ): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (invoice === undefined || invoice.project_id === undefined) {
@@ -63,7 +64,7 @@ export class ExportService {
           }
         };
 
-        await this.postMessage(invoice, invoices, currency, vat, bill);
+        await this.postMessage(invoice, invoices, currency, vat, bill, type);
 
         resolve();
       } catch (err) {
@@ -73,46 +74,14 @@ export class ExportService {
     });
   }
 
-  exportDownload(invoice: Invoice, from: Date | undefined, to: Date | undefined, currency: Currency, vat: number | undefined, bill: boolean): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      if (invoice === undefined || invoice.project_id === undefined) {
-        reject('No invoice data.');
-        return;
-      }
-
-      const invoices: string[] | undefined = interval(from, to);
-
-      if (invoices === undefined) {
-        reject('No invoices to export.');
-        return;
-      }
-
-      try {
-        const filename: string = this.filename(invoice, from, to);
-
-        this.exportWorker.onmessage = async ($event: MessageEvent) => {
-          if ($event && $event.data) {
-            download(filename, $event.data);
-          }
-        };
-
-        await this.postMessage(invoice, invoices, currency, vat, bill);
-
-        resolve();
-      } catch (err) {
-        console.error(err);
-        reject(err);
-      }
-    });
-  }
-
-  exportMobileFileSystem(
+  exportDownload(
     invoice: Invoice,
     from: Date | undefined,
     to: Date | undefined,
     currency: Currency,
     vat: number | undefined,
-    bill: boolean
+    bill: boolean,
+    type: 'xlsx' | 'pdf'
   ): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (invoice === undefined || invoice.project_id === undefined) {
@@ -128,7 +97,48 @@ export class ExportService {
       }
 
       try {
-        const filename: string = this.filename(invoice, from, to);
+        const filename: string = this.filename(invoice, from, to, type);
+
+        this.exportWorker.onmessage = async ($event: MessageEvent) => {
+          if ($event && $event.data) {
+            download(filename, $event.data);
+          }
+        };
+
+        await this.postMessage(invoice, invoices, currency, vat, bill, type);
+
+        resolve();
+      } catch (err) {
+        console.error(err);
+        reject(err);
+      }
+    });
+  }
+
+  exportMobileFileSystem(
+    invoice: Invoice,
+    from: Date | undefined,
+    to: Date | undefined,
+    currency: Currency,
+    vat: number | undefined,
+    bill: boolean,
+    type: 'xlsx' | 'pdf'
+  ): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      if (invoice === undefined || invoice.project_id === undefined) {
+        reject('No invoice data.');
+        return;
+      }
+
+      const invoices: string[] | undefined = interval(from, to);
+
+      if (invoices === undefined) {
+        reject('No invoices to export.');
+        return;
+      }
+
+      try {
+        const filename: string = this.filename(invoice, from, to, type);
 
         this.exportWorker.onmessage = async ($event: MessageEvent) => {
           if ($event && $event.data) {
@@ -145,7 +155,7 @@ export class ExportService {
           }
         };
 
-        await this.postMessage(invoice, invoices, currency, vat, bill);
+        await this.postMessage(invoice, invoices, currency, vat, bill, type);
 
         resolve();
       } catch (err) {
@@ -159,12 +169,12 @@ export class ExportService {
     return `Tie Tracker${invoice.client && invoice.client.name ? ` - ${invoice.client.name}` : ''}`;
   }
 
-  private filename(invoice: Invoice, from: Date | undefined, to: Date | undefined): string {
+  private filename(invoice: Invoice, from: Date | undefined, to: Date | undefined, type: 'xlsx' | 'pdf'): string {
     const name: string = invoice.client && invoice.client.name ? invoice.client.name : 'export';
-    return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.xlsx`;
+    return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.${type}`;
   }
 
-  private async postMessage(invoice: Invoice, invoices: string[], currency: Currency, vat: number | undefined, bill: boolean) {
+  private async postMessage(invoice: Invoice, invoices: string[], currency: Currency, vat: number | undefined, bill: boolean, type: 'xlsx' | 'pdf') {
     await i18next.loadNamespaces('export');
 
     this.exportWorker.postMessage({
@@ -175,7 +185,8 @@ export class ExportService {
       currency: currency,
       vat: vat,
       bill: bill,
-      i18n: xlsxLabels(),
+      i18n: exportLabels(),
+      type,
     });
   }
 }
