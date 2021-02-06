@@ -29,7 +29,9 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
 
   buildPdfTableColumns(doc, columns);
 
-  buildPdfTableLines(doc, invoices, columns, i18n, currency);
+  const cursorY = buildPdfTableLines(doc, invoices, columns, i18n, currency);
+
+  buildPdfTableLinesTotal(doc, invoices, columns, i18n, currency, cursorY);
 
   return new Blob([doc.output('blob')], {type: 'application/pdf'});
 };
@@ -85,20 +87,18 @@ const buildPdfTableLines = (doc, invoices, columns, i18n, currency) => {
       dayjs(invoice[3]).format('YYYY-MM-DD'),
       dayjs(invoice[4]).format('HH:mm:ss'),
       printMilliseconds(dayjs(invoice[4]).diff(invoice[2])),
-      new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency}).format(invoice[6]),
+      formatCurrency(invoice[6], i18n, currency),
     ])
     .forEach((invoice, rowIndex) => {
       columns.forEach((column, columnIndex) => {
         const value = invoice[columnIndex];
-
-        const longText = doc.splitTextToSize('' + value, column.width - +(cellPadding / 2));
 
         if (rowIndex % 2 === 0) {
           doc.setFillColor(217, 217, 217);
           doc.rect(column.x, y, column.width, textHeight + cellPadding, 'F');
         }
 
-        doc.text(longText, column.x + cellPadding / 2, y + (textHeight + cellPadding / 2));
+        text(value, doc, column, y);
       });
 
       y = y + textHeight + cellPadding;
@@ -108,4 +108,33 @@ const buildPdfTableLines = (doc, invoices, columns, i18n, currency) => {
         y = baseYPosForRows;
       }
     });
+
+  doc.line(pageMargin, y, liveArea.width, y);
+
+  return y;
+};
+
+const buildPdfTableLinesTotal = (doc, invoices, columns, i18n, currency, y) => {
+  const totalDuration = invoices.reduce((accumulator, invoice) => {
+    return accumulator + dayjs(invoice[4]).diff(invoice[2]);
+  }, 0);
+
+  const sumBillable = invoices.reduce((accumulator, invoice) => {
+    return accumulator + invoice[6];
+  }, 0);
+
+  const duration = printMilliseconds(totalDuration);
+  const billable = formatCurrency(sumBillable, i18n, currency);
+
+  text(duration, doc, columns[5], y);
+  text(billable, doc, columns[6], y);
+};
+
+const formatCurrency = (value, i18n, currency) => {
+  return new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency}).format(value);
+};
+
+const text = (value, doc, column, y) => {
+  const longText = doc.splitTextToSize(value, column.width - cellPadding / 2);
+  doc.text(longText, column.x + cellPadding / 2, y + (textHeight + cellPadding / 2));
 };
