@@ -3,14 +3,18 @@ const pageDimensions = {
   width: 841.89,
 };
 
-const pageMargin = 50;
+const pageMargin = 48;
 
 const liveArea = {
   width: pageDimensions.width - pageMargin,
   height: pageDimensions.height - pageMargin,
 };
 
-const padding = 15;
+const cellPadding = 16;
+const textHeight = 3;
+const headerLineHeight = 1;
+
+const fontSize = 8;
 
 const exportToPdf = async (invoices, client, currency, vat, i18n) => {
   const doc = new jspdf.jsPDF({
@@ -19,7 +23,7 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
     format: 'a4',
   });
 
-  doc.setFontSize(8);
+  doc.setFontSize(fontSize);
 
   const columns = initPdfColumns(invoices, i18n, false);
 
@@ -30,30 +34,19 @@ const exportToPdf = async (invoices, client, currency, vat, i18n) => {
   return new Blob([doc.output('blob')], {type: 'application/pdf'});
 };
 
-const buildPdfTableColumns = (doc, columns) => {
-  columns.forEach((column) => {
-    doc.text(column.name, column.x, pageMargin);
-  });
-
-  doc.line(pageMargin, pageMargin + 3.5, liveArea.width, pageMargin + 3.5);
-};
-
 const initPdfColumns = (invoices, i18n) => {
   const columns = initColumns(invoices, i18n, false);
 
-  // 30% width
-  const firstColumnLength = (liveArea.width - (padding * columns.length - 1)) * 0.28;
-  // 10% width
-  const columnLength = (liveArea.width - (padding * columns.length - 1)) * 0.1;
-  // 20% width
-  const lastColumnLength = (liveArea.width - (padding * columns.length - 1)) * 0.1;
+  const firstColumnLength = liveArea.width * 0.4;
+  const columnLength = liveArea.width * 0.08;
+  const lastColumnLength = liveArea.width - firstColumnLength - 5 * columnLength - pageMargin;
 
-  const secondColumnX = pageMargin + firstColumnLength + padding;
+  const secondColumnX = pageMargin + firstColumnLength;
 
   const pdfColumns = columns.map((column, index) => {
     return {
       ...column,
-      x: index === 0 ? pageMargin : secondColumnX + (columnLength * index + padding),
+      x: index === 0 ? pageMargin : secondColumnX + columnLength * (index - 1),
       width: index === 0 ? firstColumnLength : index < columns.length - 1 ? columnLength : lastColumnLength,
     };
   });
@@ -71,9 +64,18 @@ const printMilliseconds = (milliseconds) => {
   return `${hours >= 10 ? hours : '0' + hours}:${minutes >= 10 ? minutes : '0' + minutes}`;
 };
 
+const buildPdfTableColumns = (doc, columns) => {
+  columns.forEach((column) => {
+    doc.text(column.name, column.x, pageMargin);
+  });
+
+  doc.line(pageMargin, pageMargin + textHeight, liveArea.width, pageMargin + textHeight);
+};
+
 const buildPdfTableLines = (doc, invoices, columns, i18n, currency) => {
-  const baseYPosForRows = pageMargin + padding;
-  let nextYPos = baseYPosForRows;
+  const baseYPosForRows = pageMargin + textHeight + headerLineHeight;
+
+  let y = baseYPosForRows;
 
   invoices
     .map((invoice) => [
@@ -85,20 +87,25 @@ const buildPdfTableLines = (doc, invoices, columns, i18n, currency) => {
       printMilliseconds(dayjs(invoice[4]).diff(invoice[2])),
       new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency}).format(invoice[6]),
     ])
-    .forEach((invoice) => {
+    .forEach((invoice, rowIndex) => {
       columns.forEach((column, columnIndex) => {
         const value = invoice[columnIndex];
 
-        const longText = doc.splitTextToSize('' + value, column.width);
+        const longText = doc.splitTextToSize('' + value, column.width - +(cellPadding / 2));
 
-        doc.text(longText, column.x, nextYPos);
+        if (rowIndex % 2 === 0) {
+          doc.setFillColor(217, 217, 217);
+          doc.rect(column.x, y, column.width, textHeight + cellPadding, 'F');
+        }
+
+        doc.text(longText, column.x + cellPadding / 2, y + (textHeight + cellPadding / 2));
       });
 
-      nextYPos = nextYPos + padding;
+      y = y + textHeight + cellPadding;
 
-      if (nextYPos > liveArea.height) {
+      if (y > liveArea.height) {
         doc.addPage();
-        nextYPos = baseYPosForRows;
+        y = baseYPosForRows;
       }
     });
 };
