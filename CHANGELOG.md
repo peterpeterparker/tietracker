@@ -3,6 +3,7 @@
 # 1.6.0 (2021-12-07)
 
 - export invoices to PDF
+- signature (text) for the exported documents (footer) 
 - update dependencies
 
 ### Features
