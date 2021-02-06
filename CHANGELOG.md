@@ -13,6 +13,10 @@
 - actions buttons centered
 - cards ios mode
 
+### Fix
+
+- catch null ref project modal
+
 <a name="1.5.0"></a>
 
 # 1.5.0 (2020-11-07)

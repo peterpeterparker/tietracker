@@ -93,9 +93,17 @@ const ProjectModal: React.FC<Props> = (props) => {
     setBilled(project && project.data !== undefined && project.data.budget !== undefined ? project.data.budget.billed : undefined);
 
     if (!project || project.data === undefined) {
-      nameRef.current.value = undefined;
-      rateRef.current.value = undefined;
-      budgetRef.current.value = undefined;
+      if (nameRef && nameRef.current) {
+        nameRef.current.value = undefined;
+      }
+
+      if (rateRef && rateRef.current) {
+        rateRef.current.value = undefined;
+      }
+
+      if (budgetRef && budgetRef.current) {
+        budgetRef.current.value = undefined;
+      }
 
       if (billedRef && billedRef.current) {
         billedRef.current.value = undefined;
