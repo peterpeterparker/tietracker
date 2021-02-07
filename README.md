@@ -25,7 +25,7 @@
 
 ## Getting Started
 
-Tie Tracker is a free and open source time tracking application. Its usage is meant to be simple and has the goal to lets you track work hours across projects.
+Tie Tracker is a free and open source time tracking application. Its is meant to be simple and aims to allow you to track working hours across projects.
 
 ## Features
 
