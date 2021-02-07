@@ -4,8 +4,8 @@ import {DirectoryEntry, File} from '@ionic-native/file';
 
 import {SocialSharing} from '@ionic-native/social-sharing';
 
-export async function getNewFileHandle(): Promise<FileSystemFileHandle> {
-  const opts: SaveFilePickerOptions = {
+export async function getNewFileHandle(type: 'pdf' | 'xlsx'): Promise<FileSystemFileHandle> {
+  const xlsxOpts: SaveFilePickerOptions = {
     types: [
       {
         description: 'Excel Files',
@@ -16,7 +16,18 @@ export async function getNewFileHandle(): Promise<FileSystemFileHandle> {
     ],
   };
 
-  return showSaveFilePicker(opts);
+  const pdfOpts: SaveFilePickerOptions = {
+    types: [
+      {
+        description: 'PDF Files',
+        accept: {
+          'application/pdf': ['.pdf'],
+        },
+      },
+    ],
+  };
+
+  return showSaveFilePicker(type === 'pdf' ? pdfOpts : xlsxOpts);
 }
 
 export async function writeFile(fileHandle: FileSystemFileHandle, contents: string | BufferSource | Blob) {

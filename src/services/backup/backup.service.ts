@@ -75,7 +75,7 @@ export class BackupService {
   exportNativeFileSystem(currency: Currency, vat: number | undefined, signature: string | undefined): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const fileHandle: FileSystemFileHandle = await getNewFileHandle();
+        const fileHandle: FileSystemFileHandle = await getNewFileHandle('xlsx');
 
         if (!fileHandle) {
           reject('Cannot access filesystem.');

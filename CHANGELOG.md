@@ -1,3 +1,11 @@
+<a name="1.6.2"></a>
+
+# 1.6.2 (2021-12-07)
+
+### Fix
+
+- native file system export PDF type
+
 <a name="1.6.1"></a>
 
 # 1.6.1 (2021-12-07)
