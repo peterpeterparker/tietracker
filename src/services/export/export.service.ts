@@ -35,7 +35,8 @@ export class ExportService {
     currency: Currency,
     vat: number | undefined,
     bill: boolean,
-    type: 'xlsx' | 'pdf', signature: string | undefined
+    type: 'xlsx' | 'pdf',
+    signature: string | undefined
   ): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (invoice === undefined || invoice.project_id === undefined) {
@@ -51,7 +52,7 @@ export class ExportService {
       }
 
       try {
-        const fileHandle: FileSystemFileHandle = await getNewFileHandle();
+        const fileHandle: FileSystemFileHandle = await getNewFileHandle(type);
 
         if (!fileHandle) {
           reject('Cannot access filesystem.');
@@ -81,7 +82,8 @@ export class ExportService {
     currency: Currency,
     vat: number | undefined,
     bill: boolean,
-    type: 'xlsx' | 'pdf', signature: string | undefined
+    type: 'xlsx' | 'pdf',
+    signature: string | undefined
   ): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (invoice === undefined || invoice.project_id === undefined) {
@@ -175,7 +177,15 @@ export class ExportService {
     return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.${type}`;
   }
 
-  private async postMessage(invoice: Invoice, invoices: string[], currency: Currency, vat: number | undefined, bill: boolean, type: 'xlsx' | 'pdf', signature: string | undefined) {
+  private async postMessage(
+    invoice: Invoice,
+    invoices: string[],
+    currency: Currency,
+    vat: number | undefined,
+    bill: boolean,
+    type: 'xlsx' | 'pdf',
+    signature: string | undefined
+  ) {
     await i18next.loadNamespaces('export');
 
     this.exportWorker.postMessage({
@@ -188,7 +198,7 @@ export class ExportService {
       bill: bill,
       i18n: exportLabels(),
       type,
-      signature
+      signature,
     });
   }
 }
