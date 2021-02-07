@@ -1,3 +1,11 @@
+<a name="1.6.1"></a>
+
+# 1.6.1 (2021-12-07)
+
+### Fix
+
+- french currency format PDF export
+
 <a name="1.6.0"></a>
 
 # 1.6.0 (2021-12-07)

@@ -1,6 +1,6 @@
 {
   "name": "tietracker",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "private": true,
   "dependencies": {
     "@capacitor/android": "^2.4.6",
