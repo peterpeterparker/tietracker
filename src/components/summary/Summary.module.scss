@@ -39,14 +39,22 @@
 .summary {
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-gap: 16px;
+  grid-column-gap: 16px;
 
   width: calc(100% - 16px);
   height: 100%;
 
+  ion-card:nth-child(3) {
+    margin-top: 0;
+  }
+
   @media (min-width: 768px) {
     &:global(.extended) {
       grid-template-columns: repeat(3, calc(100% / 3));
+    }
+
+    ion-card:nth-child(3) {
+      margin-top: 16px;
     }
   }
 
