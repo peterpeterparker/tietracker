@@ -72,7 +72,7 @@ const About: React.FC = () => {
               <IonIcon icon={checkmark} className={styles.icon} /> Daily list of entries
             </li>
             <li>
-              <IonIcon icon={checkmark} className={styles.icon} /> Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc) and PDF.
+              <IonIcon icon={checkmark} className={styles.icon} /> Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc) and PDF
             </li>
           </ul>
 

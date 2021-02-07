@@ -42,7 +42,7 @@ Yet not complicated but effective reporting.
 
 - ✅ Weekly work summary
 - ✅ Daily list of activities
-- ✅ Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc) and PDF.
+- ✅ Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc) and PDF
 
 ## Goodies
 
