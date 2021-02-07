@@ -12,6 +12,7 @@
 
 - actions buttons centered
 - cards ios mode
+- open sans as font for the app
 
 ### Fix
 
