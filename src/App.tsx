@@ -51,6 +51,7 @@ import './theme/toolbar.scss';
 import './theme/link.scss';
 import './theme/loading.scss';
 import './theme/charts.scss';
+import './theme/color.scss';
 
 import './helpers/i18n';
 
