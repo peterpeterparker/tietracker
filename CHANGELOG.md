@@ -1,3 +1,11 @@
+<a name="1.6.3"></a>
+
+# 1.6.3 (2021-12-07)
+
+### Fix
+
+- handle undefined signature on exported documents
+
 <a name="1.6.2"></a>
 
 # 1.6.2 (2021-12-07)

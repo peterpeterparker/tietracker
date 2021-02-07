@@ -24,8 +24,8 @@ const exportToPdf = async (invoices, client, currency, vat, i18n, signature) => 
   });
 
   doc.setProperties({
-    author: signature,
-    creator: signature,
+    author: signature ? signature : '',
+    creator: signature ? signature : '',
   });
 
   initPDFFonts(doc);
