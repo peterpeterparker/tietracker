@@ -240,7 +240,7 @@ const buildPdfTotalVat = (doc, total, columns, i18n, currency, vat, y) => {
 };
 
 const formatCurrency = (value, i18n, currency) => {
-  return new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency}).format(value);
+  return new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency}).format(value).replace(/\u202f/, ' ');
 };
 
 const text = (value, doc, column, y) => {
