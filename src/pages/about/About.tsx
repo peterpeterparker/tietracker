@@ -6,7 +6,7 @@ import Header from '../../components/header/Header';
 
 import styles from './About.module.scss';
 
-import {logoTwitter, logoGithub, globeOutline} from 'ionicons/icons';
+import {logoTwitter, logoGithub, globeOutline, share, checkmark} from 'ionicons/icons';
 
 const About: React.FC = () => {
   return (
@@ -45,28 +45,16 @@ const About: React.FC = () => {
 
           <ul className={styles.list}>
             <li>
-              <span aria-label="checkmark" role="img">
-                ✅
-              </span>{' '}
-              Simple work hours tracking
+              <IonIcon icon={checkmark} className={styles.icon} /> Simple work hours tracking
             </li>
             <li>
-              <span aria-label="checkmark" role="img">
-                ✅
-              </span>{' '}
-              Assign time to clients and projects
+              <IonIcon icon={checkmark} className={styles.icon} /> Assign time to clients and projects
             </li>
             <li>
-              <span aria-label="checkmark" role="img">
-                ✅
-              </span>{' '}
-              Define budget per projects
+              <IonIcon icon={checkmark} className={styles.icon} /> Define budget per projects
             </li>
             <li>
-              <span aria-label="checkmark" role="img">
-                ✅
-              </span>{' '}
-              Mark entries as charges
+              <IonIcon icon={checkmark} className={styles.icon} /> Mark entries as charges
             </li>
           </ul>
 
@@ -78,22 +66,13 @@ const About: React.FC = () => {
 
           <ul className={styles.list}>
             <li>
-              <span aria-label="checkmark" role="img">
-                ✅
-              </span>{' '}
-              Weekly work summary
+              <IonIcon icon={checkmark} className={styles.icon} /> Weekly work summary
             </li>
             <li>
-              <span aria-label="checkmark" role="img">
-                ✅
-              </span>{' '}
-              Daily list of entries
+              <IonIcon icon={checkmark} className={styles.icon} /> Daily list of entries
             </li>
             <li>
-              <span aria-label="checkmark" role="img">
-                ✅
-              </span>{' '}
-              Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc) and PDF.
+              <IonIcon icon={checkmark} className={styles.icon} /> Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc) and PDF.
             </li>
           </ul>
 

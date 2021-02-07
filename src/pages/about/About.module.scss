@@ -32,6 +32,8 @@
 
   li {
     padding: 4px;
+    display: flex;
+    align-items: flex-start;
   }
 }
 
@@ -47,4 +49,9 @@
 
 .terms {
   margin: 40px 0 16px;
+}
+
+.icon {
+  font-size: var(--font-size-big);
+  margin-right: 8px;
 }
