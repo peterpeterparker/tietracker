@@ -2,6 +2,12 @@
   --font-size-small: 0.8rem;
   --font-size-normal: 1rem;
   --font-size-big: 1.4rem;
+
+  font-family: "Open Sans", sans-serif;
+  --ion-font-family: "Open Sans", sans-serif;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 ion-label.placeholder, p.placeholder {
