@@ -22,7 +22,7 @@ import {useTranslation} from 'react-i18next';
 
 import {useSelector} from 'react-redux';
 
-import {download, cashOutline, saveOutline} from 'ionicons/icons';
+import {cashOutline, saveOutline, share} from 'ionicons/icons';
 
 import styles from './Invoices.module.scss';
 
@@ -119,7 +119,7 @@ const Invoices: React.FC = () => {
             <IonCard key={`invoice-${i}`} onClick={() => setSelectedInvoice(invoice)} mode="ios" className="ion-activatable client" color="card">
               <div style={{background: invoice.client ? invoice.client.color : undefined, color: colorContrast}}>
                 <IonLabel>Export</IonLabel>
-                <IonIcon icon={download} />
+                <IonIcon icon={share} />
               </div>
               <IonCardHeader>
                 <IonCardSubtitle>{invoice.client ? invoice.client.name : ''}</IonCardSubtitle>
