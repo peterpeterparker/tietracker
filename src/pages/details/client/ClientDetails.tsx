@@ -30,7 +30,7 @@ import {
 import {lockClosed, ellipsisHorizontal, ellipsisVertical, lockOpen, stopwatchOutline} from 'ionicons/icons';
 
 import {formatCurrency} from '../../../utils/utils.currency';
-import {contrast} from '../../../utils/utils.color';
+import {contrast, PALETTE} from '../../../utils/utils.color';
 
 import {Client} from '../../../models/client';
 import {Settings} from '../../../models/settings';
@@ -84,6 +84,16 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
     setLoading(false);
   });
+
+  useEffect(() => {
+    if (!clientColorRef || !clientColorRef.current) {
+      return;
+    }
+
+    clientColorRef.current.palette = PALETTE;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clientColorRef]);
 
   async function loadProjects() {
     const projects: Project[] | undefined = await ProjectsService.getInstance().listForClient(props.match.params.id);
@@ -239,7 +249,12 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
           </IonItem>
 
           <div className={styles.color}>
-            <deckgo-color className="ion-padding-start ion-padding-end ion-padding-bottom" ref={clientColorRef} more={true} label={false} color-hex={`${client.data.color}`}>
+            <deckgo-color
+              className="ion-padding-start ion-padding-end ion-padding-bottom"
+              ref={clientColorRef}
+              more={true}
+              label={false}
+              color-hex={`${client.data.color}`}>
               <IonIcon ios={ellipsisHorizontal} md={ellipsisVertical} slot="more" aria-label="More" class="more"></IonIcon>
             </deckgo-color>
           </div>

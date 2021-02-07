@@ -13,7 +13,7 @@ import {Client, ClientData} from '../../models/client';
 import {RootProps, rootConnector} from '../../store/thunks/index.thunks';
 import {ProjectData} from '../../models/project';
 
-import {contrast} from '../../utils/utils.color';
+import {contrast, PALETTE} from '../../utils/utils.color';
 
 import {ThemeService} from '../../services/theme/theme.service';
 import {Settings} from '../../models/settings';
@@ -55,6 +55,16 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     return () => ref.removeEventListener('colorChange', selectColor, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!clientColorRef || !clientColorRef.current) {
+      return;
+    }
+
+    clientColorRef.current.palette = PALETTE;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clientColorRef]);
 
   function handleClientNameInput($event: CustomEvent<KeyboardEvent>) {
     let data: ClientData;
