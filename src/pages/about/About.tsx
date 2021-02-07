@@ -6,7 +6,7 @@ import Header from '../../components/header/Header';
 
 import styles from './About.module.scss';
 
-import {logoTwitter, globe, logoGithub} from 'ionicons/icons';
+import {logoTwitter, logoGithub, globeOutline} from 'ionicons/icons';
 
 const About: React.FC = () => {
   return (
@@ -17,26 +17,24 @@ const About: React.FC = () => {
         <main className="ion-padding">
           <IonHeader>
             <IonToolbar className="title">
-              <h1>About</h1>
+              <div className={styles.intro}>
+                <img src="assets/icon/logo.svg" alt="Tie Tracker logo" height="160" />
+
+                <p>
+                  <IonLabel>
+                    <strong>Tie Tracker</strong> - A simple, open source and free time tracking app{' '}
+                    <span aria-label="stopwatch" role="img">
+                      ⏱
+                    </span>
+                    ️
+                  </IonLabel>
+                </p>
+              </div>
             </IonToolbar>
           </IonHeader>
 
-          <div className={styles.intro}>
-            <img src="assets/icon/logo.svg" alt="Tie Tracker logo" height="160" />
-
-            <p>
-              <IonLabel>
-                <strong>Tie Tracker</strong> - A simple, open source and free time tracking app{' '}
-                <span aria-label="stopwatch" role="img">
-                  ⏱
-                </span>
-                ️
-              </IonLabel>
-            </p>
-          </div>
-
           <p>
-            <IonLabel>It is meant to be simple and has the goal to lets you track work hours across projects.</IonLabel>
+            <IonLabel>Tie Tracker is meant to be simple and aims to allow you to track working hours across projects.</IonLabel>
           </p>
 
           <h1 className="ion-padding-top">Features</h1>
@@ -95,7 +93,7 @@ const About: React.FC = () => {
               <span aria-label="checkmark" role="img">
                 ✅
               </span>{' '}
-              Export open invoices to XLSX timesheets for Excel, LibreOffice, Numbers, etc.
+              Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc) and PDF.
             </li>
           </ul>
 
@@ -111,20 +109,9 @@ const About: React.FC = () => {
             </IonLabel>
           </p>
 
-          <h1 className="ion-padding-top">Author</h1>
+          <h1 className="ion-padding-top">Technical Stack</h1>
 
           <p>
-            <IonLabel>
-              I, David Dal Busco, am the developer behind this application. I am a freelancer, web developer Web, PWA and Mobile iOS/Android, UX and IT
-              consultant by day and the creator of{' '}
-              <a href="https://deckdeckgo.com" target="_blank" rel="noopener noreferrer">
-                DeckDeckGo
-              </a>{' '}
-              by night.
-            </IonLabel>
-          </p>
-
-          <p className="ion-padding-top">
             <IonLabel>
               This app is developed with{' '}
               <a href="https://ionicframework.com" target="_blank" rel="noopener noreferrer">
@@ -142,30 +129,39 @@ const About: React.FC = () => {
             </IonLabel>
           </p>
 
-          <p className="ion-padding-top">
-            <IonLabel>To contact me, find some of my blog posts, browse other works or maybe even to hire me, checkout the following links.</IonLabel>
-          </p>
-
-          <p className="ion-padding-top">
-            <IonLabel>
-              To infinity and beyond{' '}
-              <span role="img" aria-label="rocket">
-                🚀
-              </span>
-            </IonLabel>
-          </p>
+          <h1 className="ion-padding-top">Data</h1>
 
           <p>
-            <IonLabel>David</IonLabel>
+            <IonLabel>It works offline, data are saved on your device. No analytics nor tracking are implemented.</IonLabel>
+          </p>
+
+          <h1 className="ion-padding-top">Contact</h1>
+
+          <p>
+            <IonLabel>
+              Got a question or, a project which requires a freelance web developer? Reach me out on{' '}
+              <a href="https://twitter.com/daviddalbusco" target="_blank" rel="noopener noreferrer">
+                Twitter
+              </a>{' '}
+              or{' '}
+              <a href="https://daviddalbusco.com" target="_blank" rel="noopener noreferrer">
+                website
+              </a>
+              .
+            </IonLabel>
           </p>
 
           <div className={styles.social}>
             <a href="https://daviddalbusco.com" target="_blank" rel="noopener noreferrer">
-              <IonIcon icon={globe} area-label="Personal blog and website"></IonIcon>
+              <IonIcon icon={globeOutline} area-label="Personal blog and website"></IonIcon>
             </a>
 
             <a href="https://twitter.com/daviddalbusco" target="_blank" rel="noopener noreferrer">
               <IonIcon md={logoTwitter} ios={logoTwitter} area-label="Twitter"></IonIcon>
+            </a>
+
+            <a href="http://github.com/peterpeterparker" target="_blank" rel="noopener noreferrer">
+              <IonIcon md={logoGithub} ios={logoGithub} area-label="Github"></IonIcon>
             </a>
 
             <a href="https://dev.to/daviddalbusco" target="_blank" rel="noopener noreferrer">
@@ -174,10 +170,6 @@ const About: React.FC = () => {
 
             <a href="https://medium.com/@david.dalbusco" target="_blank" rel="noopener noreferrer">
               <IonIcon src="./assets/icon/medium.svg" area-label="Medium"></IonIcon>
-            </a>
-
-            <a href="http://github.com/peterpeterparker" target="_blank" rel="noopener noreferrer">
-              <IonIcon md={logoGithub} ios={logoGithub} area-label="Github"></IonIcon>
             </a>
           </div>
 

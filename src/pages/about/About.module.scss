@@ -3,6 +3,9 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  margin: 16px;
+  text-align: center;
 }
 
 .social {
@@ -10,7 +13,11 @@
   justify-content: center;
   align-items: center;
 
-  margin: 32px;
+  margin: 48px;
+
+  a {
+    margin: 0 4px;
+  }
 
   ion-icon {
     font-size: 2rem;
@@ -39,5 +46,5 @@
 }
 
 .terms {
-  margin-top: 64px;
+  margin: 40px 0 16px;
 }
