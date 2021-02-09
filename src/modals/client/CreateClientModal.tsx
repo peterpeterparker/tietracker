@@ -277,7 +277,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
   function renderContent() {
     const valid: boolean = validClientName && validProject && validClientColor;
 
-    const color: string | undefined = clientData ? clientData.color : undefined;
+    const color: string | undefined = clientData && clientData.color ? clientData.color : 'var(--ion-color-light)';
     const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
 
     return (
