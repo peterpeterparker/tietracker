@@ -5,6 +5,12 @@
 ### Style
 
 - even on iOS, actually, the md style of the cards fits better the overall design
+- on new client modal, submit button color when inactive
+
+### Fix
+
+- make color mandatory when initializing a new client
+- reset client modal form after submit
 
 <a name="1.6.3"></a>
 

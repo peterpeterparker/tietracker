@@ -36,7 +36,9 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
   const projectBudgetRef: RefObject<any> = useRef();
 
   const [projectData, setProjectData] = useState<ProjectData | undefined>(undefined);
-  const [validClient, setValidClient] = useState<boolean>(false);
+
+  const [validClientColor, setValidClientColor] = useState<boolean>(false);
+  const [validClientName, setValidClientName] = useState<boolean>(false);
   const [validProject, setValidProject] = useState<boolean>(false);
 
   // Access state in event listener trick: https://medium.com/geographit/accessing-react-state-in-event-listeners-with-usestate-and-useref-hooks-8cceee73c559
@@ -55,6 +57,12 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     return () => ref.removeEventListener('colorChange', selectColor, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setValidClientColor(clientData !== undefined && clientData.color !== undefined);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clientData]);
 
   useEffect(() => {
     if (!clientColorRef || !clientColorRef.current) {
@@ -82,7 +90,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
   }
 
   function validateClientName() {
-    setValidClient(clientData !== undefined && clientData.name !== undefined && clientData.name.length >= 3);
+    setValidClientName(clientData !== undefined && clientData.name !== undefined && clientData.name.length >= 3);
   }
 
   const selectColor = ($event: CustomEvent) => {
@@ -204,10 +212,37 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
       await props.createProject(persistedClient, projectData);
 
       await props.closeAction();
+
+      await reset();
     } catch (err) {
       console.error(err);
     }
   }
+
+  const reset = async () => {
+    setClientData(undefined);
+    setProjectData(undefined);
+
+    if (clientNameRef && clientNameRef.current) {
+      clientNameRef.current.value = undefined;
+    }
+
+    if (clientColorRef && clientColorRef.current) {
+      clientColorRef.current.value = undefined;
+    }
+
+    if (projectNameRef && projectNameRef.current) {
+      projectNameRef.current.value = undefined;
+    }
+
+    if (projectRateRef && projectRateRef.current) {
+      projectRateRef.current.value = undefined;
+    }
+
+    if (projectBudgetRef && projectBudgetRef.current) {
+      projectBudgetRef.current.value = undefined;
+    }
+  };
 
   function onVatChange($event: CustomEvent) {
     if (!$event || !$event.detail) {
@@ -240,7 +275,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
   return renderContent();
 
   function renderContent() {
-    const valid: boolean = validClient && validProject;
+    const valid: boolean = validClientName && validProject && validClientColor;
 
     const color: string | undefined = clientData ? clientData.color : undefined;
     const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
@@ -276,20 +311,20 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   onIonChange={() => validateClientName()}></IonInput>
               </IonItem>
 
-              <IonItem disabled={!validClient} className="item-title ion-margin-top">
+              <IonItem disabled={!validClientName} className="item-title ion-margin-top">
                 <IonLabel>{t('clients:create.color')}</IonLabel>
               </IonItem>
 
-              <div className={styles.color + ` ${!validClient ? 'disabled' : ''}`}>
+              <div className={styles.color + ` ${!validClientName ? 'disabled' : ''}`}>
                 <deckgo-color ref={clientColorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true} label={false}>
                   <IonIcon ios={ellipsisHorizontal} md={ellipsisVertical} slot="more" aria-label="More" class="more"></IonIcon>
                 </deckgo-color>
               </div>
 
-              <IonItem disabled={!validClient} className="item-title ion-margin-top">
+              <IonItem disabled={!validClientName} className="item-title ion-margin-top">
                 <IonLabel>{t('clients:create.project')}</IonLabel>
               </IonItem>
-              <IonItem disabled={!validClient}>
+              <IonItem disabled={!validClientName}>
                 <IonInput
                   ref={projectNameRef}
                   debounce={500}
@@ -301,10 +336,10 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   onIonChange={() => validateProject()}></IonInput>
               </IonItem>
 
-              <IonItem disabled={!validClient} className="item-title">
+              <IonItem disabled={!validClientName} className="item-title">
                 <IonLabel>{t('clients:create.hourly_rate')}</IonLabel>
               </IonItem>
-              <IonItem disabled={!validClient}>
+              <IonItem disabled={!validClientName}>
                 <IonInput
                   ref={projectRateRef}
                   debounce={500}
@@ -315,10 +350,10 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   onIonChange={() => validateProject()}></IonInput>
               </IonItem>
 
-              <IonItem disabled={!validClient} className="item-title">
+              <IonItem disabled={!validClientName} className="item-title">
                 <IonLabel>{t('clients:create.budget')}</IonLabel>
               </IonItem>
-              <IonItem disabled={!validClient}>
+              <IonItem disabled={!validClientName}>
                 <IonInput
                   ref={projectBudgetRef}
                   debounce={500}
@@ -364,10 +399,10 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
 
     return (
       <>
-        <IonItem disabled={!validClient} className="item-title">
+        <IonItem disabled={!validClientName} className="item-title">
           <IonLabel>{t('clients:create.vat')}</IonLabel>
         </IonItem>
-        <IonItem disabled={!validClient} className="item-checkbox">
+        <IonItem disabled={!validClientName} className="item-checkbox">
           <IonLabel>{settings.vat}%</IonLabel>
           <IonCheckbox
             slot="end"
