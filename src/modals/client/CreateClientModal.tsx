@@ -212,10 +212,37 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
       await props.createProject(persistedClient, projectData);
 
       await props.closeAction();
+
+      await reset();
     } catch (err) {
       console.error(err);
     }
   }
+
+  const reset = async () => {
+    setClientData(undefined);
+    setProjectData(undefined);
+
+    if (clientNameRef && clientNameRef.current) {
+      clientNameRef.current.value = undefined;
+    }
+
+    if (clientColorRef && clientColorRef.current) {
+      clientColorRef.current.value = undefined;
+    }
+
+    if (projectNameRef && projectNameRef.current) {
+      projectNameRef.current.value = undefined;
+    }
+
+    if (projectRateRef && projectRateRef.current) {
+      projectRateRef.current.value = undefined;
+    }
+
+    if (projectBudgetRef && projectBudgetRef.current) {
+      projectBudgetRef.current.value = undefined;
+    }
+  };
 
   function onVatChange($event: CustomEvent) {
     if (!$event || !$event.detail) {

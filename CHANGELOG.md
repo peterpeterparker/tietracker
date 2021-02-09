@@ -10,6 +10,7 @@
 ### Fix
 
 - make color mandatory when initializing a new client
+- reset client modal form after submit
 
 <a name="1.6.3"></a>
 
