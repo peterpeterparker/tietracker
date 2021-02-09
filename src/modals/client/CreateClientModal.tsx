@@ -272,6 +272,12 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     setProjectData(data);
   }
 
+  const cancel = async () => {
+    props.closeAction();
+
+    await reset();
+  };
+
   return renderContent();
 
   function renderContent() {
@@ -382,7 +388,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                 <IonLabel>{t('common:actions.submit')}</IonLabel>
               </IonButton>
 
-              <button type="button" onClick={() => props.closeAction()}>
+              <button type="button" onClick={() => cancel()}>
                 {t('common:actions.cancel')}
               </button>
             </div>
