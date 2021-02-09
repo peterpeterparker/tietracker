@@ -116,7 +116,7 @@ const Invoices: React.FC = () => {
           const colorContrast: string = contrast(invoice.client ? invoice.client.color : undefined);
 
           return (
-            <IonCard key={`invoice-${i}`} onClick={() => setSelectedInvoice(invoice)} mode="ios" className="ion-activatable client" color="card">
+            <IonCard key={`invoice-${i}`} onClick={() => setSelectedInvoice(invoice)} mode="md" className="ion-activatable client" color="card">
               <div style={{background: invoice.client ? invoice.client.color : undefined, color: colorContrast}}>
                 <IonLabel>Export</IonLabel>
                 <IonIcon icon={share} />

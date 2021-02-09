@@ -55,7 +55,7 @@ const Projects: React.FC<Props> = (props: Props) => {
             const colorContrast: string = contrast(project.data.client ? project.data.client.color : undefined);
 
             return (
-              <IonCard key={project.id} onClick={() => startStopTask(project)} mode="ios" className="ion-activatable ion-margin-bottom client" color="card">
+              <IonCard key={project.id} onClick={() => startStopTask(project)} mode="md" className="ion-activatable ion-margin-bottom client" color="card">
                 <div
                   style={{
                     background: project.data.client ? project.data.client.color : undefined,
