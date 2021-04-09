@@ -1,4 +1,4 @@
-import React, {CSSProperties, FormEvent, useEffect, useState} from 'react';
+import React, {CSSProperties, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {
   IonButton,

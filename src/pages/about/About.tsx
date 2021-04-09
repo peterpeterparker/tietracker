@@ -6,7 +6,7 @@ import Header from '../../components/header/Header';
 
 import styles from './About.module.scss';
 
-import {logoTwitter, logoGithub, globeOutline, share, checkmark} from 'ionicons/icons';
+import {logoTwitter, logoGithub, globeOutline, checkmark} from 'ionicons/icons';
 
 const About: React.FC = () => {
   return (
