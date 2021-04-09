@@ -1,3 +1,11 @@
+<a name="1.7.0"></a>
+
+# 1.7.0 (2021-04-09)
+
+### Fix
+
+- close modal with hardware back button after export
+
 <a name="1.6.4"></a>
 
 # 1.6.4 (2021-01-09)
