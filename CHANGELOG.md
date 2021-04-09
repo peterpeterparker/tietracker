@@ -2,6 +2,10 @@
 
 # 1.7.0 (2021-04-09)
 
+### Features
+
+- sort last active projects first on home screen 
+
 ### Fix
 
 - close modal with hardware back button after export
