@@ -68,12 +68,28 @@ const InvoiceModal: React.FC<Props> = (props) => {
   const [inProgress, setInProgress] = useState<boolean>(false);
 
   useEffect(() => {
-    init();
+    (async () => {
+      await init();
+    })();
+
+    document.addEventListener('ionBackButton', onBackButton);
+
+    return () => document.removeEventListener('ionBackButton', onBackButton);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.invoice]);
 
+  const onBackButton = (ev: Event) => {
+    (ev as CustomEvent).detail.register(10, () => {
+      props.closeAction();
+    });
+  };
+
   useEffect(() => {
-    updateBillable();
+    (async () => {
+      updateBillable();
+    })();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [from, to]);
 
