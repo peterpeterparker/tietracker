@@ -1,4 +1,4 @@
-import {ProjectActionTypes, CREATE_PROJECT, INIT_ACTIVE_PROJECTS} from '../types/projects.types';
+import {CREATE_PROJECT, INIT_ACTIVE_PROJECTS, ProjectActionTypes, UPDATE_ACTIVE_PROJECTS} from '../types/projects.types';
 import {Project} from '../../models/project';
 
 export interface ProjectsState {
@@ -16,6 +16,7 @@ export function projectsReducer(state = initialState, action: ProjectActionTypes
         projects: state.projects !== undefined ? [action.payload, ...state.projects] : [action.payload],
       };
     case INIT_ACTIVE_PROJECTS:
+    case UPDATE_ACTIVE_PROJECTS:
       return {
         projects: action.payload ? action.payload : [],
       };

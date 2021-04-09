@@ -33,6 +33,8 @@ const Projects: React.FC<Props> = (props: Props) => {
       await props.stopTask(0, settings.roundTime);
     } else {
       await props.startTask(project, settings);
+
+      await props.updateActiveProject(project);
     }
   }
 

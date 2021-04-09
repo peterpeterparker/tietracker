@@ -219,4 +219,27 @@ export class ProjectsService {
       }
     });
   }
+
+  updateActiveProject(project: Project | undefined): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        if (!project) {
+          resolve();
+          return;
+        }
+
+        const projects: string[] | undefined = await get('active-projects');
+
+        if (!projects) {
+          await set('active-projects', [project.id]);
+          resolve();
+          return;
+        }
+
+        await set('active-projects', [project.id, ...projects.filter((id: string) => id !== project.id)]);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
 }

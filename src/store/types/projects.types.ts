@@ -2,6 +2,7 @@ import {Project} from '../../models/project';
 
 export const CREATE_PROJECT = 'CREATE_PROJECT';
 export const INIT_ACTIVE_PROJECTS = 'INIT_ACTIVE_PROJECTS';
+export const UPDATE_ACTIVE_PROJECTS = 'UPDATE_ACTIVE_PROJECTS';
 
 interface CreateProjectAction {
   type: typeof CREATE_PROJECT;
@@ -9,7 +10,7 @@ interface CreateProjectAction {
 }
 
 interface InitActiveProjectsAction {
-  type: typeof INIT_ACTIVE_PROJECTS;
+  type: typeof INIT_ACTIVE_PROJECTS | typeof UPDATE_ACTIVE_PROJECTS;
   payload: Project[];
 }
 
