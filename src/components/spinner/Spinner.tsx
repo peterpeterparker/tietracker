@@ -55,7 +55,9 @@ const Spinner: React.FC<SpinnerProps> = (props: SpinnerProps) => {
 
     // eslint-disable-next-line
     return () => clearInterval(progressInterval);
-  });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function formatTime(seconds: number): Promise<string> {
     const diffHours: number = Math.floor(seconds / 3600);
