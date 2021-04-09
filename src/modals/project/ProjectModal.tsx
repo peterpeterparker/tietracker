@@ -212,6 +212,10 @@ const ProjectModal: React.FC<Props> = (props) => {
     }
 
     await ProjectsService.getInstance().update(projectToUpdate);
+
+    if (projectToUpdate.data.disabled) {
+      await ProjectsService.getInstance().deleteActiveProject(projectToUpdate);
+    }
   }
 
   return (

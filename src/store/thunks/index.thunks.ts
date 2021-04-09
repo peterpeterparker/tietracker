@@ -6,7 +6,7 @@ import {ThunkDispatch} from 'redux-thunk';
 import {RootState} from '../reducers';
 
 import {createClient, initClients} from './clients.thunks';
-import {createProject, initActiveProjects} from './projects.thunks';
+import {createProject, initActiveProjects, updateActiveProject} from './projects.thunks';
 import {startTask, stopTask, initTask, listTasks, updateTask, createTask} from './tasks.thunks';
 
 import {ClientData, Client} from '../../models/client';
@@ -40,6 +40,7 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
 
   createProject: (client: Client, data: ProjectData) => dispatch(createProject(client, data)),
   initActiveProjects: () => dispatch(initActiveProjects()),
+  updateActiveProject: (project: Project) => dispatch(updateActiveProject(project)),
 
   startTask: (project: Project, settings: Settings) => dispatch(startTask(project, settings)),
   updateTask: (task: TaskInProgress) => dispatch(updateTask(task)),
