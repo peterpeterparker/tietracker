@@ -84,8 +84,25 @@ export class ProjectsService {
           return;
         }
 
+        const activeProjects: string[] | undefined = await get('active-projects');
+
         const sortedProjects: Project[] = filteredProjects.sort((a: Project, b: Project) => {
-          return new Date(b.data.updated_at as Date | number).getTime() - new Date(a.data.updated_at as Date | number).getTime();
+          const indexA: number | undefined = activeProjects?.findIndex((id: string) => a.id === id);
+          const indexB: number | undefined = activeProjects?.findIndex((id: string) => b.id === id);
+
+          if ((indexA === -1 || indexA === undefined) && (indexB === -1 || indexB === undefined)) {
+            return new Date(b.data.updated_at as Date | number).getTime() - new Date(a.data.updated_at as Date | number).getTime();
+          }
+
+          if (indexB === -1 || indexB === undefined) {
+            return -1;
+          }
+
+          if (indexA === -1 || indexA === undefined) {
+            return 1;
+          }
+
+          return indexA - indexB;
         });
 
         resolve(sortedProjects !== undefined ? sortedProjects : []);
@@ -237,6 +254,8 @@ export class ProjectsService {
         }
 
         await set('active-projects', [project.id, ...projects.filter((id: string) => id !== project.id)]);
+
+        resolve();
       } catch (err) {
         reject(err);
       }
