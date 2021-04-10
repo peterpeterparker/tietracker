@@ -102,7 +102,7 @@ const Invoices: React.FC = () => {
         </IonFabButton>
         <IonFabList side="start">
           <IonFabButton onClick={() => doBackup('excel')} color="button-light">
-            <IonIcon icon={documentOutline} />
+            <IonIcon icon={cashOutline} />
           </IonFabButton>
           <IonFabButton onClick={() => doBackup('idb')} color="button-light">
             <IonIcon icon={serverOutline} />
