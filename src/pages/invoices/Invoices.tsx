@@ -16,13 +16,14 @@ import {
   IonFab,
   IonFabButton,
   IonLoading,
+  IonFabList,
 } from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
 import {useSelector} from 'react-redux';
 
-import {cashOutline, saveOutline, share} from 'ionicons/icons';
+import {cashOutline, documentOutline, saveOutline, serverOutline, share} from 'ionicons/icons';
 
 import styles from './Invoices.module.scss';
 
@@ -55,11 +56,11 @@ const Invoices: React.FC = () => {
     setSelectedInvoice(undefined);
   }
 
-  async function doExport() {
+  async function doBackup(type: 'excel' | 'idb') {
     setShowLoading(true);
 
     try {
-      await BackupService.getInstance().backup(settings);
+      await BackupService.getInstance().backup(type, settings);
     } catch (err) {
       // Error printed in the console
     }
@@ -96,9 +97,17 @@ const Invoices: React.FC = () => {
   function renderBackup() {
     return (
       <IonFab vertical="bottom" horizontal="end" slot="fixed" className={`${styles.backup}`}>
-        <IonFabButton onClick={() => doExport()} color="button">
+        <IonFabButton color="button">
           <IonIcon icon={saveOutline} />
         </IonFabButton>
+        <IonFabList side="start">
+          <IonFabButton onClick={() => doBackup('excel')} color="button-light">
+            <IonIcon icon={documentOutline} />
+          </IonFabButton>
+          <IonFabButton onClick={() => doBackup('idb')} color="button-light">
+            <IonIcon icon={serverOutline} />
+          </IonFabButton>
+        </IonFabList>
 
         <IonLabel>{t('invoices:export.backup')}</IonLabel>
       </IonFab>

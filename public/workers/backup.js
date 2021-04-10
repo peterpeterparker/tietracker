@@ -3,17 +3,44 @@ importScripts('./libs/dayjs.min.js');
 
 importScripts('./libs/exceljs.min.js');
 
+importScripts('./libs/jszip.min.js');
+
 importScripts('./utils/utils.js');
 importScripts('./utils/utils.export.js');
 importScripts('./utils/utils.excel.js');
 
 self.onmessage = async ($event) => {
-  if ($event && $event.data && $event.data.msg === 'backup') {
-    await self.backup($event.data.currency, $event.data.vat, $event.data.i18n, $event.data.signature);
+  if ($event && $event.data && $event.data.msg === 'backup-excel') {
+    await self.backupExcel($event.data.currency, $event.data.vat, $event.data.i18n, $event.data.signature);
+  } else if ($event && $event.data && $event.data.msg === 'backup-idb') {
+    await self.backupIdb();
   }
 };
 
-self.backup = async (currency, vat, i18n, signature) => {
+self.backupIdb = async () => {
+  const entries = await idbKeyval.entries();
+
+  if (!entries || entries.length <= 0) {
+    self.postMessage(undefined);
+    return;
+  }
+
+  const zip = new JSZip();
+
+  entries.forEach((entry) => {
+    const blob = new Blob([JSON.stringify(entry[1])], {type: 'application/json'});
+
+    zip.file(`${entry[0]}.json`, blob, {
+      base64: true,
+    });
+  });
+
+  const data = await zip.generateAsync({type: 'blob'});
+
+  self.postMessage(data);
+};
+
+self.backupExcel = async (currency, vat, i18n, signature) => {
   const invoices = await idbKeyval.get('invoices');
 
   if (!invoices || invoices.length <= 0) {

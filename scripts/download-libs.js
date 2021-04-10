@@ -36,6 +36,11 @@ const download = async ({url, path}) => {
       url: 'https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js',
       path: './public/workers/libs/jspdf.umd.min.js',
     });
+
+    await download({
+      url: 'https://raw.githubusercontent.com/Stuk/jszip/master/dist/jszip.min.js',
+      path: './public/workers/libs/jszip.min.js',
+    });
   } catch (err) {
     console.error(err);
   }
