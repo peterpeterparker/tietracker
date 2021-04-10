@@ -4,7 +4,7 @@ import {DirectoryEntry, File} from '@ionic-native/file';
 
 import {SocialSharing} from '@ionic-native/social-sharing';
 
-export async function getNewFileHandle(type: 'pdf' | 'xlsx'): Promise<FileSystemFileHandle> {
+export async function getNewFileHandle(type: 'pdf' | 'xlsx' | 'zip'): Promise<FileSystemFileHandle> {
   const xlsxOpts: SaveFilePickerOptions = {
     types: [
       {
@@ -27,7 +27,18 @@ export async function getNewFileHandle(type: 'pdf' | 'xlsx'): Promise<FileSystem
     ],
   };
 
-  return showSaveFilePicker(type === 'pdf' ? pdfOpts : xlsxOpts);
+  const zipOpts: SaveFilePickerOptions = {
+    types: [
+      {
+        description: 'Zip Files',
+        accept: {
+          'application/zip': ['.zip'],
+        },
+      },
+    ],
+  };
+
+  return showSaveFilePicker(type === 'pdf' ? pdfOpts : type === 'zip' ? zipOpts : xlsxOpts);
 }
 
 export async function writeFile(fileHandle: FileSystemFileHandle, contents: string | BufferSource | Blob) {

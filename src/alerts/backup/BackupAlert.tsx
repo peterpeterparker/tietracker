@@ -38,7 +38,7 @@ const BackupAlert: React.FC = () => {
     setShowLoading(true);
 
     try {
-      await BackupService.getInstance().backup(settings);
+      await BackupService.getInstance().backup('excel', settings);
     } catch (err) {
       // Error printed in the console
     }

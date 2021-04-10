@@ -12,8 +12,6 @@ import {download, getMobileDir, getNewFileHandle, shareMobile, writeFile} from '
 import {exportLabels} from '../../utils/utils.export';
 import {isChrome, isHttps} from '../../utils/utils.platform';
 
-import {Currency} from '../../definitions/currency';
-
 import {Settings} from '../../models/settings';
 
 export class BackupService {
@@ -60,22 +58,22 @@ export class BackupService {
     await set('backup', new Date());
   }
 
-  async backup(settings: Settings) {
+  async backup(type: 'excel' | 'idb', settings: Settings) {
     if (isPlatform('desktop') && isChrome() && isHttps()) {
-      await this.exportNativeFileSystem(settings.currency, settings.vat, settings.signature);
+      await this.exportNativeFileSystem(type, settings);
     } else if (isPlatform('hybrid')) {
-      await this.exportMobileFileSystem(settings.currency, settings.vat, settings.signature);
+      await this.exportMobileFileSystem(type, settings);
     } else {
-      await this.exportDownload(settings.currency, settings.vat, settings.signature);
+      await this.exportDownload(type, settings);
     }
 
     await this.setBackup();
   }
 
-  exportNativeFileSystem(currency: Currency, vat: number | undefined, signature: string | undefined): Promise<void> {
+  exportNativeFileSystem(type: 'excel' | 'idb', settings: Settings): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const fileHandle: FileSystemFileHandle = await getNewFileHandle('xlsx');
+        const fileHandle: FileSystemFileHandle = await getNewFileHandle(type === 'excel' ? 'xlsx' : 'zip');
 
         if (!fileHandle) {
           reject('Cannot access filesystem.');
@@ -88,7 +86,7 @@ export class BackupService {
           }
         };
 
-        await this.postMessage(currency, vat, signature);
+        await this.postMessage(type, settings);
 
         resolve();
       } catch (err) {
@@ -98,10 +96,10 @@ export class BackupService {
     });
   }
 
-  exportMobileFileSystem(currency: Currency, vat: number | undefined, signature: string | undefined): Promise<void> {
+  exportMobileFileSystem(type: 'excel' | 'idb', settings: Settings): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const filename: string = this.filename();
+        const filename: string = this.filename(type);
 
         this.backupWorker.onmessage = async ($event: MessageEvent) => {
           if ($event && $event.data) {
@@ -118,7 +116,7 @@ export class BackupService {
           }
         };
 
-        await this.postMessage(currency, vat, signature);
+        await this.postMessage(type, settings);
 
         resolve();
       } catch (err) {
@@ -128,10 +126,10 @@ export class BackupService {
     });
   }
 
-  exportDownload(currency: Currency, vat: number | undefined, signature: string | undefined): Promise<void> {
+  exportDownload(type: 'excel' | 'idb', settings: Settings): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const filename: string = this.filename();
+        const filename: string = this.filename(type);
 
         this.backupWorker.onmessage = async ($event: MessageEvent) => {
           if ($event && $event.data) {
@@ -139,7 +137,7 @@ export class BackupService {
           }
         };
 
-        await this.postMessage(currency, vat, signature);
+        await this.postMessage(type, settings);
 
         resolve();
       } catch (err) {
@@ -149,15 +147,15 @@ export class BackupService {
     });
   }
 
-  private filename(): string {
-    return `Tie_Tracker-Backup-${format(new Date(), 'yyyy-MM-dd')}.xlsx`;
+  private filename(type: 'excel' | 'idb'): string {
+    return `Tie_Tracker-Backup-${format(new Date(), 'yyyy-MM-dd')}.${type === 'excel' ? 'xlsx' : 'zip'}`;
   }
 
-  private async postMessage(currency: Currency, vat: number | undefined, signature: string | undefined) {
+  private async postMessage(type: 'excel' | 'idb', {currency, vat, signature}: Settings) {
     await i18next.loadNamespaces('export');
 
     this.backupWorker.postMessage({
-      msg: 'backup',
+      msg: `backup-${type}`,
       currency: currency,
       vat,
       i18n: exportLabels(),

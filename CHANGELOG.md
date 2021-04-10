@@ -4,7 +4,8 @@
 
 ### Features
 
-- sort last active projects first on home screen 
+- sort last active projects first on home screen
+- backup all entries of the local database
 
 ### Fix
 
