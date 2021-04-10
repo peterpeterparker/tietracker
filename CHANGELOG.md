@@ -10,6 +10,7 @@
 ### Fix
 
 - close modal with hardware back button after export
+- improve battery usage when a task is running and app is in foreground
 
 <a name="1.6.4"></a>
 
