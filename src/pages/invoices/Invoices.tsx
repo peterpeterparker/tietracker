@@ -23,7 +23,7 @@ import {useTranslation} from 'react-i18next';
 
 import {useSelector} from 'react-redux';
 
-import {cashOutline, documentOutline, saveOutline, serverOutline, share} from 'ionicons/icons';
+import {cashOutline, saveOutline, serverOutline, share} from 'ionicons/icons';
 
 import styles from './Invoices.module.scss';
 
