@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 
 import {useTranslation} from 'react-i18next';
 
-import {ellipsisHorizontal, ellipsisVertical, close} from 'ionicons/icons';
+import {close} from 'ionicons/icons';
 
 import styles from './CreateClientModal.module.scss';
 
@@ -316,9 +316,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
               </IonItem>
 
               <div className={styles.color + ` ${!validClientName ? 'disabled' : ''}`}>
-                <deckgo-color ref={clientColorRef} className="ion-padding-start ion-padding-end ion-padding-bottom" more={true} label={false}>
-                  <IonIcon ios={ellipsisHorizontal} md={ellipsisVertical} slot="more" aria-label="More" class="more"></IonIcon>
-                </deckgo-color>
+                <deckgo-color ref={clientColorRef} className="ion-padding-start ion-padding-end ion-padding-bottom"></deckgo-color>
               </div>
 
               <IonItem disabled={!validClientName} className="item-title ion-margin-top">
