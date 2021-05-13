@@ -22,7 +22,7 @@ const About: React.FC = () => {
                 <img src="assets/icon/logo.svg" alt="Tie Tracker logo" height="160" />
 
                 <p>
-                  <IonLabel>
+                  <IonLabel className={styles.introLabel}>
                     <strong>Tie Tracker</strong> - A simple, open source and free time tracking app{' '}
                     <span aria-label="stopwatch" role="img">
                       ⏱
@@ -86,26 +86,6 @@ const About: React.FC = () => {
                 GitHub <IonIcon md={logoGithub} ios={logoGithub} area-label="Github"></IonIcon>
               </a>
               .
-            </IonLabel>
-          </p>
-
-          <h1 className="ion-padding-top">Technical Stack</h1>
-
-          <p>
-            <IonLabel>
-              This app is developed with{' '}
-              <a href="https://ionicframework.com" target="_blank" rel="noopener noreferrer">
-                Ionic
-              </a>
-              ,{' '}
-              <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-                React
-              </a>
-              ,{' '}
-              <a href="https://react-redux.js.org" target="_blank" rel="noopener noreferrer">
-                Redux
-              </a>
-              , Web Workers and other cool stuffs.
             </IonLabel>
           </p>
 

@@ -8,6 +8,10 @@
   text-align: center;
 }
 
+.introLabel {
+  color: var(--ion-text-color, #000);
+}
+
 .social {
   display: flex;
   justify-content: center;
