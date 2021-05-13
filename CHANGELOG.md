@@ -1,3 +1,12 @@
+<a name="1.8.0"></a>
+
+# 1.8.0 (2021-05-13)
+
+### Features
+
+- new color picker with input field to enter any custom color (hex code) more easily
+- backup ux "reverted". on invoices page, these can exported to Excel and, export of the all local database has been moved to about (I use it rarely)
+
 <a name="1.7.0"></a>
 
 # 1.7.0 (2021-04-10)
