@@ -1,4 +1,4 @@
-import React, {createRef, CSSProperties, RefObject, useEffect, useState} from 'react';
+import React, {CSSProperties, RefObject, useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonList, IonSearchbar, IonTitle, IonToolbar, IonLabel} from '@ionic/react';
@@ -21,9 +21,9 @@ interface Props extends RootProps {
 const ClientsModal: React.FC<Props> = (props) => {
   const {t} = useTranslation('clients');
 
-  const headerRef: RefObject<HTMLIonHeaderElement> = React.createRef();
+  const headerRef: RefObject<HTMLIonHeaderElement> | null = useRef(null);
 
-  const filterRef: RefObject<any> = createRef();
+  const filterRef: RefObject<HTMLIonSearchbarElement> | null = useRef(null);
 
   const clients: Client[] | undefined = useSelector((state: RootState) => state.clients.clients);
 
@@ -42,7 +42,7 @@ const ClientsModal: React.FC<Props> = (props) => {
   }, [props.presented]);
 
   async function focusFilter() {
-    await filterRef.current.setFocus();
+    await filterRef?.current?.setFocus();
   }
 
   async function onFilter($event: CustomEvent<KeyboardEvent>) {
