@@ -1,0 +1,14 @@
+.backup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  ion-label {
+    font-size: var(--font-size-small);
+    margin: 4px 0;
+    color: var(--ion-color-button);
+    width: 82px;
+    text-align: center;
+  }
+}

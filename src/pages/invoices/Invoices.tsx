@@ -13,17 +13,13 @@ import {
   IonLabel,
   IonHeader,
   IonToolbar,
-  IonFab,
-  IonFabButton,
-  IonLoading,
-  IonFabList,
 } from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
 import {useSelector} from 'react-redux';
 
-import {cashOutline, saveOutline, serverOutline, share} from 'ionicons/icons';
+import {cashOutline, share} from 'ionicons/icons';
 
 import styles from './Invoices.module.scss';
 
@@ -39,8 +35,7 @@ import {Settings} from '../../models/settings';
 import Header from '../../components/header/Header';
 
 import InvoiceModal from '../../modals/invoice/InvoiceModal';
-
-import {BackupService} from '../../services/backup/backup.service';
+import {Backup} from '../../components/backup/Backup';
 
 const Invoices: React.FC = () => {
   const {t} = useTranslation(['invoices', 'common']);
@@ -50,22 +45,8 @@ const Invoices: React.FC = () => {
 
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | undefined>(undefined);
 
-  const [showLoading, setShowLoading] = useState(false);
-
   function closeAndRefresh() {
     setSelectedInvoice(undefined);
-  }
-
-  async function doBackup(type: 'excel' | 'idb') {
-    setShowLoading(true);
-
-    try {
-      await BackupService.getInstance().backup(type, settings);
-    } catch (err) {
-      // Error printed in the console
-    }
-
-    setShowLoading(false);
   }
 
   return (
@@ -87,32 +68,10 @@ const Invoices: React.FC = () => {
           <InvoiceModal closeAction={closeAndRefresh} invoice={selectedInvoice}></InvoiceModal>
         </IonModal>
 
-        {renderBackup()}
-
-        <IonLoading isOpen={showLoading} message={t('common:actions.wait')} />
+        <Backup type="excel"></Backup>
       </IonContent>
     </IonPage>
   );
-
-  function renderBackup() {
-    return (
-      <IonFab vertical="bottom" horizontal="end" slot="fixed" className={`${styles.backup}`}>
-        <IonFabButton color="button">
-          <IonIcon icon={saveOutline} />
-        </IonFabButton>
-        <IonFabList side="start">
-          <IonFabButton onClick={() => doBackup('excel')} color="button-light">
-            <IonIcon icon={cashOutline} />
-          </IonFabButton>
-          <IonFabButton onClick={() => doBackup('idb')} color="button-light">
-            <IonIcon icon={serverOutline} />
-          </IonFabButton>
-        </IonFabList>
-
-        <IonLabel>{t('invoices:export.backup')}</IonLabel>
-      </IonFab>
-    );
-  }
 
   function renderProjects() {
     if (!invoices || invoices.length <= 0) {
