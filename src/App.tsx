@@ -67,9 +67,7 @@ import Privacy from './pages/privacy/Privacy';
 import BackupAlert from './alerts/backup/BackupAlert';
 import Loading from './components/loading/Loading';
 
-import {Plugins} from '@capacitor/core';
-
-const {SplashScreen} = Plugins;
+import {SplashScreen} from '@capacitor/splash-screen';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
   const [selectedTab, setSelectedTab] = useState<string>('home');

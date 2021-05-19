@@ -13,13 +13,14 @@
     "libs": "node ./scripts/download-libs.js"
   },
   "dependencies": {
-    "@capacitor/android": "^2.4.7",
-    "@capacitor/core": "^2.4.7",
-    "@capacitor/ios": "^2.4.7",
+    "@capacitor/android": "^3.0.0",
+    "@capacitor/core": "^3.0.0",
+    "@capacitor/ios": "^3.0.0",
+    "@capacitor/splash-screen": "^1.0.0",
     "@date-io/date-fns": "^1.3.13",
     "@deckdeckgo/charts": "^2.0.1",
     "@deckdeckgo/color": "^4.0.2",
-    "@deckdeckgo/utils": "^1.8.1",
+    "@deckdeckgo/utils": "^2.0.0",
     "@ionic-native/core": "^5.33.0",
     "@ionic-native/file": "^5.33.0",
     "@ionic-native/local-notifications": "^5.33.0",
@@ -35,7 +36,7 @@
     "cordova-plugin-x-socialsharing": "^6.0.3",
     "date-fns": "^2.21.3",
     "es6-promise-plugin": "^4.2.2",
-    "i18next": "^20.2.2",
+    "i18next": "^20.2.4",
     "i18next-browser-languagedetector": "^6.1.1",
     "i18next-xhr-backend": "^3.2.2",
     "idb-keyval": "^5.0.5",
@@ -49,6 +50,7 @@
     "react-scripts": "4.0.3",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
+    "rxjs": "^6.5.0",
     "uuid": "^8.3.2"
   },
   "eslintConfig": {
@@ -67,10 +69,10 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "^2.4.7",
+    "@capacitor/cli": "^3.0.0",
     "@types/jest": "^26.0.23",
-    "@types/node": "^15.0.3",
-    "@types/react": "^17.0.5",
+    "@types/node": "^15.3.0",
+    "@types/react": "^17.0.6",
     "@types/react-dom": "^17.0.5",
     "@types/react-redux": "^7.1.16",
     "@types/react-router": "^5.1.14",
