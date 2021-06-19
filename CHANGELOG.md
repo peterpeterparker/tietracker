@@ -1,3 +1,11 @@
+<a name="1.9.0"></a>
+
+# 1.9.0 (2021-06-19)
+
+### Build
+
+- fix service worker not registered ([ionic #22861](https://github.com/ionic-team/ionic-framework/issues/22861))
+
 <a name="1.8.0"></a>
 
 # 1.8.0 (2021-05-13)
