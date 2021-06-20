@@ -14,12 +14,5 @@
     "title": "Open Invoices",
     "empty": "No clients can be billed.",
     "open_bill": "Open bill"
-  },
-  "export": {
-    "backup": "Backup",
-    "backup_idb": "Backup the all database",
-    "backup_invoices": "Backup all open invoices",
-    "pdf": "Export to PDF",
-    "excel": "Export to Excel"
   }
 }

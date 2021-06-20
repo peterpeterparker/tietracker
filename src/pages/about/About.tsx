@@ -7,7 +7,6 @@ import Header from '../../components/header/Header';
 import styles from './About.module.scss';
 
 import {logoTwitter, logoGithub, globeOutline, checkmark} from 'ionicons/icons';
-import {Backup} from '../../components/backup/Backup';
 
 const About: React.FC = () => {
   return (
@@ -139,8 +138,6 @@ const About: React.FC = () => {
             </IonLabel>
           </p>
         </main>
-
-        <Backup type="idb"></Backup>
       </IonContent>
     </IonPage>
   );

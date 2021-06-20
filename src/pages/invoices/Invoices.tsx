@@ -35,7 +35,7 @@ import {Settings} from '../../models/settings';
 import Header from '../../components/header/Header';
 
 import InvoiceModal from '../../modals/invoice/InvoiceModal';
-import {Backup} from '../../components/backup/Backup';
+import {BackupInvoices} from '../../components/backup/invoices/BackupInvoices';
 
 const Invoices: React.FC = () => {
   const {t} = useTranslation(['invoices', 'common']);
@@ -68,7 +68,7 @@ const Invoices: React.FC = () => {
           <InvoiceModal closeAction={closeAndRefresh} invoice={selectedInvoice}></InvoiceModal>
         </IonModal>
 
-        <Backup type="excel"></Backup>
+        <BackupInvoices></BackupInvoices>
       </IonContent>
     </IonPage>
   );

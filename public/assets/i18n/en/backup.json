@@ -1,4 +1,7 @@
 {
   "title": "Weekly Backup",
-  "message": "Export all open entries?"
+  "message": "Export all open entries?",
+  "backup": "Backup",
+  "backup_idb": "Backup and restore",
+  "backup_invoices": "Backup all open invoices"
 }
