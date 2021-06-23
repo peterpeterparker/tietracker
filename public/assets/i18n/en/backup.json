@@ -3,7 +3,7 @@
   "message": "Export all open entries?",
   "backup": "Backup",
   "backup_idb": "Backup and Restore",
-  "backup_invoices": "Backup all open invoices",
+  "backup_invoices": "Save all open invoices",
   "restore": "Restore",
   "alert": {
     "warning": "WARNING",
