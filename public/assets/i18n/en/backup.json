@@ -2,6 +2,12 @@
   "title": "Weekly Backup",
   "message": "Export all open entries?",
   "backup": "Backup",
-  "backup_idb": "Backup and restore",
-  "backup_invoices": "Backup all open invoices"
+  "backup_idb": "Backup and Restore",
+  "backup_invoices": "Backup all open invoices",
+  "restore": "Restore",
+  "alert": {
+    "warning": "WARNING",
+    "sure": "You are about to erase all data and restore those you have selected. Are you sure you want to continue?"
+  },
+  "text": "Backup and restore the entire database and all its local data."
 }

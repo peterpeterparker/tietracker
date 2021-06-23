@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {createRef, RefObject} from 'react';
 
 import {useSelector} from 'react-redux';
 
-import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonTitle, IonToolbar} from '@ionic/react';
+import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonTitle, IonToolbar, useIonAlert} from '@ionic/react';
 import {close} from 'ionicons/icons';
 
 import {useTranslation} from 'react-i18next';
@@ -16,6 +16,8 @@ import {Settings} from '../../models/settings';
 
 import styles from './BackupModal.module.scss';
 
+import {RestoreService} from '../../services/restore/restore.service';
+
 interface Props extends RootProps {
   closeAction: () => void;
 }
@@ -23,7 +25,11 @@ interface Props extends RootProps {
 const BackupModal: React.FC<Props> = ({closeAction}) => {
   const {t} = useTranslation(['backup', 'common']);
 
+  const inputRef: RefObject<HTMLInputElement> = createRef();
+
   const settings: Settings = useSelector((state: RootState) => state.settings.settings);
+
+  const [present] = useIonAlert();
 
   async function doBackup() {
     try {
@@ -33,10 +39,35 @@ const BackupModal: React.FC<Props> = ({closeAction}) => {
     }
   }
 
+  async function onInputChange() {
+    if (!inputRef || !inputRef.current) {
+      return;
+    }
+
+    const file: File | undefined | null = inputRef.current.files?.[0];
+
+    present({
+      header: t('backup:alert.warning'),
+      message: t('backup:alert.sure'),
+      buttons: [t('common:actions.cancel'), {text: t('common:actions.ok'), handler: async () => await RestoreService.getInstance().restore(file)}],
+    });
+  }
+
+  function openFileDialog() {
+    if (!inputRef || !inputRef.current) {
+      return;
+    }
+
+    inputRef.current.click();
+  }
+
+  // TODO: effectively reset and restore db
+  // TODO: spinner / loading?
+
   return (
     <IonContent>
       <IonHeader>
-        <IonToolbar color="primary">
+        <IonToolbar>
           <IonTitle>{t('backup:backup_idb')}</IonTitle>
           <IonButtons slot="start">
             <IonButton onClick={() => closeAction()}>
@@ -47,12 +78,18 @@ const BackupModal: React.FC<Props> = ({closeAction}) => {
       </IonHeader>
 
       <main className="ion-padding">
-        <p>Back up the entire database and all its local data.</p>
+        <p className={styles.text}>{t('backup:text')}</p>
 
-        <div className={styles.center}>
-          <IonButton type="button" color="primary" onClick={doBackup}>
+        <div className="actions">
+          <IonButton type="button" color="button" onClick={doBackup} style={{marginTop: '8px'}}>
             <IonLabel>{t('backup:backup')}</IonLabel>
           </IonButton>
+
+          <IonButton type="button" color="danger" onClick={openFileDialog}>
+            <IonLabel>{t('backup:restore')}</IonLabel>
+          </IonButton>
+
+          <input type="file" accept="application/zip" ref={inputRef} onChange={() => onInputChange()} className={styles.input} />
 
           <button type="button" onClick={() => closeAction()}>
             {t('common:actions.cancel')}
