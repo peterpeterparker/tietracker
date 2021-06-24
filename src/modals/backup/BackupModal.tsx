@@ -61,8 +61,7 @@ const BackupModal: React.FC<Props> = ({closeAction}) => {
     inputRef.current.click();
   }
 
-  // TODO: effectively reset and restore db
-  // TODO: spinner / loading?
+  // TODO: spinner / loading? and reload store
 
   return (
     <IonContent>
