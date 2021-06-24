@@ -14,13 +14,19 @@ export class RestoreService {
     return RestoreService.instance;
   }
 
-  async restore(zip: File | undefined | null) {
+  async restore({zip, done}: {zip: File | undefined | null; done: (success: boolean) => Promise<void>}) {
     if (!zip) {
+      await done(false);
       return;
     }
 
     this.restoreWorker.onmessage = async ($event: MessageEvent) => {
-      console.log('Alright', $event);
+      if ($event.data?.result === 'error') {
+        // TODO show err
+        console.error($event.data.msg);
+      }
+
+      await done($event.data?.result === 'success');
     };
 
     await this.postMessage(zip);

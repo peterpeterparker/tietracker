@@ -7,7 +7,7 @@ import {Translation} from 'react-i18next';
 
 import {options, card, information, statsChart} from 'ionicons/icons';
 
-import Home from './pages/home/Home';
+import {SplashScreen} from '@capacitor/splash-screen';
 
 import Settings from './pages/settings/Settings';
 import Invoices from './pages/invoices/Invoices';
@@ -61,13 +61,14 @@ import TrackTaskModal from './modals/task/track/TrackTaskModal';
 import TaskDetails from './pages/details/task/TaskDetails';
 import ClientDetails from './pages/details/client/ClientDetails';
 
+import Home from './pages/home/Home';
 import About from './pages/about/About';
 import Terms from './pages/terms/Terms';
 import Privacy from './pages/privacy/Privacy';
 import BackupAlert from './alerts/backup/BackupAlert';
 import Loading from './components/loading/Loading';
 
-import {SplashScreen} from '@capacitor/splash-screen';
+import {initAllData} from './utils/utils.store';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
   const [selectedTab, setSelectedTab] = useState<string>('home');
@@ -79,25 +80,17 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
     await SplashScreen.hide();
 
-    // Init data
-    const promises = [];
-    promises.push(props.initClients());
-    promises.push(props.initActiveProjects());
-    promises.push(props.initTask());
-    promises.push(props.computeSummary());
-    promises.push(props.listTasks(new Date()));
-    promises.push(props.listProjectsInvoices());
-    promises.push(props.initSettings());
-
-    await Promise.all(promises);
+    await initAllData(props);
   }
 
   useEffect(() => {
-    init();
+    (async () => {
+      await init();
 
-    initSelectedTab();
+      initSelectedTab();
 
-    setBackup(true);
+      setBackup(true);
+    })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

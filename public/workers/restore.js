@@ -3,8 +3,14 @@ importScripts('./libs/jszip.min.js');
 
 self.onmessage = async ($event) => {
   if ($event && $event.data && $event.data.msg === 'restore-idb') {
-    await self.cleanIdb();
-    await self.restoreIdb($event.data.zip);
+    try {
+      await self.cleanIdb();
+      await self.restoreIdb($event.data.zip);
+
+      self.postMessage({result: 'success'});
+    } catch (err) {
+      self.postMessage({result: 'error', msg: err});
+    }
   }
 };
 
