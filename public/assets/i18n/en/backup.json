@@ -9,5 +9,6 @@
     "warning": "WARNING",
     "sure": "You are about to erase all data and restore those you have selected. Are you sure you want to continue?"
   },
-  "text": "Backup and restore the entire database and all its local data."
+  "text": "Backup and restore the entire database and all its local data.",
+  "example": "These options can for example be use if you want to transfer the data or if you are getting a new phone."
 }

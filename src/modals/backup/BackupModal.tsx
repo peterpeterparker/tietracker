@@ -108,6 +108,8 @@ const BackupModal: React.FC<Props> = (props) => {
       <main className="ion-padding">
         <p className={styles.text}>{t('backup:text')}</p>
 
+        <p>{t('backup:example')}</p>
+
         <div className={`actions ${styles.actions}`}>{renderActions()}</div>
       </main>
     </IonContent>
