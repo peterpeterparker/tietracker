@@ -51,6 +51,8 @@ const BackupModal: React.FC<Props> = (props) => {
       return;
     }
 
+    // TODO: does not work on native iOS
+
     const file: File | undefined | null = inputRef.current.files?.[0];
 
     present({
