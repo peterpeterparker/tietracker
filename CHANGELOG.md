@@ -1,3 +1,11 @@
+<a name="1.9.1"></a>
+
+# 1.9.1 (2021-06-25)
+
+### Fix
+
+- Capacitor splashscreen error on Android  
+
 <a name="1.9.0"></a>
 
 # 1.9.0 (2021-06-25)
