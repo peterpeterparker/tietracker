@@ -4,7 +4,7 @@
 
 ### Fix
 
-- Capacitor splashscreen error on Android  
+- Capacitor splashscreen error on Android which has for side effect to not load the data on startup (as it crashes an error before)
 
 <a name="1.9.0"></a>
 
