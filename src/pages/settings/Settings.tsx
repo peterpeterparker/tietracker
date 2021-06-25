@@ -13,7 +13,7 @@ import {Settings as SettingsModel} from '../../models/settings';
 import SettingsGeneral from '../../components/settings/general/SettingsGeneral';
 import SettingsTemplates from '../../components/settings/templates/SettingsTemplates';
 import SettingsTracker from '../../components/settings/tracker/SettingsTracker';
-
+import {BackupIdb} from '../../components/backup/idb/BackupIdb';
 import Header from '../../components/header/Header';
 
 enum SettingsCategory {
@@ -67,6 +67,8 @@ const Settings: React.FC<RootProps> = (props) => {
 
           {renderSettings()}
         </main>
+
+        <BackupIdb></BackupIdb>
       </IonContent>
     </IonPage>
   );

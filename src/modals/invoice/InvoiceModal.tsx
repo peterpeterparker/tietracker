@@ -52,7 +52,7 @@ interface Billable {
 }
 
 const InvoiceModal: React.FC<Props> = (props) => {
-  const {t} = useTranslation(['invoices', 'common']);
+  const {t} = useTranslation(['invoices', 'common', 'export']);
 
   const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
@@ -318,7 +318,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--color-activated': color,
           } as CSSProperties
         }>
-        <IonLabel>{t('invoices:export.excel')}</IonLabel>
+        <IonLabel>{t('export:excel')}</IonLabel>
       </IonButton>
     );
   }
@@ -341,7 +341,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--color-activated': color,
           } as CSSProperties
         }>
-        <IonLabel>{t('invoices:export.pdf')}</IonLabel>
+        <IonLabel>{t('export:pdf')}</IonLabel>
       </IonButton>
     );
   }

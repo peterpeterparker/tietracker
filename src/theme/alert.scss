@@ -1,5 +1,6 @@
 body.dark {
   ion-alert {
+    --ion-color-step-550: var(--ion-text-color);
     --ion-color-step-850: var(--ion-text-color);
     --ion-text-color: white;
     --ion-color-primary: white;

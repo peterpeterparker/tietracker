@@ -13,5 +13,7 @@
   "duration": "Duration",
   "billable": "Billable",
   "client": "Client",
-  "project": "Project"
+  "project": "Project",
+  "pdf": "Export to PDF",
+  "excel": "Export to Excel"
 }

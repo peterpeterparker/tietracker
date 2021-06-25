@@ -7,20 +7,16 @@ import {saveOutline} from 'ionicons/icons';
 
 import {useTranslation} from 'react-i18next';
 
-import styles from './Backup.module.scss';
+import styles from '../Backup.module.scss';
 
-import {Settings} from '../../models/settings';
+import {Settings} from '../../../models/settings';
 
-import {BackupService} from '../../services/backup/backup.service';
+import {BackupService} from '../../../services/backup/backup.service';
 
-import {RootState} from '../../store/reducers';
+import {RootState} from '../../../store/reducers';
 
-interface BackupProps {
-  type: 'excel' | 'idb';
-}
-
-export const Backup = ({type}: BackupProps) => {
-  const {t} = useTranslation('invoices');
+export const BackupInvoices = () => {
+  const {t} = useTranslation(['backup', 'common']);
 
   const [showLoading, setShowLoading] = useState(false);
 
@@ -30,7 +26,7 @@ export const Backup = ({type}: BackupProps) => {
     setShowLoading(true);
 
     try {
-      await BackupService.getInstance().backup(type, settings);
+      await BackupService.getInstance().backup('excel', settings);
     } catch (err) {
       // Error printed in the console
     }
@@ -45,7 +41,7 @@ export const Backup = ({type}: BackupProps) => {
           <IonIcon icon={saveOutline} />
         </IonFabButton>
 
-        <IonLabel>{type === 'idb' ? t('export.backup_idb') : t('export.backup_invoices')}</IonLabel>
+        <IonLabel>{t('backup:backup_invoices')}</IonLabel>
       </IonFab>
 
       <IonLoading isOpen={showLoading} message={t('common:actions.wait')} />
