@@ -1,6 +1,10 @@
 <a name="1.9.0"></a>
 
-# 1.9.0 (2021-06-19)
+# 1.9.0 (2021-06-25)
+
+### Features
+
+- restore backup data. A new feature which can for example be useful if you want to transfer the data or if you are getting a new phone
 
 ### Build
 
