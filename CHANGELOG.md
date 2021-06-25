@@ -4,7 +4,7 @@
 
 ### Features
 
-- restore backup data. A new feature which can for example be useful if you want to transfer the data or if you are getting a new phone
+- restore backup data. A new feature which can be interesting if you want to transfer the data or if you are getting a new phone.
 
 ### Build
 
