@@ -9,6 +9,7 @@
 ### Build
 
 - fix service worker not registered ([ionic #22861](https://github.com/ionic-team/ionic-framework/issues/22861))
+- capacitor v3
 
 <a name="1.8.0"></a>
 
