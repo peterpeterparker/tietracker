@@ -1,3 +1,15 @@
+<a name="1.9.3"></a>
+
+# 1.9.3 (2021-06-26)
+
+### Features
+
+- redo hide splash screen when app is ready
+
+### Fix
+
+- workaround for Safari 14 bug which does not load correctly the indexedDB
+
 <a name="1.9.2"></a>
 
 # 1.9.2 (2021-06-26)
