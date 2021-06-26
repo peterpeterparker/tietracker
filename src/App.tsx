@@ -7,8 +7,6 @@ import {Translation} from 'react-i18next';
 
 import {options, card, information, statsChart} from 'ionicons/icons';
 
-import {SplashScreen} from '@capacitor/splash-screen';
-
 import Settings from './pages/settings/Settings';
 import Invoices from './pages/invoices/Invoices';
 import Statistics from './pages/statistics/Statistics';
@@ -77,8 +75,6 @@ const App: React.FC<RootProps> = (props: RootProps) => {
   async function init() {
     // Init theme first
     await props.initTheme();
-
-    await SplashScreen.hide();
 
     await initAllData(props);
   }
