@@ -7,6 +7,7 @@
 	"cordova": {},
 	"plugins": {
 		"SplashScreen": {
+			"launchAutoHide": false,
 			"androidScaleType": "CENTER_CROP"
 		}
 	}
