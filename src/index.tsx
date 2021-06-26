@@ -37,6 +37,10 @@ applyPolyfills().then(async () => {
   await chartsDefineCustomElements(window);
 });
 
+// Safari 14 workaround 🤮
+// https://github.com/jakearchibald/idb-keyval/issues/120
+window.indexedDB.open('test');
+
 const store = createStore(rootReducer, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
