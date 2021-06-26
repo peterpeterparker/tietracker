@@ -1,3 +1,11 @@
+<a name="1.9.2"></a>
+
+# 1.9.2 (2021-06-26)
+
+### Fix
+
+- Capacitor splashscreen not hiding on (real) iOS app
+
 <a name="1.9.1"></a>
 
 # 1.9.1 (2021-06-25)
