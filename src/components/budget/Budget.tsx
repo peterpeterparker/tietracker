@@ -10,7 +10,6 @@ import {ProjectDataBudget} from '../../models/project';
 import {trendingUpOutline, pricetagOutline} from 'ionicons/icons';
 
 import {formatCurrency} from '../../utils/utils.currency';
-import {budgetRatio} from '../../utils/utils.budget';
 
 interface BudgetProps extends RootProps {
   budget: ProjectDataBudget | undefined;

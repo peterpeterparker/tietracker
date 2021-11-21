@@ -194,8 +194,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
         </IonHeader>
 
         <main className="ion-padding">
-          {renderBillable()}
-          {renderBudget()}
+          {renderInformation()}
           {renderFilter()}
         </main>
 
@@ -204,13 +203,47 @@ const InvoiceModal: React.FC<Props> = (props) => {
     );
   }
 
-  function renderBillable() {
+  function renderInformation() {
+    let ratio: string | undefined = budgetRatio({
+      budget: props.invoice?.project?.budget,
+      extra: billable?.billable,
+      period: {from, to},
+    });
+
+    if (ratio === undefined) {
+      ratio = '0%';
+    }
+
+    const period: boolean = props.invoice?.project?.budget?.type === 'yearly' || props.invoice?.project?.budget?.type === 'monthly';
+
+    return (
+      <>
+        {renderBillable({ratio, period})}
+        {renderBudget({ratio, period})}
+      </>
+    );
+  }
+
+  function renderBillable({ratio, period}: {ratio: string | undefined; period: boolean}) {
     if (from === undefined || to === undefined) {
       return <p>{t('invoices:invoice.no_period')}</p>;
     }
 
     if (billable === undefined) {
       return <p>{t('invoices:invoice.empty')}</p>;
+    }
+
+    if (period) {
+      return (
+        <p
+          dangerouslySetInnerHTML={{
+            __html: t('invoices:invoice.billable_period', {
+              amount: formatCurrency(billable.billable, settings.currency.currency),
+              hours: formatTime(billable.hours * 3600 * 1000),
+              ratio,
+            }),
+          }}></p>
+      );
     }
 
     return (
@@ -224,7 +257,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
     );
   }
 
-  function renderBudget() {
+  function renderBudget({ratio, period}: {ratio: string | undefined; period: boolean}) {
     if (!props.invoice || !props.invoice.project || !props.invoice.project.budget || billable === undefined) {
       return undefined;
     }
@@ -232,22 +265,11 @@ const InvoiceModal: React.FC<Props> = (props) => {
     const billed: number = props.invoice.project.budget.billed !== undefined ? props.invoice.project.budget.billed : 0;
     const cumulated: string = formatCurrency(billed + billable.billable, settings.currency.currency);
 
-    if (props.invoice.project.budget.budget === undefined || props.invoice.project.budget.budget <= 0) {
+    if (props.invoice.project.budget.budget === undefined || props.invoice.project.budget.budget <= 0 || period) {
       return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.billed', {amount: cumulated})}}></p>;
-    } else {
-      let ratio: string | undefined = budgetRatio({
-        budget: props.invoice.project.budget,
-        billed: props.invoice.project.budget.billed,
-        extra: billable.billable,
-        period: {from, to},
-      });
-
-      if (ratio === undefined) {
-        ratio = '0%';
-      }
-
-      return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.budget', {amount: cumulated, ratio: ratio})}}></p>;
     }
+
+    return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.budget', {amount: cumulated, ratio: ratio})}}></p>;
   }
 
   function renderFilter() {
