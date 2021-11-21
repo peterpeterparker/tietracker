@@ -10,9 +10,12 @@ export interface ProjectDataRate {
   vat: boolean;
 }
 
+export type ProjectDataType = 'project' | 'yearly' | 'monthly';
+
 export interface ProjectDataBudget {
   budget: number;
   billed: number;
+  type?: ProjectDataType;
 }
 
 export interface ProjectData {

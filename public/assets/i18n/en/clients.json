@@ -5,8 +5,7 @@
     "color": "Color",
     "project": "Project (min. 3 characters)",
     "hourly_rate": "Hourly rate (zero or more)",
-    "vat": "Vat",
-    "budget": "Budget"
+    "vat": "Vat"
   },
   "search": {
     "title": "Search Clients",
@@ -19,5 +18,12 @@
     "empty": "No projects.",
     "hourly_rate": "Hourly rate",
     "billed": "Billed"
+  },
+  "budget": {
+    "title": "Budget",
+    "type": "Budget (type)",
+    "project": "Project",
+    "yearly": "Yearly",
+    "monthly": "Monthly"
   }
 }

@@ -1,5 +1,20 @@
 import React, {FormEvent, RefObject, CSSProperties, useEffect, useState, useRef} from 'react';
-import {IonHeader, IonContent, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonInput, IonCheckbox} from '@ionic/react';
+import {
+  IonHeader,
+  IonContent,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonCheckbox,
+  IonSelect,
+  IonSelectOption,
+} from '@ionic/react';
 
 import {useSelector} from 'react-redux';
 
@@ -174,9 +189,42 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
       data.budget = {
         budget: inputMinZero($event),
         billed: 0,
+        type: 'project',
       };
     } else {
       data.budget.budget = inputMinZero($event);
+    }
+
+    setProjectData(data);
+  }
+
+  function handleProjectBudgetType($event: CustomEvent) {
+    if (!clientData) {
+      return;
+    }
+
+    let data: ProjectData;
+    if (!projectData) {
+      data = {
+        name: '',
+        disabled: false,
+        rate: {
+          hourly: 0,
+          vat: settings.vat !== undefined,
+        },
+      };
+    } else {
+      data = {...projectData};
+    }
+
+    if (!data.budget) {
+      data.budget = {
+        budget: 0,
+        billed: 0,
+        type: $event.detail.value,
+      };
+    } else {
+      data.budget.type = $event.detail.value;
     }
 
     setProjectData(data);
@@ -308,8 +356,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   required={true}
                   input-mode="text"
                   onIonInput={($event: CustomEvent<KeyboardEvent>) => handleClientNameInput($event)}
-                  onIonChange={() => validateClientName()}
-                ></IonInput>
+                  onIonChange={() => validateClientName()}></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title ion-margin-top">
@@ -332,8 +379,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   required={true}
                   input-mode="text"
                   onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectNameInput($event)}
-                  onIonChange={() => validateProject()}
-                ></IonInput>
+                  onIonChange={() => validateProject()}></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title">
@@ -347,22 +393,10 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   required={true}
                   input-mode="text"
                   onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectRateInput($event)}
-                  onIonChange={() => validateProject()}
-                ></IonInput>
+                  onIonChange={() => validateProject()}></IonInput>
               </IonItem>
 
-              <IonItem disabled={!validClientName} className="item-title">
-                <IonLabel>{t('clients:create.budget')}</IonLabel>
-              </IonItem>
-              <IonItem disabled={!validClientName}>
-                <IonInput
-                  ref={projectBudgetRef}
-                  debounce={500}
-                  minlength={1}
-                  input-mode="text"
-                  onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetInput($event)}
-                ></IonInput>
-              </IonItem>
+              {renderBudget()}
 
               {renderVat(color)}
             </IonList>
@@ -380,8 +414,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                     '--background-activated': colorContrast,
                     '--color-activated': color,
                   } as CSSProperties
-                }
-              >
+                }>
                 <IonLabel>{t('common:actions.submit')}</IonLabel>
               </IonButton>
 
@@ -411,9 +444,39 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
             slot="end"
             style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
             checked={projectData ? projectData.rate.vat : false}
-            onIonChange={($event: CustomEvent) => onVatChange($event)}
-          ></IonCheckbox>
+            onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
         </IonItem>
+      </>
+    );
+  }
+
+  function renderBudget() {
+    return (
+      <>
+        <IonItem disabled={!validClientName} className="item-title">
+          <IonLabel>{t('clients:budget.title')}</IonLabel>
+        </IonItem>
+        <div className="item-split">
+          <IonItem disabled={!validClientName}>
+            <IonInput
+              ref={projectBudgetRef}
+              debounce={500}
+              minlength={1}
+              input-mode="text"
+              onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetInput($event)}></IonInput>
+          </IonItem>
+
+          <IonItem className="item-input" disabled={!validClientName}>
+            <IonSelect
+              interfaceOptions={{header: t('clients:budget.type')}}
+              placeholder=""
+              onIonChange={($event: CustomEvent) => handleProjectBudgetType($event)}>
+              <IonSelectOption value={'project'}>{t('clients:budget.project')}</IonSelectOption>
+              <IonSelectOption value={'yearly'}>{t('clients:budget.yearly')}</IonSelectOption>
+              <IonSelectOption value={'monthly'}>{t('clients:budget.monthly')}</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+        </div>
       </>
     );
   }
