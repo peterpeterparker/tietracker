@@ -28,15 +28,15 @@ export const More = () => {
 
           <IonList className="ion-margin-top">
             <IonItem detail={true} button={true} onClick={() => navigate('/statistics')} className={styles.item}>
-              <IonIcon slot="start" icon={statsChart} />
+              <IonIcon slot="start" icon={statsChart} className={styles.icon} />
               <IonLabel>{t('common:navigation.statistics')}</IonLabel>
             </IonItem>
             <IonItem detail={true} button={true} onClick={() => navigate('/settings')} className={styles.item}>
-              <IonIcon slot="start" icon={options} />
+              <IonIcon slot="start" icon={options} className={styles.icon} />
               <IonLabel>{t('common:navigation.settings')}</IonLabel>
             </IonItem>
             <IonItem detail={true} button={true} onClick={() => navigate('/about')} className={styles.item}>
-              <IonIcon slot="start" icon={information} />
+              <IonIcon slot="start" icon={information} className={styles.icon} />
               <IonLabel>{t('common:navigation.about')}</IonLabel>
             </IonItem>
           </IonList>
