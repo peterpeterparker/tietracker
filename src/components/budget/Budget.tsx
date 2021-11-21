@@ -48,24 +48,8 @@ const Budget: React.FC<BudgetProps> = (props) => {
     return (
       <IonLabel>
         <IonIcon icon={trendingUpOutline} aria-label={t('details.billed')} /> {formatCurrency(billed, props.settings.currency.currency)}
-        &nbsp;
-        {renderBudgetUsed(billed)}
       </IonLabel>
     );
-  }
-
-  function renderBudgetUsed(billed: number | undefined) {
-    if (!props.budget) {
-      return undefined;
-    }
-
-    const used: string | undefined = budgetRatio(props.budget.budget, billed);
-
-    if (!used) {
-      return undefined;
-    }
-
-    return <small>({used})</small>;
   }
 };
 

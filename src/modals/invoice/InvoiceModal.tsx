@@ -220,8 +220,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             amount: formatCurrency(billable.billable, settings.currency.currency),
             hours: formatTime(billable.hours * 3600 * 1000),
           }),
-        }}
-      ></p>
+        }}></p>
     );
   }
 
@@ -236,7 +235,12 @@ const InvoiceModal: React.FC<Props> = (props) => {
     if (props.invoice.project.budget.budget === undefined || props.invoice.project.budget.budget <= 0) {
       return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.billed', {amount: cumulated})}}></p>;
     } else {
-      let ratio: string | undefined = budgetRatio(props.invoice.project.budget.budget, props.invoice.project.budget.billed, billable.billable);
+      let ratio: string | undefined = budgetRatio({
+        budget: props.invoice.project.budget,
+        billed: props.invoice.project.budget.billed,
+        extra: billable.billable,
+        period: {from, to},
+      });
 
       if (ratio === undefined) {
         ratio = '0%';
@@ -286,8 +290,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
               slot="end"
               style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
               checked={bill}
-              onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}
-            ></IonCheckbox>
+              onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}></IonCheckbox>
           </IonItem>
         </IonList>
 
@@ -319,8 +322,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--background-activated': colorContrast,
             '--color-activated': color,
           } as CSSProperties
-        }
-      >
+        }>
         <IonLabel>{t('export:excel')}</IonLabel>
       </IonButton>
     );
@@ -343,8 +345,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--background-activated': colorContrast,
             '--color-activated': color,
           } as CSSProperties
-        }
-      >
+        }>
         <IonLabel>{t('export:pdf')}</IonLabel>
       </IonButton>
     );
