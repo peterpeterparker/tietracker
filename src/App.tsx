@@ -5,7 +5,7 @@ import {IonReactRouter} from '@ionic/react-router';
 
 import {Translation} from 'react-i18next';
 
-import {options, card, information, statsChart} from 'ionicons/icons';
+import {card, ellipsisHorizontal} from 'ionicons/icons';
 
 import {SplashScreen} from '@capacitor/splash-screen';
 
@@ -67,6 +67,8 @@ import Terms from './pages/terms/Terms';
 import Privacy from './pages/privacy/Privacy';
 import BackupAlert from './alerts/backup/BackupAlert';
 import Loading from './components/loading/Loading';
+import {More} from './pages/more/More';
+import Backup from './pages/backup/Backup';
 
 import {initAllData} from './utils/utils.store';
 
@@ -111,12 +113,14 @@ const App: React.FC<RootProps> = (props: RootProps) => {
           <IonTabs onIonTabsDidChange={($event) => setSelectedTab($event.detail.tab)}>
             <IonRouterOutlet>
               <Route path="/home" component={Home} />
-
               <Route path="/invoices" component={Invoices} exact={true} />
+              <Route path="/more" component={More} exact={true} />
+
               <Route path="/statistics" component={Statistics} exact={true} />
               <Route path="/settings" component={Settings} exact={true} />
-
+              <Route path="/backup" component={Backup} exact={true} />
               <Route path="/about" component={About} exact={true} />
+
               <Route path="/terms" component={Terms} exact={true} />
               <Route path="/privacy" component={Privacy} exact={true} />
 
@@ -141,19 +145,9 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                   <Translation ns="common">{(t, {i18n}) => <IonLabel>{t('navigation.invoices')}</IonLabel>}</Translation>
                 </IonLabel>
               </IonTabButton>
-              <IonTabButton tab="statistics" href="/statistics">
-                <IonIcon icon={statsChart} />
-                <IonLabel>
-                  <Translation ns="common">{(t, {i18n}) => <IonLabel>{t('navigation.statistics')}</IonLabel>}</Translation>
-                </IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="settings" href="/settings">
-                <IonIcon icon={options} />
-                <Translation ns="common">{(t, {i18n}) => <IonLabel>{t('navigation.settings')}</IonLabel>}</Translation>
-              </IonTabButton>
-              <IonTabButton tab="about" href="/about">
-                <IonIcon icon={information} />
-                <Translation ns="common">{(t, {i18n}) => <IonLabel>{t('navigation.about')}</IonLabel>}</Translation>
+              <IonTabButton tab="more" href="/more">
+                <IonIcon icon={ellipsisHorizontal} />
+                <Translation ns="common">{(t, {i18n}) => <IonLabel>{t('navigation.more')}</IonLabel>}</Translation>
               </IonTabButton>
             </IonTabBar>
           </IonTabs>

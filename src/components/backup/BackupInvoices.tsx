@@ -7,13 +7,13 @@ import {saveOutline} from 'ionicons/icons';
 
 import {useTranslation} from 'react-i18next';
 
-import styles from '../Backup.module.scss';
+import styles from './BackupInvoices.module.scss';
 
-import {Settings} from '../../../models/settings';
+import {Settings} from '../../models/settings';
 
-import {BackupService} from '../../../services/backup/backup.service';
+import {BackupService} from '../../services/backup/backup.service';
 
-import {RootState} from '../../../store/reducers';
+import {RootState} from '../../store/reducers';
 
 export const BackupInvoices = () => {
   const {t} = useTranslation(['backup', 'common']);

@@ -1,8 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {IonContent, IonPage, IonLabel, IonIcon, IonHeader, IonToolbar} from '@ionic/react';
-
-import Header from '../../components/header/Header';
+import {IonContent, IonPage, IonLabel, IonIcon, IonHeader, IonToolbar, IonButtons, IonBackButton} from '@ionic/react';
 
 import styles from './About.module.scss';
 
@@ -12,10 +10,13 @@ const About: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <Header></Header>
-
         <main className="ion-padding">
           <IonHeader>
+            <IonToolbar className="title">
+              <IonButtons slot="start">
+                <IonBackButton defaultHref="/more" />
+              </IonButtons>
+            </IonToolbar>
             <IonToolbar className="title">
               <div className={styles.intro}>
                 <img src="assets/icon/logo.svg" alt="Tie Tracker logo" height="160" />
@@ -33,11 +34,7 @@ const About: React.FC = () => {
             </IonToolbar>
           </IonHeader>
 
-          <p>
-            <IonLabel>Tie Tracker is meant to be simple and aims to allow you to track working hours across projects.</IonLabel>
-          </p>
-
-          <h1 className="ion-padding-top">Features</h1>
+          <h1>Features</h1>
 
           <p>
             <IonLabel>Track your productivity and billable hours.</IonLabel>

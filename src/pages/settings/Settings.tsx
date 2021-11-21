@@ -1,7 +1,20 @@
 import React, {FormEvent, useState} from 'react';
 import {useSelector} from 'react-redux';
 
-import {IonContent, IonLabel, IonPage, IonSpinner, IonButton, IonSegment, IonSegmentButton, IonHeader, IonToolbar, IonToast} from '@ionic/react';
+import {
+  IonContent,
+  IonLabel,
+  IonPage,
+  IonSpinner,
+  IonButton,
+  IonSegment,
+  IonSegmentButton,
+  IonHeader,
+  IonToolbar,
+  IonToast,
+  IonButtons,
+  IonBackButton,
+} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -13,8 +26,6 @@ import {Settings as SettingsModel} from '../../models/settings';
 import SettingsGeneral from '../../components/settings/general/SettingsGeneral';
 import SettingsTemplates from '../../components/settings/templates/SettingsTemplates';
 import SettingsTracker from '../../components/settings/tracker/SettingsTracker';
-import {BackupIdb} from '../../components/backup/idb/BackupIdb';
-import Header from '../../components/header/Header';
 
 enum SettingsCategory {
   GENERAL = 'general',
@@ -58,17 +69,18 @@ const Settings: React.FC<RootProps> = (props) => {
   return (
     <IonPage>
       <IonContent>
-        <Header></Header>
-
         <main className="ion-padding">
           <IonHeader>
+            <IonToolbar className="title">
+              <IonButtons slot="start">
+                <IonBackButton defaultHref="/more" />
+              </IonButtons>
+            </IonToolbar>
             <IonToolbar className="title">{renderSettingsCategory()}</IonToolbar>
           </IonHeader>
 
           {renderSettings()}
         </main>
-
-        <BackupIdb></BackupIdb>
       </IonContent>
     </IonPage>
   );

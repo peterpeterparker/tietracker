@@ -18,7 +18,6 @@ import CreateTaskModal from '../../modals/task/create/CreateTaskModal';
 import Projects from '../../components/projects/Projects';
 import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
-import Header from '../../components/header/Header';
 
 import {Client} from '../../models/client';
 
@@ -64,8 +63,6 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   return (
     <IonPage>
       <IonContent>
-        <Header></Header>
-
         <IonModal isOpen={showModalClient} onDidDismiss={async () => await closeClientModal()} cssClass="fullscreen">
           <CreateClientModal closeAction={async () => await closeClientModal()}></CreateClientModal>
         </IonModal>
@@ -112,8 +109,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
         color="medium"
         size="small"
         style={loading ? {visibility: 'hidden', opacity: 0} : undefined}
-        aria-label={t('add.client')}
-      >
+        aria-label={t('add.client')}>
         {empty ? t('add.start') : t('add.client')}
       </IonButton>
     );

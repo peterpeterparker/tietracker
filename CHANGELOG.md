@@ -1,3 +1,16 @@
+<a name="1.10.0"></a>
+
+# 1.10.0 (2021-11-21)
+
+### Features
+
+- cleaner navigation with options grouped under "More"
+- backup modal converted to a page
+
+### Build
+
+- bump dependencies and npm v7
+
 <a name="1.9.3"></a>
 
 # 1.9.3 (2021-06-26)
