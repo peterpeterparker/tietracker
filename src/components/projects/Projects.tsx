@@ -62,7 +62,8 @@ const Projects: React.FC<Props> = (props: Props) => {
                   style={{
                     background: project.data.client ? project.data.client.color : undefined,
                     color: colorContrast,
-                  }}>
+                  }}
+                >
                   <IonLabel>Start</IonLabel>
                   <IonIcon icon={play} />
                 </div>

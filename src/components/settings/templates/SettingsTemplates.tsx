@@ -138,7 +138,8 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
         <button
           type="button"
           onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event, undefined, 'add')}
-          className={`${styles.templateAction} ion-margin-end`}>
+          className={`${styles.templateAction} ion-margin-end`}
+        >
           <IonIcon icon={addOutline} className={styles.icon} /> {t('templates.actions.add')}
         </button>
         <button type="button" onClick={($event: React.MouseEvent | React.TouchEvent) => toggleReorder($event)} className={styles.templateAction}>
@@ -165,7 +166,8 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
           button={!reorder}
           detail={false}
           key={template.key}
-          onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event, template, 'edit')}>
+          onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event, template, 'edit')}
+        >
           <IonLabel>{template.description}</IonLabel>
           {reorder ? <IonReorder slot="end" /> : <IonIcon icon={pencilOutline} slot="end" />}
         </IonItem>
@@ -178,7 +180,8 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
       <IonModal isOpen={showTemplateModal} onDidDismiss={() => setShowTemplateModal(false)}>
         <TemplateModal
           template={selectedTemplate}
-          closeAction={async (template?: Template, action?: 'edit' | 'delete') => await editTemplateModal(template, action)}></TemplateModal>
+          closeAction={async (template?: Template, action?: 'edit' | 'delete') => await editTemplateModal(template, action)}
+        ></TemplateModal>
       </IonModal>
     );
   }

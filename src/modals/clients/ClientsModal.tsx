@@ -102,7 +102,8 @@ const ClientsModal: React.FC<Props> = (props) => {
           placeholder={t('search.filter')}
           className={styles.searchbar}
           ref={filterRef}
-          onIonInput={($event: CustomEvent<KeyboardEvent>) => onFilter($event)}></IonSearchbar>
+          onIonInput={($event: CustomEvent<KeyboardEvent>) => onFilter($event)}
+        ></IonSearchbar>
 
         <IonList className="ion-margin-top">{renderClients()}</IonList>
       </main>

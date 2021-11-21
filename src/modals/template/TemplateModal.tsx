@@ -84,7 +84,8 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
                   input-mode="text"
                   value={description}
                   onIonInput={($event: CustomEvent<KeyboardEvent>) => handleTemplateInput($event)}
-                  onIonChange={() => validateTemplate()}></IonInput>
+                  onIonChange={() => validateTemplate()}
+                ></IonInput>
               </IonItem>
             </IonList>
 
@@ -116,7 +117,8 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
         onClick={($event: React.MouseEvent | React.TouchEvent) => deleteTemplate($event)}
         color="button"
         fill="outline"
-        disabled={props.template === undefined}>
+        disabled={props.template === undefined}
+      >
         <IonLabel>{t('common:actions.delete')}</IonLabel>
       </IonButton>
     );

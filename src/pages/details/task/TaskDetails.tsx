@@ -228,7 +228,8 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
               maxlength={256}
               value={description}
               input-mode="text"
-              onIonInput={($event: CustomEvent<KeyboardEvent>) => onDescriptionChange($event)}></IonInput>
+              onIonInput={($event: CustomEvent<KeyboardEvent>) => onDescriptionChange($event)}
+            ></IonInput>
           </IonItem>
 
           <IonItem className="item-title">
@@ -276,7 +277,8 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
                 '--background-activated': colorContrast,
                 '--color-activated': color,
               } as CSSProperties
-            }>
+            }
+          >
             <IonLabel>{t('common:actions.update')}</IonLabel>
           </IonButton>
 

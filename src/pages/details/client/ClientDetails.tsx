@@ -210,7 +210,8 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
               color={color}
               colorContrast={colorContrast}
               closeAction={closeProjectModal}
-              client={client}></ProjectModal>
+              client={client}
+            ></ProjectModal>
           </IonModal>
         </IonContent>
       </>
@@ -241,7 +242,8 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
               input-mode="text"
               value={client.data.name}
               onIonInput={($event: CustomEvent<KeyboardEvent>) => handleClientNameInput($event)}
-              onIonChange={() => validateClientName()}></IonInput>
+              onIonChange={() => validateClientName()}
+            ></IonInput>
           </IonItem>
 
           <IonItem className="item-title ion-margin-top">
@@ -252,7 +254,8 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
             <deckgo-color
               className="ion-padding-start ion-padding-end ion-padding-bottom"
               ref={clientColorRef}
-              color-hex={`${client.data.color}`}></deckgo-color>
+              color-hex={`${client.data.color}`}
+            ></deckgo-color>
           </div>
         </IonList>
 
@@ -278,7 +281,8 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                 '--background-activated': colorContrast,
                 '--color-activated': color,
               } as CSSProperties
-            }>
+            }
+          >
             <IonLabel>{t('common:actions.update')}</IonLabel>
           </IonButton>
 
@@ -288,7 +292,8 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
             color="button"
             onClick={() => setProjectModalAction(ProjectModalAction.CREATE)}
             aria-label={t('clients:details.create_project')}
-            aria-disabled={saving}>
+            aria-disabled={saving}
+          >
             <IonLabel>{t('clients:details.create_project')}</IonLabel>
           </IonButton>
 

@@ -108,7 +108,8 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
             debounce={500}
             placeholder={t('tracker.currency.filter')}
             className={styles.searchbar}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => onFilter($event)}></IonSearchbar>
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => onFilter($event)}
+          ></IonSearchbar>
 
           <IonList>
             <IonRadioGroup value={props.currency.currency}>{renderCurrencies()}</IonRadioGroup>

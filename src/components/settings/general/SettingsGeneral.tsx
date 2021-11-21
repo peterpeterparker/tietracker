@@ -119,7 +119,8 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
             input-mode="text"
             value={props.settings.signature ? `${props.settings.signature}` : ''}
             aria-label={t('general.signature')}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => onSignatureInput($event)}></IonInput>
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => onSignatureInput($event)}
+          ></IonInput>
         </IonItem>
       </>
     );

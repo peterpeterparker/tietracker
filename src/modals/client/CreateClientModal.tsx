@@ -308,7 +308,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   required={true}
                   input-mode="text"
                   onIonInput={($event: CustomEvent<KeyboardEvent>) => handleClientNameInput($event)}
-                  onIonChange={() => validateClientName()}></IonInput>
+                  onIonChange={() => validateClientName()}
+                ></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title ion-margin-top">
@@ -331,7 +332,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   required={true}
                   input-mode="text"
                   onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectNameInput($event)}
-                  onIonChange={() => validateProject()}></IonInput>
+                  onIonChange={() => validateProject()}
+                ></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title">
@@ -345,7 +347,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   required={true}
                   input-mode="text"
                   onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectRateInput($event)}
-                  onIonChange={() => validateProject()}></IonInput>
+                  onIonChange={() => validateProject()}
+                ></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title">
@@ -357,7 +360,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   debounce={500}
                   minlength={1}
                   input-mode="text"
-                  onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetInput($event)}></IonInput>
+                  onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetInput($event)}
+                ></IonInput>
               </IonItem>
 
               {renderVat(color)}
@@ -376,7 +380,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                     '--background-activated': colorContrast,
                     '--color-activated': color,
                   } as CSSProperties
-                }>
+                }
+              >
                 <IonLabel>{t('common:actions.submit')}</IonLabel>
               </IonButton>
 
@@ -406,7 +411,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
             slot="end"
             style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
             checked={projectData ? projectData.rate.vat : false}
-            onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
+            onIonChange={($event: CustomEvent) => onVatChange($event)}
+          ></IonCheckbox>
         </IonItem>
       </>
     );

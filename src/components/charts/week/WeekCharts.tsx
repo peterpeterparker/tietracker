@@ -116,7 +116,8 @@ const WeekCharts: React.FC = () => {
         <h1
           dangerouslySetInnerHTML={{
             __html: t('charts.week.title'),
-          }}></h1>
+          }}
+        ></h1>
         <div ref={containerRef} className={styles.container + ' chart-container'}>
           {/*
             // @ts-ignore */}

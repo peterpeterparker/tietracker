@@ -220,7 +220,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
             amount: formatCurrency(billable.billable, settings.currency.currency),
             hours: formatTime(billable.hours * 3600 * 1000),
           }),
-        }}></p>
+        }}
+      ></p>
     );
   }
 
@@ -285,7 +286,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
               slot="end"
               style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
               checked={bill}
-              onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}></IonCheckbox>
+              onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}
+            ></IonCheckbox>
           </IonItem>
         </IonList>
 
@@ -317,7 +319,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--background-activated': colorContrast,
             '--color-activated': color,
           } as CSSProperties
-        }>
+        }
+      >
         <IonLabel>{t('export:excel')}</IonLabel>
       </IonButton>
     );
@@ -340,7 +343,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--background-activated': colorContrast,
             '--color-activated': color,
           } as CSSProperties
-        }>
+        }
+      >
         <IonLabel>{t('export:pdf')}</IonLabel>
       </IonButton>
     );

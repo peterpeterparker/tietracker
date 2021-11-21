@@ -102,7 +102,8 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
         interfaceOptions={{header: t('tracker.description')}}
         placeholder={t('tracker.description')}
         value={task.data.description}
-        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}>
+        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}
+      >
         {settings.descriptions.map((description: string, i: number) => {
           return (
             <IonSelectOption value={description} key={`desc-${i}`}>

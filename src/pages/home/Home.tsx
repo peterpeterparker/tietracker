@@ -112,7 +112,8 @@ const Home: React.FC<RouteComponentProps> = (props) => {
         color="medium"
         size="small"
         style={loading ? {visibility: 'hidden', opacity: 0} : undefined}
-        aria-label={t('add.client')}>
+        aria-label={t('add.client')}
+      >
         {empty ? t('add.start') : t('add.client')}
       </IonButton>
     );

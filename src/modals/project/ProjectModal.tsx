@@ -260,7 +260,8 @@ const ProjectModal: React.FC<Props> = (props) => {
               input-mode="text"
               value={name}
               onIonInput={($event: CustomEvent<KeyboardEvent>) => handleClientNameInput($event)}
-              onIonChange={() => validateProject()}></IonInput>
+              onIonChange={() => validateProject()}
+            ></IonInput>
           </IonItem>
 
           <IonItem className="item-title">
@@ -275,7 +276,8 @@ const ProjectModal: React.FC<Props> = (props) => {
               input-mode="text"
               value={`${rate ? rate : ''}`}
               onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectRateInput($event)}
-              onIonChange={() => validateProject()}></IonInput>
+              onIonChange={() => validateProject()}
+            ></IonInput>
           </IonItem>
 
           {renderBudget()}
@@ -300,7 +302,8 @@ const ProjectModal: React.FC<Props> = (props) => {
                 '--background-activated': props.colorContrast,
                 '--color-activated': props.color,
               } as CSSProperties
-            }>
+            }
+          >
             <IonLabel>{props.action === ProjectModalAction.CREATE ? t('common:actions.create') : t('common:actions.update')}</IonLabel>
           </IonButton>
 
@@ -325,7 +328,8 @@ const ProjectModal: React.FC<Props> = (props) => {
             ref={budgetRef}
             input-mode="text"
             value={`${budget ? budget : ''}`}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetInput($event)}></IonInput>
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetInput($event)}
+          ></IonInput>
         </IonItem>
       </>
     );
@@ -348,7 +352,8 @@ const ProjectModal: React.FC<Props> = (props) => {
             ref={billedRef}
             input-mode="text"
             value={`${billed ? billed : ''}`}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBilledInput($event)}></IonInput>
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBilledInput($event)}
+          ></IonInput>
         </IonItem>
       </>
     );
@@ -370,7 +375,8 @@ const ProjectModal: React.FC<Props> = (props) => {
             slot="end"
             style={{'--background-checked': props.color, '--border-color-checked': props.color} as CSSProperties}
             checked={vat}
-            onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
+            onIonChange={($event: CustomEvent) => onVatChange($event)}
+          ></IonCheckbox>
         </IonItem>
       </>
     );
@@ -392,7 +398,8 @@ const ProjectModal: React.FC<Props> = (props) => {
             slot="end"
             style={{'--background-checked': props.color, '--border-color-checked': props.color} as CSSProperties}
             checked={enabled}
-            onIonChange={($event: CustomEvent) => onEnabledChange($event)}></IonCheckbox>
+            onIonChange={($event: CustomEvent) => onEnabledChange($event)}
+          ></IonCheckbox>
         </IonItem>
       </>
     );

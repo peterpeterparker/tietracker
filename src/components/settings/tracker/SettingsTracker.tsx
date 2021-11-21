@@ -76,7 +76,8 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
             interfaceOptions={{header: t('tracker.time.title')}}
             placeholder={t('tracker.time.title')}
             value={props.settings.roundTime}
-            onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
+            onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}
+          >
             <IonSelectOption value={1}>{t('tracker.time.minute.1')}</IonSelectOption>
             <IonSelectOption value={5}>{t('tracker.time.minute.5')}</IonSelectOption>
             <IonSelectOption value={15}>{t('tracker.time.minute.15')}</IonSelectOption>
@@ -102,7 +103,8 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
             input-mode="text"
             value={props.settings.vat ? `${props.settings.vat}` : ''}
             aria-label={t('tracker.vat.input')}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => onVatInput($event)}></IonInput>
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => onVatInput($event)}
+          ></IonInput>
         </IonItem>
       </IonList>
     </>
