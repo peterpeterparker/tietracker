@@ -19,7 +19,12 @@ ion-item.item-input {
 
   ion-select {
     min-width: 100%;
+    height: calc(100% - 4px);
     padding-right: 16px;
+
+    &.ios {
+      height: 46px;
+    }
   }
 
   div.MuiFormControl-root {
@@ -63,5 +68,12 @@ ion-list[class*="list"].inputs-list  {
 
       font-weight: 300;
     }
+  }
+
+  div.item-split {
+    display: grid;
+    grid-template-columns: repeat(2, calc((100% - 8px) / 2));
+    width: 100%;
+    grid-column-gap: 8px;
   }
 }

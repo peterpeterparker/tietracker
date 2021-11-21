@@ -4,6 +4,7 @@
 
 ### Features
 
+- introduces option "type of budget" (project based, yearly or monthly limited)
 - cleaner navigation with options grouped under "More"
 - backup modal converted to a page
 

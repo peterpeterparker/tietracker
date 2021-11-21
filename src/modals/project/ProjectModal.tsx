@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next';
 
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
-import {Project, ProjectData} from '../../models/project';
+import {Project, ProjectData, ProjectDataType} from '../../models/project';
 import {ProjectsService} from '../../services/projects/projects.service';
 
 import {
@@ -19,6 +19,8 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonSelect,
+  IonSelectOption,
   IonSpinner,
   IonTitle,
   IonToolbar,
@@ -61,8 +63,9 @@ const ProjectModal: React.FC<Props> = (props) => {
   const [rate, setRate] = useState<number | undefined>(undefined);
   const [vat, setVat] = useState<boolean>(false);
   const [enabled, setEnabled] = useState<boolean>(true);
-  const [budget, setBudget] = useState<number | undefined>(undefined);
+  const [budgetValue, setBudgetValue] = useState<number | undefined>(undefined);
   const [billed, setBilled] = useState<number | undefined>(undefined);
+  const [budgetType, setBudgetType] = useState<ProjectDataType | undefined>(undefined);
 
   const nameRef: RefObject<any> = useRef();
   const rateRef: RefObject<any> = useRef();
@@ -89,8 +92,9 @@ const ProjectModal: React.FC<Props> = (props) => {
     setVat(project && project.data !== undefined && project.data.rate !== undefined ? project.data.rate.vat : false);
     setEnabled(project && project.data !== undefined ? !project.data.disabled : false);
 
-    setBudget(project && project.data !== undefined && project.data.budget !== undefined ? project.data.budget.budget : undefined);
+    setBudgetValue(project && project.data !== undefined && project.data.budget !== undefined ? project.data.budget.budget : undefined);
     setBilled(project && project.data !== undefined && project.data.budget !== undefined ? project.data.budget.billed : undefined);
+    setBudgetType(project?.data?.budget?.type);
 
     if (!project || project.data === undefined) {
       if (nameRef && nameRef.current) {
@@ -119,8 +123,12 @@ const ProjectModal: React.FC<Props> = (props) => {
     setRate(parseFloat(($event.target as InputTargetEvent).value));
   }
 
-  function handleProjectBudgetInput($event: CustomEvent<KeyboardEvent>) {
-    setBudget(parseFloat(($event.target as InputTargetEvent).value));
+  function handleProjectBudgetValueInput($event: CustomEvent<KeyboardEvent>) {
+    setBudgetValue(parseFloat(($event.target as InputTargetEvent).value));
+  }
+
+  function handleProjectBudgetType($event: CustomEvent) {
+    setBudgetType($event.detail.value);
   }
 
   function handleProjectBilledInput($event: CustomEvent<KeyboardEvent>) {
@@ -181,8 +189,9 @@ const ProjectModal: React.FC<Props> = (props) => {
         vat: vat,
       },
       budget: {
-        budget: budget !== undefined && budget >= 0 ? budget : 0,
+        budget: budgetValue !== undefined && budgetValue >= 0 ? budgetValue : 0,
         billed: 0,
+        type: budgetType,
       },
     };
 
@@ -202,12 +211,14 @@ const ProjectModal: React.FC<Props> = (props) => {
     projectToUpdate.data.disabled = !enabled;
 
     if (projectToUpdate.data.budget) {
-      projectToUpdate.data.budget.budget = budget !== undefined && budget >= 0 ? budget : 0;
+      projectToUpdate.data.budget.budget = budgetValue !== undefined && budgetValue >= 0 ? budgetValue : 0;
       projectToUpdate.data.budget.billed = billed !== undefined && billed >= 0 ? billed : 0;
+      projectToUpdate.data.budget.type = budgetType;
     } else {
       projectToUpdate.data.budget = {
-        budget: budget !== undefined && budget >= 0 ? budget : 0,
+        budget: budgetValue !== undefined && budgetValue >= 0 ? budgetValue : 0,
         billed: billed !== undefined && billed >= 0 ? billed : 0,
+        type: budgetType,
       };
     }
 
@@ -260,8 +271,7 @@ const ProjectModal: React.FC<Props> = (props) => {
               input-mode="text"
               value={name}
               onIonInput={($event: CustomEvent<KeyboardEvent>) => handleClientNameInput($event)}
-              onIonChange={() => validateProject()}
-            ></IonInput>
+              onIonChange={() => validateProject()}></IonInput>
           </IonItem>
 
           <IonItem className="item-title">
@@ -276,8 +286,7 @@ const ProjectModal: React.FC<Props> = (props) => {
               input-mode="text"
               value={`${rate ? rate : ''}`}
               onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectRateInput($event)}
-              onIonChange={() => validateProject()}
-            ></IonInput>
+              onIonChange={() => validateProject()}></IonInput>
           </IonItem>
 
           {renderBudget()}
@@ -302,8 +311,7 @@ const ProjectModal: React.FC<Props> = (props) => {
                 '--background-activated': props.colorContrast,
                 '--color-activated': props.color,
               } as CSSProperties
-            }
-          >
+            }>
             <IonLabel>{props.action === ProjectModalAction.CREATE ? t('common:actions.create') : t('common:actions.update')}</IonLabel>
           </IonButton>
 
@@ -319,18 +327,31 @@ const ProjectModal: React.FC<Props> = (props) => {
     return (
       <>
         <IonItem className="item-title">
-          <IonLabel>{t('clients:create.budget')}</IonLabel>
+          <IonLabel>{t('clients:budget.title')}</IonLabel>
         </IonItem>
-        <IonItem>
-          <IonInput
-            debounce={500}
-            minlength={1}
-            ref={budgetRef}
-            input-mode="text"
-            value={`${budget ? budget : ''}`}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetInput($event)}
-          ></IonInput>
-        </IonItem>
+        <div className="item-split">
+          <IonItem>
+            <IonInput
+              debounce={500}
+              minlength={1}
+              ref={budgetRef}
+              input-mode="text"
+              value={`${budgetValue ? budgetValue : ''}`}
+              onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetValueInput($event)}></IonInput>
+          </IonItem>
+
+          <IonItem className="item-input">
+            <IonSelect
+              interfaceOptions={{header: t('clients:budget.type')}}
+              placeholder=""
+              value={budgetType}
+              onIonChange={($event: CustomEvent) => handleProjectBudgetType($event)}>
+              <IonSelectOption value={'project'}>{t('clients:budget.project')}</IonSelectOption>
+              <IonSelectOption value={'yearly'}>{t('clients:budget.yearly')}</IonSelectOption>
+              <IonSelectOption value={'monthly'}>{t('clients:budget.monthly')}</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+        </div>
       </>
     );
   }
@@ -352,8 +373,7 @@ const ProjectModal: React.FC<Props> = (props) => {
             ref={billedRef}
             input-mode="text"
             value={`${billed ? billed : ''}`}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBilledInput($event)}
-          ></IonInput>
+            onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBilledInput($event)}></IonInput>
         </IonItem>
       </>
     );
@@ -375,8 +395,7 @@ const ProjectModal: React.FC<Props> = (props) => {
             slot="end"
             style={{'--background-checked': props.color, '--border-color-checked': props.color} as CSSProperties}
             checked={vat}
-            onIonChange={($event: CustomEvent) => onVatChange($event)}
-          ></IonCheckbox>
+            onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
         </IonItem>
       </>
     );
@@ -398,8 +417,7 @@ const ProjectModal: React.FC<Props> = (props) => {
             slot="end"
             style={{'--background-checked': props.color, '--border-color-checked': props.color} as CSSProperties}
             checked={enabled}
-            onIonChange={($event: CustomEvent) => onEnabledChange($event)}
-          ></IonCheckbox>
+            onIonChange={($event: CustomEvent) => onEnabledChange($event)}></IonCheckbox>
         </IonItem>
       </>
     );

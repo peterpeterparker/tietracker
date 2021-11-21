@@ -1,15 +1,42 @@
 import i18n from 'i18next';
 
-export function budgetRatio(budget: number | undefined, billed: number | undefined, extra?: number): string | undefined {
-  if (!budget || budget === undefined || budget <= 0) {
+import {differenceInMonths, differenceInYears, startOfMonth, startOfYear} from 'date-fns';
+
+import {ProjectDataBudget} from '../models/project';
+
+export function budgetRatio({
+  budget,
+  extra = undefined,
+  period,
+}: {
+  budget: ProjectDataBudget | undefined;
+  extra?: number;
+  period: {from: Date | undefined; to: Date | undefined};
+}): string | undefined {
+  if (!budget || budget === undefined || budget.budget <= 0) {
     return undefined;
   }
 
-  const cumulated: number | undefined = extra !== undefined && extra >= 0 && billed !== undefined && billed >= 0 ? extra + billed : billed;
+  const {budget: limit, type, billed} = budget;
 
-  if (cumulated === undefined || cumulated <= 0) {
-    return new Intl.NumberFormat(i18n.language, {style: 'percent'}).format(0);
+  if (!period.to || !period.from || type === 'project' || !type) {
+    const cumulated: number | undefined = extra !== undefined && extra >= 0 && billed !== undefined && billed >= 0 ? extra + billed : billed;
+
+    if (cumulated === undefined || cumulated <= 0) {
+      return new Intl.NumberFormat(i18n.language, {style: 'percent'}).format(0);
+    }
+
+    return new Intl.NumberFormat(i18n.language, {style: 'percent'}).format(cumulated / limit);
   }
 
-  return new Intl.NumberFormat(i18n.language, {style: 'percent'}).format(cumulated / budget);
+  if (!extra) {
+    return undefined;
+  }
+
+  const multiplyBudget: number =
+    type === 'monthly'
+      ? differenceInMonths(startOfMonth(period.to), startOfMonth(period.from))
+      : differenceInYears(startOfYear(period.to), startOfYear(period.from));
+
+  return new Intl.NumberFormat(i18n.language, {style: 'percent'}).format(extra / (limit * (multiplyBudget + 1)));
 }
