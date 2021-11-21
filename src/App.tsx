@@ -68,6 +68,7 @@ import Privacy from './pages/privacy/Privacy';
 import BackupAlert from './alerts/backup/BackupAlert';
 import Loading from './components/loading/Loading';
 import {More} from './pages/more/More';
+import Backup from './pages/backup/Backup';
 
 import {initAllData} from './utils/utils.store';
 
@@ -117,6 +118,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
               <Route path="/statistics" component={Statistics} exact={true} />
               <Route path="/settings" component={Settings} exact={true} />
+              <Route path="/backup" component={Backup} exact={true} />
               <Route path="/about" component={About} exact={true} />
 
               <Route path="/terms" component={Terms} exact={true} />

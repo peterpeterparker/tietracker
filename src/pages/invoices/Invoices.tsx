@@ -33,7 +33,7 @@ import {contrast} from '../../utils/utils.color';
 import {Settings} from '../../models/settings';
 
 import InvoiceModal from '../../modals/invoice/InvoiceModal';
-import {BackupInvoices} from '../../components/backup/invoices/BackupInvoices';
+import {BackupInvoices} from '../../components/backup/BackupInvoices';
 
 const Invoices: React.FC = () => {
   const {t} = useTranslation(['invoices', 'common']);

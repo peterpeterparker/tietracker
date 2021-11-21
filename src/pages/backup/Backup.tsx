@@ -1,9 +1,10 @@
 import React, {createRef, RefObject, useState} from 'react';
 
+import {useHistory} from 'react-router';
+
 import {useSelector} from 'react-redux';
 
-import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonTitle, IonToolbar, useIonAlert} from '@ionic/react';
-import {close} from 'ionicons/icons';
+import {IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonPage, IonToolbar, useIonAlert} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -15,19 +16,13 @@ import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {Settings} from '../../models/settings';
 import Loading from '../../components/loading/Loading';
 
-import styles from './BackupModal.module.scss';
+import styles from './Backup.module.scss';
 
 import {RestoreService} from '../../services/restore/restore.service';
 
 import {initAllData} from '../../utils/utils.store';
 
-interface Props extends RootProps {
-  closeAction: () => void;
-}
-
-const BackupModal: React.FC<Props> = (props) => {
-  const {closeAction} = props;
-
+const Backup: React.FC<RootProps> = (props) => {
   const {t} = useTranslation(['backup', 'common']);
 
   const [processing, setProcessing] = useState<boolean>(false);
@@ -37,6 +32,8 @@ const BackupModal: React.FC<Props> = (props) => {
   const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
   const [present] = useIonAlert();
+
+  const history = useHistory();
 
   async function doBackup() {
     try {
@@ -83,7 +80,7 @@ const BackupModal: React.FC<Props> = (props) => {
 
     await initAllData(props);
 
-    closeAction();
+    history.push('/');
   };
 
   function openFileDialog() {
@@ -95,26 +92,25 @@ const BackupModal: React.FC<Props> = (props) => {
   }
 
   return (
-    <IonContent>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>{t('backup:backup_idb')}</IonTitle>
-          <IonButtons slot="start">
-            <IonButton onClick={() => closeAction()}>
-              <IonIcon icon={close} slot="icon-only"></IonIcon>
-            </IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
+    <IonPage>
+      <IonContent>
+        <main className="ion-padding">
+          <IonHeader>
+            <IonToolbar className="title">
+              <IonButtons slot="start">
+                <IonBackButton defaultHref="/more" />
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
 
-      <main className="ion-padding">
-        <p className={styles.text}>{t('backup:text')}</p>
+          <p className={`${styles.text} ion-padding-top`}>{t('backup:text')}</p>
 
-        <p>{t('backup:example')}</p>
+          <p>{t('backup:example')}</p>
 
-        <div className={`actions ${styles.actions}`}>{renderActions()}</div>
-      </main>
-    </IonContent>
+          <div className={`actions ${styles.actions}`}>{renderActions()}</div>
+        </main>
+      </IonContent>
+    </IonPage>
   );
 
   function renderActions() {
@@ -133,13 +129,9 @@ const BackupModal: React.FC<Props> = (props) => {
         </IonButton>
 
         <input type="file" accept="application/zip" ref={inputRef} onChange={() => onInputChange()} className={styles.input} />
-
-        <button type="button" onClick={() => closeAction()}>
-          {t('common:actions.cancel')}
-        </button>
       </>
     );
   }
 };
 
-export default rootConnector(BackupModal);
+export default rootConnector(Backup);
