@@ -4,7 +4,7 @@ import {useHistory} from 'react-router';
 
 import {useSelector} from 'react-redux';
 
-import {IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonPage, IonToolbar, useIonAlert} from '@ionic/react';
+import {IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonLabel, IonPage, IonToolbar, useIonAlert} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
