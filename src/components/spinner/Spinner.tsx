@@ -70,7 +70,7 @@ const Spinner: React.FC<SpinnerProps> = (props: SpinnerProps) => {
     const diffHours: number = Math.floor(seconds / 3600);
     seconds = seconds % 3600;
     const diffMinutes: number = Math.floor(seconds / 60);
-    const diffSeconds: number = seconds % 60;
+    const diffSeconds: number = Math.floor(seconds % 60);
 
     return `${diffHours >= 99 ? '99' : diffHours < 10 ? '0' + diffHours : diffHours}:${diffMinutes < 10 ? '0' + diffMinutes : diffMinutes}:${
       diffSeconds < 10 ? '0' + diffSeconds : diffSeconds
