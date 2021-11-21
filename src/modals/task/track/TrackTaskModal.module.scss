@@ -70,6 +70,18 @@
   }
 }
 
+.client {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  font-weight: 300;
+}
+
 @keyframes animate-button-icon {
   0% {
     height: 6rem;

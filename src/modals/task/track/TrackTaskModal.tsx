@@ -1,7 +1,7 @@
 import React, {useState, CSSProperties} from 'react';
 import {useSelector} from 'react-redux';
 
-import {IonIcon, IonSelectOption, IonSelect} from '@ionic/react';
+import {IonIcon, IonSelectOption, IonSelect, IonLabel} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -76,6 +76,12 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
 
   return (
     <div className={`${styles.task} ${task !== undefined ? styles.progress : ''}`} style={client !== undefined ? {background: `${client.color}`} : undefined}>
+      {client?.name && (
+        <IonLabel style={{color: contrastColor} as CSSProperties} className={`${styles.client} ion-padding`}>
+          {client?.name}
+        </IonLabel>
+      )}
+
       <div style={{'--color': contrastColor} as CSSProperties}>
         {task !== undefined ? <Spinner freeze={freeze} color={client !== undefined ? client.color : undefined} contrast={contrastColor}></Spinner> : undefined}
 
@@ -102,8 +108,7 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
         interfaceOptions={{header: t('tracker.description')}}
         placeholder={t('tracker.description')}
         value={task.data.description}
-        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}
-      >
+        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}>
         {settings.descriptions.map((description: string, i: number) => {
           return (
             <IonSelectOption value={description} key={`desc-${i}`}>
