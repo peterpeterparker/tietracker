@@ -27,7 +27,7 @@ export function budgetRatio({
 
   const {budget: limit, type} = budget;
 
-  if (!period.to || !period.from || type === 'project') {
+  if (!period.to || !period.from || type === 'project' || !type) {
     return new Intl.NumberFormat(i18n.language, {style: 'percent'}).format(cumulated / limit);
   }
 
