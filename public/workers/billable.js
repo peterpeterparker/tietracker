@@ -1,4 +1,4 @@
-importScripts('./libs/idb-keyval-iife.min.js');
+importScripts('./libs/idb-keyval.umd.js');
 importScripts('./libs/dayjs.min.js');
 
 importScripts('./utils/utils.js');

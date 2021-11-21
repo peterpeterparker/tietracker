@@ -11,7 +11,7 @@
     "eject": "react-scripts eject",
     "prettier": "prettier --write 'src/**/*.{ts,js,css,html,jsx,tsx}' && prettier --write 'public/workers/**/*.{ts,js,css,html,jsx,tsx}' && prettier --write '*.md'",
     "postinstall": "jetifier",
-    "libs": "node ./scripts/download-libs.js"
+    "libs": "node scripts/download-libs.mjs"
   },
   "dependencies": {
     "@awesome-cordova-plugins/core": "^5.37.0",
