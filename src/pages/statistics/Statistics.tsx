@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {IonContent, IonHeader, IonToolbar, IonPage, useIonViewDidLeave, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonHeader, IonToolbar, IonPage, useIonViewDidLeave, useIonViewWillEnter, IonBackButton, IonButtons} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -31,7 +31,9 @@ const Statistics: React.FC = () => {
         <main className="ion-padding">
           <IonHeader>
             <IonToolbar className="title">
-              <h1>{t('title')}</h1>
+              <IonButtons slot="start">
+                <IonBackButton defaultHref="/more" />
+              </IonButtons>
             </IonToolbar>
           </IonHeader>
 

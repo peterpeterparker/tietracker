@@ -1,7 +1,20 @@
 import React, {FormEvent, useState} from 'react';
 import {useSelector} from 'react-redux';
 
-import {IonContent, IonLabel, IonPage, IonSpinner, IonButton, IonSegment, IonSegmentButton, IonHeader, IonToolbar, IonToast} from '@ionic/react';
+import {
+  IonContent,
+  IonLabel,
+  IonPage,
+  IonSpinner,
+  IonButton,
+  IonSegment,
+  IonSegmentButton,
+  IonHeader,
+  IonToolbar,
+  IonToast,
+  IonButtons,
+  IonBackButton,
+} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -62,6 +75,11 @@ const Settings: React.FC<RootProps> = (props) => {
 
         <main className="ion-padding">
           <IonHeader>
+            <IonToolbar className="title">
+              <IonButtons slot="start">
+                <IonBackButton defaultHref="/more" />
+              </IonButtons>
+            </IonToolbar>
             <IonToolbar className="title">{renderSettingsCategory()}</IonToolbar>
           </IonHeader>
 
