@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {useHistory} from 'react-router';
 
 import {IonContent, IonPage, IonHeader, IonToolbar, IonList, IonItem, IonLabel, IonIcon} from '@ionic/react';
-import {information, options, server, statsChart} from 'ionicons/icons';
+import {information, logoGithub, options, server, statsChart} from 'ionicons/icons';
 
 import styles from './More.module.scss';
 
@@ -42,6 +42,10 @@ export const More = () => {
             <IonItem detail={true} button={true} onClick={() => navigate('/about')} className={styles.item}>
               <IonIcon slot="start" icon={information} className={styles.icon} />
               <IonLabel>{t('common:navigation.about')}</IonLabel>
+            </IonItem>
+            <IonItem detail={true} button={true} href="https://github.com/peterpeterparker/tietracker" target="_blank" className={styles.item}>
+              <IonIcon slot="start" icon={logoGithub} className={styles.icon} />
+              <IonLabel>GitHub</IonLabel>
             </IonItem>
           </IonList>
         </main>
