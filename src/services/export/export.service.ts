@@ -8,7 +8,7 @@ import {exportLabels} from '../../utils/utils.export';
 
 import {Invoice} from '../../store/interfaces/invoice';
 
-import {File, IWriteOptions, DirectoryEntry} from '@ionic-native/file';
+import {File, IWriteOptions, DirectoryEntry} from '@awesome-cordova-plugins/file';
 
 import {Currency} from '../../definitions/currency';
 

@@ -1,7 +1,7 @@
-const {createWriteStream} = require('fs');
-const {pipeline} = require('stream');
-const {promisify} = require('util');
-const fetch = require('node-fetch');
+import {createWriteStream} from 'fs';
+import {pipeline} from 'stream';
+import {promisify} from 'util';
+import fetch from 'node-fetch';
 
 const download = async ({url, path}) => {
   const streamPipeline = promisify(pipeline);
@@ -9,7 +9,7 @@ const download = async ({url, path}) => {
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(`unexpected response ${response.statusText}`);
+    throw new Error(`unexpected response ${response.url} ${response.statusText}`);
   }
 
   await streamPipeline(response.body, createWriteStream(path));
@@ -18,8 +18,8 @@ const download = async ({url, path}) => {
 (async () => {
   try {
     await download({
-      url: 'https://raw.githubusercontent.com/jakearchibald/idb-keyval/master/dist/iife/index-min.js',
-      path: './public/workers/libs/idb-keyval-iife.min.js',
+      url: 'https://cdn.jsdelivr.net/npm/idb-keyval@latest/dist/umd.js',
+      path: './public/workers/libs/idb-keyval.umd.js',
     });
 
     await download({

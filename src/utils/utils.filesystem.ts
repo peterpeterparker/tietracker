@@ -1,8 +1,8 @@
 import {isPlatform} from '@ionic/react';
 
-import {DirectoryEntry, File} from '@ionic-native/file';
+import {DirectoryEntry, File} from '@awesome-cordova-plugins/file';
 
-import {SocialSharing} from '@ionic-native/social-sharing';
+import {SocialSharing} from '@awesome-cordova-plugins/social-sharing';
 
 export async function getNewFileHandle(type: 'pdf' | 'xlsx' | 'zip'): Promise<FileSystemFileHandle> {
   const xlsxOpts: SaveFilePickerOptions = {

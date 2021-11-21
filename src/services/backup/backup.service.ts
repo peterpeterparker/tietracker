@@ -6,7 +6,7 @@ import {differenceInWeeks, format} from 'date-fns';
 
 import i18next from 'i18next';
 
-import {DirectoryEntry, File, IWriteOptions} from '@ionic-native/file';
+import {DirectoryEntry, File, IWriteOptions} from '@awesome-cordova-plugins/file';
 
 import {download, getMobileDir, getNewFileHandle, shareMobile, writeFile} from '../../utils/utils.filesystem';
 import {exportLabels} from '../../utils/utils.export';
