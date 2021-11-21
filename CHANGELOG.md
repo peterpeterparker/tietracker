@@ -12,6 +12,10 @@
 
 - bump dependencies and npm v7
 
+### Fix
+
+- round displayed seconds when a task is tracked
+
 <a name="1.9.3"></a>
 
 # 1.9.3 (2021-06-26)
