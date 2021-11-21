@@ -27,7 +27,6 @@ import SettingsGeneral from '../../components/settings/general/SettingsGeneral';
 import SettingsTemplates from '../../components/settings/templates/SettingsTemplates';
 import SettingsTracker from '../../components/settings/tracker/SettingsTracker';
 import {BackupIdb} from '../../components/backup/idb/BackupIdb';
-import Header from '../../components/header/Header';
 
 enum SettingsCategory {
   GENERAL = 'general',
@@ -71,8 +70,6 @@ const Settings: React.FC<RootProps> = (props) => {
   return (
     <IonPage>
       <IonContent>
-        <Header></Header>
-
         <main className="ion-padding">
           <IonHeader>
             <IonToolbar className="title">

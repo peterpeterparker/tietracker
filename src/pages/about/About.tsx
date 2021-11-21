@@ -2,8 +2,6 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {IonContent, IonPage, IonLabel, IonIcon, IonHeader, IonToolbar, IonButtons, IonBackButton} from '@ionic/react';
 
-import Header from '../../components/header/Header';
-
 import styles from './About.module.scss';
 
 import {logoTwitter, logoGithub, globeOutline, checkmark} from 'ionicons/icons';
@@ -12,8 +10,6 @@ const About: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <Header></Header>
-
         <main className="ion-padding">
           <IonHeader>
             <IonToolbar className="title">

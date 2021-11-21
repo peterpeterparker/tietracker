@@ -7,8 +7,6 @@ import {useHistory} from 'react-router';
 import {IonContent, IonPage, IonHeader, IonToolbar, IonList, IonItem, IonLabel, IonIcon} from '@ionic/react';
 import {information, options, statsChart} from 'ionicons/icons';
 
-import Header from '../../components/header/Header';
-
 import styles from './More.module.scss';
 
 export const More = () => {
@@ -21,8 +19,6 @@ export const More = () => {
   return (
     <IonPage>
       <IonContent>
-        <Header></Header>
-
         <main className="ion-padding">
           <IonHeader>
             <IonToolbar className="title">

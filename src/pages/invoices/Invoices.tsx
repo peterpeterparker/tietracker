@@ -32,8 +32,6 @@ import {contrast} from '../../utils/utils.color';
 
 import {Settings} from '../../models/settings';
 
-import Header from '../../components/header/Header';
-
 import InvoiceModal from '../../modals/invoice/InvoiceModal';
 import {BackupInvoices} from '../../components/backup/invoices/BackupInvoices';
 
@@ -52,8 +50,6 @@ const Invoices: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
-        <Header></Header>
-
         <main className="ion-padding">
           <IonHeader>
             <IonToolbar className="title">
