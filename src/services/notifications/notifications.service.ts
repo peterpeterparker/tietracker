@@ -6,7 +6,7 @@ import {Project} from '../../models/project';
 
 import {Settings} from '../../models/settings';
 
-import {LocalNotifications, ELocalNotificationTriggerUnit} from '@ionic-native/local-notifications';
+import {LocalNotifications, ELocalNotificationTriggerUnit} from '@awesome-cordova-plugins/local-notifications';
 
 export class NotificationsService {
   private static instance: NotificationsService;
