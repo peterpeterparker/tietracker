@@ -1,0 +1,9 @@
+{
+  "invoices": "Invoices have been or have to be invoices for a period from <strong>{{from}}</strong> to <strong>{{to}}</strong>.",
+  "text": "If some part of this period is over and have been billed, you can close it.",
+  "close": "Close selected period",
+  "alert": {
+    "warning": "WARNING",
+    "sure": "You are about to close a billing period. Are you sure you want to continue?"
+  }
+}

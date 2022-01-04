@@ -69,6 +69,7 @@ import BackupAlert from './alerts/backup/BackupAlert';
 import Loading from './components/loading/Loading';
 import {More} from './pages/more/More';
 import Backup from './pages/backup/Backup';
+import Period from './pages/period/Period';
 
 import {initAllData} from './utils/utils.store';
 
@@ -120,6 +121,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
               <Route path="/settings" component={Settings} exact={true} />
               <Route path="/backup" component={Backup} exact={true} />
               <Route path="/about" component={About} exact={true} />
+              <Route path="/period" component={Period} exact={true} />
 
               <Route path="/terms" component={Terms} exact={true} />
               <Route path="/privacy" component={Privacy} exact={true} />
