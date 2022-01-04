@@ -59,6 +59,22 @@ export class InvoicesService {
     });
   }
 
+  async closeInvoices({from, to, done}: {from: Date; to: Date; done: (success: boolean) => Promise<void>}) {
+    this.invoicesWorker.onmessage = async ($event: MessageEvent) => {
+      if ($event.data?.result === 'error') {
+        // TODO show err
+        console.error($event.data.msg);
+      }
+
+      await done($event.data?.result === 'success');
+    };
+
+    this.invoicesWorker.postMessage({
+      msg: `close-invoices`,
+      data: {from, to},
+    });
+  }
+
   period(): Promise<InvoicesPeriod | undefined> {
     return new Promise<InvoicesPeriod | undefined>(async (resolve) => {
       try {

@@ -1,0 +1,10 @@
+{
+  "invoices": "Invoices have been or have to be invoices for a period from <strong>{{from}}</strong> to <strong>{{to}}</strong>.",
+  "text": "If a part of this period is over and related invoices have been billed, you can close the timeframe.",
+  "text-more": "This function can be useful for example when you want to close an accounting year.",
+  "close": "Close selected period",
+  "alert": {
+    "warning": "WARNING",
+    "sure": "You are about to close a billing period. Are you sure you want to continue?"
+  }
+}

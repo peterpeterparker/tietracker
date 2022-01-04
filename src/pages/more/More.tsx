@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {useHistory} from 'react-router';
 
 import {IonContent, IonPage, IonHeader, IonToolbar, IonList, IonItem, IonLabel, IonIcon} from '@ionic/react';
-import {information, logoGithub, options, server, statsChart} from 'ionicons/icons';
+import {calendarNumber, information, logoGithub, options, server, statsChart} from 'ionicons/icons';
 
 import styles from './More.module.scss';
 
@@ -38,6 +38,10 @@ export const More = () => {
             <IonItem detail={true} button={true} onClick={() => navigate('/backup')} className={styles.item}>
               <IonIcon slot="start" icon={server} className={styles.icon} />
               <IonLabel>{t('common:navigation.backup')}</IonLabel>
+            </IonItem>
+            <IonItem detail={true} button={true} onClick={() => navigate('/period')} className={styles.item}>
+              <IonIcon slot="start" icon={calendarNumber} className={styles.icon} />
+              <IonLabel>{t('common:navigation.period')}</IonLabel>
             </IonItem>
             <IonItem detail={true} button={true} onClick={() => navigate('/about')} className={styles.item}>
               <IonIcon slot="start" icon={information} className={styles.icon} />
