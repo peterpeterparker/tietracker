@@ -87,7 +87,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
   useEffect(() => {
     (async () => {
-      updateBillable();
+      await updateBillable();
     })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
