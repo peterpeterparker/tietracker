@@ -1,3 +1,11 @@
+<a name="1.11.0"></a>
+
+# 1.11.0 (2022-01-04)
+
+### Features
+
+- new option to close invoices period. It can be useful for example when you want to close an accounting year.
+
 <a name="1.10.0"></a>
 
 # 1.10.0 (2021-11-21)
