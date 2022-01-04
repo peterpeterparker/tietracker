@@ -69,10 +69,10 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
   useEffect(() => {
     (async () => {
+      document.addEventListener('ionBackButton', onBackButton);
+
       await init();
     })();
-
-    document.addEventListener('ionBackButton', onBackButton);
 
     return () => document.removeEventListener('ionBackButton', onBackButton);
 
