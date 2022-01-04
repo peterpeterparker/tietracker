@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 
 import {useTranslation} from 'react-i18next';
 
+import {isBefore} from 'date-fns';
+
 import {
   IonBackButton,
   IonButton,
@@ -28,8 +30,6 @@ import Loading from '../../components/loading/Loading';
 import {format} from '../../utils/utils.date';
 
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
-import {isBefore} from 'date-fns';
-import {RestoreService} from '../../services/restore/restore.service';
 
 const Period: React.FC = () => {
   const {t} = useTranslation(['period', 'common', 'invoices']);
@@ -45,19 +45,27 @@ const Period: React.FC = () => {
 
   const [present] = useIonAlert();
 
-  useIonViewWillEnter(async () => {
-    const period: InvoicesPeriod | undefined = await InvoicesService.getInstance().period();
-    setPeriod(period);
+  useIonViewWillEnter(async () => await initPeriod());
 
+  useEffect(() => {
     setFrom(period?.from);
     setTo(period?.to);
-  });
+  }, [period]);
 
   useEffect(() => {
     setValid(from !== undefined && to !== undefined && isBefore(from, to));
   }, [from, to]);
 
+  const initPeriod = async () => {
+    const period: InvoicesPeriod | undefined = await InvoicesService.getInstance().period();
+    setPeriod(period);
+  };
+
   const doDeleteInvoices = () => {
+    if (!from || !to || !valid) {
+      return;
+    }
+
     present({
       header: t('period:alert.warning'),
       message: t('period:alert.sure'),
@@ -67,10 +75,22 @@ const Period: React.FC = () => {
           text: t('common:actions.ok'),
           handler: async () => {
             setProcessing(true);
+
+            await InvoicesService.getInstance().closeInvoices({from, to, done});
           },
         },
       ],
     });
+  };
+
+  const done = async (success: boolean) => {
+    setProcessing(false);
+
+    if (!success) {
+      return;
+    }
+
+    await initPeriod();
   };
 
   return (
@@ -91,6 +111,8 @@ const Period: React.FC = () => {
               dangerouslySetInnerHTML={{__html: t('period:invoices', {from: format(period?.from), to: format(period?.to)})}}></p>
 
             <p>{t('period:text')}</p>
+
+            <p>{t('period:text-more')}</p>
 
             {renderFilter()}
 

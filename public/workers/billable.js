@@ -8,6 +8,8 @@ self.onmessage = async ($event) => {
     await self.listProjectsInvoices();
   } else if ($event && $event.data && $event.data.msg === 'listProjectInvoice') {
     await self.listProjectInvoice($event.data.invoices, $event.data.projectId);
+  } else if ($event && $event.data && $event.data.msg === 'close-invoices') {
+    await self.closeInvoices($event.data.data);
   }
 };
 
@@ -16,6 +18,73 @@ self.listProjectsInvoices = async () => {
 
   await self.listInvoices(invoices, null);
 };
+
+self.closeInvoices = async ({from, to}) => {
+  try {
+    if (!from || !to) {
+      self.postMessage({result: 'error', msg: 'No period provided.'});
+      return;
+    }
+
+    const selectedInvoices = await findInvoicesForPeriod({from, to});
+
+    if (!selectedInvoices || selectedInvoices.length <= 0) {
+      self.postMessage({result: 'error', msg: 'No period to close.'});
+      return;
+    }
+
+    const checkInvoices = selectedInvoices.map((invoice) => hasOpenInvoices(invoice));
+    const checks = await Promise.all(checkInvoices);
+
+    const hasOpenInvoice = checks.find((check) => check === true);
+    if (hasOpenInvoice) {
+      self.postMessage({result: 'error', msg: 'Period cannot be closed. It contains an invoice that still need to be billed.'});
+      return;
+    }
+
+    await removeInvoicesForPeriod(selectedInvoices);
+
+    self.postMessage({result: 'success'});
+  } catch (err) {
+    self.postMessage({result: 'error', msg: err});
+  }
+};
+
+async function removeInvoicesForPeriod(selectedInvoices) {
+  const invoices = await idbKeyval.get('invoices');
+
+  const filterInvoices = invoices.filter((invoice) => !selectedInvoices.includes(invoice));
+
+  await idbKeyval.set('invoices', filterInvoices);
+}
+
+async function findInvoicesForPeriod({from, to}) {
+  const invoices = await idbKeyval.get('invoices');
+
+  return invoices?.filter((invoice) => {
+    const invoiceDate = dayjs(new Date(invoice));
+
+    if (invoiceDate.isSame(dayjs(from), 'day') || invoiceDate.isSame(dayjs(to), 'day')) {
+      return true;
+    }
+
+    return invoiceDate.isBefore(dayjs(to), 'day') && invoiceDate.isAfter(dayjs(from), 'day');
+  });
+}
+
+async function hasOpenInvoices(invoice) {
+  const tasks = await idbKeyval.get(`tasks-${invoice}`);
+
+  if (!tasks || tasks.length <= 0) {
+    return false;
+  }
+
+  let task = tasks.find((task) => {
+    return task.data.invoice.status === 'open';
+  });
+
+  return task !== undefined;
+}
 
 self.listProjectInvoice = async (invoices, projectId) => {
   await self.listInvoices(invoices, projectId);
