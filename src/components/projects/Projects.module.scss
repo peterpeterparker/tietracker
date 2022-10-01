@@ -6,7 +6,7 @@
   flex: 1;
   display: flex;
   overflow: auto;
-    
+
   ::-webkit-scrollbar {
     display: none;
   }
@@ -26,7 +26,8 @@
 }
 
 .dummyProjectHeader {
-  ion-card-subtitle, ion-card-title {
+  ion-card-subtitle,
+  ion-card-title {
     text-transform: inherit;
   }
 }

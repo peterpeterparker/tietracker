@@ -1,6 +1,13 @@
 import {RootThunkResult} from './types.thunks';
 
-import {START_TASK, STOP_TASK, INIT_TASK, LIST_TASKS, UPDATE_TASK, CREATE_TASK} from '../types/tasks.types';
+import {
+  CREATE_TASK,
+  INIT_TASK,
+  LIST_TASKS,
+  START_TASK,
+  STOP_TASK,
+  UPDATE_TASK,
+} from '../types/tasks.types';
 
 import {TaskInProgress} from '../interfaces/task.inprogress';
 import {TaskItem} from '../interfaces/task.item';
@@ -8,9 +15,9 @@ import {TaskItem} from '../interfaces/task.item';
 import {Project} from '../../models/project';
 import {Settings} from '../../models/settings';
 
-import {TasksService} from '../../services/tasks/tasks.service';
-import {NotificationsService} from '../../services/notifications/notifications.service';
 import {TaskData} from '../../models/task';
+import {NotificationsService} from '../../services/notifications/notifications.service';
+import {TasksService} from '../../services/tasks/tasks.service';
 
 export function startTask(project: Project, settings: Settings): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {
@@ -24,13 +31,18 @@ export function startTask(project: Project, settings: Settings): RootThunkResult
 
 export function updateTask(data: TaskInProgress): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {
-    const task: TaskInProgress | undefined = await TasksService.getInstance().updateTaskInProgress(data);
+    const task: TaskInProgress | undefined = await TasksService.getInstance().updateTaskInProgress(
+      data
+    );
 
     dispatch({type: UPDATE_TASK, payload: task});
   };
 }
 
-export function stopTask(delayDispatch: number = 0, roundTime: number): RootThunkResult<Promise<void>> {
+export function stopTask(
+  delayDispatch: number = 0,
+  roundTime: number
+): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {
     await TasksService.getInstance().stop(roundTime);
 

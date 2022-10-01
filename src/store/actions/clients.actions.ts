@@ -1,5 +1,5 @@
-import {ClientActionTypes, CREATE_CLIENT, INIT_CLIENTS} from '../types/clients.types';
 import {Client} from '../../models/client';
+import {ClientActionTypes, CREATE_CLIENT, INIT_CLIENTS} from '../types/clients.types';
 
 export function addClient(newClient: Client): ClientActionTypes {
   return {

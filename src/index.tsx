@@ -1,19 +1,22 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
-import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
+import {applyMiddleware, createStore} from 'redux';
 import {rootReducer} from './store/reducers/index';
 
 import reduxThunk from 'redux-thunk';
 
-import {applyPolyfills, defineCustomElements as colorDefineCustomElements, JSX as LocalJSX} from '@deckdeckgo/color/dist/loader';
 import {defineCustomElements as chartsDefineCustomElements} from '@deckdeckgo/charts/dist/loader';
+import {
+  applyPolyfills,
+  defineCustomElements as colorDefineCustomElements,
+  JSX as LocalJSX,
+} from '@deckdeckgo/color/dist/loader';
 
-import {DetailedHTMLProps, HTMLAttributes} from 'react';
 import {setupIonicReact} from '@ionic/react';
+import {DetailedHTMLProps, HTMLAttributes} from 'react';
 
 type StencilProps<T> = {
   [P in keyof T]?: Omit<T[P], 'ref'> | HTMLAttributes<T>;
@@ -23,7 +26,8 @@ type ReactProps<T> = {
   [P in keyof T]?: DetailedHTMLProps<HTMLAttributes<T[P]>, T[P]>;
 };
 
-type StencilToReact<T = LocalJSX.IntrinsicElements, U = HTMLElementTagNameMap> = StencilProps<T> & ReactProps<U>;
+type StencilToReact<T = LocalJSX.IntrinsicElements, U = HTMLElementTagNameMap> = StencilProps<T> &
+  ReactProps<U>;
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

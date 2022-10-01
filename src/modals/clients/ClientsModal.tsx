@@ -1,8 +1,20 @@
 import React, {CSSProperties, RefObject, useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 
-import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonList, IonSearchbar, IonTitle, IonToolbar, IonLabel} from '@ionic/react';
 import type {IonSearchbarCustomEvent} from '@ionic/core';
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonSearchbar,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -10,8 +22,8 @@ import {close} from 'ionicons/icons';
 
 import styles from './ClientsModal.module.scss';
 
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
 import {Client} from '../../models/client';
 
@@ -117,7 +129,13 @@ const ClientsModal: React.FC<Props> = (props) => {
 
     return filteredClients.map((client: Client) => {
       return (
-        <IonItem key={client.id} className={styles.item} lines="none" detail={false} onClick={() => closeModal(client.id)}>
+        <IonItem
+          key={client.id}
+          className={styles.item}
+          lines="none"
+          detail={false}
+          onClick={() => closeModal(client.id)}
+        >
           <div slot="start" style={{background: client.data.color} as CSSProperties}></div>
 
           <IonLabel>

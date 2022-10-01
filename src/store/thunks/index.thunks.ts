@@ -7,18 +7,18 @@ import {RootState} from '../reducers';
 
 import {createClient, initClients} from './clients.thunks';
 import {createProject, initActiveProjects, updateActiveProject} from './projects.thunks';
-import {startTask, stopTask, initTask, listTasks, updateTask, createTask} from './tasks.thunks';
+import {createTask, initTask, listTasks, startTask, stopTask, updateTask} from './tasks.thunks';
 
-import {ClientData, Client} from '../../models/client';
-import {ProjectData, Project} from '../../models/project';
+import {Client, ClientData} from '../../models/client';
+import {Project, ProjectData} from '../../models/project';
 import {Settings} from '../../models/settings';
 
-import {computeSummary} from './summary.thunks';
+import {TaskData} from '../../models/task';
+import {TaskInProgress} from '../interfaces/task.inprogress';
 import {listProjectsInvoices} from './invoices.thunks';
 import {initSettings, updateSettings} from './settings.thunks';
-import {TaskInProgress} from '../interfaces/task.inprogress';
+import {computeSummary} from './summary.thunks';
 import {initTheme, switchTheme} from './theme.thunks';
-import {TaskData} from '../../models/task';
 
 export type RootThunkDispatch = ThunkDispatch<RootState, undefined, Action>;
 
@@ -44,7 +44,8 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
 
   startTask: (project: Project, settings: Settings) => dispatch(startTask(project, settings)),
   updateTask: (task: TaskInProgress) => dispatch(updateTask(task)),
-  stopTask: (delayDispatch: number = 0, roundTime: number) => dispatch(stopTask(delayDispatch, roundTime)),
+  stopTask: (delayDispatch: number = 0, roundTime: number) =>
+    dispatch(stopTask(delayDispatch, roundTime)),
   initTask: () => dispatch(initTask()),
   createTask: (taskData: TaskData, roundTime: number) => dispatch(createTask(taskData, roundTime)),
 

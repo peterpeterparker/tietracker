@@ -8,17 +8,17 @@ import {lightFormat} from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 
-import {IonList, IonButton} from '@ionic/react';
+import {IonButton, IonList} from '@ionic/react';
 
 import styles from './Tasks.module.scss';
 
 import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
 
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
-import TaskItem from '../taskitem/TaskItem';
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
+import TaskItem from '../taskitem/TaskItem';
 
 import {format} from '../../utils/utils.date';
 
@@ -31,10 +31,14 @@ interface Props extends RootProps {
 const Tasks: React.FC<Props> = (props: Props) => {
   const {t} = useTranslation('tasks');
 
-  const tasks: TaskItemStore[] | undefined = useSelector((state: RootState) => state.tasks.taskItems);
+  const tasks: TaskItemStore[] | undefined = useSelector(
+    (state: RootState) => state.tasks.taskItems
+  );
   const selecteDay: Date = useSelector((state: RootState) => state.tasks.taskItemsSelectedDate);
 
-  const projects: Project[] | undefined = useSelector((state: RootState) => state.activeProjects.projects);
+  const projects: Project[] | undefined = useSelector(
+    (state: RootState) => state.activeProjects.projects
+  );
 
   function openDatePicker() {
     const input: HTMLInputElement | null = document.querySelector('input.MuiInputBase-input');
@@ -66,7 +70,13 @@ const Tasks: React.FC<Props> = (props: Props) => {
   function renderActions() {
     return (
       <div className={styles.action}>
-        <IonButton onClick={() => openDatePicker()} fill="outline" color="medium" size="small" aria-label={t('entries.select_date')}>
+        <IonButton
+          onClick={() => openDatePicker()}
+          fill="outline"
+          color="medium"
+          size="small"
+          aria-label={t('entries.select_date')}
+        >
           {t('entries.select_date')}
         </IonButton>
 
@@ -81,7 +91,13 @@ const Tasks: React.FC<Props> = (props: Props) => {
     }
 
     return (
-      <IonButton onClick={() => props.addAction()} fill="outline" color="medium" size="small" aria-label={t('entries.add_task')}>
+      <IonButton
+        onClick={() => props.addAction()}
+        fill="outline"
+        color="medium"
+        size="small"
+        aria-label={t('entries.add_task')}
+      >
         {t('entries.add_task')}
       </IonButton>
     );
@@ -98,7 +114,10 @@ const Tasks: React.FC<Props> = (props: Props) => {
   function renderDatePicker(label: string) {
     return (
       <>
-        <p className="placeholder" dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></p>
+        <p
+          className="placeholder"
+          dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}
+        ></p>
 
         <div className={styles.picker}>
           <DatePicker

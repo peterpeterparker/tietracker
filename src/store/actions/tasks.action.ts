@@ -1,4 +1,13 @@
-import {CREATE_TASK, INIT_TASK, LIST_TASKS, START_TASK, STOP_TASK, TaskActionTypes, TasksActionTypes, UPDATE_TASK} from '../types/tasks.types';
+import {
+  CREATE_TASK,
+  INIT_TASK,
+  LIST_TASKS,
+  START_TASK,
+  STOP_TASK,
+  TaskActionTypes,
+  TasksActionTypes,
+  UPDATE_TASK,
+} from '../types/tasks.types';
 
 import {TaskInProgress} from '../interfaces/task.inprogress';
 import {TaskItem} from '../interfaces/task.item';

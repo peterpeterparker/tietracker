@@ -1,21 +1,21 @@
-import React, {FormEvent, RefObject, CSSProperties, useEffect, useState, useRef} from 'react';
 import type {IonInputCustomEvent} from '@ionic/core';
 import {
-  IonHeader,
-  IonContent,
-  IonToolbar,
-  IonTitle,
-  IonButtons,
   IonButton,
+  IonButtons,
+  IonCheckbox,
+  IonContent,
+  IonHeader,
   IonIcon,
-  IonList,
+  IonInput,
   IonItem,
   IonLabel,
-  IonInput,
-  IonCheckbox,
+  IonList,
   IonSelect,
   IonSelectOption,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/react';
+import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
 
 import {useSelector} from 'react-redux';
 
@@ -26,13 +26,13 @@ import {close} from 'ionicons/icons';
 import styles from './CreateClientModal.module.scss';
 
 import {Client, ClientData} from '../../models/client';
-import {RootProps, rootConnector} from '../../store/thunks/index.thunks';
 import {ProjectData} from '../../models/project';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
 import {contrast, PALETTE} from '../../utils/utils.color';
 
-import {ThemeService} from '../../services/theme/theme.service';
 import {Settings} from '../../models/settings';
+import {ThemeService} from '../../services/theme/theme.service';
 
 import {RootState} from '../../store/reducers';
 
@@ -106,7 +106,9 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
   }
 
   function validateClientName() {
-    setValidClientName(clientData !== undefined && clientData.name !== undefined && clientData.name.length >= 3);
+    setValidClientName(
+      clientData !== undefined && clientData.name !== undefined && clientData.name.length >= 3
+    );
   }
 
   const selectColor = ($event: CustomEvent) => {
@@ -232,12 +234,18 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
   }
 
   function inputMinZero($event: IonInputCustomEvent<InputEvent>): number {
-    return ($event.target as InputTargetEvent).value ? parseFloat(($event.target as InputTargetEvent).value) : 0;
+    return ($event.target as InputTargetEvent).value
+      ? parseFloat(($event.target as InputTargetEvent).value)
+      : 0;
   }
 
   function validateProject() {
     setValidProject(
-      projectData !== undefined && projectData.name !== undefined && projectData.name.length >= 3 && projectData.rate && projectData.rate.hourly >= 0
+      projectData !== undefined &&
+        projectData.name !== undefined &&
+        projectData.name.length >= 3 &&
+        projectData.rate &&
+        projectData.rate.hourly >= 0
     );
   }
 
@@ -251,7 +259,12 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     try {
       const persistedClient: Client = await props.createClient(clientData);
 
-      if (!persistedClient || persistedClient === undefined || !persistedClient.id || persistedClient.id === undefined) {
+      if (
+        !persistedClient ||
+        persistedClient === undefined ||
+        !persistedClient.id ||
+        persistedClient.id === undefined
+      ) {
         // TODO: Error management
         // And what if client withtout project? duplicated? -> delete whatever function
         console.error('Client not created');
@@ -326,13 +339,22 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
   function renderContent() {
     const valid: boolean = validClientName && validProject && validClientColor;
 
-    const color: string | undefined = clientData && clientData.color ? clientData.color : 'var(--ion-color-light)';
+    const color: string | undefined =
+      clientData && clientData.color ? clientData.color : 'var(--ion-color-light)';
     const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
 
     return (
       <IonContent>
         <IonHeader>
-          <IonToolbar style={{'--background': color, '--color': colorContrast, '--ion-toolbar-color': colorContrast} as CSSProperties}>
+          <IonToolbar
+            style={
+              {
+                '--background': color,
+                '--color': colorContrast,
+                '--ion-toolbar-color': colorContrast,
+              } as CSSProperties
+            }
+          >
             <IonTitle>{t('clients:create.title')}</IonTitle>
             <IonButtons slot="start">
               <IonButton onClick={() => props.closeAction()}>
@@ -356,8 +378,11 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   maxlength={32}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleClientNameInput($event)}
-                  onIonChange={() => validateClientName()}></IonInput>
+                  onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                    handleClientNameInput($event)
+                  }
+                  onIonChange={() => validateClientName()}
+                ></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title ion-margin-top">
@@ -365,7 +390,10 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
               </IonItem>
 
               <div className={styles.color + ` ${!validClientName ? 'disabled' : ''}`}>
-                <deckgo-color ref={clientColorRef} className="ion-padding-start ion-padding-end ion-padding-bottom"></deckgo-color>
+                <deckgo-color
+                  ref={clientColorRef}
+                  className="ion-padding-start ion-padding-end ion-padding-bottom"
+                ></deckgo-color>
               </div>
 
               <IonItem disabled={!validClientName} className="item-title ion-margin-top">
@@ -379,8 +407,11 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   maxlength={32}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectNameInput($event)}
-                  onIonChange={() => validateProject()}></IonInput>
+                  onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                    handleProjectNameInput($event)
+                  }
+                  onIonChange={() => validateProject()}
+                ></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title">
@@ -393,8 +424,11 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   minlength={1}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectRateInput($event)}
-                  onIonChange={() => validateProject()}></IonInput>
+                  onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                    handleProjectRateInput($event)
+                  }
+                  onIonChange={() => validateProject()}
+                ></IonInput>
               </IonItem>
 
               {renderBudget()}
@@ -415,7 +449,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                     '--background-activated': colorContrast,
                     '--color-activated': color,
                   } as CSSProperties
-                }>
+                }
+              >
                 <IonLabel>{t('common:actions.submit')}</IonLabel>
               </IonButton>
 
@@ -443,9 +478,12 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
           <IonLabel>{settings.vat}%</IonLabel>
           <IonCheckbox
             slot="end"
-            style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
+            style={
+              {'--background-checked': color, '--border-color-checked': color} as CSSProperties
+            }
             checked={projectData ? projectData.rate.vat : false}
-            onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
+            onIonChange={($event: CustomEvent) => onVatChange($event)}
+          ></IonCheckbox>
         </IonItem>
       </>
     );
@@ -464,14 +502,18 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
               debounce={500}
               minlength={1}
               input-mode="text"
-              onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectBudgetInput($event)}></IonInput>
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                handleProjectBudgetInput($event)
+              }
+            ></IonInput>
           </IonItem>
 
           <IonItem className="item-input" disabled={!validClientName}>
             <IonSelect
               interfaceOptions={{header: t('clients:budget.type')}}
               placeholder=""
-              onIonChange={($event: CustomEvent) => handleProjectBudgetType($event)}>
+              onIonChange={($event: CustomEvent) => handleProjectBudgetType($event)}
+            >
               <IonSelectOption value={'project'}>{t('clients:budget.project')}</IonSelectOption>
               <IonSelectOption value={'yearly'}>{t('clients:budget.yearly')}</IonSelectOption>
               <IonSelectOption value={'monthly'}>{t('clients:budget.monthly')}</IonSelectOption>

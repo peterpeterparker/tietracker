@@ -6,7 +6,10 @@ import {Project} from '../../models/project';
 
 import {Settings} from '../../models/settings';
 
-import {LocalNotifications, ELocalNotificationTriggerUnit} from '@awesome-cordova-plugins/local-notifications';
+import {
+  ELocalNotificationTriggerUnit,
+  LocalNotifications,
+} from '@awesome-cordova-plugins/local-notifications';
 
 export class NotificationsService {
   private static instance: NotificationsService;
@@ -42,7 +45,9 @@ export class NotificationsService {
       await i18next.loadNamespaces('notifications');
 
       LocalNotifications.schedule({
-        title: project.data.client ? `${project.data.client.name}` : i18next.t('notifications:fallback_title'),
+        title: project.data.client
+          ? `${project.data.client.name}`
+          : i18next.t('notifications:fallback_title'),
         text: i18next.t('notifications:body', {project: project.data.name}),
         trigger: {
           every: ELocalNotificationTriggerUnit.HOUR,

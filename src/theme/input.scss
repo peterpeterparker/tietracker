@@ -7,7 +7,10 @@ ion-item.item-input {
     --inner-padding-end: 0;
   }
 
-  ion-input[class*="sc-ion-input"], ion-textarea[class*="sc-ion-textarea"], div.MuiFormControl-root, ion-select {
+  ion-input[class*="sc-ion-input"],
+  ion-textarea[class*="sc-ion-textarea"],
+  div.MuiFormControl-root,
+  ion-select {
     --padding-start: 8px;
     --background: var(--ion-color-card);
     background: var(--ion-color-light);
@@ -51,7 +54,7 @@ ion-item.item-input {
   }
 }
 
-ion-list[class*="list"].inputs-list  {
+ion-list[class*="list"].inputs-list {
   background: transparent;
   contain: inherit;
 

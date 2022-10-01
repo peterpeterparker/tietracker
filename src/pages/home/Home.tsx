@@ -3,7 +3,18 @@ import {useSelector} from 'react-redux';
 
 import {RouteComponentProps} from 'react-router';
 
-import {IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonModal, IonLabel, useIonViewDidEnter, useIonViewDidLeave, IonIcon} from '@ionic/react';
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonLabel,
+  IonModal,
+  IonPage,
+  IonToolbar,
+  useIonViewDidEnter,
+  useIonViewDidLeave,
+} from '@ionic/react';
 
 import {search} from 'ionicons/icons';
 
@@ -63,22 +74,38 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   return (
     <IonPage>
       <IonContent>
-        <IonModal isOpen={showModalClient} onDidDismiss={async () => await closeClientModal()} className="fullscreen">
+        <IonModal
+          isOpen={showModalClient}
+          onDidDismiss={async () => await closeClientModal()}
+          className="fullscreen"
+        >
           <CreateClientModal closeAction={async () => await closeClientModal()}></CreateClientModal>
         </IonModal>
 
-        <IonModal isOpen={showModalClients} onDidDismiss={($event) => closeAndNavigate($event)} className="fullscreen">
+        <IonModal
+          isOpen={showModalClients}
+          onDidDismiss={($event) => closeAndNavigate($event)}
+          className="fullscreen"
+        >
           <ClientsModal presented={modalPresented}></ClientsModal>
         </IonModal>
 
-        <IonModal isOpen={showModalTask} onDidDismiss={() => setShowModalTask(false)} className="fullscreen">
+        <IonModal
+          isOpen={showModalTask}
+          onDidDismiss={() => setShowModalTask(false)}
+          className="fullscreen"
+        >
           <CreateTaskModal closeAction={() => setShowModalTask(false)}></CreateTaskModal>
         </IonModal>
 
         <main className="ion-padding-start ion-padding-bottom ion-padding-top">
           <IonHeader className="ion-padding-end">
             <IonToolbar className={styles.toolbar}>
-              <button aria-label={t('search.clients')} className={styles.searchbar + ' input'} onClick={() => setShowModalClients(true)}>
+              <button
+                aria-label={t('search.clients')}
+                className={styles.searchbar + ' input'}
+                onClick={() => setShowModalClients(true)}
+              >
                 <IonIcon icon={search} />
                 <IonLabel>{t('search.clients')}</IonLabel>
               </button>
@@ -109,7 +136,8 @@ const Home: React.FC<RouteComponentProps> = (props) => {
         color="medium"
         size="small"
         style={loading ? {visibility: 'hidden', opacity: 0} : undefined}
-        aria-label={t('add.client')}>
+        aria-label={t('add.client')}
+      >
         {empty ? t('add.start') : t('add.client')}
       </IonButton>
     );

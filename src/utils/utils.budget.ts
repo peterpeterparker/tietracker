@@ -20,7 +20,10 @@ export function budgetRatio({
   const {budget: limit, type, billed} = budget;
 
   if (!period.to || !period.from || type === 'project' || !type) {
-    const cumulated: number | undefined = extra !== undefined && extra >= 0 && billed !== undefined && billed >= 0 ? extra + billed : billed;
+    const cumulated: number | undefined =
+      extra !== undefined && extra >= 0 && billed !== undefined && billed >= 0
+        ? extra + billed
+        : billed;
 
     if (cumulated === undefined || cumulated <= 0) {
       return new Intl.NumberFormat(i18n.language, {style: 'percent'}).format(0);
@@ -38,5 +41,7 @@ export function budgetRatio({
       ? differenceInMonths(startOfMonth(period.to), startOfMonth(period.from))
       : differenceInYears(startOfYear(period.to), startOfYear(period.from));
 
-  return new Intl.NumberFormat(i18n.language, {style: 'percent'}).format(extra / (limit * (multiplyBudget + 1)));
+  return new Intl.NumberFormat(i18n.language, {style: 'percent'}).format(
+    extra / (limit * (multiplyBudget + 1))
+  );
 }

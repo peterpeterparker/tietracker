@@ -1,5 +1,10 @@
-import {CREATE_PROJECT, INIT_ACTIVE_PROJECTS, ProjectActionTypes, UPDATE_ACTIVE_PROJECTS} from '../types/projects.types';
 import {Project} from '../../models/project';
+import {
+  CREATE_PROJECT,
+  INIT_ACTIVE_PROJECTS,
+  ProjectActionTypes,
+  UPDATE_ACTIVE_PROJECTS,
+} from '../types/projects.types';
 
 export function createProject(newProject: Project): ProjectActionTypes {
   return {

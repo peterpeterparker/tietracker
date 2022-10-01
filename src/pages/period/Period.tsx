@@ -20,8 +20,8 @@ import {
 } from '@ionic/react';
 
 import DateFnsUtils from '@date-io/date-fns';
-import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 
 import styles from './Period.module.scss';
 
@@ -108,7 +108,10 @@ const Period: React.FC = () => {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <p
               className={`${styles.text} ion-padding-top`}
-              dangerouslySetInnerHTML={{__html: t('period:invoices', {from: format(period?.from), to: format(period?.to)})}}></p>
+              dangerouslySetInnerHTML={{
+                __html: t('period:invoices', {from: format(period?.from), to: format(period?.to)}),
+              }}
+            ></p>
 
             <p>{t('period:text')}</p>
 
@@ -164,7 +167,13 @@ const Period: React.FC = () => {
 
     return (
       <>
-        <IonButton type="button" color="danger" onClick={doDeleteInvoices} style={{marginTop: '8px'}} disabled={!valid}>
+        <IonButton
+          type="button"
+          color="danger"
+          onClick={doDeleteInvoices}
+          style={{marginTop: '8px'}}
+          disabled={!valid}
+        >
           <IonLabel>{t('period:close')}</IonLabel>
         </IonButton>
       </>

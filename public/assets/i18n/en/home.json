@@ -1,9 +1,9 @@
 {
-    "search": {
-        "clients": "Search clients"
-    },
-    "add": {
-        "client": "Create a client",
-        "start": "Create a client to get started"
-    }
+  "search": {
+    "clients": "Search clients"
+  },
+  "add": {
+    "client": "Create a client",
+    "start": "Create a client to get started"
+  }
 }

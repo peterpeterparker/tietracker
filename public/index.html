@@ -14,19 +14,25 @@
     <meta name="twitter:site" content="@daviddalbusco" />
     <meta name="twitter:creator" content="@daviddalbusco" />
     <meta name="twitter:title" content="Tie Tracker" />
+    <meta name="twitter:description" content="A simple, open source and free time tracking app ⏱" />
     <meta
-            name="twitter:description"
-            content="A simple, open source and free time tracking app ⏱"
+      name="twitter:image:src"
+      content="https://tietracker.com/assets/meta/tietracker-meta.png"
     />
-    <meta name="twitter:image:src" content="https://tietracker.com/assets/meta/tietracker-meta.png" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <meta name="author" content="David Dal Busco">
+    <meta name="author" content="David Dal Busco" />
 
-    <meta name="description" content="A simple, open source and free time tracking app. Simple work hours tracking. Assign time to clients and projects. Mark entries as billed. Weekly work summary. Daily list of activities. Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc.) and PDF.">
-    <meta property="og:description" content="Simple work hours tracking. Assign time to clients and projects. Mark entries as billed. Weekly work summary. Daily list of activities. Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc.) and PDF.">
+    <meta
+      name="description"
+      content="A simple, open source and free time tracking app. Simple work hours tracking. Assign time to clients and projects. Mark entries as billed. Weekly work summary. Daily list of activities. Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc.) and PDF."
+    />
+    <meta
+      property="og:description"
+      content="Simple work hours tracking. Assign time to clients and projects. Mark entries as billed. Weekly work summary. Daily list of activities. Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc.) and PDF."
+    />
 
-    <link rel="canonical" href="https://tietracker.com"/>
+    <link rel="canonical" href="https://tietracker.com" />
 
     <base href="/" />
 
@@ -37,78 +43,109 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
 
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.webmanifest" crossorigin="anonymous"/>
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.webmanifest" crossorigin="anonymous" />
 
-    <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/assets/favicon/favicon-32x32.png" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="%PUBLIC_URL%/assets/favicon/favicon-32x32.png"
+    />
 
     <!-- add to homescreen for ios -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Tie Tracker" />
     <meta name="apple-mobile-web-app-status-bar-style" content="#230f29" />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/assets/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/assets/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/assets/favicon/favicon-16x16.png">
-    <link rel="mask-icon" href="%PUBLIC_URL%/assets/favicon/safari-pinned-tab.svg" color="#230f29">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/assets/favicon/favicon.ico">
-    <meta name="msapplication-TileColor" content="#230f29">
-    <meta name="msapplication-config" content="%PUBLIC_URL%/assets/favicon/browserconfig.xml">
-    <meta name="theme-color" content="#230f29">
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="%PUBLIC_URL%/assets/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="%PUBLIC_URL%/assets/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="%PUBLIC_URL%/assets/favicon/favicon-16x16.png"
+    />
+    <link
+      rel="mask-icon"
+      href="%PUBLIC_URL%/assets/favicon/safari-pinned-tab.svg"
+      color="#230f29"
+    />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/assets/favicon/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#230f29" />
+    <meta name="msapplication-config" content="%PUBLIC_URL%/assets/favicon/browserconfig.xml" />
+    <meta name="theme-color" content="#230f29" />
 
-    <meta http-equiv="origin-trial" content="AioK5E51433lnW300y2B/6aEfmV3YEXfOMmpKjqxRrdPk0hDuFR3WXyPaN42rOfgSy7aPUV2fdjMucNvvO/3pgUAAABseyJvcmlnaW4iOiJodHRwczovL3RpZXRyYWNrZXIuY29tOjQ0MyIsImZlYXR1cmUiOiJOYXRpdmVGaWxlU3lzdGVtMiIsImV4cGlyeSI6MTYwMDM0MjExMSwiaXNTdWJkb21haW4iOnRydWV9">
+    <meta
+      http-equiv="origin-trial"
+      content="AioK5E51433lnW300y2B/6aEfmV3YEXfOMmpKjqxRrdPk0hDuFR3WXyPaN42rOfgSy7aPUV2fdjMucNvvO/3pgUAAABseyJvcmlnaW4iOiJodHRwczovL3RpZXRyYWNrZXIuY29tOjQ0MyIsImZlYXR1cmUiOiJOYXRpdmVGaWxlU3lzdGVtMiIsImV4cGlyeSI6MTYwMDM0MjExMSwiaXNTdWJkb21haW4iOnRydWV9"
+    />
 
     <style>
       /* open-sans-300 - latin */
       @font-face {
-        font-family: "Open Sans";
+        font-family: 'Open Sans';
         font-style: normal;
         font-weight: 300;
         font-display: swap;
-        src: url("/assets/fonts/open-sans-v17-latin-300.eot"); /* IE9 Compat Modes */
-        src: local("Open Sans Light"), local("OpenSans-Light"), url("/assets/fonts/open-sans-v17-latin-300.eot?#iefix") format("embedded-opentype"),
-          /* IE6-IE8 */ url("/assets/fonts/open-sans-v17-latin-300.woff2") format("woff2"),
-          /* Super Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-300.woff") format("woff"),
-          /* Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-300.ttf") format("truetype"),
-          /* Safari, Android, iOS */ url("/assets/fonts/open-sans-v17-latin-300.svg#OpenSans") format("svg"); /* Legacy iOS */
+        src: url('/assets/fonts/open-sans-v17-latin-300.eot'); /* IE9 Compat Modes */
+        src: local('Open Sans Light'), local('OpenSans-Light'),
+          url('/assets/fonts/open-sans-v17-latin-300.eot?#iefix') format('embedded-opentype'),
+          /* IE6-IE8 */ url('/assets/fonts/open-sans-v17-latin-300.woff2') format('woff2'),
+          /* Super Modern Browsers */ url('/assets/fonts/open-sans-v17-latin-300.woff')
+            format('woff'),
+          /* Modern Browsers */ url('/assets/fonts/open-sans-v17-latin-300.ttf') format('truetype'),
+          /* Safari, Android, iOS */ url('/assets/fonts/open-sans-v17-latin-300.svg#OpenSans')
+            format('svg'); /* Legacy iOS */
       }
 
       /* open-sans-regular - latin */
       @font-face {
-        font-family: "Open Sans";
+        font-family: 'Open Sans';
         font-style: normal;
         font-weight: 400;
         font-display: swap;
-        src: url("/assets/fonts/open-sans-v17-latin-regular.eot"); /* IE9 Compat Modes */
-        src: local("Open Sans Regular"), local("OpenSans-Regular"), url("/assets/fonts/open-sans-v17-latin-regular.eot?#iefix") format("embedded-opentype"),
-          /* IE6-IE8 */ url("/assets/fonts/open-sans-v17-latin-regular.woff2") format("woff2"),
-          /* Super Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-regular.woff") format("woff"),
-          /* Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-regular.ttf") format("truetype"),
-          /* Safari, Android, iOS */ url("/assets/fonts/open-sans-v17-latin-regular.svg#OpenSans") format("svg"); /* Legacy iOS */
+        src: url('/assets/fonts/open-sans-v17-latin-regular.eot'); /* IE9 Compat Modes */
+        src: local('Open Sans Regular'), local('OpenSans-Regular'),
+          url('/assets/fonts/open-sans-v17-latin-regular.eot?#iefix') format('embedded-opentype'),
+          /* IE6-IE8 */ url('/assets/fonts/open-sans-v17-latin-regular.woff2') format('woff2'),
+          /* Super Modern Browsers */ url('/assets/fonts/open-sans-v17-latin-regular.woff')
+            format('woff'),
+          /* Modern Browsers */ url('/assets/fonts/open-sans-v17-latin-regular.ttf')
+            format('truetype'),
+          /* Safari, Android, iOS */ url('/assets/fonts/open-sans-v17-latin-regular.svg#OpenSans')
+            format('svg'); /* Legacy iOS */
       }
 
       /* open-sans-700 - latin */
       @font-face {
-        font-family: "Open Sans";
+        font-family: 'Open Sans';
         font-style: normal;
         font-weight: 700;
         font-display: swap;
-        src: url("/assets/fonts/open-sans-v17-latin-700.eot"); /* IE9 Compat Modes */
-        src: local("Open Sans Bold"), local("OpenSans-Bold"), url("/assets/fonts/open-sans-v17-latin-700.eot?#iefix") format("embedded-opentype"),
-          /* IE6-IE8 */ url("/assets/fonts/open-sans-v17-latin-700.woff2") format("woff2"),
-          /* Super Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-700.woff") format("woff"),
-          /* Modern Browsers */ url("/assets/fonts/open-sans-v17-latin-700.ttf") format("truetype"),
-          /* Safari, Android, iOS */ url("/assets/fonts/open-sans-v17-latin-700.svg#OpenSans") format("svg"); /* Legacy iOS */
+        src: url('/assets/fonts/open-sans-v17-latin-700.eot'); /* IE9 Compat Modes */
+        src: local('Open Sans Bold'), local('OpenSans-Bold'),
+          url('/assets/fonts/open-sans-v17-latin-700.eot?#iefix') format('embedded-opentype'),
+          /* IE6-IE8 */ url('/assets/fonts/open-sans-v17-latin-700.woff2') format('woff2'),
+          /* Super Modern Browsers */ url('/assets/fonts/open-sans-v17-latin-700.woff')
+            format('woff'),
+          /* Modern Browsers */ url('/assets/fonts/open-sans-v17-latin-700.ttf') format('truetype'),
+          /* Safari, Android, iOS */ url('/assets/fonts/open-sans-v17-latin-700.svg#OpenSans')
+            format('svg'); /* Legacy iOS */
       }
     </style>
-
   </head>
 
   <body>
     <div id="root"></div>
 
-    <noscript>
-      Please enable JavaScript to use Tie Tracker.
-    </noscript>
+    <noscript> Please enable JavaScript to use Tie Tracker. </noscript>
   </body>
-
 </html>

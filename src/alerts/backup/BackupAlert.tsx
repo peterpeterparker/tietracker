@@ -4,12 +4,12 @@ import {IonAlert, IonLoading} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
-import {rootConnector} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
+import {rootConnector} from '../../store/thunks/index.thunks';
 
-import {BackupService} from '../../services/backup/backup.service';
-import {Settings} from '../../models/settings';
 import {useSelector} from 'react-redux';
+import {Settings} from '../../models/settings';
+import {BackupService} from '../../services/backup/backup.service';
 
 const BackupAlert: React.FC = () => {
   const {t} = useTranslation(['backup', 'common']);

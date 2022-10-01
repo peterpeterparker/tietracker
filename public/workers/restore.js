@@ -24,7 +24,10 @@ self.restoreIdb = async (data) => {
   const dbKeysData = [];
   for (const filename of files) {
     const content = await zip.file(filename).async('text');
-    dbKeysData.push([filename.replace('.json', ''), filename === 'backup.json' ? Date.parse(JSON.parse(content)) : JSON.parse(content)]);
+    dbKeysData.push([
+      filename.replace('.json', ''),
+      filename === 'backup.json' ? Date.parse(JSON.parse(content)) : JSON.parse(content),
+    ]);
   }
 
   await idbKeyval.setMany(dbKeysData);

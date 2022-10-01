@@ -32,7 +32,12 @@ function excelCurrencyFormat(currency) {
       return;
     }
 
-    if (!currency.format || !currency.format.symbol || !currency.format.symbol.template || !currency.format.symbol.grapheme) {
+    if (
+      !currency.format ||
+      !currency.format.symbol ||
+      !currency.format.symbol.template ||
+      !currency.format.symbol.grapheme
+    ) {
       resolve(`#,##0.00 \"${currency.currency}\"`);
       return;
     }
@@ -73,7 +78,8 @@ function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, backup)
   });
 
   // Char ASCII code 71 = G
-  worksheet.getCell(`${String.fromCharCode(71 + col)}${invoices.length + 2}`).numFmt = currencyFormat;
+  worksheet.getCell(`${String.fromCharCode(71 + col)}${invoices.length + 2}`).numFmt =
+    currencyFormat;
 
   if (backup) {
     worksheet.getColumn(1).width = 30;
@@ -123,7 +129,9 @@ function generateTotal(worksheet, invoices, currencyFormat, vat, i18n, backup) {
     worksheet.getCell(`${e}${index}`).value = i18n.total;
     worksheet.getCell(`${e}${index}`).font = {bold: true};
     worksheet.getCell(`${e}${index}`).border = {bottom: {style: 'thin'}};
-    worksheet.getCell(`${g}${index}`).value = {formula: `ROUND((${billableTotalRef}+(${billableTotalRef}*${vatRef}))/5,2)*5`};
+    worksheet.getCell(`${g}${index}`).value = {
+      formula: `ROUND((${billableTotalRef}+(${billableTotalRef}*${vatRef}))/5,2)*5`,
+    };
     worksheet.getCell(`${g}${index}`).numFmt = currencyFormat;
     worksheet.getCell(`${g}${index}`).font = {bold: true};
     worksheet.getCell(`${g}${index}`).border = {bottom: {style: 'thin'}};
@@ -135,14 +143,18 @@ function generateTotal(worksheet, invoices, currencyFormat, vat, i18n, backup) {
 
     worksheet.mergeCells(`${e}${index}:${f}${index}`);
     worksheet.getCell(`${e}${index}`).value = i18n.total_vat_excluded;
-    worksheet.getCell(`${g}${index}`).value = {formula: `ROUND((${totalRef}*100/(100+(${vatRef}*100)))/5,2)*5`};
+    worksheet.getCell(`${g}${index}`).value = {
+      formula: `ROUND((${totalRef}*100/(100+(${vatRef}*100)))/5,2)*5`,
+    };
     worksheet.getCell(`${g}${index}`).numFmt = currencyFormat;
 
     index++;
 
     worksheet.mergeCells(`${e}${index}:${f}${index}`);
     worksheet.getCell(`${e}${index}`).value = i18n.vat;
-    worksheet.getCell(`${g}${index}`).value = {formula: `ROUND((${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100)))/5,2)*5`};
+    worksheet.getCell(`${g}${index}`).value = {
+      formula: `ROUND((${totalRef}*(${vatRef}*100)/(100+(${vatRef}*100)))/5,2)*5`,
+    };
     worksheet.getCell(`${g}${index}`).numFmt = currencyFormat;
   } else {
     worksheet.mergeCells(`${e}${index}:${f}${index}`);
@@ -187,5 +199,7 @@ const exportExcelTable = async (workbook, worksheet, invoices, currency, i18n, v
 
   const buf = await workbook.xlsx.writeBuffer();
 
-  return new Blob([buf], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  return new Blob([buf], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  });
 };

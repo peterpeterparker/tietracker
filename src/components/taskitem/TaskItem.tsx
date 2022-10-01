@@ -8,11 +8,11 @@ import {useTranslation} from 'react-i18next';
 import styles from './TaskItem.module.scss';
 
 import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
-import {formatTime} from '../../utils/utils.time';
 import {formatCurrency} from '../../utils/utils.currency';
+import {formatTime} from '../../utils/utils.time';
 
 import {Settings} from '../../models/settings';
 
@@ -27,13 +27,23 @@ const TaskItem: React.FC<TaskItemProps> = (props) => {
   const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
   return (
-    <IonItem className={styles.item} lines="none" detail={false} routerLink={`/task/${props.tasksDay}/${props.task.id}`}>
+    <IonItem
+      className={styles.item}
+      lines="none"
+      detail={false}
+      routerLink={`/task/${props.tasksDay}/${props.task.id}`}
+    >
       <div slot="start" style={{background: props.task.data.client.color} as CSSProperties}></div>
 
       <IonLabel>
-        {props.task.data.description ? <h2>{props.task.data.description}</h2> : t('item.no_description')}
+        {props.task.data.description ? (
+          <h2>{props.task.data.description}</h2>
+        ) : (
+          t('item.no_description')
+        )}
         <p>
-          {formatTime(props.task.data.milliseconds)} - {formatCurrency(props.task.data.billable, settings.currency.currency)}
+          {formatTime(props.task.data.milliseconds)} -{' '}
+          {formatCurrency(props.task.data.billable, settings.currency.currency)}
         </p>
       </IonLabel>
     </IonItem>

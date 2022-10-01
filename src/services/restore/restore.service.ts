@@ -14,7 +14,13 @@ export class RestoreService {
     return RestoreService.instance;
   }
 
-  async restore({zip, done}: {zip: File | undefined | null; done: (success: boolean) => Promise<void>}) {
+  async restore({
+    zip,
+    done,
+  }: {
+    zip: File | undefined | null;
+    done: (success: boolean) => Promise<void>;
+  }) {
     if (!zip) {
       await done(false);
       return;

@@ -4,7 +4,9 @@ import {DirectoryEntry, File} from '@awesome-cordova-plugins/file';
 
 import {SocialSharing} from '@awesome-cordova-plugins/social-sharing';
 
-export async function getNewFileHandle(type: 'pdf' | 'xlsx' | 'zip'): Promise<FileSystemFileHandle> {
+export async function getNewFileHandle(
+  type: 'pdf' | 'xlsx' | 'zip'
+): Promise<FileSystemFileHandle> {
   const xlsxOpts: SaveFilePickerOptions = {
     types: [
       {
@@ -41,7 +43,10 @@ export async function getNewFileHandle(type: 'pdf' | 'xlsx' | 'zip'): Promise<Fi
   return showSaveFilePicker(type === 'pdf' ? pdfOpts : type === 'zip' ? zipOpts : xlsxOpts);
 }
 
-export async function writeFile(fileHandle: FileSystemFileHandle, contents: string | BufferSource | Blob) {
+export async function writeFile(
+  fileHandle: FileSystemFileHandle,
+  contents: string | BufferSource | Blob
+) {
   // Create a writer (request permission if necessary).
   const writer = await fileHandle.createWritable();
   // Write the full length of the contents
@@ -53,7 +58,9 @@ export async function writeFile(fileHandle: FileSystemFileHandle, contents: stri
 export function getMobileDir(): Promise<DirectoryEntry> {
   return new Promise<DirectoryEntry>(async (resolve, reject) => {
     try {
-      const rootDir: DirectoryEntry = await File.resolveDirectoryUrl(isPlatform('ios') ? File.syncedDataDirectory : File.dataDirectory);
+      const rootDir: DirectoryEntry = await File.resolveDirectoryUrl(
+        isPlatform('ios') ? File.syncedDataDirectory : File.dataDirectory
+      );
 
       rootDir.getDirectory(
         'tietracker',

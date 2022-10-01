@@ -1,6 +1,15 @@
 import React, {useState} from 'react';
 
-import {IonContent, IonHeader, IonToolbar, IonPage, useIonViewDidLeave, useIonViewWillEnter, IonBackButton, IonButtons} from '@ionic/react';
+import {
+  IonBackButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonToolbar,
+  useIonViewDidLeave,
+  useIonViewWillEnter,
+} from '@ionic/react';
 
 import {rootConnector} from '../../store/thunks/index.thunks';
 

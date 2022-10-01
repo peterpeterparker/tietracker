@@ -4,7 +4,17 @@ import {useHistory} from 'react-router';
 
 import {useSelector} from 'react-redux';
 
-import {IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonLabel, IonPage, IonToolbar, useIonAlert} from '@ionic/react';
+import {
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonLabel,
+  IonPage,
+  IonToolbar,
+  useIonAlert,
+} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -13,8 +23,8 @@ import {BackupService} from '../../services/backup/backup.service';
 import {RootState} from '../../store/reducers';
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
-import {Settings} from '../../models/settings';
 import Loading from '../../components/loading/Loading';
+import {Settings} from '../../models/settings';
 
 import styles from './Backup.module.scss';
 
@@ -128,7 +138,13 @@ const Backup: React.FC<RootProps> = (props) => {
           <IonLabel>{t('backup:restore')}</IonLabel>
         </IonButton>
 
-        <input type="file" accept="application/zip" ref={inputRef} onChange={() => onInputChange()} className={styles.input} />
+        <input
+          type="file"
+          accept="application/zip"
+          ref={inputRef}
+          onChange={() => onInputChange()}
+          className={styles.input}
+        />
       </>
     );
   }

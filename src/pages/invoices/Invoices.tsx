@@ -1,19 +1,19 @@
-import React, {useState} from 'react';
 import {
-  IonPage,
-  IonContent,
   IonCard,
+  IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonRippleEffect,
-  IonIcon,
-  IonModal,
-  IonCardContent,
-  IonLabel,
+  IonContent,
   IonHeader,
+  IonIcon,
+  IonLabel,
+  IonModal,
+  IonPage,
+  IonRippleEffect,
   IonToolbar,
 } from '@ionic/react';
+import React, {useState} from 'react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -23,17 +23,17 @@ import {cashOutline, share} from 'ionicons/icons';
 
 import styles from './Invoices.module.scss';
 
-import {rootConnector} from '../../store/thunks/index.thunks';
-import {RootState} from '../../store/reducers';
 import {Invoice} from '../../store/interfaces/invoice';
+import {RootState} from '../../store/reducers';
+import {rootConnector} from '../../store/thunks/index.thunks';
 
-import {formatCurrency} from '../../utils/utils.currency';
 import {contrast} from '../../utils/utils.color';
+import {formatCurrency} from '../../utils/utils.currency';
 
 import {Settings} from '../../models/settings';
 
-import InvoiceModal from '../../modals/invoice/InvoiceModal';
 import {BackupInvoices} from '../../components/backup/BackupInvoices';
+import InvoiceModal from '../../modals/invoice/InvoiceModal';
 
 const Invoices: React.FC = () => {
   const {t} = useTranslation(['invoices', 'common']);
@@ -60,7 +60,11 @@ const Invoices: React.FC = () => {
           {renderProjects()}
         </main>
 
-        <IonModal isOpen={selectedInvoice !== undefined} onDidDismiss={closeAndRefresh} className="fullscreen">
+        <IonModal
+          isOpen={selectedInvoice !== undefined}
+          onDidDismiss={closeAndRefresh}
+          className="fullscreen"
+        >
           <InvoiceModal closeAction={closeAndRefresh} invoice={selectedInvoice}></InvoiceModal>
         </IonModal>
 
@@ -80,8 +84,19 @@ const Invoices: React.FC = () => {
           const colorContrast: string = contrast(invoice.client ? invoice.client.color : undefined);
 
           return (
-            <IonCard key={`invoice-${i}`} onClick={() => setSelectedInvoice(invoice)} mode="md" className="ion-activatable client" color="card">
-              <div style={{background: invoice.client ? invoice.client.color : undefined, color: colorContrast}}>
+            <IonCard
+              key={`invoice-${i}`}
+              onClick={() => setSelectedInvoice(invoice)}
+              mode="md"
+              className="ion-activatable client"
+              color="card"
+            >
+              <div
+                style={{
+                  background: invoice.client ? invoice.client.color : undefined,
+                  color: colorContrast,
+                }}
+              >
                 <IonLabel>Export</IonLabel>
                 <IonIcon icon={share} />
               </div>
@@ -91,7 +106,8 @@ const Invoices: React.FC = () => {
               </IonCardHeader>
               <IonCardContent>
                 <IonLabel>
-                  <IonIcon icon={cashOutline} aria-label={t('invoices:invoices.open_bill')} /> {formatCurrency(invoice.billable, settings.currency.currency)}
+                  <IonIcon icon={cashOutline} aria-label={t('invoices:invoices.open_bill')} />{' '}
+                  {formatCurrency(invoice.billable, settings.currency.currency)}
                 </IonLabel>
               </IonCardContent>
               <IonRippleEffect></IonRippleEffect>

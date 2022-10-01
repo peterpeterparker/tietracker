@@ -11,7 +11,12 @@ importScripts('./utils/utils.excel.js');
 
 self.onmessage = async ($event) => {
   if ($event && $event.data && $event.data.msg === 'backup-excel') {
-    await self.backupExcel($event.data.currency, $event.data.vat, $event.data.i18n, $event.data.signature);
+    await self.backupExcel(
+      $event.data.currency,
+      $event.data.vat,
+      $event.data.i18n,
+      $event.data.signature
+    );
   } else if ($event && $event.data && $event.data.msg === 'backup-idb') {
     await self.backupIdb();
   }

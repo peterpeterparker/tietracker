@@ -11,7 +11,7 @@
   "general": {
     "theme": "Theme",
     "signature": "Signature for exported documents",
-    "mode":  {
+    "mode": {
       "dark": "Dark",
       "light": "Light"
     },

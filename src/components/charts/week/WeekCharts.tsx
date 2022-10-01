@@ -4,14 +4,14 @@ import {debounce} from '@deckdeckgo/utils';
 
 import {useSelector} from 'react-redux';
 
-import {useTranslation} from 'react-i18next';
 import i18next from 'i18next';
+import {useTranslation} from 'react-i18next';
 
 import styles from './WeekCharts.module.scss';
 
-import {rootConnector} from '../../../store/thunks/index.thunks';
-import {RootState} from '../../../store/reducers';
 import {Summary as SummaryData, SummaryDay} from '../../../store/interfaces/summary';
+import {RootState} from '../../../store/reducers';
+import {rootConnector} from '../../../store/thunks/index.thunks';
 
 import {format, toDateObj} from '../../../utils/utils.date';
 
@@ -121,7 +121,14 @@ const WeekCharts: React.FC = () => {
         <div ref={containerRef} className={styles.container + ' chart-container'}>
           {/*
             // @ts-ignore */}
-          <deckgo-bar-chart ref={chartsRef} margin-top={0} margin-bottom={0} margin-left={128} margin-right={0} y-axis-min={8}></deckgo-bar-chart>
+          <deckgo-bar-chart
+            ref={chartsRef}
+            margin-top={0}
+            margin-bottom={0}
+            margin-left={128}
+            margin-right={0}
+            y-axis-min={8}
+          ></deckgo-bar-chart>
         </div>
       </>
     );

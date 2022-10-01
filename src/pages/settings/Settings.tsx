@@ -2,24 +2,24 @@ import React, {FormEvent, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {
+  IonBackButton,
+  IonButton,
+  IonButtons,
   IonContent,
+  IonHeader,
   IonLabel,
   IonPage,
-  IonSpinner,
-  IonButton,
   IonSegment,
   IonSegmentButton,
-  IonHeader,
-  IonToolbar,
+  IonSpinner,
   IonToast,
-  IonButtons,
-  IonBackButton,
+  IonToolbar,
 } from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
 import {Settings as SettingsModel} from '../../models/settings';
 
@@ -107,13 +107,26 @@ const Settings: React.FC<RootProps> = (props) => {
   }
 
   function renderSaveMsg() {
-    return <IonToast isOpen={showSaveMsg} color="primary" onDidDismiss={() => setShowSaveMsg(false)} message={t('settings:save.msg')} duration={500} />;
+    return (
+      <IonToast
+        isOpen={showSaveMsg}
+        color="primary"
+        onDidDismiss={() => setShowSaveMsg(false)}
+        message={t('settings:save.msg')}
+        duration={500}
+      />
+    );
   }
 
   function renderSave() {
     return (
       <div className="actions">
-        <IonButton type="submit" disabled={saving} aria-label={t('settings:save.action')} color="button">
+        <IonButton
+          type="submit"
+          disabled={saving}
+          aria-label={t('settings:save.action')}
+          color="button"
+        >
           <IonLabel>{t('common:actions.save')}</IonLabel>
         </IonButton>
       </div>
@@ -150,7 +163,12 @@ const Settings: React.FC<RootProps> = (props) => {
     }
 
     return (
-      <IonSegment mode="md" class="ion-padding-bottom" value={category} onIonChange={($event: CustomEvent) => selectCategory($event)}>
+      <IonSegment
+        mode="md"
+        class="ion-padding-bottom"
+        value={category}
+        onIonChange={($event: CustomEvent) => selectCategory($event)}
+      >
         <IonSegmentButton value={SettingsCategory.GENERAL} mode="md">
           <ion-label>{t('settings:segments.general')}</ion-label>
         </IonSegmentButton>

@@ -1,7 +1,7 @@
 import {createWriteStream} from 'fs';
+import fetch from 'node-fetch';
 import {pipeline} from 'stream';
 import {promisify} from 'util';
-import fetch from 'node-fetch';
 
 const download = async ({url, path}) => {
   const streamPipeline = promisify(pipeline);

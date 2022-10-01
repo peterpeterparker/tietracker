@@ -2,7 +2,7 @@ body.dark {
   ion-toolbar:not(.ion-color) {
     ion-segment:not(.ion-color) {
       > ion-segment-button {
-        color: rgba(255,255,255,0.4);
+        color: rgba(255, 255, 255, 0.4);
         --indicator-color: white;
 
         &.segment-button-checked {

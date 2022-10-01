@@ -27,7 +27,10 @@ async function updateBudget(invoices, filterProjectId, bill) {
     return;
   }
 
-  const budget = !project.data.budget || project.data.budget === undefined ? {budget: 0, billed: 0} : {...project.data.budget};
+  const budget =
+    !project.data.budget || project.data.budget === undefined
+      ? {budget: 0, billed: 0}
+      : {...project.data.budget};
   budget.billed = budget.billed !== undefined && budget.billed >= 0 ? budget.billed + total : total;
 
   project.data.budget = budget;

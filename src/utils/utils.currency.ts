@@ -9,5 +9,7 @@ export function formatCurrency(value: number | undefined, currency: string): str
     return new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency}).format(0);
   }
 
-  return new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency}).format(value);
+  return new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency}).format(
+    value
+  );
 }

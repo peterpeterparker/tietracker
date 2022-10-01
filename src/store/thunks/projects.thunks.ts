@@ -1,9 +1,13 @@
 import {RootThunkResult} from './types.thunks';
 
-import {Project, ProjectData} from '../../models/project';
 import {Client} from '../../models/client';
+import {Project, ProjectData} from '../../models/project';
 
-import {CREATE_PROJECT, INIT_ACTIVE_PROJECTS, UPDATE_ACTIVE_PROJECTS} from '../types/projects.types';
+import {
+  CREATE_PROJECT,
+  INIT_ACTIVE_PROJECTS,
+  UPDATE_ACTIVE_PROJECTS,
+} from '../types/projects.types';
 
 import {ProjectsService} from '../../services/projects/projects.service';
 

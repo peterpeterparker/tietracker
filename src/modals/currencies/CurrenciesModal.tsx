@@ -3,19 +3,19 @@ import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 
 import {
-  IonList,
-  IonItem,
-  IonToolbar,
-  IonRadioGroup,
-  IonLabel,
-  IonRadio,
-  IonSearchbar,
-  IonContent,
-  IonTitle,
-  IonHeader,
-  IonButtons,
   IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
   IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonRadio,
+  IonRadioGroup,
+  IonSearchbar,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/react';
 
 import {close} from 'ionicons/icons';
@@ -24,8 +24,8 @@ import {Currencies, SettingsService} from '../../services/settings/settings.serv
 
 import styles from './CurrenciesModal.module.scss';
 
+import {IonSearchbarCustomEvent} from '@ionic/core';
 import {Currency} from '../../definitions/currency';
-import {IonSearchbarCustomEvent} from "@ionic/core";
 
 interface Props {
   closeAction: Function;
@@ -78,7 +78,8 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
         .filter((key: string) => {
           return (
             key.toLowerCase().indexOf(filter.toLowerCase()) > -1 ||
-            (currencies[key].name && currencies[key].name.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+            (currencies[key].name &&
+              currencies[key].name.toLowerCase().indexOf(filter.toLowerCase()) > -1)
           );
         })
         .reduce((obj: Currencies, key: string) => {
@@ -127,7 +128,11 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
 
     return Object.keys(filteredCurrencies).map((key: string) => {
       return (
-        <IonItem key={`${key}`} className={styles.item} onClick={() => props.closeAction({currency: key, format: filteredCurrencies[key]})}>
+        <IonItem
+          key={`${key}`}
+          className={styles.item}
+          onClick={() => props.closeAction({currency: key, format: filteredCurrencies[key]})}
+        >
           <IonLabel>
             {filteredCurrencies[key].name} ({key})
           </IonLabel>
