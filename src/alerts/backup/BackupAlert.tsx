@@ -10,6 +10,7 @@ import {rootConnector} from '../../store/thunks/index.thunks';
 import {useSelector} from 'react-redux';
 import {Settings} from '../../models/settings';
 import {BackupService} from '../../services/backup/backup.service';
+import {emitError} from '../../utils/utils.events';
 
 const BackupAlert: React.FC = () => {
   const {t} = useTranslation(['backup', 'common']);
@@ -40,7 +41,7 @@ const BackupAlert: React.FC = () => {
     try {
       await BackupService.getInstance().backup('excel', settings);
     } catch (err) {
-      // Error printed in the console
+      emitError(err);
     }
 
     setShowLoading(false);

@@ -40,6 +40,7 @@ import {formatTime} from '../../utils/utils.time';
 import {ExportService} from '../../services/export/export.service';
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
 import {ThemeService} from '../../services/theme/theme.service';
+import {emitError} from '../../utils/utils.events';
 
 interface Props extends RootProps {
   closeAction: Function;
@@ -171,6 +172,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
         setInProgress(false);
       }
     } catch (err) {
+      emitError(err);
       setInProgress(false);
     }
   }

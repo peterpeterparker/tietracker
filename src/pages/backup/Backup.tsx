@@ -30,6 +30,7 @@ import styles from './Backup.module.scss';
 
 import {RestoreService} from '../../services/restore/restore.service';
 
+import {emitError} from '../../utils/utils.events';
 import {initAllData} from '../../utils/utils.store';
 
 const Backup: React.FC<RootProps> = (props) => {
@@ -49,7 +50,7 @@ const Backup: React.FC<RootProps> = (props) => {
     try {
       await BackupService.getInstance().backup('idb', settings);
     } catch (err) {
-      // Error printed in the console
+      emitError(err);
     }
   }
 

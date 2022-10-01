@@ -14,6 +14,7 @@ import {Settings} from '../../models/settings';
 import {BackupService} from '../../services/backup/backup.service';
 
 import {RootState} from '../../store/reducers';
+import {emitError} from '../../utils/utils.events';
 
 export const BackupInvoices = () => {
   const {t} = useTranslation(['backup', 'common']);
@@ -28,7 +29,7 @@ export const BackupInvoices = () => {
     try {
       await BackupService.getInstance().backup('excel', settings);
     } catch (err) {
-      // Error printed in the console
+      emitError(err);
     }
 
     setShowLoading(false);

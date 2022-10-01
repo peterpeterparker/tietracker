@@ -1,3 +1,5 @@
+import {emitError} from '../../utils/utils.events';
+
 export class RestoreService {
   private static instance: RestoreService;
 
@@ -28,8 +30,7 @@ export class RestoreService {
 
     this.restoreWorker.onmessage = async ($event: MessageEvent) => {
       if ($event.data?.result === 'error') {
-        // TODO show err
-        console.error($event.data.msg);
+        emitError($event.data.msg);
       }
 
       await done($event.data?.result === 'success');

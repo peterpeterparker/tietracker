@@ -33,6 +33,7 @@ import {Settings} from '../../models/settings';
 
 import {Client} from '../../models/client';
 import {RootState} from '../../store/reducers';
+import {emitError} from '../../utils/utils.events';
 
 export enum ProjectModalAction {
   CREATE,
@@ -186,7 +187,7 @@ const ProjectModal: React.FC<Props> = (props) => {
 
       props.closeAction(true);
     } catch (err) {
-      // TODO show err
+      emitError(err);
       console.error(err);
     }
 

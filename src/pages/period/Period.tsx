@@ -61,12 +61,12 @@ const Period: React.FC = () => {
     setPeriod(period);
   };
 
-  const doDeleteInvoices = () => {
+  const doDeleteInvoices = async () => {
     if (!from || !to || !valid) {
       return;
     }
 
-    present({
+    await present({
       header: t('period:alert.warning'),
       message: t('period:alert.sure'),
       buttons: [
