@@ -2,6 +2,7 @@ import {get} from 'idb-keyval';
 
 import {compareAsc, compareDesc, parse} from 'date-fns';
 import {interval} from '../../utils/utils.date';
+import {emitError} from "../../utils/utils.events";
 
 export interface InvoicesPeriod {
   from: Date;
@@ -79,8 +80,7 @@ export class InvoicesService {
   }) {
     this.invoicesWorker.onmessage = async ($event: MessageEvent) => {
       if ($event.data?.result === 'error') {
-        // TODO show err
-        console.error($event.data.msg);
+        emitError($event.data.msg);
       }
 
       await done($event.data?.result === 'success');

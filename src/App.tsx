@@ -79,6 +79,7 @@ import Period from './pages/period/Period';
 import Privacy from './pages/privacy/Privacy';
 import Terms from './pages/terms/Terms';
 
+import {ErrorToast} from './alerts/error/ErrorToast';
 import {initAllData} from './utils/utils.store';
 
 const App: React.FC<RootProps> = (props: RootProps) => {
@@ -172,6 +173,8 @@ const App: React.FC<RootProps> = (props: RootProps) => {
         <TrackTaskModal></TrackTaskModal>
 
         {backup ? <BackupAlert></BackupAlert> : undefined}
+
+        <ErrorToast />
       </IonApp>
     </Suspense>
   );
