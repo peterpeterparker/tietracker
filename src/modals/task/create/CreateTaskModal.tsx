@@ -1,5 +1,3 @@
-import React, {CSSProperties, FormEvent, useState} from 'react';
-import {useSelector} from 'react-redux';
 import {
   IonButton,
   IonButtons,
@@ -14,9 +12,11 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import React, {CSSProperties, FormEvent, useState} from 'react';
+import {useSelector} from 'react-redux';
 
-import {DateTimePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import {DateTimePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 
 import {useTranslation} from 'react-i18next';
 
@@ -24,17 +24,17 @@ import {close} from 'ionicons/icons';
 
 import {contrast} from '../../../utils/utils.color';
 
-import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 import {RootState} from '../../../store/reducers';
+import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 
 import {Project} from '../../../models/project';
 import {Settings as SettingsModel} from '../../../models/settings';
 
 import {pickerColor} from '../../../utils/utils.picker';
 
-import {ThemeService} from '../../../services/theme/theme.service';
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 import {TaskData} from '../../../models/task';
+import {ThemeService} from '../../../services/theme/theme.service';
 
 interface Props extends RootProps {
   closeAction: Function;
@@ -48,13 +48,20 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
   const [from, setFrom] = useState<Date>(new Date());
   const [to, setTo] = useState<Date>(new Date());
 
-  const projects: Project[] | undefined = useSelector((state: RootState) => state.activeProjects.projects);
+  const projects: Project[] | undefined = useSelector(
+    (state: RootState) => state.activeProjects.projects
+  );
   const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
   async function handleSubmit($event: FormEvent<HTMLFormElement>) {
     $event.preventDefault();
 
-    if (project === undefined || project.data === undefined || project.data.client === undefined || description === undefined) {
+    if (
+      project === undefined ||
+      project.data === undefined ||
+      project.data.client === undefined ||
+      description === undefined
+    ) {
       return;
     }
 
@@ -108,7 +115,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
   return <MuiPickersUtilsProvider utils={DateFnsUtils}>{renderContent()}</MuiPickersUtilsProvider>;
 
   function renderContent() {
-    const color: string | undefined = project && project.data && project.data.client ? project.data.client.color : undefined;
+    const color: string | undefined =
+      project && project.data && project.data.client ? project.data.client.color : undefined;
     const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
 
     pickerColor(colorContrast, color);
@@ -213,7 +221,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
     }
 
     return projects.map((project) => {
-      let client: string = project.data && project.data.client ? `${project.data.client.name} - ` : '';
+      let client: string =
+        project.data && project.data.client ? `${project.data.client.name} - ` : '';
 
       return (
         <IonSelectOption value={project} key={project.id}>

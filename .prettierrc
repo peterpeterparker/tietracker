@@ -1,5 +1,5 @@
 {
-  "printWidth": 160,
+  "printWidth": 100,
   "singleQuote": true,
   "arrowParens": "always",
   "bracketSpacing": false,

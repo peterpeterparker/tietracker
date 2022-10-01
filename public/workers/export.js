@@ -26,7 +26,17 @@ self.onmessage = async ($event) => {
   }
 };
 
-self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18n, type, signature) => {
+self.export = async (
+  invoices,
+  filterProjectId,
+  currency,
+  vat,
+  bill,
+  client,
+  i18n,
+  type,
+  signature
+) => {
   if (!invoices || invoices.length <= 0) {
     self.postMessage(undefined);
     return;
@@ -44,7 +54,17 @@ self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18
     return;
   }
 
-  const results = await self.exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n, type, signature);
+  const results = await self.exportInvoices(
+    invoices,
+    projects,
+    filterProjectId,
+    currency,
+    vat,
+    client,
+    i18n,
+    type,
+    signature
+  );
 
   await updateBudget(results.invoices, filterProjectId, bill);
 
@@ -54,7 +74,17 @@ self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18
   self.postMessage(results.excel);
 };
 
-async function exportInvoices(invoices, projects, filterProjectId, currency, vat, client, i18n, type, signature) {
+async function exportInvoices(
+  invoices,
+  projects,
+  filterProjectId,
+  currency,
+  vat,
+  client,
+  i18n,
+  type,
+  signature
+) {
   const promises = [];
 
   invoices.forEach((invoice) => {

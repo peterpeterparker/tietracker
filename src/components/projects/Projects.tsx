@@ -3,18 +3,26 @@ import {useSelector} from 'react-redux';
 
 import {play} from 'ionicons/icons';
 
-import {IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonRippleEffect, IonLabel} from '@ionic/react';
+import {
+  IonCard,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonIcon,
+  IonLabel,
+  IonRippleEffect,
+} from '@ionic/react';
 
 import styles from './Projects.module.scss';
 
 import {Project} from '../../models/project';
 import {Task} from '../../models/task';
 
+import {useTranslation} from 'react-i18next';
+import {Settings as SettingsModel} from '../../models/settings';
 import {RootState} from '../../store/reducers';
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {Settings as SettingsModel} from '../../models/settings';
 import {contrast} from '../../utils/utils.color';
-import {useTranslation} from 'react-i18next';
 
 interface Props extends RootProps {
   addAction: Function;
@@ -23,7 +31,9 @@ interface Props extends RootProps {
 const Projects: React.FC<Props> = (props: Props) => {
   const {t} = useTranslation('projects');
 
-  const projects: Project[] | undefined = useSelector((state: RootState) => state.activeProjects.projects);
+  const projects: Project[] | undefined = useSelector(
+    (state: RootState) => state.activeProjects.projects
+  );
   const task: Task | undefined = useSelector((state: RootState) => state.tasks.taskInProgress);
   const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
@@ -40,7 +50,9 @@ const Projects: React.FC<Props> = (props: Props) => {
 
   return (
     <div>
-      <h1 className={!projects || projects.length <= 0 ? undefined : styles.title}>{t('projects.title')}</h1>
+      <h1 className={!projects || projects.length <= 0 ? undefined : styles.title}>
+        {t('projects.title')}
+      </h1>
       {renderProjects()}
     </div>
   );
@@ -54,10 +66,18 @@ const Projects: React.FC<Props> = (props: Props) => {
       <div className={styles.projects}>
         <div>
           {projects.map((project: Project) => {
-            const colorContrast: string = contrast(project.data.client ? project.data.client.color : undefined);
+            const colorContrast: string = contrast(
+              project.data.client ? project.data.client.color : undefined
+            );
 
             return (
-              <IonCard key={project.id} onClick={() => startStopTask(project)} mode="md" className="ion-activatable ion-margin-bottom client" color="card">
+              <IonCard
+                key={project.id}
+                onClick={() => startStopTask(project)}
+                mode="md"
+                className="ion-activatable ion-margin-bottom client"
+                color="card"
+              >
                 <div
                   style={{
                     background: project.data.client ? project.data.client.color : undefined,
@@ -68,7 +88,9 @@ const Projects: React.FC<Props> = (props: Props) => {
                   <IonIcon icon={play} />
                 </div>
                 <IonCardHeader>
-                  <IonCardSubtitle>{project.data.client ? project.data.client.name : ''}</IonCardSubtitle>
+                  <IonCardSubtitle>
+                    {project.data.client ? project.data.client.name : ''}
+                  </IonCardSubtitle>
                   <IonCardTitle>{project.data.name}</IonCardTitle>
                 </IonCardHeader>
                 <IonRippleEffect></IonRippleEffect>

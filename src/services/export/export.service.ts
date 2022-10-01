@@ -3,12 +3,18 @@ import {format} from 'date-fns';
 import i18next from 'i18next';
 
 import {interval} from '../../utils/utils.date';
-import {download, getMobileDir, getNewFileHandle, shareMobile, writeFile} from '../../utils/utils.filesystem';
 import {exportLabels} from '../../utils/utils.export';
+import {
+  download,
+  getMobileDir,
+  getNewFileHandle,
+  shareMobile,
+  writeFile,
+} from '../../utils/utils.filesystem';
 
 import {Invoice} from '../../store/interfaces/invoice';
 
-import {File, IWriteOptions, DirectoryEntry} from '@awesome-cordova-plugins/file';
+import {DirectoryEntry, File, IWriteOptions} from '@awesome-cordova-plugins/file';
 
 import {Currency} from '../../definitions/currency';
 
@@ -172,9 +178,16 @@ export class ExportService {
     return `Tie Tracker${invoice.client && invoice.client.name ? ` - ${invoice.client.name}` : ''}`;
   }
 
-  private filename(invoice: Invoice, from: Date | undefined, to: Date | undefined, type: 'xlsx' | 'pdf'): string {
+  private filename(
+    invoice: Invoice,
+    from: Date | undefined,
+    to: Date | undefined,
+    type: 'xlsx' | 'pdf'
+  ): string {
     const name: string = invoice.client && invoice.client.name ? invoice.client.name : 'export';
-    return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${to ? '-' + format(to, 'yyyy-MM-dd') : ''}.${type}`;
+    return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${
+      to ? '-' + format(to, 'yyyy-MM-dd') : ''
+    }.${type}`;
   }
 
   private async postMessage(

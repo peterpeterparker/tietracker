@@ -1,6 +1,6 @@
 import React, {createRef, CSSProperties, FormEvent, RefObject, useEffect, useState} from 'react';
-import {RouteComponentProps} from 'react-router';
 import {useSelector} from 'react-redux';
+import {RouteComponentProps} from 'react-router';
 
 import type {IonInputCustomEvent} from '@ionic/core';
 
@@ -8,7 +8,6 @@ import {useTranslation} from 'react-i18next';
 
 import styles from './ClientDetails.module.scss';
 
-import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 import {
   IonBackButton,
   IonButton,
@@ -28,15 +27,16 @@ import {
   useIonViewWillEnter,
   useIonViewWillLeave,
 } from '@ionic/react';
+import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 
 import {lockClosed, lockOpen, stopwatchOutline} from 'ionicons/icons';
 
-import {formatCurrency} from '../../../utils/utils.currency';
 import {contrast, PALETTE} from '../../../utils/utils.color';
+import {formatCurrency} from '../../../utils/utils.currency';
 
 import {Client} from '../../../models/client';
-import {Settings} from '../../../models/settings';
 import {Project} from '../../../models/project';
+import {Settings} from '../../../models/settings';
 
 import {ClientsService} from '../../../services/clients/clients.service';
 import {ProjectsService} from '../../../services/projects/projects.service';
@@ -72,12 +72,16 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
   const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
   const [selectedProjectId, setSelectedProjectId] = useState<string | undefined>(undefined);
-  const [projectModalAction, setProjectModalAction] = useState<ProjectModalAction | undefined>(undefined);
+  const [projectModalAction, setProjectModalAction] = useState<ProjectModalAction | undefined>(
+    undefined
+  );
 
   useIonViewWillEnter(async () => {
     setSaving(false);
 
-    const client: Client | undefined = await ClientsService.getInstance().find(props.match.params.id);
+    const client: Client | undefined = await ClientsService.getInstance().find(
+      props.match.params.id
+    );
     setClient(client);
 
     await loadProjects();
@@ -98,7 +102,9 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
   }, [clientColorRef]);
 
   async function loadProjects() {
-    const projects: Project[] | undefined = await ProjectsService.getInstance().listForClient(props.match.params.id);
+    const projects: Project[] | undefined = await ProjectsService.getInstance().listForClient(
+      props.match.params.id
+    );
     setProjects(projects);
   }
 
@@ -131,7 +137,12 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
   }
 
   function validateClientName() {
-    setValid(client !== undefined && client.data !== undefined && client.data.name !== undefined && client.data.name.length >= 3);
+    setValid(
+      client !== undefined &&
+        client.data !== undefined &&
+        client.data.name !== undefined &&
+        client.data.name.length >= 3
+    );
   }
 
   async function handleSubmit($event: FormEvent<HTMLFormElement>) {
@@ -197,7 +208,10 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
           <IonHeader>
             <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
               <IonButtons slot="start">
-                <IonBackButton defaultHref="/home" style={{'--color': colorContrast} as CSSProperties} />
+                <IonBackButton
+                  defaultHref="/home"
+                  style={{'--color': colorContrast} as CSSProperties}
+                />
               </IonButtons>
               <IonTitle>{client && client.data ? client.data.name : ''}</IonTitle>
             </IonToolbar>
@@ -205,7 +219,11 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
           <main className="ion-padding">{renderClient(colorContrast)}</main>
 
-          <IonModal isOpen={projectModalAction !== undefined} onDidDismiss={() => closeProjectModal(false)} className="fullscreen">
+          <IonModal
+            isOpen={projectModalAction !== undefined}
+            onDidDismiss={() => closeProjectModal(false)}
+            className="fullscreen"
+          >
             <ProjectModal
               action={projectModalAction}
               projectId={selectedProjectId}
@@ -243,7 +261,9 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
               required={true}
               input-mode="text"
               value={client.data.name}
-              onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleClientNameInput($event)}
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                handleClientNameInput($event)
+              }
               onIonChange={() => validateClientName()}
             ></IonInput>
           </IonItem>
@@ -314,7 +334,11 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
     return projects.map((project: Project) => {
       return (
-        <IonItem key={project.id} className={styles.projectItem + ' item-input'} onClick={() => updateProject(project.id)}>
+        <IonItem
+          key={project.id}
+          className={styles.projectItem + ' item-input'}
+          onClick={() => updateProject(project.id)}
+        >
           <div className={styles.summary}>
             <h2>{project.data.name}</h2>
             <IonLabel>

@@ -57,7 +57,9 @@ export class ThemeService {
     }
 
     // Otherwise we check the prefers-color-scheme of the OS
-    const darkModePreferenceFromMedia: MediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModePreferenceFromMedia: MediaQueryList = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    );
 
     this.switch(darkModePreferenceFromMedia.matches);
     return darkModePreferenceFromMedia.matches;

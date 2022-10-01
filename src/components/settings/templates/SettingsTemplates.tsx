@@ -1,7 +1,15 @@
 import React, {useEffect, useState} from 'react';
 
-import {IonItem, IonLabel, IonReorderGroup, IonReorder, IonList, IonIcon, IonModal} from '@ionic/react';
 import {ItemReorderEventDetail} from '@ionic/core';
+import {
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonModal,
+  IonReorder,
+  IonReorderGroup,
+} from '@ionic/react';
 
 import {addOutline, pencilOutline, repeatOutline} from 'ionicons/icons';
 
@@ -76,7 +84,11 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
     setReorder(!reorder);
   }
 
-  function openAddTemplate($event: React.MouseEvent | React.TouchEvent, template: Template | undefined, action: 'edit' | 'add') {
+  function openAddTemplate(
+    $event: React.MouseEvent | React.TouchEvent,
+    template: Template | undefined,
+    action: 'edit' | 'add'
+  ) {
     if (reorder && action === 'edit') {
       return;
     }
@@ -92,10 +104,16 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
       return;
     }
 
-    const exist: boolean = templates.some((filteredTemplate: Template) => filteredTemplate.key === template.key);
+    const exist: boolean = templates.some(
+      (filteredTemplate: Template) => filteredTemplate.key === template.key
+    );
 
     if (exist) {
-      setTemplates(templates.map((filteredTemplate: Template) => (filteredTemplate.key === template.key ? template : filteredTemplate)));
+      setTemplates(
+        templates.map((filteredTemplate: Template) =>
+          filteredTemplate.key === template.key ? template : filteredTemplate
+        )
+      );
     } else {
       setTemplates([...templates, template]);
     }
@@ -106,7 +124,9 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
       return;
     }
 
-    setTemplates(templates.filter((filteredTemplate: Template) => filteredTemplate.key !== template.key));
+    setTemplates(
+      templates.filter((filteredTemplate: Template) => filteredTemplate.key !== template.key)
+    );
   }
 
   async function editTemplateModal(template?: Template, action?: 'edit' | 'delete') {
@@ -131,21 +151,32 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
           <IonLabel>{t('templates.title')}</IonLabel>
         </IonItem>
       </IonList>
-      <IonReorderGroup disabled={!reorder} className="reorder-list ion-margin-bottom" onIonItemReorder={doReorder}>
+      <IonReorderGroup
+        disabled={!reorder}
+        className="reorder-list ion-margin-bottom"
+        onIonItemReorder={doReorder}
+      >
         {renderDescriptions()}
       </IonReorderGroup>
       <div>
         <button
           type="button"
-          onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event, undefined, 'add')}
+          onClick={($event: React.MouseEvent | React.TouchEvent) =>
+            openAddTemplate($event, undefined, 'add')
+          }
           className={`${styles.templateAction} ion-margin-end`}
         >
           <IonIcon icon={addOutline} className={styles.icon} /> {t('templates.actions.add')}
         </button>
-        <button type="button" onClick={($event: React.MouseEvent | React.TouchEvent) => toggleReorder($event)} className={styles.templateAction}>
+        <button
+          type="button"
+          onClick={($event: React.MouseEvent | React.TouchEvent) => toggleReorder($event)}
+          className={styles.templateAction}
+        >
           {!reorder ? (
             <>
-              <IonIcon icon={repeatOutline} className={styles.icon} /> {t('templates.actions.reorder')}
+              <IonIcon icon={repeatOutline} className={styles.icon} />{' '}
+              {t('templates.actions.reorder')}
             </>
           ) : (
             <>
@@ -166,7 +197,9 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
           button={!reorder}
           detail={false}
           key={template.key}
-          onClick={($event: React.MouseEvent | React.TouchEvent) => openAddTemplate($event, template, 'edit')}
+          onClick={($event: React.MouseEvent | React.TouchEvent) =>
+            openAddTemplate($event, template, 'edit')
+          }
         >
           <IonLabel>{template.description}</IonLabel>
           {reorder ? <IonReorder slot="end" /> : <IonIcon icon={pencilOutline} slot="end" />}
@@ -180,7 +213,9 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
       <IonModal isOpen={showTemplateModal} onDidDismiss={() => setShowTemplateModal(false)}>
         <TemplateModal
           template={selectedTemplate}
-          closeAction={async (template?: Template, action?: 'edit' | 'delete') => await editTemplateModal(template, action)}
+          closeAction={async (template?: Template, action?: 'edit' | 'delete') =>
+            await editTemplateModal(template, action)
+          }
         ></TemplateModal>
       </IonModal>
     );

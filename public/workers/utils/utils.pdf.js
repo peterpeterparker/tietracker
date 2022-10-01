@@ -60,7 +60,12 @@ const initPdfColumns = (invoices, i18n) => {
     return {
       ...column,
       x: index === 0 ? pageMargin : secondColumnX + columnLength * (index - 1),
-      width: index === 0 ? firstColumnLength : index < columns.length - 1 ? columnLength : lastColumnLength,
+      width:
+        index === 0
+          ? firstColumnLength
+          : index < columns.length - 1
+          ? columnLength
+          : lastColumnLength,
     };
   });
 
@@ -240,7 +245,9 @@ const buildPdfTotalVat = (doc, total, columns, i18n, currency, vat, y) => {
 };
 
 const formatCurrency = (value, i18n, currency) => {
-  return new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency}).format(value).replace(/\u202f/, ' ');
+  return new Intl.NumberFormat(i18n.language, {style: 'currency', currency: currency.currency})
+    .format(value)
+    .replace(/\u202f/, ' ');
 };
 
 const text = (value, doc, column, y) => {

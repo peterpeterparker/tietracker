@@ -1,4 +1,4 @@
-import {SummaryActionTypes, COMPUTE_SUMMARY} from '../types/summary.types';
+import {COMPUTE_SUMMARY, SummaryActionTypes} from '../types/summary.types';
 
 import {Summary} from '../interfaces/summary';
 

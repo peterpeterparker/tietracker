@@ -2,8 +2,8 @@ import {get, set} from 'idb-keyval';
 
 import {v4 as uuid} from 'uuid';
 
-import {Project, ProjectData} from '../../models/project';
 import {Client} from '../../models/client';
+import {Project, ProjectData} from '../../models/project';
 
 export class ProjectsService {
   private static instance: ProjectsService;
@@ -91,7 +91,10 @@ export class ProjectsService {
           const indexB: number | undefined = activeProjects?.findIndex((id: string) => b.id === id);
 
           if ((indexA === -1 || indexA === undefined) && (indexB === -1 || indexB === undefined)) {
-            return new Date(b.data.updated_at as Date | number).getTime() - new Date(a.data.updated_at as Date | number).getTime();
+            return (
+              new Date(b.data.updated_at as Date | number).getTime() -
+              new Date(a.data.updated_at as Date | number).getTime()
+            );
           }
 
           if (indexB === -1 || indexB === undefined) {
@@ -253,7 +256,10 @@ export class ProjectsService {
           return;
         }
 
-        await set('active-projects', [project.id, ...projects.filter((id: string) => id !== project.id)]);
+        await set('active-projects', [
+          project.id,
+          ...projects.filter((id: string) => id !== project.id),
+        ]);
 
         resolve();
       } catch (err) {

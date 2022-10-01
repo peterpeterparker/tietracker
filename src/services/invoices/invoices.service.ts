@@ -38,7 +38,12 @@ export class InvoicesService {
     });
   }
 
-  listProjectInvoice(updateStateFunction: Function, projectId: string, from: Date, to: Date): Promise<void> {
+  listProjectInvoice(
+    updateStateFunction: Function,
+    projectId: string,
+    from: Date,
+    to: Date
+  ): Promise<void> {
     return new Promise<void>((resolve) => {
       const invoices: string[] | undefined = interval(from, to);
 
@@ -53,13 +58,25 @@ export class InvoicesService {
         }
       };
 
-      this.invoicesWorker.postMessage({msg: 'listProjectInvoice', invoices: invoices, projectId: projectId});
+      this.invoicesWorker.postMessage({
+        msg: 'listProjectInvoice',
+        invoices: invoices,
+        projectId: projectId,
+      });
 
       resolve();
     });
   }
 
-  async closeInvoices({from, to, done}: {from: Date; to: Date; done: (success: boolean) => Promise<void>}) {
+  async closeInvoices({
+    from,
+    to,
+    done,
+  }: {
+    from: Date;
+    to: Date;
+    done: (success: boolean) => Promise<void>;
+  }) {
     this.invoicesWorker.onmessage = async ($event: MessageEvent) => {
       if ($event.data?.result === 'error') {
         // TODO show err

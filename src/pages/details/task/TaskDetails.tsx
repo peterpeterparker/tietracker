@@ -1,21 +1,21 @@
-import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
+import type {IonInputCustomEvent} from '@ionic/core';
 import {
   IonBackButton,
-  IonButtons,
-  IonHeader,
-  IonPage,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  useIonViewWillEnter,
-  IonList,
-  IonSpinner,
-  IonLabel,
-  IonItem,
   IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
   IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonPage,
+  IonSpinner,
+  IonTitle,
+  IonToolbar,
+  useIonViewWillEnter,
 } from '@ionic/react';
-import type {IonInputCustomEvent} from '@ionic/core';
+import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
 
 import {RouteComponentProps} from 'react-router';
 
@@ -23,7 +23,7 @@ import {isSameDay, parse} from 'date-fns';
 
 import {useTranslation} from 'react-i18next';
 
-import {MuiPickersUtilsProvider, DateTimePicker} from '@material-ui/pickers';
+import {DateTimePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 
 import DateFnsUtils from '@date-io/date-fns';
@@ -33,14 +33,14 @@ import {Task} from '../../../models/task';
 import {Client} from '../../../models/client';
 import {Project} from '../../../models/project';
 
-import {toDateObj} from '../../../utils/utils.date';
 import {contrast} from '../../../utils/utils.color';
+import {toDateObj} from '../../../utils/utils.date';
 import {pickerColor} from '../../../utils/utils.picker';
 
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 
-import {ProjectsService} from '../../../services/projects/projects.service';
 import {ClientsService} from '../../../services/clients/clients.service';
+import {ProjectsService} from '../../../services/projects/projects.service';
 import {TasksService} from '../../../services/tasks/tasks.service';
 
 interface TaskDetailsProps
@@ -77,14 +77,21 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
   }, [from, props.match.params.day]);
 
   useEffect(() => {
-    setDisableActions(task === undefined || !task.data || (task.data.invoice && task.data.invoice.status === 'billed'));
+    setDisableActions(
+      task === undefined ||
+        !task.data ||
+        (task.data.invoice && task.data.invoice.status === 'billed')
+    );
   }, [task]);
 
   useIonViewWillEnter(async () => {
     setSaving(false);
     setLoading(true);
 
-    const task: Task | undefined = await TasksService.getInstance().find(props.match.params.id, props.match.params.day);
+    const task: Task | undefined = await TasksService.getInstance().find(
+      props.match.params.id,
+      props.match.params.day
+    );
     setTask(task);
 
     if (task && task.data) {
@@ -92,10 +99,14 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
       setTo(toDateObj(task.data.to));
       setDescription(task.data.description);
 
-      const project: Project | undefined = await ProjectsService.getInstance().find(task.data.project_id);
+      const project: Project | undefined = await ProjectsService.getInstance().find(
+        task.data.project_id
+      );
       setProject(project);
 
-      const client: Client | undefined = await ClientsService.getInstance().find(task.data.client_id);
+      const client: Client | undefined = await ClientsService.getInstance().find(
+        task.data.client_id
+      );
       setClient(client);
     } else {
       setFrom(undefined);
@@ -186,7 +197,8 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
   return <MuiPickersUtilsProvider utils={DateFnsUtils}>{renderContent()}</MuiPickersUtilsProvider>;
 
   function renderContent() {
-    const color: string = client && client.data && client.data.color ? client.data.color : 'var(--ion-color-primary)';
+    const color: string =
+      client && client.data && client.data.color ? client.data.color : 'var(--ion-color-primary)';
     const colorContrast: string = contrast(color);
 
     pickerColor(colorContrast, color);
@@ -197,9 +209,16 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
           <IonHeader ref={headerRef}>
             <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
               <IonButtons slot="start">
-                <IonBackButton defaultHref="/home" style={{'--color': colorContrast} as CSSProperties} />
+                <IonBackButton
+                  defaultHref="/home"
+                  style={{'--color': colorContrast} as CSSProperties}
+                />
               </IonButtons>
-              <IonTitle>{client && client.data ? client.data.name + (project && project.data ? ` - ${project.data.name}` : '') : 'Task'}</IonTitle>
+              <IonTitle>
+                {client && client.data
+                  ? client.data.name + (project && project.data ? ` - ${project.data.name}` : '')
+                  : 'Task'}
+              </IonTitle>
             </IonToolbar>
           </IonHeader>
 
@@ -284,7 +303,13 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
             <IonLabel>{t('common:actions.update')}</IonLabel>
           </IonButton>
 
-          <IonButton type="button" onClick={() => deleteTask()} color="button" fill="outline" disabled={saving || disableActions}>
+          <IonButton
+            type="button"
+            onClick={() => deleteTask()}
+            color="button"
+            fill="outline"
+            disabled={saving || disableActions}
+          >
             <IonLabel>{t('common:actions.delete')}</IonLabel>
           </IonButton>
 

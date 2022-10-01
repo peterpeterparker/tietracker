@@ -1,5 +1,5 @@
-import React, {CSSProperties, Ref, useEffect, useRef} from 'react';
 import {IonLabel} from '@ionic/react';
+import React, {CSSProperties, Ref, useEffect, useRef} from 'react';
 
 import {useSelector} from 'react-redux';
 
@@ -9,8 +9,8 @@ import styles from './Spinner.module.scss';
 
 import {differenceInSeconds} from 'date-fns';
 
-import {RootProps, rootConnector} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
 import {Summary as SummaryData} from '../../store/interfaces/summary';
 import {TaskInProgress} from '../../store/interfaces/task.inprogress';
@@ -72,9 +72,9 @@ const Spinner: React.FC<SpinnerProps> = (props: SpinnerProps) => {
     const diffMinutes: number = Math.floor(seconds / 60);
     const diffSeconds: number = Math.floor(seconds % 60);
 
-    return `${diffHours >= 99 ? '99' : diffHours < 10 ? '0' + diffHours : diffHours}:${diffMinutes < 10 ? '0' + diffMinutes : diffMinutes}:${
-      diffSeconds < 10 ? '0' + diffSeconds : diffSeconds
-    }`;
+    return `${diffHours >= 99 ? '99' : diffHours < 10 ? '0' + diffHours : diffHours}:${
+      diffMinutes < 10 ? '0' + diffMinutes : diffMinutes
+    }:${diffSeconds < 10 ? '0' + diffSeconds : diffSeconds}`;
   }
 
   const inlineStyle =

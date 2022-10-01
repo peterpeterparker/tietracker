@@ -29,12 +29,11 @@
   button {
     color: var(--ion-color-medium);
   }
-
 }
 
 .start {
   border-radius: 24px;
-  animation: startAnimation 2.0s linear infinite;
+  animation: startAnimation 2s linear infinite;
 }
 
 @keyframes startAnimation {

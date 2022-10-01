@@ -7,11 +7,11 @@ import {useTranslation} from 'react-i18next';
 
 import styles from './Summary.module.scss';
 
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
-import {Summary as SummaryData} from '../../store/interfaces/summary';
 import {Invoice} from '../../store/interfaces/invoice';
+import {Summary as SummaryData} from '../../store/interfaces/summary';
 
 import {formatCurrency} from '../../utils/utils.currency';
 import {formatTime} from '../../utils/utils.time';
@@ -72,7 +72,10 @@ const Summary: React.FC<Props> = (props: Props) => {
             </IonCardSubtitle>
             <IonCardTitle>
               <label>{t('billable')} </label>
-              {formatCurrency(summary !== undefined ? summary.total.today.billable : undefined, settings.currency.currency)}
+              {formatCurrency(
+                summary !== undefined ? summary.total.today.billable : undefined,
+                settings.currency.currency
+              )}
             </IonCardTitle>
           </IonCardHeader>
         </IonCard>
@@ -86,7 +89,10 @@ const Summary: React.FC<Props> = (props: Props) => {
             </IonCardSubtitle>
             <IonCardTitle>
               <label>{t('billable')} </label>
-              {formatCurrency(summary !== undefined ? summary.total.week.billable : undefined, settings.currency.currency)}
+              {formatCurrency(
+                summary !== undefined ? summary.total.week.billable : undefined,
+                settings.currency.currency
+              )}
             </IonCardTitle>
           </IonCardHeader>
         </IonCard>
@@ -111,7 +117,10 @@ const Summary: React.FC<Props> = (props: Props) => {
           </IonCardSubtitle>
           <IonCardTitle>
             <label>{t('billable')} </label>
-            {formatCurrency(open !== undefined ? open.billable : undefined, settings.currency.currency)}
+            {formatCurrency(
+              open !== undefined ? open.billable : undefined,
+              settings.currency.currency
+            )}
           </IonCardTitle>
         </IonCardHeader>
       </IonCard>

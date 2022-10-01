@@ -1,5 +1,5 @@
-import {ClientActionTypes, CREATE_CLIENT, INIT_CLIENTS} from '../types/clients.types';
 import {Client} from '../../models/client';
+import {ClientActionTypes, CREATE_CLIENT, INIT_CLIENTS} from '../types/clients.types';
 
 export interface ClientsState {
   clients: Client[] | undefined;
@@ -13,7 +13,8 @@ export function clientsReducer(state = initialState, action: ClientActionTypes):
   switch (action.type) {
     case CREATE_CLIENT:
       return {
-        clients: state.clients !== undefined ? [...state.clients, action.payload] : [action.payload],
+        clients:
+          state.clients !== undefined ? [...state.clients, action.payload] : [action.payload],
       };
     case INIT_CLIENTS:
       return {

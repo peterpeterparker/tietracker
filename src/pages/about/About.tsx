@@ -1,10 +1,19 @@
+import {
+  IonBackButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonLabel,
+  IonPage,
+  IonToolbar,
+} from '@ionic/react';
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {IonContent, IonPage, IonLabel, IonIcon, IonHeader, IonToolbar, IonButtons, IonBackButton} from '@ionic/react';
 
 import styles from './About.module.scss';
 
-import {logoTwitter, logoGithub, globeOutline, checkmark} from 'ionicons/icons';
+import {checkmark, globeOutline, logoGithub, logoTwitter} from 'ionicons/icons';
 
 const About: React.FC = () => {
   return (
@@ -45,7 +54,8 @@ const About: React.FC = () => {
               <IonIcon icon={checkmark} className={styles.icon} /> Simple work hours tracking
             </li>
             <li>
-              <IonIcon icon={checkmark} className={styles.icon} /> Assign time to clients and projects
+              <IonIcon icon={checkmark} className={styles.icon} /> Assign time to clients and
+              projects
             </li>
             <li>
               <IonIcon icon={checkmark} className={styles.icon} /> Define budget per projects
@@ -69,7 +79,8 @@ const About: React.FC = () => {
               <IonIcon icon={checkmark} className={styles.icon} /> Daily list of entries
             </li>
             <li>
-              <IonIcon icon={checkmark} className={styles.icon} /> Export open invoices to XLSX timesheets (Excel, LibreOffice, Numbers, etc) and PDF
+              <IonIcon icon={checkmark} className={styles.icon} /> Export open invoices to XLSX
+              timesheets (Excel, LibreOffice, Numbers, etc) and PDF
             </li>
           </ul>
 
@@ -77,8 +88,14 @@ const About: React.FC = () => {
 
           <p>
             <IonLabel>
-              Tie Tracker is open source and published under the AGPL v3 (or later) licence. Its code is available on{' '}
-              <a href="http://github.com/peterpeterparker/tietracker" target="_blank" rel="noopener noreferrer" className={styles.github}>
+              Tie Tracker is open source and published under the AGPL v3 (or later) licence. Its
+              code is available on{' '}
+              <a
+                href="http://github.com/peterpeterparker/tietracker"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.github}
+              >
                 GitHub <IonIcon md={logoGithub} ios={logoGithub} area-label="Github"></IonIcon>
               </a>
               .
@@ -88,7 +105,10 @@ const About: React.FC = () => {
           <h1 className="ion-padding-top">Data</h1>
 
           <p>
-            <IonLabel>It works offline, data are saved on your device. No analytics nor tracking are implemented.</IonLabel>
+            <IonLabel>
+              It works offline, data are saved on your device. No analytics nor tracking are
+              implemented.
+            </IonLabel>
           </p>
 
           <h1 className="ion-padding-top">Contact</h1>

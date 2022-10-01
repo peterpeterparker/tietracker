@@ -1,5 +1,3 @@
-import React, {CSSProperties, useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
 import {
   IonButton,
   IonButtons,
@@ -15,31 +13,33 @@ import {
   IonToolbar,
   isPlatform,
 } from '@ionic/react';
+import React, {CSSProperties, useEffect, useState} from 'react';
+import {useSelector} from 'react-redux';
 
 import {close} from 'ionicons/icons';
 
 import {useTranslation} from 'react-i18next';
 
 import DateFnsUtils from '@date-io/date-fns';
-import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {Invoice} from '../../store/interfaces/invoice';
 import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
 import {Settings} from '../../models/settings';
 
+import {budgetRatio} from '../../utils/utils.budget';
 import {contrast} from '../../utils/utils.color';
 import {formatCurrency} from '../../utils/utils.currency';
 import {pickerColor} from '../../utils/utils.picker';
 import {isChrome, isHttps} from '../../utils/utils.platform';
-import {budgetRatio} from '../../utils/utils.budget';
 import {formatTime} from '../../utils/utils.time';
 
-import {ThemeService} from '../../services/theme/theme.service';
-import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
 import {ExportService} from '../../services/export/export.service';
+import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
+import {ThemeService} from '../../services/theme/theme.service';
 
 interface Props extends RootProps {
   closeAction: Function;
@@ -60,7 +60,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
   const [to, setTo] = useState<Date | undefined>(undefined);
   const [bill, setBill] = useState<boolean>(false);
 
-  const color: string | undefined = props.invoice !== undefined && props.invoice.client ? props.invoice.client.color : undefined;
+  const color: string | undefined =
+    props.invoice !== undefined && props.invoice.client ? props.invoice.client.color : undefined;
   const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
 
   const [billable, setBillable] = useState<Billable | undefined>(undefined);
@@ -124,11 +125,38 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
     try {
       if (isPlatform('desktop') && isChrome() && isHttps()) {
-        await ExportService.getInstance().exportNativeFileSystem(props.invoice, from, to, settings.currency, settings.vat, bill, type, settings.signature);
+        await ExportService.getInstance().exportNativeFileSystem(
+          props.invoice,
+          from,
+          to,
+          settings.currency,
+          settings.vat,
+          bill,
+          type,
+          settings.signature
+        );
       } else if (isPlatform('hybrid')) {
-        await ExportService.getInstance().exportMobileFileSystem(props.invoice, from, to, settings.currency, settings.vat, bill, type, settings.signature);
+        await ExportService.getInstance().exportMobileFileSystem(
+          props.invoice,
+          from,
+          to,
+          settings.currency,
+          settings.vat,
+          bill,
+          type,
+          settings.signature
+        );
       } else {
-        await ExportService.getInstance().exportDownload(props.invoice, from, to, settings.currency, settings.vat, bill, type, settings.signature);
+        await ExportService.getInstance().exportDownload(
+          props.invoice,
+          from,
+          to,
+          settings.currency,
+          settings.vat,
+          bill,
+          type,
+          settings.signature
+        );
       }
 
       if (bill) {
@@ -183,7 +211,11 @@ const InvoiceModal: React.FC<Props> = (props) => {
         <IonHeader>
           <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
             <IonTitle>
-              {props.invoice !== undefined && props.invoice.client && props.invoice.client.name !== undefined ? props.invoice.client.name : ''}
+              {props.invoice !== undefined &&
+              props.invoice.client &&
+              props.invoice.client.name !== undefined
+                ? props.invoice.client.name
+                : ''}
             </IonTitle>
             <IonButtons slot="start">
               <IonButton onClick={() => props.closeAction()}>
@@ -214,7 +246,9 @@ const InvoiceModal: React.FC<Props> = (props) => {
       ratio = '0%';
     }
 
-    const period: boolean = props.invoice?.project?.budget?.type === 'yearly' || props.invoice?.project?.budget?.type === 'monthly';
+    const period: boolean =
+      props.invoice?.project?.budget?.type === 'yearly' ||
+      props.invoice?.project?.budget?.type === 'monthly';
 
     return (
       <>
@@ -242,7 +276,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
               hours: formatTime(billable.hours * 3600 * 1000),
               ratio,
             }),
-          }}></p>
+          }}
+        ></p>
       );
     }
 
@@ -253,23 +288,47 @@ const InvoiceModal: React.FC<Props> = (props) => {
             amount: formatCurrency(billable.billable, settings.currency.currency),
             hours: formatTime(billable.hours * 3600 * 1000),
           }),
-        }}></p>
+        }}
+      ></p>
     );
   }
 
   function renderBudget({ratio, period}: {ratio: string | undefined; period: boolean}) {
-    if (!props.invoice || !props.invoice.project || !props.invoice.project.budget || billable === undefined) {
+    if (
+      !props.invoice ||
+      !props.invoice.project ||
+      !props.invoice.project.budget ||
+      billable === undefined
+    ) {
       return undefined;
     }
 
-    const billed: number = props.invoice.project.budget.billed !== undefined ? props.invoice.project.budget.billed : 0;
-    const cumulated: string = formatCurrency(billed + billable.billable, settings.currency.currency);
+    const billed: number =
+      props.invoice.project.budget.billed !== undefined ? props.invoice.project.budget.billed : 0;
+    const cumulated: string = formatCurrency(
+      billed + billable.billable,
+      settings.currency.currency
+    );
 
-    if (props.invoice.project.budget.budget === undefined || props.invoice.project.budget.budget <= 0 || period) {
-      return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.billed', {amount: cumulated})}}></p>;
+    if (
+      props.invoice.project.budget.budget === undefined ||
+      props.invoice.project.budget.budget <= 0 ||
+      period
+    ) {
+      return (
+        <p
+          dangerouslySetInnerHTML={{__html: t('invoices:invoice.billed', {amount: cumulated})}}
+        ></p>
+      );
     }
 
-    return <p dangerouslySetInnerHTML={{__html: t('invoices:invoice.budget', {amount: cumulated, ratio: ratio})}}></p>;
+    return (
+      <p
+        dangerouslySetInnerHTML={{
+          __html: t('invoices:invoice.budget', {amount: cumulated, ratio: ratio}),
+        }}
+      ></p>
+    );
   }
 
   function renderFilter() {
@@ -310,9 +369,12 @@ const InvoiceModal: React.FC<Props> = (props) => {
             <IonLabel>{t('invoices:invoice.entries_billed')}</IonLabel>
             <IonCheckbox
               slot="end"
-              style={{'--background-checked': color, '--border-color-checked': color} as CSSProperties}
+              style={
+                {'--background-checked': color, '--border-color-checked': color} as CSSProperties
+              }
               checked={bill}
-              onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}></IonCheckbox>
+              onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}
+            ></IonCheckbox>
           </IonItem>
         </IonList>
 
@@ -344,7 +406,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--background-activated': colorContrast,
             '--color-activated': color,
           } as CSSProperties
-        }>
+        }
+      >
         <IonLabel>{t('export:excel')}</IonLabel>
       </IonButton>
     );
@@ -367,7 +430,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--background-activated': colorContrast,
             '--color-activated': color,
           } as CSSProperties
-        }>
+        }
+      >
         <IonLabel>{t('export:pdf')}</IonLabel>
       </IonButton>
     );

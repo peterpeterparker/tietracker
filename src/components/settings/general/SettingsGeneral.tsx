@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 
-import {IonInput, IonItem, IonLabel, IonList, IonToggle, isPlatform} from '@ionic/react';
 import type {IonInputCustomEvent} from '@ionic/core';
+import {IonInput, IonItem, IonLabel, IonList, IonToggle, isPlatform} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -24,7 +24,9 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
   const [backup, setBackup] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
-    setNotificationsOn(props.settings.notifications !== undefined ? props.settings.notifications : false);
+    setNotificationsOn(
+      props.settings.notifications !== undefined ? props.settings.notifications : false
+    );
     setBackup(props.settings.backup !== undefined ? props.settings.backup : true);
   }, [props.settings]);
 
@@ -65,7 +67,13 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
         <IonLabel>
           {darkTheme ? t('general.mode.dark') : t('general.mode.light')} {darkTheme ? '🌑' : '☀️'}
         </IonLabel>
-        <IonToggle slot="end" checked={darkTheme} mode="md" color="medium" onClick={() => toggleTheme()}></IonToggle>
+        <IonToggle
+          slot="end"
+          checked={darkTheme}
+          mode="md"
+          color="medium"
+          onClick={() => toggleTheme()}
+        ></IonToggle>
       </IonItem>
 
       {renderNotifications()}
@@ -86,8 +94,16 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
         </IonItem>
 
         <IonItem className="item-input item-radio with-padding">
-          <IonLabel>{notificationsOn ? t('general.notifications.body') : t('general.notifications.dont')}</IonLabel>
-          <IonToggle slot="end" checked={notificationsOn} mode="md" color="medium" onClick={() => toggleNotifications()}></IonToggle>
+          <IonLabel>
+            {notificationsOn ? t('general.notifications.body') : t('general.notifications.dont')}
+          </IonLabel>
+          <IonToggle
+            slot="end"
+            checked={notificationsOn}
+            mode="md"
+            color="medium"
+            onClick={() => toggleNotifications()}
+          ></IonToggle>
         </IonItem>
       </>
     );
@@ -102,7 +118,13 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
 
         <IonItem className="item-input item-radio with-padding">
           <IonLabel>{backup ? t('general.backup.on') : t('general.backup.off')}</IonLabel>
-          <IonToggle slot="end" checked={backup} mode="md" color="medium" onClick={() => toggleBackup()}></IonToggle>
+          <IonToggle
+            slot="end"
+            checked={backup}
+            mode="md"
+            color="medium"
+            onClick={() => toggleBackup()}
+          ></IonToggle>
         </IonItem>
       </>
     );

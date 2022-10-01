@@ -8,6 +8,7 @@ import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {Project, ProjectData, ProjectDataType} from '../../models/project';
 import {ProjectsService} from '../../services/projects/projects.service';
 
+import type {IonInputCustomEvent} from '@ionic/core';
 import {
   IonButton,
   IonButtons,
@@ -25,14 +26,13 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import type {IonInputCustomEvent} from '@ionic/core';
 
 import {close} from 'ionicons/icons';
 
 import {Settings} from '../../models/settings';
 
-import {RootState} from '../../store/reducers';
 import {Client} from '../../models/client';
+import {RootState} from '../../store/reducers';
 
 export enum ProjectModalAction {
   CREATE,
@@ -89,12 +89,28 @@ const ProjectModal: React.FC<Props> = (props) => {
     setProject(project);
 
     setName(project && project.data !== undefined ? project.data.name : undefined);
-    setRate(project && project.data !== undefined && project.data.rate !== undefined ? project.data.rate.hourly : undefined);
-    setVat(project && project.data !== undefined && project.data.rate !== undefined ? project.data.rate.vat : false);
+    setRate(
+      project && project.data !== undefined && project.data.rate !== undefined
+        ? project.data.rate.hourly
+        : undefined
+    );
+    setVat(
+      project && project.data !== undefined && project.data.rate !== undefined
+        ? project.data.rate.vat
+        : false
+    );
     setEnabled(project && project.data !== undefined ? !project.data.disabled : false);
 
-    setBudgetValue(project && project.data !== undefined && project.data.budget !== undefined ? project.data.budget.budget : undefined);
-    setBilled(project && project.data !== undefined && project.data.budget !== undefined ? project.data.budget.billed : undefined);
+    setBudgetValue(
+      project && project.data !== undefined && project.data.budget !== undefined
+        ? project.data.budget.budget
+        : undefined
+    );
+    setBilled(
+      project && project.data !== undefined && project.data.budget !== undefined
+        ? project.data.budget.billed
+        : undefined
+    );
     setBudgetType(project?.data?.budget?.type);
 
     if (!project || project.data === undefined) {
@@ -202,7 +218,11 @@ const ProjectModal: React.FC<Props> = (props) => {
   async function updateProject() {
     let projectToUpdate: Project = {...(project as Project)};
 
-    if (!projectToUpdate || projectToUpdate.data === undefined || projectToUpdate.data.rate === undefined) {
+    if (
+      !projectToUpdate ||
+      projectToUpdate.data === undefined ||
+      projectToUpdate.data.rate === undefined
+    ) {
       return;
     }
 
@@ -212,7 +232,8 @@ const ProjectModal: React.FC<Props> = (props) => {
     projectToUpdate.data.disabled = !enabled;
 
     if (projectToUpdate.data.budget) {
-      projectToUpdate.data.budget.budget = budgetValue !== undefined && budgetValue >= 0 ? budgetValue : 0;
+      projectToUpdate.data.budget.budget =
+        budgetValue !== undefined && budgetValue >= 0 ? budgetValue : 0;
       projectToUpdate.data.budget.billed = billed !== undefined && billed >= 0 ? billed : 0;
       projectToUpdate.data.budget.type = budgetType;
     } else {
@@ -233,7 +254,9 @@ const ProjectModal: React.FC<Props> = (props) => {
   return (
     <IonContent>
       <IonHeader>
-        <IonToolbar style={{'--background': props.color, '--color': props.colorContrast} as CSSProperties}>
+        <IonToolbar
+          style={{'--background': props.color, '--color': props.colorContrast} as CSSProperties}
+        >
           <IonTitle>{name !== undefined ? name : ''}</IonTitle>
           <IonButtons slot="start">
             <IonButton onClick={() => props.closeAction()}>
@@ -271,8 +294,11 @@ const ProjectModal: React.FC<Props> = (props) => {
               required={true}
               input-mode="text"
               value={name}
-              onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleClientNameInput($event)}
-              onIonChange={() => validateProject()}></IonInput>
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                handleClientNameInput($event)
+              }
+              onIonChange={() => validateProject()}
+            ></IonInput>
           </IonItem>
 
           <IonItem className="item-title">
@@ -286,8 +312,11 @@ const ProjectModal: React.FC<Props> = (props) => {
               ref={rateRef}
               input-mode="text"
               value={`${rate ? rate : ''}`}
-              onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectRateInput($event)}
-              onIonChange={() => validateProject()}></IonInput>
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                handleProjectRateInput($event)
+              }
+              onIonChange={() => validateProject()}
+            ></IonInput>
           </IonItem>
 
           {renderBudget()}
@@ -312,8 +341,13 @@ const ProjectModal: React.FC<Props> = (props) => {
                 '--background-activated': props.colorContrast,
                 '--color-activated': props.color,
               } as CSSProperties
-            }>
-            <IonLabel>{props.action === ProjectModalAction.CREATE ? t('common:actions.create') : t('common:actions.update')}</IonLabel>
+            }
+          >
+            <IonLabel>
+              {props.action === ProjectModalAction.CREATE
+                ? t('common:actions.create')
+                : t('common:actions.update')}
+            </IonLabel>
           </IonButton>
 
           <button type="button" disabled={saving} onClick={() => props.closeAction()}>
@@ -338,7 +372,10 @@ const ProjectModal: React.FC<Props> = (props) => {
               ref={budgetRef}
               input-mode="text"
               value={`${budgetValue ? budgetValue : ''}`}
-              onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectBudgetValueInput($event)}></IonInput>
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                handleProjectBudgetValueInput($event)
+              }
+            ></IonInput>
           </IonItem>
 
           <IonItem className="item-input">
@@ -346,7 +383,8 @@ const ProjectModal: React.FC<Props> = (props) => {
               interfaceOptions={{header: t('clients:budget.type')}}
               placeholder=""
               value={budgetType}
-              onIonChange={($event: CustomEvent) => handleProjectBudgetType($event)}>
+              onIonChange={($event: CustomEvent) => handleProjectBudgetType($event)}
+            >
               <IonSelectOption value={'project'}>{t('clients:budget.project')}</IonSelectOption>
               <IonSelectOption value={'yearly'}>{t('clients:budget.yearly')}</IonSelectOption>
               <IonSelectOption value={'monthly'}>{t('clients:budget.monthly')}</IonSelectOption>
@@ -374,7 +412,10 @@ const ProjectModal: React.FC<Props> = (props) => {
             ref={billedRef}
             input-mode="text"
             value={`${billed ? billed : ''}`}
-            onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectBilledInput($event)}></IonInput>
+            onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+              handleProjectBilledInput($event)
+            }
+          ></IonInput>
         </IonItem>
       </>
     );
@@ -394,9 +435,15 @@ const ProjectModal: React.FC<Props> = (props) => {
           <IonLabel>{settings.vat}%</IonLabel>
           <IonCheckbox
             slot="end"
-            style={{'--background-checked': props.color, '--border-color-checked': props.color} as CSSProperties}
+            style={
+              {
+                '--background-checked': props.color,
+                '--border-color-checked': props.color,
+              } as CSSProperties
+            }
             checked={vat}
-            onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
+            onIonChange={($event: CustomEvent) => onVatChange($event)}
+          ></IonCheckbox>
         </IonItem>
       </>
     );
@@ -413,12 +460,20 @@ const ProjectModal: React.FC<Props> = (props) => {
           <IonLabel>{t('projects:project.status')}</IonLabel>
         </IonItem>
         <IonItem className="item-checkbox">
-          <IonLabel>{enabled ? t('projects:project.ongoing') : t('projects:project.closed')}</IonLabel>
+          <IonLabel>
+            {enabled ? t('projects:project.ongoing') : t('projects:project.closed')}
+          </IonLabel>
           <IonCheckbox
             slot="end"
-            style={{'--background-checked': props.color, '--border-color-checked': props.color} as CSSProperties}
+            style={
+              {
+                '--background-checked': props.color,
+                '--border-color-checked': props.color,
+              } as CSSProperties
+            }
             checked={enabled}
-            onIonChange={($event: CustomEvent) => onEnabledChange($event)}></IonCheckbox>
+            onIonChange={($event: CustomEvent) => onEnabledChange($event)}
+          ></IonCheckbox>
         </IonItem>
       </>
     );

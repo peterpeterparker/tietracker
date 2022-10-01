@@ -16,7 +16,11 @@ function convertTasks(tasks, projects, clients, backup) {
       new Date(from),
       new Date(to),
       new Date(to),
-      {formula: `TEXT(INDIRECT(("${backup ? 'G' : 'E'}" & ROW()))-INDIRECT(("${backup ? 'E' : 'C'}" & ROW())),"hh:mm")`},
+      {
+        formula: `TEXT(INDIRECT(("${backup ? 'G' : 'E'}" & ROW()))-INDIRECT(("${
+          backup ? 'E' : 'C'
+        }" & ROW())),"hh:mm")`,
+      },
       billable,
     ];
 
@@ -47,12 +51,20 @@ const initColumns = (invoices, i18n, backup) => {
     {name: i18n.start_time},
     {name: i18n.end_date},
     {name: i18n.end_time},
-    {name: i18n.duration, totalsRowFunction: 'custom', totalsRowFormula: `ROUND((${sumHours})*24,2)`},
+    {
+      name: i18n.duration,
+      totalsRowFunction: 'custom',
+      totalsRowFormula: `ROUND((${sumHours})*24,2)`,
+    },
     {name: i18n.billable, totalsRowFunction: 'sum'},
   ];
 
   if (backup) {
-    columns = [{name: i18n.client, filterButton: true, totalsRowLabel: ''}, {name: i18n.project, filterButton: true, totalsRowLabel: ''}, ...columns];
+    columns = [
+      {name: i18n.client, filterButton: true, totalsRowLabel: ''},
+      {name: i18n.project, filterButton: true, totalsRowLabel: ''},
+      ...columns,
+    ];
   }
 
   return columns;

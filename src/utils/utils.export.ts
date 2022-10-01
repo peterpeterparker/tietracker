@@ -1,5 +1,4 @@
-import i18next from 'i18next';
-import i18n from 'i18next';
+import {default as i18n, default as i18next} from 'i18next';
 
 export function exportLabels() {
   return {

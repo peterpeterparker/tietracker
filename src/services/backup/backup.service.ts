@@ -8,8 +8,14 @@ import i18next from 'i18next';
 
 import {DirectoryEntry, File, IWriteOptions} from '@awesome-cordova-plugins/file';
 
-import {download, getMobileDir, getNewFileHandle, shareMobile, writeFile} from '../../utils/utils.filesystem';
 import {exportLabels} from '../../utils/utils.export';
+import {
+  download,
+  getMobileDir,
+  getNewFileHandle,
+  shareMobile,
+  writeFile,
+} from '../../utils/utils.filesystem';
 import {isChrome, isHttps} from '../../utils/utils.platform';
 
 import {Settings} from '../../models/settings';
@@ -73,7 +79,9 @@ export class BackupService {
   exportNativeFileSystem(type: 'excel' | 'idb', settings: Settings): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const fileHandle: FileSystemFileHandle = await getNewFileHandle(type === 'excel' ? 'xlsx' : 'zip');
+        const fileHandle: FileSystemFileHandle = await getNewFileHandle(
+          type === 'excel' ? 'xlsx' : 'zip'
+        );
 
         if (!fileHandle) {
           reject('Cannot access filesystem.');
@@ -112,7 +120,11 @@ export class BackupService {
 
             await File.writeFile(dir.nativeURL, filename, $event.data, writeOptions);
 
-            await shareMobile(`Tie Tracker - Backup - ${format(new Date(), 'yyyy-MM-dd')}`, dir.nativeURL, filename);
+            await shareMobile(
+              `Tie Tracker - Backup - ${format(new Date(), 'yyyy-MM-dd')}`,
+              dir.nativeURL,
+              filename
+            );
           }
         };
 
@@ -148,7 +160,9 @@ export class BackupService {
   }
 
   private filename(type: 'excel' | 'idb'): string {
-    return `Tie_Tracker-Backup-${format(new Date(), 'yyyy-MM-dd')}.${type === 'excel' ? 'xlsx' : 'zip'}`;
+    return `Tie_Tracker-Backup-${format(new Date(), 'yyyy-MM-dd')}.${
+      type === 'excel' ? 'xlsx' : 'zip'
+    }`;
   }
 
   private async postMessage(type: 'excel' | 'idb', {currency, vat, signature}: Settings) {

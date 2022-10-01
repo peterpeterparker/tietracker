@@ -1,4 +1,4 @@
-import {LIST_PROJECTS_INVOICES, InvoicesActionTypes} from '../types/invoices.types';
+import {InvoicesActionTypes, LIST_PROJECTS_INVOICES} from '../types/invoices.types';
 
 import {Invoice} from '../interfaces/invoice';
 

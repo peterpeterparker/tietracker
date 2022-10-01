@@ -1,11 +1,11 @@
 import {combineReducers} from 'redux';
 
 import {clientsReducer} from './clients.reducer';
-import {projectsReducer} from './projects.reducer';
-import {tasksReducer} from './tasks.reducer';
-import {summaryReducer} from './summary.reducer';
 import {invoicesReducer} from './invoices.reducer';
+import {projectsReducer} from './projects.reducer';
 import {settingsReducer} from './settings.reducer';
+import {summaryReducer} from './summary.reducer';
+import {tasksReducer} from './tasks.reducer';
 import {themeReducer} from './theme.reducer';
 
 export const rootReducer = combineReducers({

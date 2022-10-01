@@ -38,7 +38,10 @@ self.closeInvoices = async ({from, to}) => {
 
     const hasOpenInvoice = checks.find((check) => check === true);
     if (hasOpenInvoice) {
-      self.postMessage({result: 'error', msg: 'Period cannot be closed. It contains an invoice that still need to be billed.'});
+      self.postMessage({
+        result: 'error',
+        msg: 'Period cannot be closed. It contains an invoice that still need to be billed.',
+      });
       return;
     }
 
@@ -110,7 +113,12 @@ self.listInvoices = async (invoices, filterProjectId) => {
     return;
   }
 
-  const projectsWithInvoices = await listBillableProjects(invoices, projects, clients, filterProjectId);
+  const projectsWithInvoices = await listBillableProjects(
+    invoices,
+    projects,
+    clients,
+    filterProjectId
+  );
 
   const results = reduceAllProjects(projectsWithInvoices);
 

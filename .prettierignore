@@ -1,2 +1,4 @@
 public/workers/libs/**/*.js
 src/serviceWorker.ts
+android
+ios

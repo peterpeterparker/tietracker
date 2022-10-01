@@ -1,7 +1,7 @@
-import React, {useState, CSSProperties} from 'react';
+import React, {CSSProperties, useState} from 'react';
 import {useSelector} from 'react-redux';
 
-import {IonIcon, IonSelectOption, IonSelect, IonLabel} from '@ionic/react';
+import {IonIcon, IonLabel, IonSelect, IonSelectOption} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -12,12 +12,16 @@ import {checkmarkCircle} from 'ionicons/icons';
 import {RootState} from '../../../store/reducers';
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 
-import {TaskInProgress, TaskInProgressClientData, TaskInProgressData} from '../../../store/interfaces/task.inprogress';
+import {
+  TaskInProgress,
+  TaskInProgressClientData,
+  TaskInProgressData,
+} from '../../../store/interfaces/task.inprogress';
 
 import Spinner from '../../../components/spinner/Spinner';
 
-import {contrast} from '../../../utils/utils.color';
 import {Settings as SettingsModel} from '../../../models/settings';
+import {contrast} from '../../../utils/utils.color';
 
 const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
   const {t} = useTranslation('tasks');
@@ -36,7 +40,9 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
 
   const contrastColor: string = useSelector((state: RootState) => {
     const client: TaskInProgressClientData | undefined =
-      state.tasks.taskInProgress !== undefined && state.tasks.taskInProgress.data ? (state.tasks.taskInProgress.data as TaskInProgressData).client : undefined;
+      state.tasks.taskInProgress !== undefined && state.tasks.taskInProgress.data
+        ? (state.tasks.taskInProgress.data as TaskInProgressData).client
+        : undefined;
     return contrast(client !== undefined ? client.color : undefined);
   });
 
@@ -75,19 +81,36 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
   }
 
   return (
-    <div className={`${styles.task} ${task !== undefined ? styles.progress : ''}`} style={client !== undefined ? {background: `${client.color}`} : undefined}>
+    <div
+      className={`${styles.task} ${task !== undefined ? styles.progress : ''}`}
+      style={client !== undefined ? {background: `${client.color}`} : undefined}
+    >
       {client?.name && (
-        <IonLabel style={{color: contrastColor} as CSSProperties} className={`${styles.client} ion-padding`}>
+        <IonLabel
+          style={{color: contrastColor} as CSSProperties}
+          className={`${styles.client} ion-padding`}
+        >
           {client?.name}
         </IonLabel>
       )}
 
       <div style={{'--color': contrastColor} as CSSProperties}>
-        {task !== undefined ? <Spinner freeze={freeze} color={client !== undefined ? client.color : undefined} contrast={contrastColor}></Spinner> : undefined}
+        {task !== undefined ? (
+          <Spinner
+            freeze={freeze}
+            color={client !== undefined ? client.color : undefined}
+            contrast={contrastColor}
+          ></Spinner>
+        ) : undefined}
 
         {renderTaskDescription()}
 
-        <button onClick={() => stopTask()} aria-label={t('tracker.stop')} className="ion-activatable" disabled={freeze}>
+        <button
+          onClick={() => stopTask()}
+          aria-label={t('tracker.stop')}
+          className="ion-activatable"
+          disabled={freeze}
+        >
           <IonIcon icon={checkmarkCircle} />
         </button>
       </div>
@@ -108,7 +131,8 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
         interfaceOptions={{header: t('tracker.description')}}
         placeholder={t('tracker.description')}
         value={task.data.description}
-        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}>
+        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}
+      >
         {settings.descriptions.map((description: string, i: number) => {
           return (
             <IonSelectOption value={description} key={`desc-${i}`}>
