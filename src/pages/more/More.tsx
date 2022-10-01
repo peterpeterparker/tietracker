@@ -33,7 +33,7 @@ export const More = () => {
             </IonToolbar>
           </IonHeader>
 
-          <IonList className="ion-margin-top">
+          <IonList>
             <IonItem
               detail={true}
               button={true}
