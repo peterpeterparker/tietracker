@@ -82,11 +82,11 @@ import Terms from './pages/terms/Terms';
 import {ErrorToast} from './alerts/error/ErrorToast';
 import {initAllData} from './utils/utils.store';
 
-import {createTheme, ThemeProvider} from "@mui/material";
+import {createTheme, ThemeProvider} from '@mui/material';
 
 const theme = createTheme({
   typography: {
-    fontFamily: "'Open Sans', sans-serif"
+    fontFamily: "'Open Sans', sans-serif",
   },
 });
 
@@ -158,16 +158,14 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                     <IonIcon src="/assets/icon/logo-grey.svg" aria-label="Tie Tracker logo" />
                   )}
                   <Translation ns="common">
-                    {(t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>}
-                  </Translation>
+                      {(t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>}
+                    </Translation>
                 </IonTabButton>
                 <IonTabButton tab="invoices" href="/invoices">
                   <IonIcon icon={card} />
-                  <IonLabel>
-                    <Translation ns="common">
-                      {(t, {i18n}) => <IonLabel>{t('navigation.invoices')}</IonLabel>}
-                    </Translation>
-                  </IonLabel>
+                  <Translation ns="common">
+                    {(t, {i18n}) => <IonLabel>{t('navigation.invoices')}</IonLabel>}
+                  </Translation>
                 </IonTabButton>
                 <IonTabButton tab="more" href="/more">
                   <IonIcon icon={ellipsisHorizontal} />
