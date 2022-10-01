@@ -265,6 +265,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
               value={from}
               onChange={(date: Date | null) => setFrom(date as Date)}
               aria-label={t('tasks:details.from')}
+              ampm={false}
               hideTabs={true}
               inputFormat="yyyy/MM/dd HH:mm"
               renderInput={(params) => <TextField {...params} />}
@@ -287,6 +288,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
               value={to}
               onChange={(date: Date | null) => setTo(date as Date)}
               aria-label={t('tasks:details.to')}
+              ampm={false}
               hideTabs={true}
               inputFormat="yyyy/MM/dd HH:mm"
               renderInput={(params) => <TextField {...params} />}

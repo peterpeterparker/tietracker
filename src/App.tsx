@@ -47,6 +47,7 @@ import './theme/charts.scss';
 import './theme/checkbox-toggle.scss';
 import './theme/color.scss';
 import './theme/content.scss';
+import './theme/datetime.picker.scss';
 import './theme/fonts.scss';
 import './theme/header.scss';
 import './theme/input.scss';
