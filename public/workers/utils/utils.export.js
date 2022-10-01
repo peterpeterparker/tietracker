@@ -16,11 +16,7 @@ function convertTasks(tasks, projects, clients, backup) {
       new Date(from),
       new Date(to),
       new Date(to),
-      {
-        formula: `TEXT(INDIRECT(("${backup ? 'G' : 'E'}" & ROW()))-INDIRECT(("${
-          backup ? 'E' : 'C'
-        }" & ROW())),"hh:mm")`,
-      },
+      printMilliseconds(dayjs(new Date(to)).diff(new Date(from))),
       billable,
     ];
 
@@ -38,12 +34,8 @@ function convertTasks(tasks, projects, clients, backup) {
   return results;
 }
 
-const initColumns = (invoices, i18n, backup) => {
-  const sumHours = invoices
-    .map((invoice, i) => {
-      return `${backup ? 'H' : 'F'}${i + 2}`;
-    })
-    .join('+');
+const initColumns = (invoices, i18n, backup, total) => {
+  const {duration: totalDuration} = total;
 
   let columns = [
     {name: i18n.description, filterButton: true, totalsRowLabel: ''},
@@ -54,7 +46,7 @@ const initColumns = (invoices, i18n, backup) => {
     {
       name: i18n.duration,
       totalsRowFunction: 'custom',
-      totalsRowFormula: `ROUND((${sumHours})*24,2)`,
+      totalsRowFormula: `"${printMilliseconds(totalDuration)}"`,
     },
     {name: i18n.billable, totalsRowFunction: 'sum'},
   ];
@@ -74,4 +66,29 @@ const footerText = (signature) => {
   const today = dayjs().format('YYYY-MM-DD');
 
   return signature ? `${signature} - ${today}` : today;
+};
+
+const printMilliseconds = (milliseconds) => {
+  const seconds = Math.floor(milliseconds / 1000);
+  let minutes = Math.floor(seconds / 60);
+
+  const hours = Math.floor(minutes / 60);
+  minutes = minutes % 60;
+
+  return `${hours >= 10 ? hours : '0' + hours}:${minutes >= 10 ? minutes : '0' + minutes}`;
+};
+
+const totalInvoices = (invoices) => {
+  const totalDuration = invoices.reduce((accumulator, invoice) => {
+    return accumulator + dayjs(invoice[4]).diff(invoice[2]);
+  }, 0);
+
+  const sumBillable = invoices.reduce((accumulator, invoice) => {
+    return accumulator + invoice[6];
+  }, 0);
+
+  return {
+    duration: totalDuration,
+    sum: sumBillable,
+  };
 };

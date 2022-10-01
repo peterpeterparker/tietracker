@@ -50,7 +50,9 @@ function excelCurrencyFormat(currency) {
 }
 
 function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, backup) {
-  const columns = initColumns(invoices, i18n, backup);
+  const total = totalInvoices(invoices);
+
+  const columns = initColumns(invoices, i18n, backup, total);
 
   worksheet.addTable({
     name: 'Invoice',
@@ -92,6 +94,10 @@ function extractInvoicesTable(worksheet, invoices, currencyFormat, i18n, backup)
   worksheet.getColumn(4 + col).width = 10;
   worksheet.getColumn(5 + col).width = 10;
   worksheet.getColumn(7 + col).width = 16;
+
+  // Format total duration table last line
+  let index = invoices.length + 2;
+  worksheet.getCell(`${String.fromCharCode(70 + col)}${index}`).alignment = {horizontal: 'right'};
 }
 
 function generateTotal(worksheet, invoices, currencyFormat, vat, i18n, backup) {
@@ -174,6 +180,7 @@ function generateTotal(worksheet, invoices, currencyFormat, vat, i18n, backup) {
   worksheet.getCell(`${e}${index}`).value = i18n.total_billable_hours;
   worksheet.getCell(`${g}${index}`).value = {formula: `${f}${invoices.length + 2}`};
   worksheet.getCell(`${g}${index}`).numFmt = '0.00';
+  worksheet.getCell(`${g}${index}`).alignment = {horizontal: 'right'};
 }
 
 const initWorkbook = () => {

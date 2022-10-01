@@ -30,13 +30,13 @@ const exportToPdf = async (invoices, client, currency, vat, i18n, signature) => 
 
   initPDFFonts(doc);
 
-  const columns = initPdfColumns(invoices, i18n, false);
+  const total = totalInvoices(invoices);
+
+  const columns = initPdfColumns(invoices, i18n, total);
 
   buildPdfTableColumns(doc, columns);
 
   let cursorY = buildPdfTableLines(doc, invoices, columns, i18n, currency);
-
-  const total = totalInvoices(invoices);
 
   cursorY = buildPdfTableLinesTotal(doc, total, columns, i18n, currency, cursorY);
 
@@ -47,8 +47,8 @@ const exportToPdf = async (invoices, client, currency, vat, i18n, signature) => 
   return new Blob([doc.output('blob')], {type: 'application/pdf'});
 };
 
-const initPdfColumns = (invoices, i18n) => {
-  const columns = initColumns(invoices, i18n, false);
+const initPdfColumns = (invoices, i18n, total) => {
+  const columns = initColumns(invoices, i18n, false, total);
 
   const firstColumnLength = liveArea.width * 0.4;
   const columnLength = liveArea.width * 0.08;
@@ -70,16 +70,6 @@ const initPdfColumns = (invoices, i18n) => {
   });
 
   return pdfColumns;
-};
-
-const printMilliseconds = (milliseconds) => {
-  const seconds = Math.floor(milliseconds / 1000);
-  let minutes = Math.floor(seconds / 60);
-
-  const hours = Math.floor(minutes / 60);
-  minutes = minutes % 60;
-
-  return `${hours >= 10 ? hours : '0' + hours}:${minutes >= 10 ? minutes : '0' + minutes}`;
 };
 
 const buildPdfTableColumns = (doc, columns) => {
@@ -132,21 +122,6 @@ const buildPdfTableLines = (doc, invoices, columns, i18n, currency) => {
   doc.line(pageMargin, y, liveArea.width, y);
 
   return y;
-};
-
-const totalInvoices = (invoices) => {
-  const totalDuration = invoices.reduce((accumulator, invoice) => {
-    return accumulator + dayjs(invoice[4]).diff(invoice[2]);
-  }, 0);
-
-  const sumBillable = invoices.reduce((accumulator, invoice) => {
-    return accumulator + invoice[6];
-  }, 0);
-
-  return {
-    duration: totalDuration,
-    sum: sumBillable,
-  };
 };
 
 const buildPdfTableLinesTotal = (doc, total, columns, i18n, currency, y) => {
