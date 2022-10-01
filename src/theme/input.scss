@@ -7,6 +7,10 @@ ion-item.item-input {
     --inner-padding-end: 0;
   }
 
+  &::part(native) {
+    caret-color: var(--ion-text-color);
+  }
+
   ion-input[class*="sc-ion-input"],
   ion-textarea[class*="sc-ion-textarea"],
   div.MuiFormControl-root,
