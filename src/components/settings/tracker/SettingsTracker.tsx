@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {IonInput, IonItem, IonLabel, IonList, IonSelect, IonSelectOption, IonModal} from '@ionic/react';
+import type {IonInputCustomEvent} from '@ionic/core';
 
 import {useTranslation} from 'react-i18next';
 
@@ -40,7 +41,7 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
     props.settings.roundTime = $event.detail.value;
   }
 
-  function onVatInput($event: CustomEvent<KeyboardEvent>) {
+  function onVatInput($event: IonInputCustomEvent<InputEvent>) {
     if (!$event) {
       return;
     }
@@ -102,7 +103,7 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
             input-mode="text"
             value={props.settings.vat ? `${props.settings.vat}` : ''}
             aria-label={t('tracker.vat.input')}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => onVatInput($event)}></IonInput>
+            onIonInput={($event: IonInputCustomEvent<InputEvent>) => onVatInput($event)}></IonInput>
         </IonItem>
       </IonList>
     </>

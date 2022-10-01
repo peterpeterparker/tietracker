@@ -2,6 +2,8 @@ import React, {createRef, CSSProperties, FormEvent, RefObject, useEffect, useSta
 import {RouteComponentProps} from 'react-router';
 import {useSelector} from 'react-redux';
 
+import type {IonInputCustomEvent} from '@ionic/core';
+
 import {useTranslation} from 'react-i18next';
 
 import styles from './ClientDetails.module.scss';
@@ -122,7 +124,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     }
   }
 
-  function handleClientNameInput($event: CustomEvent<KeyboardEvent>) {
+  function handleClientNameInput($event: IonInputCustomEvent<InputEvent>) {
     if (client && client.data) {
       client.data.name = ($event.target as InputTargetEvent).value;
     }
@@ -203,7 +205,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
           <main className="ion-padding">{renderClient(colorContrast)}</main>
 
-          <IonModal isOpen={projectModalAction !== undefined} onDidDismiss={() => closeProjectModal(false)} cssClass="fullscreen">
+          <IonModal isOpen={projectModalAction !== undefined} onDidDismiss={() => closeProjectModal(false)} className="fullscreen">
             <ProjectModal
               action={projectModalAction}
               projectId={selectedProjectId}
@@ -241,7 +243,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
               required={true}
               input-mode="text"
               value={client.data.name}
-              onIonInput={($event: CustomEvent<KeyboardEvent>) => handleClientNameInput($event)}
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleClientNameInput($event)}
               onIonChange={() => validateClientName()}
             ></IonInput>
           </IonItem>

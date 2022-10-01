@@ -14,7 +14,7 @@ import {applyPolyfills, defineCustomElements as colorDefineCustomElements, JSX a
 import {defineCustomElements as chartsDefineCustomElements} from '@deckdeckgo/charts/dist/loader';
 
 import {DetailedHTMLProps, HTMLAttributes} from 'react';
-import {setupConfig} from '@ionic/react';
+import {setupIonicReact} from '@ionic/react';
 
 type StencilProps<T> = {
   [P in keyof T]?: Omit<T[P], 'ref'> | HTMLAttributes<T>;
@@ -38,7 +38,7 @@ applyPolyfills().then(async () => {
   await chartsDefineCustomElements(window);
 });
 
-setupConfig({
+setupIonicReact({
   backButtonText: '',
 });
 

@@ -25,6 +25,7 @@ import {Currencies, SettingsService} from '../../services/settings/settings.serv
 import styles from './CurrenciesModal.module.scss';
 
 import {Currency} from '../../definitions/currency';
+import {IonSearchbarCustomEvent} from "@ionic/core";
 
 interface Props {
   closeAction: Function;
@@ -51,7 +52,7 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
     setCurrencies(currencies);
   }
 
-  async function onFilter($event: CustomEvent<KeyboardEvent>) {
+  async function onFilter($event: IonSearchbarCustomEvent<KeyboardEvent>) {
     if (!$event) {
       return;
     }
@@ -108,7 +109,7 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
             debounce={500}
             placeholder={t('tracker.currency.filter')}
             className={styles.searchbar}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => onFilter($event)}
+            onIonInput={($event: IonSearchbarCustomEvent<KeyboardEvent>) => onFilter($event)}
           ></IonSearchbar>
 
           <IonList>

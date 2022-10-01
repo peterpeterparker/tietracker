@@ -15,6 +15,8 @@ import {
   IonButton,
   IonInput,
 } from '@ionic/react';
+import type {IonInputCustomEvent} from '@ionic/core';
+
 import {RouteComponentProps} from 'react-router';
 
 import {isSameDay, parse} from 'date-fns';
@@ -177,7 +179,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     await props.listProjectsInvoices();
   }
 
-  function onDescriptionChange($event: CustomEvent<KeyboardEvent>) {
+  function onDescriptionChange($event: IonInputCustomEvent<InputEvent>) {
     setDescription(($event.target as InputTargetEvent).value);
   }
 
@@ -228,7 +230,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
               maxlength={256}
               value={description}
               input-mode="text"
-              onIonInput={($event: CustomEvent<KeyboardEvent>) => onDescriptionChange($event)}
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) => onDescriptionChange($event)}
             ></IonInput>
           </IonItem>
 

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {IonInput, IonItem, IonLabel, IonList, IonToggle, isPlatform} from '@ionic/react';
+import type {IonInputCustomEvent} from '@ionic/core';
 
 import {useTranslation} from 'react-i18next';
 
@@ -45,7 +46,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
     setBackup(!backup);
   }
 
-  function onSignatureInput($event: CustomEvent<KeyboardEvent>) {
+  function onSignatureInput($event: IonInputCustomEvent<InputEvent>) {
     if (!$event) {
       return;
     }
@@ -119,7 +120,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
             input-mode="text"
             value={props.settings.signature ? `${props.settings.signature}` : ''}
             aria-label={t('general.signature')}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => onSignatureInput($event)}
+            onIonInput={($event: IonInputCustomEvent<InputEvent>) => onSignatureInput($event)}
           ></IonInput>
         </IonItem>
       </>
