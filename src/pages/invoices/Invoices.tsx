@@ -60,7 +60,7 @@ const Invoices: React.FC = () => {
           {renderProjects()}
         </main>
 
-        <IonModal isOpen={selectedInvoice !== undefined} onDidDismiss={closeAndRefresh} cssClass="fullscreen">
+        <IonModal isOpen={selectedInvoice !== undefined} onDidDismiss={closeAndRefresh} className="fullscreen">
           <InvoiceModal closeAction={closeAndRefresh} invoice={selectedInvoice}></InvoiceModal>
         </IonModal>
 

@@ -63,15 +63,15 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   return (
     <IonPage>
       <IonContent>
-        <IonModal isOpen={showModalClient} onDidDismiss={async () => await closeClientModal()} cssClass="fullscreen">
+        <IonModal isOpen={showModalClient} onDidDismiss={async () => await closeClientModal()} className="fullscreen">
           <CreateClientModal closeAction={async () => await closeClientModal()}></CreateClientModal>
         </IonModal>
 
-        <IonModal isOpen={showModalClients} onDidDismiss={($event) => closeAndNavigate($event)} cssClass="fullscreen">
+        <IonModal isOpen={showModalClients} onDidDismiss={($event) => closeAndNavigate($event)} className="fullscreen">
           <ClientsModal presented={modalPresented}></ClientsModal>
         </IonModal>
 
-        <IonModal isOpen={showModalTask} onDidDismiss={() => setShowModalTask(false)} cssClass="fullscreen">
+        <IonModal isOpen={showModalTask} onDidDismiss={() => setShowModalTask(false)} className="fullscreen">
           <CreateTaskModal closeAction={() => setShowModalTask(false)}></CreateTaskModal>
         </IonModal>
 

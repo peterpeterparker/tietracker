@@ -1,4 +1,5 @@
 import React, {FormEvent, RefObject, CSSProperties, useEffect, useState, useRef} from 'react';
+import type {IonInputCustomEvent} from '@ionic/core';
 import {
   IonHeader,
   IonContent,
@@ -89,7 +90,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientColorRef]);
 
-  function handleClientNameInput($event: CustomEvent<KeyboardEvent>) {
+  function handleClientNameInput($event: IonInputCustomEvent<InputEvent>) {
     let data: ClientData;
 
     if (clientData) {
@@ -118,7 +119,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     setClientData(data);
   };
 
-  function handleProjectNameInput($event: CustomEvent<KeyboardEvent>) {
+  function handleProjectNameInput($event: IonInputCustomEvent<InputEvent>) {
     if (!clientData) {
       return;
     }
@@ -142,7 +143,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     setProjectData(data);
   }
 
-  function handleProjectRateInput($event: CustomEvent<KeyboardEvent>) {
+  function handleProjectRateInput($event: IonInputCustomEvent<InputEvent>) {
     if (!clientData) {
       return;
     }
@@ -166,7 +167,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     setProjectData(data);
   }
 
-  function handleProjectBudgetInput($event: CustomEvent<KeyboardEvent>) {
+  function handleProjectBudgetInput($event: IonInputCustomEvent<InputEvent>) {
     if (!clientData) {
       return;
     }
@@ -230,7 +231,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     setProjectData(data);
   }
 
-  function inputMinZero($event: CustomEvent<KeyboardEvent>): number {
+  function inputMinZero($event: IonInputCustomEvent<InputEvent>): number {
     return ($event.target as InputTargetEvent).value ? parseFloat(($event.target as InputTargetEvent).value) : 0;
   }
 
@@ -355,7 +356,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   maxlength={32}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: CustomEvent<KeyboardEvent>) => handleClientNameInput($event)}
+                  onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleClientNameInput($event)}
                   onIonChange={() => validateClientName()}></IonInput>
               </IonItem>
 
@@ -378,7 +379,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   maxlength={32}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectNameInput($event)}
+                  onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectNameInput($event)}
                   onIonChange={() => validateProject()}></IonInput>
               </IonItem>
 
@@ -392,7 +393,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   minlength={1}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectRateInput($event)}
+                  onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectRateInput($event)}
                   onIonChange={() => validateProject()}></IonInput>
               </IonItem>
 
@@ -463,7 +464,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
               debounce={500}
               minlength={1}
               input-mode="text"
-              onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetInput($event)}></IonInput>
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectBudgetInput($event)}></IonInput>
           </IonItem>
 
           <IonItem className="item-input" disabled={!validClientName}>

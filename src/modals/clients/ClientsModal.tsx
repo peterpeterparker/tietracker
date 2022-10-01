@@ -2,6 +2,7 @@ import React, {CSSProperties, RefObject, useEffect, useRef, useState} from 'reac
 import {useSelector} from 'react-redux';
 
 import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonList, IonSearchbar, IonTitle, IonToolbar, IonLabel} from '@ionic/react';
+import type {IonSearchbarCustomEvent} from '@ionic/core';
 
 import {useTranslation} from 'react-i18next';
 
@@ -45,7 +46,7 @@ const ClientsModal: React.FC<Props> = (props) => {
     await filterRef?.current?.setFocus();
   }
 
-  async function onFilter($event: CustomEvent<KeyboardEvent>) {
+  function onFilter($event: IonSearchbarCustomEvent<KeyboardEvent>) {
     if (!$event) {
       return;
     }
@@ -55,23 +56,18 @@ const ClientsModal: React.FC<Props> = (props) => {
     if (!input || input === undefined || input === '') {
       setFilteredClients(clients);
     } else {
-      const clients: Client[] = await filterClients(input);
+      const clients: Client[] = filterClients(input);
       setFilteredClients(clients);
     }
   }
 
-  function filterClients(filter: string): Promise<Client[]> {
-    return new Promise<Client[]>((resolve) => {
-      if (!clients || clients.length <= 0) {
-        resolve([]);
-        return;
-      }
+  function filterClients(filter: string): Client[] {
+    if (!clients || clients.length <= 0) {
+      return [];
+    }
 
-      const results: Client[] = clients.filter((client: Client) => {
-        return client.data.name && client.data.name.toLowerCase().indexOf(filter.toLowerCase()) > -1;
-      });
-
-      resolve(results);
+    return clients.filter((client: Client) => {
+      return client.data.name && client.data.name.toLowerCase().indexOf(filter.toLowerCase()) > -1;
     });
   }
 
@@ -102,7 +98,7 @@ const ClientsModal: React.FC<Props> = (props) => {
           placeholder={t('search.filter')}
           className={styles.searchbar}
           ref={filterRef}
-          onIonInput={($event: CustomEvent<KeyboardEvent>) => onFilter($event)}
+          onIonInput={($event: IonSearchbarCustomEvent<KeyboardEvent>) => onFilter($event)}
         ></IonSearchbar>
 
         <IonList className="ion-margin-top">{renderClients()}</IonList>

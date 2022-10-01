@@ -135,9 +135,9 @@ const App: React.FC<RootProps> = (props: RootProps) => {
             <IonTabBar slot="bottom">
               <IonTabButton tab="home" href="/home">
                 {selectedTab === 'home' ? (
-                  <IonIcon src="/assets/icon/logo.svg" ariaLabel="Tie Tracker logo" />
+                  <IonIcon src="/assets/icon/logo.svg" aria-label="Tie Tracker logo" />
                 ) : (
-                  <IonIcon src="/assets/icon/logo-grey.svg" ariaLabel="Tie Tracker logo" />
+                  <IonIcon src="/assets/icon/logo-grey.svg" aria-label="Tie Tracker logo" />
                 )}
                 <Translation ns="common">{(t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>}</Translation>
               </IonTabButton>

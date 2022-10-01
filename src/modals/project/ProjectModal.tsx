@@ -25,6 +25,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import type {IonInputCustomEvent} from '@ionic/core';
 
 import {close} from 'ionicons/icons';
 
@@ -115,15 +116,15 @@ const ProjectModal: React.FC<Props> = (props) => {
     }
   }
 
-  function handleClientNameInput($event: CustomEvent<KeyboardEvent>) {
+  function handleClientNameInput($event: IonInputCustomEvent<InputEvent>) {
     setName(($event.target as InputTargetEvent).value);
   }
 
-  function handleProjectRateInput($event: CustomEvent<KeyboardEvent>) {
+  function handleProjectRateInput($event: IonInputCustomEvent<InputEvent>) {
     setRate(parseFloat(($event.target as InputTargetEvent).value));
   }
 
-  function handleProjectBudgetValueInput($event: CustomEvent<KeyboardEvent>) {
+  function handleProjectBudgetValueInput($event: IonInputCustomEvent<InputEvent>) {
     setBudgetValue(parseFloat(($event.target as InputTargetEvent).value));
   }
 
@@ -131,7 +132,7 @@ const ProjectModal: React.FC<Props> = (props) => {
     setBudgetType($event.detail.value);
   }
 
-  function handleProjectBilledInput($event: CustomEvent<KeyboardEvent>) {
+  function handleProjectBilledInput($event: IonInputCustomEvent<InputEvent>) {
     setBilled(parseFloat(($event.target as InputTargetEvent).value));
   }
 
@@ -270,7 +271,7 @@ const ProjectModal: React.FC<Props> = (props) => {
               required={true}
               input-mode="text"
               value={name}
-              onIonInput={($event: CustomEvent<KeyboardEvent>) => handleClientNameInput($event)}
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleClientNameInput($event)}
               onIonChange={() => validateProject()}></IonInput>
           </IonItem>
 
@@ -285,7 +286,7 @@ const ProjectModal: React.FC<Props> = (props) => {
               ref={rateRef}
               input-mode="text"
               value={`${rate ? rate : ''}`}
-              onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectRateInput($event)}
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectRateInput($event)}
               onIonChange={() => validateProject()}></IonInput>
           </IonItem>
 
@@ -337,7 +338,7 @@ const ProjectModal: React.FC<Props> = (props) => {
               ref={budgetRef}
               input-mode="text"
               value={`${budgetValue ? budgetValue : ''}`}
-              onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBudgetValueInput($event)}></IonInput>
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectBudgetValueInput($event)}></IonInput>
           </IonItem>
 
           <IonItem className="item-input">
@@ -373,7 +374,7 @@ const ProjectModal: React.FC<Props> = (props) => {
             ref={billedRef}
             input-mode="text"
             value={`${billed ? billed : ''}`}
-            onIonInput={($event: CustomEvent<KeyboardEvent>) => handleProjectBilledInput($event)}></IonInput>
+            onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleProjectBilledInput($event)}></IonInput>
         </IonItem>
       </>
     );

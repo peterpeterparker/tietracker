@@ -1,6 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 
 import {IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonTitle, IonToolbar} from '@ionic/react';
+import type {IonInputCustomEvent} from '@ionic/core';
 
 import {close} from 'ionicons/icons';
 
@@ -23,7 +24,7 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
     setDescription(props.template ? props.template.description : undefined);
   }, [props.template]);
 
-  function handleTemplateInput($event: CustomEvent<KeyboardEvent>) {
+  function handleTemplateInput($event: IonInputCustomEvent<InputEvent>) {
     setDescription(($event.target as InputTargetEvent).value);
   }
 
@@ -83,7 +84,7 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
                   required={true}
                   input-mode="text"
                   value={description}
-                  onIonInput={($event: CustomEvent<KeyboardEvent>) => handleTemplateInput($event)}
+                  onIonInput={($event: IonInputCustomEvent<InputEvent>) => handleTemplateInput($event)}
                   onIonChange={() => validateTemplate()}
                 ></IonInput>
               </IonItem>
