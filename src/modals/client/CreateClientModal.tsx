@@ -35,6 +35,7 @@ import {Settings} from '../../models/settings';
 import {ThemeService} from '../../services/theme/theme.service';
 
 import {RootState} from '../../store/reducers';
+import {emitError} from '../../utils/utils.events';
 
 interface Props extends RootProps {
   closeAction: Function;
@@ -266,8 +267,9 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
         persistedClient.id === undefined
       ) {
         // TODO: Error management
-        // And what if client withtout project? duplicated? -> delete whatever function
-        console.error('Client not created');
+        // And what if client without project? duplicated? -> delete whatever function
+
+        emitError('Client not created');
         return;
       }
 
@@ -277,7 +279,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
 
       await reset();
     } catch (err) {
-      console.error(err);
+      emitError(err);
     }
   }
 

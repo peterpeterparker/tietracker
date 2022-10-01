@@ -42,6 +42,7 @@ import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 import {ClientsService} from '../../../services/clients/clients.service';
 import {ProjectsService} from '../../../services/projects/projects.service';
 import {TasksService} from '../../../services/tasks/tasks.service';
+import {emitError} from '../../../utils/utils.events';
 
 interface TaskDetailsProps
   extends RouteComponentProps<{
@@ -145,7 +146,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
       goBack();
     } catch (err) {
-      // TODO show err
+      emitError(err);
       console.error(err);
     }
 
@@ -166,7 +167,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
       goBack();
     } catch (err) {
-      // TODO show err
+      emitError(err);
       console.error(err);
     }
 

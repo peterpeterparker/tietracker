@@ -26,6 +26,7 @@ import {Settings as SettingsModel} from '../../models/settings';
 import SettingsGeneral from '../../components/settings/general/SettingsGeneral';
 import SettingsTemplates from '../../components/settings/templates/SettingsTemplates';
 import SettingsTracker from '../../components/settings/tracker/SettingsTracker';
+import {emitError} from '../../utils/utils.events';
 
 enum SettingsCategory {
   GENERAL = 'general',
@@ -53,7 +54,7 @@ const Settings: React.FC<RootProps> = (props) => {
 
       setShowSaveMsg(true);
     } catch (err) {
-      // TODO show err
+      emitError(err);
       console.error(err);
     }
 

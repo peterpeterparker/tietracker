@@ -46,6 +46,7 @@ import {RootState} from '../../../store/reducers';
 import ProjectModal, {ProjectModalAction} from '../../../modals/project/ProjectModal';
 
 import Budget from '../../../components/budget/Budget';
+import {emitError} from '../../../utils/utils.events';
 
 interface ClientDetailsProps
   extends RouteComponentProps<{
@@ -163,7 +164,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
       goBack();
     } catch (err) {
-      // TODO show err
+      emitError(err);
       console.error(err);
     }
 
