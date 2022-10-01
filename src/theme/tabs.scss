@@ -1,3 +1,8 @@
+ion-tab-bar {
+  --ion-tab-bar-background: var(--ion-color-summary);
+  --ion-tab-bar-color: var(--ion-color-summary-contrast);
+}
+
 ion-tab-button {
   --color-selected: var(--ion-color-danger);
 
@@ -10,11 +15,11 @@ ion-tab-button {
 
 body.dark {
   ion-tab-button {
-    --color-selected: var(--ion-color-button);
+    --color-selected: var(--ion-color-warning);
 
     .tab-selected {
       ion-icon {
-        color: var(--ion-color-button);
+        color: var(--ion-color-warning);
       }
     }
   }

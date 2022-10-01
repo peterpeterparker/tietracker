@@ -29,6 +29,11 @@ export class ThemeService {
       dark ? body.classList.add('dark') : body.classList.remove('dark');
     }
 
+    const { head } = document;
+    head?.children
+        ?.namedItem("theme-color")
+        ?.setAttribute("content", dark ? '#230f29' : '#fff');
+
     try {
       await set('dark_mode', dark);
     } catch (err) {
