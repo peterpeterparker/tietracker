@@ -5,8 +5,7 @@ import {useTranslation} from 'react-i18next';
 
 import {lightFormat} from 'date-fns';
 
-import DateFnsUtils from '@date-io/date-fns';
-import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import {LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
 
 import {IonButton, IonList} from '@ionic/react';
 
@@ -17,11 +16,13 @@ import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
 import {RootState} from '../../store/reducers';
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
-import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
 import TaskItem from '../taskitem/TaskItem';
 
 import {format} from '../../utils/utils.date';
 
+import {InputAdornment, TextField} from '@mui/material';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {Calendar} from '@mui/x-date-pickers/internals/components/icons';
 import {Project} from '../../models/project';
 
 interface Props extends RootProps {
@@ -55,7 +56,7 @@ const Tasks: React.FC<Props> = (props: Props) => {
   }
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <div className="ion-padding-end ion-padding-top">
         <h1>{t('entries.title')}</h1>
         {renderTasksInfo()}
@@ -64,7 +65,7 @@ const Tasks: React.FC<Props> = (props: Props) => {
 
         <IonList>{renderTasksItems()}</IonList>
       </div>
-    </MuiPickersUtilsProvider>
+    </LocalizationProvider>
   );
 
   function renderActions() {
@@ -75,8 +76,7 @@ const Tasks: React.FC<Props> = (props: Props) => {
           fill="outline"
           color="medium"
           size="small"
-          aria-label={t('entries.select_date')}
-        >
+          aria-label={t('entries.select_date')}>
           {t('entries.select_date')}
         </IonButton>
 
@@ -96,8 +96,7 @@ const Tasks: React.FC<Props> = (props: Props) => {
         fill="outline"
         color="medium"
         size="small"
-        aria-label={t('entries.add_task')}
-      >
+        aria-label={t('entries.add_task')}>
         {t('entries.add_task')}
       </IonButton>
     );
@@ -116,15 +115,22 @@ const Tasks: React.FC<Props> = (props: Props) => {
       <>
         <p
           className="placeholder"
-          dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}
-        ></p>
+          dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></p>
 
         <div className={styles.picker}>
-          <DatePicker
+          <MobileDatePicker
             DialogProps={{disableEnforceFocus: true}}
             value={selecteDay}
-            onChange={(date: MaterialUiPickersDate) => selectDate(date as Date)}
-            format="yyyy/MM/dd"
+            onChange={(date: Date | null) => selectDate(date as Date)}
+            inputFormat="yyyy/MM/dd"
+            renderInput={(params) => <TextField {...params} />}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Calendar />
+                </InputAdornment>
+              ),
+            }}
           />
         </div>
       </>

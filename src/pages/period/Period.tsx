@@ -19,16 +19,16 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 
-import DateFnsUtils from '@date-io/date-fns';
-import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
-import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
-
 import styles from './Period.module.scss';
 
 import Loading from '../../components/loading/Loading';
 
 import {format} from '../../utils/utils.date';
 
+import {InputAdornment, TextField} from '@mui/material';
+import {DatePicker, LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {Calendar} from '@mui/x-date-pickers/internals/components/icons';
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
 
 const Period: React.FC = () => {
@@ -105,13 +105,12 @@ const Period: React.FC = () => {
             </IonToolbar>
           </IonHeader>
 
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <p
               className={`${styles.text} ion-padding-top`}
               dangerouslySetInnerHTML={{
                 __html: t('period:invoices', {from: format(period?.from), to: format(period?.to)}),
-              }}
-            ></p>
+              }}></p>
 
             <p>{t('period:text')}</p>
 
@@ -120,7 +119,7 @@ const Period: React.FC = () => {
             {renderFilter()}
 
             <div className={`actions ${styles.actions} ion-padding-top`}>{renderActions()}</div>
-          </MuiPickersUtilsProvider>
+          </LocalizationProvider>
         </main>
       </IonContent>
     </IonPage>
@@ -135,11 +134,19 @@ const Period: React.FC = () => {
           </IonItem>
 
           <IonItem className="item-input">
-            <DatePicker
+            <MobileDatePicker
               DialogProps={{disableEnforceFocus: true}}
               value={from}
-              onChange={(date: MaterialUiPickersDate) => setFrom(date as Date)}
-              format="yyyy/MM/dd"
+              onChange={(date: Date | null) => setFrom(date as Date)}
+              inputFormat="yyyy/MM/dd"
+              renderInput={(params) => <TextField {...params} />}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Calendar />
+                  </InputAdornment>
+                ),
+              }}
             />
           </IonItem>
 
@@ -151,8 +158,16 @@ const Period: React.FC = () => {
             <DatePicker
               DialogProps={{disableEnforceFocus: true}}
               value={to}
-              onChange={(date: MaterialUiPickersDate) => setTo(date as Date)}
-              format="yyyy/MM/dd"
+              onChange={(date: Date | null) => setTo(date as Date)}
+              inputFormat="yyyy/MM/dd"
+              renderInput={(params) => <TextField {...params} />}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Calendar />
+                  </InputAdornment>
+                ),
+              }}
             />
           </IonItem>
         </IonList>
@@ -172,8 +187,7 @@ const Period: React.FC = () => {
           color="danger"
           onClick={doDeleteInvoices}
           style={{marginTop: '8px'}}
-          disabled={!valid}
-        >
+          disabled={!valid}>
           <IonLabel>{t('period:close')}</IonLabel>
         </IonButton>
       </>

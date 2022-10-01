@@ -1,28 +1,44 @@
-ion-item.item-input {
-  // see input.scss
-}
-
-div.MuiPickersToolbar-toolbar,
-button.MuiPickersDay-current {
+div.MuiPickersToolbar-root {
   background: var(--picker-background, var(--ion-color-primary));
+
+  .MuiTypography-overline, button.MuiPickersToolbar-penIconButton {
+    display: none;
+  }
+
+  span, button > span {
+    color: var(--picker-color, var(--ion-color-dark));
+
+    &.Mui-selected {
+      color: var(--picker-color, var(--ion-color-dark));
+      font-weight: bold;
+    }
+  }
 }
 
-div.MuiPickersToolbar-toolbar button.MuiButton-text {
-  color: var(--picker-color, var(--ion-color-dark));
+div.MuiClockPicker-root {
+  div.MuiClock-pin, div.MuiClockPointer-root, span.MuiClockNumber-root.Mui-selected {
+    background-color: var(--picker-background);
+    color: var(--picker-color);
+  }
+  div.MuiClockPointer-thumb {
+    background-color: var(--picker-color);
+    border-color: var(--picker-background);
+    color: var(--picker-background);
+  }
+
+  .MuiIconButton-root:hover {
+    background-color: var(--picker-background);
+    color: var(--picker-color);
+  }
 }
 
-button.MuiButton-text {
-  color: var(--ion-color-text);
+div.MuiDialogActions-root {
+  button {
+    color: var(--picker-background, var(--ion-text-color));
+  }
 }
 
-button.MuiPickersDay-daySelected,
-button.MuiPickersDay-daySelected:hover {
-  background-color: var(--ion-color-primary);
-  color: var(--ion-color-primary-contrast);
-}
-
-button.MuiPickersDay-current:not(.MuiPickersDay-daySelected),
-button.MuiPickersDay-current:not(.MuiPickersDay-daySelected):hover {
-  background-color: var(--ion-color-medium);
-  color: var(--ion-color-medium-contrast);
+button.MuiPickersDay-root.Mui-selected {
+  background-color: var(--picker-background) !important;
+  color: var(--picker-color);
 }
