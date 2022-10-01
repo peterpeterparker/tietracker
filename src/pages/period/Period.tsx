@@ -109,7 +109,10 @@ const Period: React.FC = () => {
             <p
               className={`${styles.text} ion-padding-top`}
               dangerouslySetInnerHTML={{
-                __html: t('period:invoices', {from: format(period?.from), to: format(period?.to)}),
+                __html: t('period:invoices', {
+                  from: format(period?.from) ?? t('period:unknown'),
+                  to: format(period?.to) ?? t('period:unknown'),
+                }),
               }}></p>
 
             <p>{t('period:text')}</p>

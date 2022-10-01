@@ -6,5 +6,6 @@
   "alert": {
     "warning": "WARNING",
     "sure": "You are about to close a billing period. Are you sure you want to continue?"
-  }
+  },
+  "unknown": "unknown"
 }
