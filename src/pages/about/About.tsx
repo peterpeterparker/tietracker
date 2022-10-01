@@ -94,8 +94,7 @@ const About: React.FC = () => {
                 href="http://github.com/peterpeterparker/tietracker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={styles.github}
-              >
+                className={styles.github}>
                 GitHub <IonIcon md={logoGithub} ios={logoGithub} area-label="Github"></IonIcon>
               </a>
               .
@@ -138,14 +137,6 @@ const About: React.FC = () => {
 
             <a href="http://github.com/peterpeterparker" target="_blank" rel="noopener noreferrer">
               <IonIcon md={logoGithub} ios={logoGithub} area-label="Github"></IonIcon>
-            </a>
-
-            <a href="https://dev.to/daviddalbusco" target="_blank" rel="noopener noreferrer">
-              <IonIcon src="./assets/icon/dev.svg" area-label="Dev"></IonIcon>
-            </a>
-
-            <a href="https://medium.com/@david.dalbusco" target="_blank" rel="noopener noreferrer">
-              <IonIcon src="./assets/icon/medium.svg" area-label="Medium"></IonIcon>
             </a>
           </div>
 
