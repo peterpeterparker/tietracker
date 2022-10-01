@@ -47,7 +47,6 @@ import './theme/charts.scss';
 import './theme/checkbox-toggle.scss';
 import './theme/color.scss';
 import './theme/content.scss';
-import './theme/datetime.picker.scss';
 import './theme/fonts.scss';
 import './theme/header.scss';
 import './theme/input.scss';
@@ -81,6 +80,14 @@ import Terms from './pages/terms/Terms';
 
 import {ErrorToast} from './alerts/error/ErrorToast';
 import {initAllData} from './utils/utils.store';
+
+import {createTheme, ThemeProvider} from "@mui/material";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "'Open Sans', sans-serif"
+  },
+});
 
 const App: React.FC<RootProps> = (props: RootProps) => {
   const [selectedTab, setSelectedTab] = useState<string>('home');
@@ -118,64 +125,66 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <IonApp>
-        <IonReactRouter>
-          <IonTabs onIonTabsDidChange={($event) => setSelectedTab($event.detail.tab)}>
-            <IonRouterOutlet>
-              <Route path="/home" component={Home} />
-              <Route path="/invoices" component={Invoices} exact={true} />
-              <Route path="/more" component={More} exact={true} />
+      <ThemeProvider theme={theme}>
+        <IonApp>
+          <IonReactRouter>
+            <IonTabs onIonTabsDidChange={($event) => setSelectedTab($event.detail.tab)}>
+              <IonRouterOutlet>
+                <Route path="/home" component={Home} />
+                <Route path="/invoices" component={Invoices} exact={true} />
+                <Route path="/more" component={More} exact={true} />
 
-              <Route path="/statistics" component={Statistics} exact={true} />
-              <Route path="/settings" component={Settings} exact={true} />
-              <Route path="/backup" component={Backup} exact={true} />
-              <Route path="/about" component={About} exact={true} />
-              <Route path="/period" component={Period} exact={true} />
+                <Route path="/statistics" component={Statistics} exact={true} />
+                <Route path="/settings" component={Settings} exact={true} />
+                <Route path="/backup" component={Backup} exact={true} />
+                <Route path="/about" component={About} exact={true} />
+                <Route path="/period" component={Period} exact={true} />
 
-              <Route path="/terms" component={Terms} exact={true} />
-              <Route path="/privacy" component={Privacy} exact={true} />
+                <Route path="/terms" component={Terms} exact={true} />
+                <Route path="/privacy" component={Privacy} exact={true} />
 
-              <Route path="/client/:id" component={ClientDetails} />
-              <Route path="/task/:day/:id" component={TaskDetails} />
+                <Route path="/client/:id" component={ClientDetails} />
+                <Route path="/task/:day/:id" component={TaskDetails} />
 
-              <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
-            </IonRouterOutlet>
+                <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
+              </IonRouterOutlet>
 
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="home" href="/home">
-                {selectedTab === 'home' ? (
-                  <IonIcon src="/assets/icon/logo.svg" aria-label="Tie Tracker logo" />
-                ) : (
-                  <IonIcon src="/assets/icon/logo-grey.svg" aria-label="Tie Tracker logo" />
-                )}
-                <Translation ns="common">
-                  {(t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>}
-                </Translation>
-              </IonTabButton>
-              <IonTabButton tab="invoices" href="/invoices">
-                <IonIcon icon={card} />
-                <IonLabel>
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="home" href="/home">
+                  {selectedTab === 'home' ? (
+                    <IonIcon src="/assets/icon/logo.svg" aria-label="Tie Tracker logo" />
+                  ) : (
+                    <IonIcon src="/assets/icon/logo-grey.svg" aria-label="Tie Tracker logo" />
+                  )}
                   <Translation ns="common">
-                    {(t, {i18n}) => <IonLabel>{t('navigation.invoices')}</IonLabel>}
+                    {(t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>}
                   </Translation>
-                </IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="more" href="/more">
-                <IonIcon icon={ellipsisHorizontal} />
-                <Translation ns="common">
-                  {(t, {i18n}) => <IonLabel>{t('navigation.more')}</IonLabel>}
-                </Translation>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonReactRouter>
+                </IonTabButton>
+                <IonTabButton tab="invoices" href="/invoices">
+                  <IonIcon icon={card} />
+                  <IonLabel>
+                    <Translation ns="common">
+                      {(t, {i18n}) => <IonLabel>{t('navigation.invoices')}</IonLabel>}
+                    </Translation>
+                  </IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="more" href="/more">
+                  <IonIcon icon={ellipsisHorizontal} />
+                  <Translation ns="common">
+                    {(t, {i18n}) => <IonLabel>{t('navigation.more')}</IonLabel>}
+                  </Translation>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </IonReactRouter>
 
-        <TrackTaskModal></TrackTaskModal>
+          <TrackTaskModal></TrackTaskModal>
 
-        {backup ? <BackupAlert></BackupAlert> : undefined}
+          {backup ? <BackupAlert></BackupAlert> : undefined}
 
-        <ErrorToast />
-      </IonApp>
+          <ErrorToast />
+        </IonApp>
+      </ThemeProvider>
     </Suspense>
   );
 };
