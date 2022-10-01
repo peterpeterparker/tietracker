@@ -15,9 +15,6 @@ import {
 import React, {CSSProperties, FormEvent, useState} from 'react';
 import {useSelector} from 'react-redux';
 
-import DateFnsUtils from '@date-io/date-fns';
-import {DateTimePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
-
 import {useTranslation} from 'react-i18next';
 
 import {close} from 'ionicons/icons';
@@ -32,7 +29,10 @@ import {Settings as SettingsModel} from '../../../models/settings';
 
 import {pickerColor} from '../../../utils/utils.picker';
 
-import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
+import {InputAdornment, TextField} from '@mui/material';
+import {LocalizationProvider, MobileDateTimePicker} from '@mui/x-date-pickers';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {Calendar} from '@mui/x-date-pickers/internals/components/icons';
 import {TaskData} from '../../../models/task';
 import {ThemeService} from '../../../services/theme/theme.service';
 
@@ -112,7 +112,9 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
     setDescription($event.detail.value);
   }
 
-  return <MuiPickersUtilsProvider utils={DateFnsUtils}>{renderContent()}</MuiPickersUtilsProvider>;
+  return (
+    <LocalizationProvider dateAdapter={AdapterDateFns}>{renderContent()}</LocalizationProvider>
+  );
 
   function renderContent() {
     const color: string | undefined =
@@ -131,8 +133,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
                 '--color': colorContrast,
                 '--ion-toolbar-color': colorContrast,
               } as CSSProperties
-            }
-          >
+            }>
             <IonTitle>{t('tasks:create.title')}</IonTitle>
             <IonButtons slot="start">
               <IonButton onClick={() => props.closeAction()}>
@@ -181,8 +182,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
                 '--background-activated': colorContrast,
                 '--color-activated': color,
               } as CSSProperties
-            }
-          >
+            }>
             <IonLabel>{t('common:actions.submit')}</IonLabel>
           </IonButton>
 
@@ -206,8 +206,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
             interfaceOptions={{header: t('tasks:create.project')}}
             placeholder={t('tasks:create.project')}
             value={project}
-            onIonChange={($event: CustomEvent) => onProjectChange($event)}
-          >
+            onIonChange={($event: CustomEvent) => onProjectChange($event)}>
             {renderProjectOptions()}
           </IonSelect>
         </IonItem>
@@ -242,8 +241,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
         interfaceOptions={{header: t('tasks:tracker.description')}}
         placeholder={t('tasks:tracker.description')}
         value={description}
-        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}
-      >
+        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}>
         {settings.descriptions.map((description: string, i: number) => {
           return (
             <IonSelectOption value={description} key={`desc-${i}`}>
@@ -263,13 +261,20 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
         </IonItem>
 
         <IonItem className="item-input">
-          <DateTimePicker
+          <MobileDateTimePicker
             value={from}
-            onChange={(date: MaterialUiPickersDate) => setFrom(date as Date)}
+            onChange={(date: Date | null) => setFrom(date as Date)}
             aria-label={t('tasks:details.from')}
-            ampm={false}
             hideTabs={true}
-            format="yyyy/MM/dd HH:mm"
+            inputFormat="yyyy/MM/dd HH:mm"
+            renderInput={(params) => <TextField {...params} />}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Calendar />
+                </InputAdornment>
+              ),
+            }}
           />
         </IonItem>
 
@@ -278,13 +283,20 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
         </IonItem>
 
         <IonItem className="item-input">
-          <DateTimePicker
+          <MobileDateTimePicker
             value={to}
-            onChange={(date: MaterialUiPickersDate) => setTo(date as Date)}
+            onChange={(date: Date | null) => setTo(date as Date)}
             aria-label={t('tasks:details.to')}
-            ampm={false}
             hideTabs={true}
-            format="yyyy/MM/dd HH:mm"
+            inputFormat="yyyy/MM/dd HH:mm"
+            renderInput={(params) => <TextField {...params} />}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Calendar />
+                </InputAdornment>
+              ),
+            }}
           />
         </IonItem>
       </>

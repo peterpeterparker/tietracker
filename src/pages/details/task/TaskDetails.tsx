@@ -23,11 +23,6 @@ import {isSameDay, parse} from 'date-fns';
 
 import {useTranslation} from 'react-i18next';
 
-import {DateTimePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
-import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date';
-
-import DateFnsUtils from '@date-io/date-fns';
-
 import {Task} from '../../../models/task';
 
 import {Client} from '../../../models/client';
@@ -39,6 +34,10 @@ import {pickerColor} from '../../../utils/utils.picker';
 
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 
+import {InputAdornment, TextField} from '@mui/material';
+import {LocalizationProvider, MobileDateTimePicker} from '@mui/x-date-pickers';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {Calendar} from '@mui/x-date-pickers/internals/components/icons';
 import {ClientsService} from '../../../services/clients/clients.service';
 import {ProjectsService} from '../../../services/projects/projects.service';
 import {TasksService} from '../../../services/tasks/tasks.service';
@@ -195,7 +194,9 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     setDescription(($event.target as InputTargetEvent).value);
   }
 
-  return <MuiPickersUtilsProvider utils={DateFnsUtils}>{renderContent()}</MuiPickersUtilsProvider>;
+  return (
+    <LocalizationProvider dateAdapter={AdapterDateFns}>{renderContent()}</LocalizationProvider>
+  );
 
   function renderContent() {
     const color: string =
@@ -250,8 +251,9 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
               maxlength={256}
               value={description}
               input-mode="text"
-              onIonInput={($event: IonInputCustomEvent<InputEvent>) => onDescriptionChange($event)}
-            ></IonInput>
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                onDescriptionChange($event)
+              }></IonInput>
           </IonItem>
 
           <IonItem className="item-title">
@@ -259,13 +261,20 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
           </IonItem>
 
           <IonItem className="item-input">
-            <DateTimePicker
+            <MobileDateTimePicker
               value={from}
-              onChange={(date: MaterialUiPickersDate) => setFrom(date as Date)}
+              onChange={(date: Date | null) => setFrom(date as Date)}
               aria-label={t('tasks:details.from')}
-              ampm={false}
               hideTabs={true}
-              format="yyyy/MM/dd HH:mm"
+              inputFormat="yyyy/MM/dd HH:mm"
+              renderInput={(params) => <TextField {...params} />}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Calendar />
+                  </InputAdornment>
+                ),
+              }}
             />
           </IonItem>
 
@@ -274,13 +283,20 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
           </IonItem>
 
           <IonItem className="item-input">
-            <DateTimePicker
+            <MobileDateTimePicker
               value={to}
-              onChange={(date: MaterialUiPickersDate) => setTo(date as Date)}
+              onChange={(date: Date | null) => setTo(date as Date)}
               aria-label={t('tasks:details.to')}
-              ampm={false}
               hideTabs={true}
-              format="yyyy/MM/dd HH:mm"
+              inputFormat="yyyy/MM/dd HH:mm"
+              renderInput={(params) => <TextField {...params} />}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Calendar />
+                  </InputAdornment>
+                ),
+              }}
             />
           </IonItem>
         </IonList>
@@ -299,8 +315,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
                 '--background-activated': colorContrast,
                 '--color-activated': color,
               } as CSSProperties
-            }
-          >
+            }>
             <IonLabel>{t('common:actions.update')}</IonLabel>
           </IonButton>
 
@@ -309,8 +324,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
             onClick={() => deleteTask()}
             color="button"
             fill="outline"
-            disabled={saving || disableActions}
-          >
+            disabled={saving || disableActions}>
             <IonLabel>{t('common:actions.delete')}</IonLabel>
           </IonButton>
 
