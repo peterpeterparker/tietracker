@@ -1,3 +1,15 @@
+<a name="1.12.0"></a>
+
+# 1.12.0 (2022-10-02)
+
+### Features
+
+- Excel export "duration" as value instead of formula to make the data compatible with Numbers
+
+### Build
+
+- upgrade all dependencies
+
 <a name="1.11.0"></a>
 
 # 1.11.0 (2022-01-04)
