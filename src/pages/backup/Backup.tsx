@@ -59,8 +59,6 @@ const Backup: React.FC<RootProps> = (props) => {
       return;
     }
 
-    // TODO: does not work on native iOS
-
     const file: File | undefined | null = inputRef.current.files?.[0];
 
     present({
