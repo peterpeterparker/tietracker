@@ -6,8 +6,10 @@
   <p><strong>Tie Tracker</strong> - A simple, open source and free time tracking app ⏱️</p>
   
   <br/>
-  
-  ![Website](https://img.shields.io/website?label=Progressive%20Web%20Apps&url=https%3A%2F%2Ftietracker.com)
+
+  ![App Store](https://img.shields.io/static/v1?label=App%20Store&message=Download&color=ff69b4&url=https%3A%2F%2Fapps.apple.com%2Fus%2Fapp%2Ftie-tracker%2Fid1493399075) 
+  ![Google Play](https://img.shields.io/static/v1?label=Google%20Play&message=Download&color=ff69b4&url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.tietracker.app)
+  ![Website](https://img.shields.io/static/v1?label=Web&message=Open&color=success&url=https%3A%2F%2Ftietracker.com)
   [![GitHub release](https://img.shields.io/github/release/peterpeterparker/tietracker/all?logo=GitHub)](https://github.com/peterpeterparker/tietracker/releases/latest)
 </div>
 
