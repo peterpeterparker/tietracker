@@ -12,15 +12,3 @@ ion-tab-button {
     }
   }
 }
-
-body.dark {
-  ion-tab-button {
-    --color-selected: var(--ion-color-warning);
-
-    .tab-selected {
-      ion-icon {
-        color: var(--ion-color-warning);
-      }
-    }
-  }
-}
