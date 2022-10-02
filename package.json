@@ -12,7 +12,8 @@
     "prettier": "prettier --write 'src/**/*.{ts,js,css,html,jsx,tsx}' && prettier --write 'public/workers/**/*.{ts,js,css,html,jsx,tsx}' && prettier --write '*.md'",
     "postinstall": "jetifier",
     "libs": "node scripts/download-libs.mjs",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "patch": "node ./scripts/patch-cordova-plugin-badge.mjs"
   },
   "dependencies": {
     "@awesome-cordova-plugins/core": "^5.45.0",

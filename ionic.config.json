@@ -1,5 +1,7 @@
 {
   "name": "tietracker",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react"
 }
