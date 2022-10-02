@@ -2,14 +2,15 @@
 
 android {
   compileOptions {
-      sourceCompatibility JavaVersion.VERSION_1_8
-      targetCompatibility JavaVersion.VERSION_1_8
+      sourceCompatibility JavaVersion.VERSION_11
+      targetCompatibility JavaVersion.VERSION_11
   }
 }
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
     implementation project(':capacitor-splash-screen')
+    implementation "androidx.webkit:webkit:1.4.0"
     implementation "com.android.support:support-v4:26.+"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
 }

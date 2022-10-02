@@ -1,6 +1,6 @@
 {
   "name": "tietracker",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "description": "A simple, open source and free time tracking app.",
   "private": true,
   "scripts": {
@@ -15,14 +15,14 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@awesome-cordova-plugins/core": "^5.37.0",
-    "@awesome-cordova-plugins/file": "^5.37.0",
-    "@awesome-cordova-plugins/local-notifications": "^5.37.0",
-    "@awesome-cordova-plugins/social-sharing": "^5.37.0",
-    "@capacitor/android": "^3.3.2",
-    "@capacitor/core": "^3.3.2",
-    "@capacitor/ios": "^3.3.2",
-    "@capacitor/splash-screen": "^1.1.6",
+    "@awesome-cordova-plugins/core": "^5.45.0",
+    "@awesome-cordova-plugins/file": "^5.45.0",
+    "@awesome-cordova-plugins/local-notifications": "^5.45.0",
+    "@awesome-cordova-plugins/social-sharing": "^5.45.0",
+    "@capacitor/android": "^4.3.0",
+    "@capacitor/core": "^4.3.0",
+    "@capacitor/ios": "^4.3.0",
+    "@capacitor/splash-screen": "^4.1.0",
     "@deckdeckgo/charts": "^2.3.0",
     "@deckdeckgo/color": "^4.1.0",
     "@deckdeckgo/utils": "^5.1.0",
@@ -34,10 +34,10 @@
     "@mui/styles": "^5.10.7",
     "@mui/x-date-pickers": "^5.0.3",
     "cordova-plugin-badge": "^0.8.8",
-    "cordova-plugin-device": "^2.0.3",
-    "cordova-plugin-file": "^6.0.2",
+    "cordova-plugin-device": "^2.1.0",
+    "cordova-plugin-file": "^7.0.0",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
-    "cordova-plugin-x-socialsharing": "^6.0.3",
+    "cordova-plugin-x-socialsharing": "^6.0.4",
     "date-fns": "^2.29.3",
     "es6-promise-plugin": "^4.2.2",
     "i18next": "^21.9.2",
@@ -66,7 +66,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@capacitor/cli": "^3.3.2",
+    "@capacitor/cli": "^4.3.0",
     "@types/jest": "^29.1.1",
     "@types/node": "^18.7.23",
     "@types/react": "^17.0.35",
