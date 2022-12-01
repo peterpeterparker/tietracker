@@ -1,5 +1,6 @@
 import type {IonInputCustomEvent} from '@ionic/core';
 import {
+  IonAlert,
   IonBackButton,
   IonButton,
   IonButtons,
@@ -63,12 +64,16 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
   const [saving, setSaving] = useState<boolean>(false);
 
   const [validFrom, setValidFrom] = useState<boolean>(true);
+
+  const [taskBilled, setTaskBilled] = useState<boolean>(false);
   const [disableActions, setDisableActions] = useState<boolean>(false);
 
   const [client, setClient] = useState<Client | undefined>(undefined);
   const [project, setProject] = useState<Project | undefined>(undefined);
 
   const headerRef: RefObject<any> = useRef();
+
+  const [showAlertDelete, setShowAlertDelete] = useState(false);
 
   useEffect(() => {
     const selectedDay: Date = parse(props.match.params.day, 'yyyy-MM-dd', new Date());
@@ -79,6 +84,12 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     setDisableActions(
       task === undefined ||
+        !task.data ||
+        (task.data.invoice && task.data.invoice.status === 'billed')
+    );
+
+    setTaskBilled(
+        task === undefined ||
         !task.data ||
         (task.data.invoice && task.data.invoice.status === 'billed')
     );
@@ -323,12 +334,34 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
           <IonButton
             type="button"
-            onClick={() => deleteTask()}
+            onClick={() => taskBilled ? setShowAlertDelete(true): deleteTask()}
             color="button"
             fill="outline"
-            disabled={saving || disableActions}>
+            disabled={saving}>
             <IonLabel>{t('common:actions.delete')}</IonLabel>
           </IonButton>
+
+          <IonAlert
+              isOpen={showAlertDelete}
+              onDidDismiss={() => setShowAlertDelete(false)}
+              header={t('tasks:delete.warning')}
+              message={t('tasks:delete.message')}
+              buttons={[
+                {
+                  text: t('common:actions.cancel'),
+                  role: 'cancel',
+                  handler: async () => {
+                    setShowAlertDelete(false)
+                  },
+                },
+                {
+                  text: t('common:actions.delete'),
+                  handler: async () => {
+                    await deleteTask();
+                  },
+                },
+              ]}
+          />
 
           <button type="button" onClick={goBack} disabled={saving}>
             {t('common:actions.cancel')}
