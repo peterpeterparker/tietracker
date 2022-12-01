@@ -22,5 +22,9 @@
   "create": {
     "title": "Create a new task",
     "project": "Project"
+  },
+  "delete": {
+    "warning": "WARNING",
+    "message": "This entry has been billed. Are you sure you want to delete it?"
   }
 }
