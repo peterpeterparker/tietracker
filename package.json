@@ -1,6 +1,6 @@
 {
   "name": "tietracker",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "A simple, open source and free time tracking app.",
   "private": true,
   "scripts": {

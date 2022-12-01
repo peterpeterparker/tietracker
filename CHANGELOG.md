@@ -1,3 +1,11 @@
+<a name="1.13.0"></a>
+
+# 1.13.0 (2022-12-01)
+
+### Features
+
+- make deleting entries that have been billed possible
+
 <a name="1.12.0"></a>
 
 # 1.12.0 (2022-10-02)
