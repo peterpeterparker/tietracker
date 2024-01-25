@@ -1,7 +1,8 @@
 {
-  "invoices": "Invoices have been or have to be invoices for a period from <strong>{{from}}</strong> to <strong>{{to}}</strong>.",
-  "text": "If a part of this period is over and related invoices have been billed, you can close the timeframe.",
-  "text-more": "This function can be useful for example when you want to close an accounting year.",
+  "invoices": "Invoices have been or need to be issued for the period from <strong>{{from}}</strong> to <strong>{{to}}</strong>.",
+  "no_invoices": "Invoices are issued or need to be issued for an unspecified period.",
+  "text": "If a portion of this period has elapsed and the related invoices have been issued, you may close the timeframe.",
+  "text-more": "This function can be useful, for instance, when you need to close an accounting year.",
   "close": "Close selected period",
   "alert": {
     "warning": "WARNING",

@@ -93,6 +93,24 @@ const Period: React.FC = () => {
     await initPeriod();
   };
 
+  const renderPeriod = () => {
+    if (period?.from === undefined && period?.to === undefined) {
+      return <p className={`${styles.text} ion-padding-top`}>{t('period:no_invoices')}</p>;
+    }
+
+    return (
+      <p
+        className={`${styles.text} ion-padding-top`}
+        dangerouslySetInnerHTML={{
+          __html: t('period:invoices', {
+            from: format(period?.from) ?? t('period:unknown'),
+            to: format(period?.to) ?? t('period:unknown'),
+          }),
+        }}
+      ></p>
+    );
+  };
+
   return (
     <IonPage>
       <IonContent>
@@ -106,15 +124,7 @@ const Period: React.FC = () => {
           </IonHeader>
 
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <p
-              className={`${styles.text} ion-padding-top`}
-              dangerouslySetInnerHTML={{
-                __html: t('period:invoices', {
-                  from: format(period?.from) ?? t('period:unknown'),
-                  to: format(period?.to) ?? t('period:unknown'),
-                }),
-              }}
-            ></p>
+            {renderPeriod()}
 
             <p>{t('period:text')}</p>
 
