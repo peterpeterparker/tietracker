@@ -12,8 +12,6 @@ import {
   IonModal,
   IonPage,
   IonToolbar,
-  useIonViewDidEnter,
-  useIonViewDidLeave,
 } from '@ionic/react';
 
 import {search} from 'ionicons/icons';
@@ -43,11 +41,8 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   const [showModalClients, setShowModalClients] = useState(false);
   const [showModalTask, setShowModalTask] = useState(false);
 
-  const [modalPresented, setModalPresented] = useState(false);
-
   async function closeAndNavigate($event: CustomEvent) {
-    await setShowModalClients(false);
-    await setModalPresented(false);
+    setShowModalClients(false);
 
     if ($event && $event.detail && $event.detail.data) {
       props.history.push(`/client/${$event.detail.data}`);
@@ -55,31 +50,14 @@ const Home: React.FC<RouteComponentProps> = (props) => {
   }
 
   async function closeClientModal() {
-    await setShowModalClient(false);
-    await setModalPresented(false);
+    setShowModalClient(false);
   }
-
-  useIonViewDidEnter(() => {
-    document.addEventListener('ionModalDidPresent', updatePresented, {passive: true});
-  });
-
-  useIonViewDidLeave(() => {
-    document.removeEventListener('ionModalDidPresent', updatePresented, false);
-  });
-
-  const updatePresented = () => {
-    setModalPresented(true);
-  };
 
   return (
     <IonPage>
       <IonContent>
-        <IonModal
-          isOpen={showModalClient}
-          onDidDismiss={async () => await closeClientModal()}
-          className="fullscreen"
-        >
-          <CreateClientModal closeAction={async () => await closeClientModal()}></CreateClientModal>
+        <IonModal isOpen={showModalClient} onDidDismiss={closeClientModal} className="fullscreen">
+          <CreateClientModal closeAction={closeClientModal}></CreateClientModal>
         </IonModal>
 
         <IonModal
@@ -87,7 +65,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
           onDidDismiss={($event) => closeAndNavigate($event)}
           className="fullscreen"
         >
-          <ClientsModal presented={modalPresented}></ClientsModal>
+          <ClientsModal />
         </IonModal>
 
         <IonModal

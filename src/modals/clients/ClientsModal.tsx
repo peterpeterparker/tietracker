@@ -1,4 +1,4 @@
-import React, {CSSProperties, RefObject, useEffect, useRef, useState} from 'react';
+import {CSSProperties, RefObject, useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import type {IonSearchbarCustomEvent} from '@ionic/core';
@@ -23,20 +23,14 @@ import {close} from 'ionicons/icons';
 import styles from './ClientsModal.module.scss';
 
 import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
+import {rootConnector} from '../../store/thunks/index.thunks';
 
 import {Client} from '../../models/client';
 
-interface Props extends RootProps {
-  presented: boolean;
-}
-
-const ClientsModal: React.FC<Props> = (props) => {
+const ClientsModal = () => {
   const {t} = useTranslation('clients');
 
   const headerRef: RefObject<HTMLIonHeaderElement> | null = useRef(null);
-
-  const filterRef: RefObject<HTMLIonSearchbarElement> | null = useRef(null);
 
   const clients: Client[] | undefined = useSelector((state: RootState) => state.clients.clients);
 
@@ -46,17 +40,6 @@ const ClientsModal: React.FC<Props> = (props) => {
     setFilteredClients(clients === undefined ? [] : clients);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clients]);
-
-  useEffect(() => {
-    if (props.presented) {
-      focusFilter();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.presented]);
-
-  async function focusFilter() {
-    await filterRef?.current?.setFocus();
-  }
 
   function onFilter($event: IonSearchbarCustomEvent<KeyboardEvent>) {
     if (!$event) {
@@ -109,7 +92,6 @@ const ClientsModal: React.FC<Props> = (props) => {
           debounce={500}
           placeholder={t('search.filter')}
           className={styles.searchbar}
-          ref={filterRef}
           onIonInput={($event: IonSearchbarCustomEvent<KeyboardEvent>) => onFilter($event)}
         ></IonSearchbar>
 
