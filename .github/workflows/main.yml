@@ -17,7 +17,7 @@ jobs:
       - name: Build
         run: npm run build:pwa
       - name: Deploy to Firebase
-        uses: w9jds/firebase-action@13.0.3
+        uses: w9jds/firebase-action@v13.0.3
         with:
           args: deploy --only hosting
         env:
