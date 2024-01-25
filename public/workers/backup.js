@@ -15,7 +15,7 @@ self.onmessage = async ($event) => {
       $event.data.currency,
       $event.data.vat,
       $event.data.i18n,
-      $event.data.signature
+      $event.data.signature,
     );
   } else if ($event && $event.data && $event.data.msg === 'backup-idb') {
     await self.backupIdb();

@@ -43,7 +43,7 @@ export class InvoicesService {
     updateStateFunction: Function,
     projectId: string,
     from: Date,
-    to: Date
+    to: Date,
   ): Promise<void> {
     return new Promise<void>((resolve) => {
       const invoices: string[] | undefined = interval(from, to);

@@ -29,10 +29,8 @@ export class ThemeService {
       dark ? body.classList.add('dark') : body.classList.remove('dark');
     }
 
-    const { head } = document;
-    head?.children
-        ?.namedItem("theme-color")
-        ?.setAttribute("content", dark ? '#230f29' : '#fff');
+    const {head} = document;
+    head?.children?.namedItem('theme-color')?.setAttribute('content', dark ? '#230f29' : '#fff');
 
     try {
       await set('dark_mode', dark);
@@ -63,7 +61,7 @@ export class ThemeService {
 
     // Otherwise we check the prefers-color-scheme of the OS
     const darkModePreferenceFromMedia: MediaQueryList = window.matchMedia(
-      '(prefers-color-scheme: dark)'
+      '(prefers-color-scheme: dark)',
     );
 
     this.switch(darkModePreferenceFromMedia.matches);

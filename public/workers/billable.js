@@ -117,7 +117,7 @@ self.listInvoices = async (invoices, filterProjectId) => {
     invoices,
     projects,
     clients,
-    filterProjectId
+    filterProjectId,
   );
 
   const results = reduceAllProjects(projectsWithInvoices);

@@ -97,7 +97,7 @@ const WeekCharts: React.FC = () => {
               },
             ],
           };
-        })
+        }),
       );
     } else {
       setData(undefined);

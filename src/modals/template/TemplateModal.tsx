@@ -57,7 +57,7 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
         key: props.template ? props.template.key : uuid(),
         description: description as string,
       },
-      'edit'
+      'edit',
     );
   }
 

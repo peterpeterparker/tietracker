@@ -49,7 +49,7 @@ const Summary: React.FC<Props> = (props: Props) => {
             hours: acc.hours + value.hours,
           };
         },
-        {...open}
+        {...open},
       );
 
       setOpen(openSum);
@@ -74,7 +74,7 @@ const Summary: React.FC<Props> = (props: Props) => {
               <label>{t('billable')} </label>
               {formatCurrency(
                 summary !== undefined ? summary.total.today.billable : undefined,
-                settings.currency.currency
+                settings.currency.currency,
               )}
             </IonCardTitle>
           </IonCardHeader>
@@ -91,7 +91,7 @@ const Summary: React.FC<Props> = (props: Props) => {
               <label>{t('billable')} </label>
               {formatCurrency(
                 summary !== undefined ? summary.total.week.billable : undefined,
-                settings.currency.currency
+                settings.currency.currency,
               )}
             </IonCardTitle>
           </IonCardHeader>
@@ -119,7 +119,7 @@ const Summary: React.FC<Props> = (props: Props) => {
             <label>{t('billable')} </label>
             {formatCurrency(
               open !== undefined ? open.billable : undefined,
-              settings.currency.currency
+              settings.currency.currency,
             )}
           </IonCardTitle>
         </IonCardHeader>

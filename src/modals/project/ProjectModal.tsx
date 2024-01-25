@@ -93,24 +93,24 @@ const ProjectModal: React.FC<Props> = (props) => {
     setRate(
       project && project.data !== undefined && project.data.rate !== undefined
         ? project.data.rate.hourly
-        : undefined
+        : undefined,
     );
     setVat(
       project && project.data !== undefined && project.data.rate !== undefined
         ? project.data.rate.vat
-        : false
+        : false,
     );
     setEnabled(project && project.data !== undefined ? !project.data.disabled : false);
 
     setBudgetValue(
       project && project.data !== undefined && project.data.budget !== undefined
         ? project.data.budget.budget
-        : undefined
+        : undefined,
     );
     setBilled(
       project && project.data !== undefined && project.data.budget !== undefined
         ? project.data.budget.billed
-        : undefined
+        : undefined,
     );
     setBudgetType(project?.data?.budget?.type);
 

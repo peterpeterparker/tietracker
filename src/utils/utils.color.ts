@@ -1,7 +1,7 @@
 import {DeckdeckgoPalette, DEFAULT_PALETTE} from '@deckdeckgo/color';
 
 export const PALETTE: DeckdeckgoPalette[] = DEFAULT_PALETTE.filter(
-  (palette: DeckdeckgoPalette) => palette.color.hex !== '#ffffff'
+  (palette: DeckdeckgoPalette) => palette.color.hex !== '#ffffff',
 );
 
 // Ionic Color Generator: https://github.com/ionic-team/ionic-docs/blob/master/src/components/color-gen/color.ts
@@ -36,7 +36,7 @@ function hexToRgb(hex: string): RGB | undefined {
 export function contrast(
   colorHex: string | undefined,
   threshold: number = 128,
-  invert: boolean = false
+  invert: boolean = false,
 ): string {
   if (colorHex === undefined) {
     return invert ? '#fff' : '#000';

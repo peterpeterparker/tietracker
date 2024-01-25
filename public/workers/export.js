@@ -21,7 +21,7 @@ self.onmessage = async ($event) => {
       $event.data.client,
       $event.data.i18n,
       $event.data.type,
-      $event.data.signature
+      $event.data.signature,
     );
   }
 };
@@ -35,7 +35,7 @@ self.export = async (
   client,
   i18n,
   type,
-  signature
+  signature,
 ) => {
   if (!invoices || invoices.length <= 0) {
     self.postMessage(undefined);
@@ -63,7 +63,7 @@ self.export = async (
     client,
     i18n,
     type,
-    signature
+    signature,
   );
 
   await updateBudget(results.invoices, filterProjectId, bill);
@@ -83,7 +83,7 @@ async function exportInvoices(
   client,
   i18n,
   type,
-  signature
+  signature,
 ) {
   const promises = [];
 

@@ -33,12 +33,12 @@ const Tasks: React.FC<Props> = (props: Props) => {
   const {t} = useTranslation('tasks');
 
   const tasks: TaskItemStore[] | undefined = useSelector(
-    (state: RootState) => state.tasks.taskItems
+    (state: RootState) => state.tasks.taskItems,
   );
   const selecteDay: Date = useSelector((state: RootState) => state.tasks.taskItemsSelectedDate);
 
   const projects: Project[] | undefined = useSelector(
-    (state: RootState) => state.activeProjects.projects
+    (state: RootState) => state.activeProjects.projects,
   );
 
   function openDatePicker() {
@@ -76,7 +76,8 @@ const Tasks: React.FC<Props> = (props: Props) => {
           fill="outline"
           color="medium"
           size="small"
-          aria-label={t('entries.select_date')}>
+          aria-label={t('entries.select_date')}
+        >
           {t('entries.select_date')}
         </IonButton>
 
@@ -96,7 +97,8 @@ const Tasks: React.FC<Props> = (props: Props) => {
         fill="outline"
         color="medium"
         size="small"
-        aria-label={t('entries.add_task')}>
+        aria-label={t('entries.add_task')}
+      >
         {t('entries.add_task')}
       </IonButton>
     );
@@ -115,7 +117,8 @@ const Tasks: React.FC<Props> = (props: Props) => {
       <>
         <p
           className="placeholder"
-          dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></p>
+          dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}
+        ></p>
 
         <div className={styles.picker}>
           <MobileDatePicker

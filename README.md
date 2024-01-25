@@ -7,10 +7,11 @@
   
   <br/>
 
-  [![App Store](https://img.shields.io/static/v1?label=App%20Store&message=Download&color=ff69b4)](https://apps.apple.com/us/app/tie-tracker/id1493399075) 
-  [![Google Play](https://img.shields.io/static/v1?label=Google%20Play&message=Download&color=ff69b4)](https://play.google.com/store/apps/details?id=com.tietracker.app)
-  [![Website](https://img.shields.io/static/v1?label=Web&message=Open&color=success)](https://tietracker.com)
-  [![GitHub release](https://img.shields.io/github/release/peterpeterparker/tietracker/all?logo=GitHub)](https://github.com/peterpeterparker/tietracker/releases/latest)
+[![App Store](https://img.shields.io/static/v1?label=App%20Store&message=Download&color=ff69b4)](https://apps.apple.com/us/app/tie-tracker/id1493399075)
+[![Google Play](https://img.shields.io/static/v1?label=Google%20Play&message=Download&color=ff69b4)](https://play.google.com/store/apps/details?id=com.tietracker.app)
+[![Website](https://img.shields.io/static/v1?label=Web&message=Open&color=success)](https://tietracker.com)
+[![GitHub release](https://img.shields.io/github/release/peterpeterparker/tietracker/all?logo=GitHub)](https://github.com/peterpeterparker/tietracker/releases/latest)
+
 </div>
 
 ## Table of contents

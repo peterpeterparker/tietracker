@@ -31,9 +31,8 @@ export function startTask(project: Project, settings: Settings): RootThunkResult
 
 export function updateTask(data: TaskInProgress): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {
-    const task: TaskInProgress | undefined = await TasksService.getInstance().updateTaskInProgress(
-      data
-    );
+    const task: TaskInProgress | undefined =
+      await TasksService.getInstance().updateTaskInProgress(data);
 
     dispatch({type: UPDATE_TASK, payload: task});
   };
@@ -41,7 +40,7 @@ export function updateTask(data: TaskInProgress): RootThunkResult<Promise<void>>
 
 export function stopTask(
   delayDispatch: number = 0,
-  roundTime: number
+  roundTime: number,
 ): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {
     await TasksService.getInstance().stop(roundTime);

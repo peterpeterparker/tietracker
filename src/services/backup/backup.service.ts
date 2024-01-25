@@ -80,7 +80,7 @@ export class BackupService {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const fileHandle: FileSystemFileHandle = await getNewFileHandle(
-          type === 'excel' ? 'xlsx' : 'zip'
+          type === 'excel' ? 'xlsx' : 'zip',
         );
 
         if (!fileHandle) {
@@ -123,7 +123,7 @@ export class BackupService {
             await shareMobile(
               `Tie Tracker - Backup - ${format(new Date(), 'yyyy-MM-dd')}`,
               dir.nativeURL,
-              filename
+              filename,
             );
           }
         };

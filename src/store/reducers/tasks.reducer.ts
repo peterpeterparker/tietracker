@@ -26,7 +26,7 @@ const initialState: TaskState = {
 
 export function tasksReducer(
   state = initialState,
-  action: TaskActionTypes | TasksActionTypes
+  action: TaskActionTypes | TasksActionTypes,
 ): TaskState {
   switch (action.type) {
     case INIT_TASK:

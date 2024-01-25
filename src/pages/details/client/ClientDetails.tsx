@@ -74,14 +74,14 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
   const [selectedProjectId, setSelectedProjectId] = useState<string | undefined>(undefined);
   const [projectModalAction, setProjectModalAction] = useState<ProjectModalAction | undefined>(
-    undefined
+    undefined,
   );
 
   useIonViewWillEnter(async () => {
     setSaving(false);
 
     const client: Client | undefined = await ClientsService.getInstance().find(
-      props.match.params.id
+      props.match.params.id,
     );
     setClient(client);
 
@@ -104,7 +104,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
   async function loadProjects() {
     const projects: Project[] | undefined = await ProjectsService.getInstance().listForClient(
-      props.match.params.id
+      props.match.params.id,
     );
     setProjects(projects);
   }
@@ -142,7 +142,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
       client !== undefined &&
         client.data !== undefined &&
         client.data.name !== undefined &&
-        client.data.name.length >= 3
+        client.data.name.length >= 3,
     );
   }
 

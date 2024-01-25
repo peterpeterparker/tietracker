@@ -1,11 +1,13 @@
 div.MuiPickersToolbar-root {
   background: var(--picker-background, var(--ion-color-primary));
 
-  .MuiTypography-overline, button.MuiPickersToolbar-penIconButton {
+  .MuiTypography-overline,
+  button.MuiPickersToolbar-penIconButton {
     display: none;
   }
 
-  span, button > span {
+  span,
+  button > span {
     color: var(--picker-color, var(--ion-color-dark));
 
     &.Mui-selected {
@@ -16,7 +18,9 @@ div.MuiPickersToolbar-root {
 }
 
 div.MuiClockPicker-root {
-  div.MuiClock-pin, div.MuiClockPointer-root, span.MuiClockNumber-root.Mui-selected {
+  div.MuiClock-pin,
+  div.MuiClockPointer-root,
+  span.MuiClockNumber-root.Mui-selected {
     background-color: var(--picker-background);
     color: var(--picker-color);
   }

@@ -5,7 +5,7 @@ import {DirectoryEntry, File} from '@awesome-cordova-plugins/file';
 import {SocialSharing} from '@awesome-cordova-plugins/social-sharing';
 
 export async function getNewFileHandle(
-  type: 'pdf' | 'xlsx' | 'zip'
+  type: 'pdf' | 'xlsx' | 'zip',
 ): Promise<FileSystemFileHandle> {
   const xlsxOpts: SaveFilePickerOptions = {
     types: [
@@ -45,7 +45,7 @@ export async function getNewFileHandle(
 
 export async function writeFile(
   fileHandle: FileSystemFileHandle,
-  contents: string | BufferSource | Blob
+  contents: string | BufferSource | Blob,
 ) {
   // Create a writer (request permission if necessary).
   const writer = await fileHandle.createWritable();
@@ -59,7 +59,7 @@ export function getMobileDir(): Promise<DirectoryEntry> {
   return new Promise<DirectoryEntry>(async (resolve, reject) => {
     try {
       const rootDir: DirectoryEntry = await File.resolveDirectoryUrl(
-        isPlatform('ios') ? File.syncedDataDirectory : File.dataDirectory
+        isPlatform('ios') ? File.syncedDataDirectory : File.dataDirectory,
       );
 
       rootDir.getDirectory(
@@ -70,7 +70,7 @@ export function getMobileDir(): Promise<DirectoryEntry> {
         },
         (err) => {
           reject(new Error('Directory not found or not created.'));
-        }
+        },
       );
     } catch (e) {
       reject(e);

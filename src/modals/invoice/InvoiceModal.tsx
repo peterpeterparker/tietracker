@@ -108,7 +108,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
               billable: props.invoice.billable,
               hours: props.invoice.hours,
             }
-          : undefined
+          : undefined,
       );
     } else {
       setFrom(undefined);
@@ -134,7 +134,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
           settings.vat,
           bill,
           type,
-          settings.signature
+          settings.signature,
         );
       } else if (isPlatform('hybrid')) {
         await ExportService.getInstance().exportMobileFileSystem(
@@ -145,7 +145,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
           settings.vat,
           bill,
           type,
-          settings.signature
+          settings.signature,
         );
       } else {
         await ExportService.getInstance().exportDownload(
@@ -156,7 +156,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
           settings.vat,
           bill,
           type,
-          settings.signature
+          settings.signature,
         );
       }
 
@@ -194,12 +194,12 @@ const InvoiceModal: React.FC<Props> = (props) => {
                 billable: data.billable,
                 hours: data.hours,
               }
-            : undefined
+            : undefined,
         );
       },
       props.invoice.project_id,
       from,
-      to
+      to,
     );
   }
 
@@ -280,7 +280,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
               hours: formatTime(billable.hours * 3600 * 1000),
               ratio,
             }),
-          }}></p>
+          }}
+        ></p>
       );
     }
 
@@ -291,7 +292,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
             amount: formatCurrency(billable.billable, settings.currency.currency),
             hours: formatTime(billable.hours * 3600 * 1000),
           }),
-        }}></p>
+        }}
+      ></p>
     );
   }
 
@@ -309,7 +311,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
       props.invoice.project.budget.billed !== undefined ? props.invoice.project.budget.billed : 0;
     const cumulated: string = formatCurrency(
       billed + billable.billable,
-      settings.currency.currency
+      settings.currency.currency,
     );
 
     if (
@@ -319,7 +321,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
     ) {
       return (
         <p
-          dangerouslySetInnerHTML={{__html: t('invoices:invoice.billed', {amount: cumulated})}}></p>
+          dangerouslySetInnerHTML={{__html: t('invoices:invoice.billed', {amount: cumulated})}}
+        ></p>
       );
     }
 
@@ -327,7 +330,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
       <p
         dangerouslySetInnerHTML={{
           __html: t('invoices:invoice.budget', {amount: cumulated, ratio: ratio}),
-        }}></p>
+        }}
+      ></p>
     );
   }
 
@@ -389,7 +393,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
                 {'--background-checked': color, '--border-color-checked': color} as CSSProperties
               }
               checked={bill}
-              onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}></IonCheckbox>
+              onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}
+            ></IonCheckbox>
           </IonItem>
         </IonList>
 
@@ -421,7 +426,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--background-activated': colorContrast,
             '--color-activated': color,
           } as CSSProperties
-        }>
+        }
+      >
         <IonLabel>{t('export:excel')}</IonLabel>
       </IonButton>
     );
@@ -444,7 +450,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--background-activated': colorContrast,
             '--color-activated': color,
           } as CSSProperties
-        }>
+        }
+      >
         <IonLabel>{t('export:pdf')}</IonLabel>
       </IonButton>
     );

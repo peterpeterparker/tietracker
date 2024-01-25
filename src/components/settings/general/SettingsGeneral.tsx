@@ -25,7 +25,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
 
   useEffect(() => {
     setNotificationsOn(
-      props.settings.notifications !== undefined ? props.settings.notifications : false
+      props.settings.notifications !== undefined ? props.settings.notifications : false,
     );
     setBackup(props.settings.backup !== undefined ? props.settings.backup : true);
   }, [props.settings]);

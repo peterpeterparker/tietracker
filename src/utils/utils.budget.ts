@@ -42,6 +42,6 @@ export function budgetRatio({
       : differenceInYears(startOfYear(period.to), startOfYear(period.from));
 
   return new Intl.NumberFormat(i18n.language, {style: 'percent'}).format(
-    extra / (limit * (multiplyBudget + 1))
+    extra / (limit * (multiplyBudget + 1)),
   );
 }

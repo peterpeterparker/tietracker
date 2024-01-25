@@ -32,7 +32,7 @@ const Projects: React.FC<Props> = (props: Props) => {
   const {t} = useTranslation('projects');
 
   const projects: Project[] | undefined = useSelector(
-    (state: RootState) => state.activeProjects.projects
+    (state: RootState) => state.activeProjects.projects,
   );
   const task: Task | undefined = useSelector((state: RootState) => state.tasks.taskInProgress);
   const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
@@ -67,7 +67,7 @@ const Projects: React.FC<Props> = (props: Props) => {
         <div>
           {projects.map((project: Project) => {
             const colorContrast: string = contrast(
-              project.data.client ? project.data.client.color : undefined
+              project.data.client ? project.data.client.color : undefined,
             );
 
             return (

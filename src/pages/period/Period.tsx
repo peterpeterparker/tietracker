@@ -113,7 +113,8 @@ const Period: React.FC = () => {
                   from: format(period?.from) ?? t('period:unknown'),
                   to: format(period?.to) ?? t('period:unknown'),
                 }),
-              }}></p>
+              }}
+            ></p>
 
             <p>{t('period:text')}</p>
 
@@ -190,7 +191,8 @@ const Period: React.FC = () => {
           color="danger"
           onClick={doDeleteInvoices}
           style={{marginTop: '8px'}}
-          disabled={!valid}>
+          disabled={!valid}
+        >
           <IonLabel>{t('period:close')}</IonLabel>
         </IonButton>
       </>

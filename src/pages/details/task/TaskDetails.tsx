@@ -85,13 +85,13 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     setDisableActions(
       task === undefined ||
         !task.data ||
-        (task.data.invoice && task.data.invoice.status === 'billed')
+        (task.data.invoice && task.data.invoice.status === 'billed'),
     );
 
     setTaskBilled(
-        task === undefined ||
+      task === undefined ||
         !task.data ||
-        (task.data.invoice && task.data.invoice.status === 'billed')
+        (task.data.invoice && task.data.invoice.status === 'billed'),
     );
   }, [task]);
 
@@ -101,7 +101,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
     const task: Task | undefined = await TasksService.getInstance().find(
       props.match.params.id,
-      props.match.params.day
+      props.match.params.day,
     );
     setTask(task);
 
@@ -111,12 +111,12 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
       setDescription(task.data.description);
 
       const project: Project | undefined = await ProjectsService.getInstance().find(
-        task.data.project_id
+        task.data.project_id,
       );
       setProject(project);
 
       const client: Client | undefined = await ClientsService.getInstance().find(
-        task.data.client_id
+        task.data.client_id,
       );
       setClient(client);
     } else {
@@ -262,9 +262,8 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
               maxlength={256}
               value={description}
               input-mode="text"
-              onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
-                onDescriptionChange($event)
-              }></IonInput>
+              onIonInput={($event: IonInputCustomEvent<InputEvent>) => onDescriptionChange($event)}
+            ></IonInput>
           </IonItem>
 
           <IonItem className="item-title">
@@ -328,39 +327,41 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
                 '--background-activated': colorContrast,
                 '--color-activated': color,
               } as CSSProperties
-            }>
+            }
+          >
             <IonLabel>{t('common:actions.update')}</IonLabel>
           </IonButton>
 
           <IonButton
             type="button"
-            onClick={() => taskBilled ? setShowAlertDelete(true): deleteTask()}
+            onClick={() => (taskBilled ? setShowAlertDelete(true) : deleteTask())}
             color="button"
             fill="outline"
-            disabled={saving}>
+            disabled={saving}
+          >
             <IonLabel>{t('common:actions.delete')}</IonLabel>
           </IonButton>
 
           <IonAlert
-              isOpen={showAlertDelete}
-              onDidDismiss={() => setShowAlertDelete(false)}
-              header={t('tasks:delete.warning')}
-              message={t('tasks:delete.message')}
-              buttons={[
-                {
-                  text: t('common:actions.cancel'),
-                  role: 'cancel',
-                  handler: async () => {
-                    setShowAlertDelete(false)
-                  },
+            isOpen={showAlertDelete}
+            onDidDismiss={() => setShowAlertDelete(false)}
+            header={t('tasks:delete.warning')}
+            message={t('tasks:delete.message')}
+            buttons={[
+              {
+                text: t('common:actions.cancel'),
+                role: 'cancel',
+                handler: async () => {
+                  setShowAlertDelete(false);
                 },
-                {
-                  text: t('common:actions.delete'),
-                  handler: async () => {
-                    await deleteTask();
-                  },
+              },
+              {
+                text: t('common:actions.delete'),
+                handler: async () => {
+                  await deleteTask();
                 },
-              ]}
+              },
+            ]}
           />
 
           <button type="button" onClick={goBack} disabled={saving}>

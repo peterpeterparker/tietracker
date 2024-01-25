@@ -49,7 +49,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
   const [to, setTo] = useState<Date>(new Date());
 
   const projects: Project[] | undefined = useSelector(
-    (state: RootState) => state.activeProjects.projects
+    (state: RootState) => state.activeProjects.projects,
   );
   const settings: SettingsModel = useSelector((state: RootState) => state.settings.settings);
 
@@ -133,7 +133,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
                 '--color': colorContrast,
                 '--ion-toolbar-color': colorContrast,
               } as CSSProperties
-            }>
+            }
+          >
             <IonTitle>{t('tasks:create.title')}</IonTitle>
             <IonButtons slot="start">
               <IonButton onClick={() => props.closeAction()}>
@@ -182,7 +183,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
                 '--background-activated': colorContrast,
                 '--color-activated': color,
               } as CSSProperties
-            }>
+            }
+          >
             <IonLabel>{t('common:actions.submit')}</IonLabel>
           </IonButton>
 
@@ -206,7 +208,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
             interfaceOptions={{header: t('tasks:create.project')}}
             placeholder={t('tasks:create.project')}
             value={project}
-            onIonChange={($event: CustomEvent) => onProjectChange($event)}>
+            onIonChange={($event: CustomEvent) => onProjectChange($event)}
+          >
             {renderProjectOptions()}
           </IonSelect>
         </IonItem>
@@ -241,7 +244,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
         interfaceOptions={{header: t('tasks:tracker.description')}}
         placeholder={t('tasks:tracker.description')}
         value={description}
-        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}>
+        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}
+      >
         {settings.descriptions.map((description: string, i: number) => {
           return (
             <IonSelectOption value={description} key={`desc-${i}`}>

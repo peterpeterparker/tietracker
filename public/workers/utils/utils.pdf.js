@@ -64,8 +64,8 @@ const initPdfColumns = (invoices, i18n, total) => {
         index === 0
           ? firstColumnLength
           : index < columns.length - 1
-          ? columnLength
-          : lastColumnLength,
+            ? columnLength
+            : lastColumnLength,
     };
   });
 

@@ -87,7 +87,7 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
   function openAddTemplate(
     $event: React.MouseEvent | React.TouchEvent,
     template: Template | undefined,
-    action: 'edit' | 'add'
+    action: 'edit' | 'add',
   ) {
     if (reorder && action === 'edit') {
       return;
@@ -105,14 +105,14 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
     }
 
     const exist: boolean = templates.some(
-      (filteredTemplate: Template) => filteredTemplate.key === template.key
+      (filteredTemplate: Template) => filteredTemplate.key === template.key,
     );
 
     if (exist) {
       setTemplates(
         templates.map((filteredTemplate: Template) =>
-          filteredTemplate.key === template.key ? template : filteredTemplate
-        )
+          filteredTemplate.key === template.key ? template : filteredTemplate,
+        ),
       );
     } else {
       setTemplates([...templates, template]);
@@ -125,7 +125,7 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
     }
 
     setTemplates(
-      templates.filter((filteredTemplate: Template) => filteredTemplate.key !== template.key)
+      templates.filter((filteredTemplate: Template) => filteredTemplate.key !== template.key),
     );
   }
 

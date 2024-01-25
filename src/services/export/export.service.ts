@@ -42,7 +42,7 @@ export class ExportService {
     vat: number | undefined,
     bill: boolean,
     type: 'xlsx' | 'pdf',
-    signature: string | undefined
+    signature: string | undefined,
   ): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (invoice === undefined || invoice.project_id === undefined) {
@@ -89,7 +89,7 @@ export class ExportService {
     vat: number | undefined,
     bill: boolean,
     type: 'xlsx' | 'pdf',
-    signature: string | undefined
+    signature: string | undefined,
   ): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (invoice === undefined || invoice.project_id === undefined) {
@@ -131,7 +131,7 @@ export class ExportService {
     vat: number | undefined,
     bill: boolean,
     type: 'xlsx' | 'pdf',
-    signature: string | undefined
+    signature: string | undefined,
   ): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
       if (invoice === undefined || invoice.project_id === undefined) {
@@ -182,7 +182,7 @@ export class ExportService {
     invoice: Invoice,
     from: Date | undefined,
     to: Date | undefined,
-    type: 'xlsx' | 'pdf'
+    type: 'xlsx' | 'pdf',
   ): string {
     const name: string = invoice.client && invoice.client.name ? invoice.client.name : 'export';
     return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${
@@ -197,7 +197,7 @@ export class ExportService {
     vat: number | undefined,
     bill: boolean,
     type: 'xlsx' | 'pdf',
-    signature: string | undefined
+    signature: string | undefined,
   ) {
     await i18next.loadNamespaces('export');
 

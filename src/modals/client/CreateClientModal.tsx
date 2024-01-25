@@ -108,7 +108,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
 
   function validateClientName() {
     setValidClientName(
-      clientData !== undefined && clientData.name !== undefined && clientData.name.length >= 3
+      clientData !== undefined && clientData.name !== undefined && clientData.name.length >= 3,
     );
   }
 
@@ -246,7 +246,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
         projectData.name !== undefined &&
         projectData.name.length >= 3 &&
         projectData.rate &&
-        projectData.rate.hourly >= 0
+        projectData.rate.hourly >= 0,
     );
   }
 

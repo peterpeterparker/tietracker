@@ -158,8 +158,8 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                     <IonIcon src="/assets/icon/logo-grey.svg" aria-label="Tie Tracker logo" />
                   )}
                   <Translation ns="common">
-                      {(t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>}
-                    </Translation>
+                    {(t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>}
+                  </Translation>
                 </IonTabButton>
                 <IonTabButton tab="invoices" href="/invoices">
                   <IonIcon icon={card} />
