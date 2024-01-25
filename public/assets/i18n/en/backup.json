@@ -1,6 +1,6 @@
 {
-  "title": "Weekly Backup",
-  "message": "Export all open entries?",
+  "title": "⚠️ Weekly Backup ⚠️",
+  "message": "It is important that you back up your data frequently – <strong>at least once a week</strong> – as the OS might delete those in case of inactivity. Would you like to export all open entries now?",
   "backup": "Backup",
   "backup_idb": "Backup and Restore",
   "backup_invoices": "Save all open invoices",
