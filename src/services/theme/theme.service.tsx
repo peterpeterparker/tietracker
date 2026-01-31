@@ -26,6 +26,7 @@ export class ThemeService {
     const body: HTMLElement | null = document.querySelector('body');
 
     if (body) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       dark ? body.classList.add('dark') : body.classList.remove('dark');
     }
 
