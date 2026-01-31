@@ -8,12 +8,19 @@ ion-item.item {
     --inner-padding-end: 0;
   }
 
+  &.item-radio {
+    --padding-start: 0;
+    --padding-end: 0;
+    --inner-padding-start: 8px;
+    --inner-padding-end: 8px;
+  }
+
   ion-input[class*="sc-ion-input"],
   ion-textarea[class*="sc-ion-textarea"],
   div.MuiFormControl-root,
   ion-select {
     --padding-start: 8px;
-    --background: var(--ion-color-card);
+    --background: var(--ion-color-light);
     background: var(--ion-color-light);
     border: 1px solid var(--ion-color-card-border);
     border-radius: 4px;

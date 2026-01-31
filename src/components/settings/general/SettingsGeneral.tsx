@@ -72,7 +72,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
       </IonItem>
 
       <IonItem className="item-input item-radio with-padding">
-        <IonLabel>
+        <IonLabel style={{flex: 1}}>
           {darkTheme ? t('general.mode.dark') : t('general.mode.light')} {darkTheme ? '🌑' : '☀️'}
         </IonLabel>
         <IonToggle
@@ -101,7 +101,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
         </IonItem>
 
         <IonItem className="item-input item-radio with-padding">
-          <IonLabel>
+          <IonLabel style={{flex: 1}}>
             {notificationsOn ? t('general.notifications.body') : t('general.notifications.dont')}
           </IonLabel>
           <IonToggle
@@ -123,7 +123,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
         </IonItem>
 
         <IonItem className="item-input item-radio with-padding">
-          <IonLabel>{backup ? t('general.backup.on') : t('general.backup.off')}</IonLabel>
+          <IonLabel style={{flex: 1}}>{backup ? t('general.backup.on') : t('general.backup.off')}</IonLabel>
           <IonToggle
             slot="end"
             checked={backup}

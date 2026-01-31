@@ -134,7 +134,7 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
           <IonLabel>
             {filteredCurrencies[key].name} ({key})
           </IonLabel>
-          <IonRadio value={key} />
+          <IonRadio slot="end" value={key} />
         </IonItem>
       );
     });
