@@ -79,6 +79,9 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     }
 
     setClientData(data);
+
+    // Imperative check to not hook on an effect
+    setValidClientName(data !== undefined && data.name !== undefined && data.name.length >= 3);
   }
 
   function validateClientName() {
@@ -145,6 +148,15 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     }
 
     setProjectData(data);
+
+    // Imperative check to not hook on an effect
+    setValidProject(
+      data !== undefined &&
+        data.name !== undefined &&
+        data.name.length >= 3 &&
+        data.rate &&
+        data.rate.hourly >= 0,
+    );
   }
 
   function handleProjectBudgetInput($event: IonInputCustomEvent<InputInputEventDetail>) {
@@ -352,10 +364,9 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   maxlength={32}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
-                    handleClientNameInput($event)
-                  }
-                  onIonChange={() => validateClientName()}></IonInput>
+                  onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) => {
+                    handleClientNameInput($event);
+                  }}></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title ion-margin-top">
@@ -405,8 +416,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   input-mode="text"
                   onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
                     handleProjectRateInput($event)
-                  }
-                  onIonChange={() => validateProject()}></IonInput>
+                  }></IonInput>
               </IonItem>
 
               {renderBudget()}
