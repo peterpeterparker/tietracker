@@ -16,7 +16,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
+import React, {CSSProperties, FormEvent, RefObject, useRef, useState} from 'react';
 
 import {useSelector} from 'react-redux';
 
@@ -30,7 +30,7 @@ import {Client, ClientData} from '../../models/client';
 import {ProjectData} from '../../models/project';
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
-import {contrast, PALETTE} from '../../utils/utils.color';
+import {contrast} from '../../utils/utils.color';
 
 import {Settings} from '../../models/settings';
 import {ThemeService} from '../../services/theme/theme.service';
@@ -48,7 +48,6 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
   const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
   const clientNameRef: RefObject<any> = useRef(undefined);
-  const clientColorRef: RefObject<any> = useRef(undefined);
   const projectNameRef: RefObject<any> = useRef(undefined);
   const projectRateRef: RefObject<any> = useRef(undefined);
   const projectBudgetRef: RefObject<any> = useRef(undefined);
@@ -66,27 +65,6 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     clientDataRef.current = data;
     _setClientData(data);
   };
-
-  useEffect(() => {
-    const ref = clientColorRef.current;
-
-    ref.addEventListener('colorChange', selectColor, false);
-
-    return () => ref.removeEventListener('colorChange', selectColor, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    setValidClientColor(clientData !== undefined && clientData.color !== undefined);
-  }, [clientData]);
-
-  useEffect(() => {
-    if (!clientColorRef || !clientColorRef.current) {
-      return;
-    }
-
-    clientColorRef.current.palette = PALETTE;
-  }, [clientColorRef]);
 
   function handleClientNameInput($event: IonInputCustomEvent<InputInputEventDetail>) {
     let data: ClientData;
@@ -109,15 +87,17 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     );
   }
 
-  const selectColor = ($event: CustomEvent) => {
+  function handleColorChange($event: React.ChangeEvent<HTMLInputElement>) {
     if (!clientDataRef.current) {
       return;
     }
 
     const data: ClientData = {...clientDataRef.current};
-    data.color = $event.detail.hex;
+    data.color = $event.target.value;
     setClientData(data);
-  };
+
+    setValidClientColor(true);
+  }
 
   function handleProjectNameInput($event: IonInputCustomEvent<InputInputEventDetail>) {
     if (!clientData) {
@@ -288,10 +268,6 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
       clientNameRef.current.value = undefined;
     }
 
-    if (clientColorRef && clientColorRef.current) {
-      clientColorRef.current.value = undefined;
-    }
-
     if (projectNameRef && projectNameRef.current) {
       projectNameRef.current.value = undefined;
     }
@@ -386,12 +362,19 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                 <IonLabel>{t('clients:create.color')}</IonLabel>
               </IonItem>
 
-              <div className={styles.color + ` ${!validClientName ? 'disabled' : ''}`}>
-                {/* @ts-ignore */}
-                <deckgo-color ref={clientColorRef} className="ion-padding-bottom">
-                  {/* @ts-ignore */}
-                </deckgo-color>
-              </div>
+              <IonItem disabled={!validClientName} className={styles.color}>
+                <input
+                  type="color"
+                  value={clientData?.color}
+                  onChange={handleColorChange}
+                  disabled={!validClientName}
+                  style={{
+                    margin: '0',
+                    outline: '0',
+                    padding: '0',
+                  }}
+                />
+              </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title ion-margin-top">
                 <IonLabel>{t('clients:create.project')}</IonLabel>

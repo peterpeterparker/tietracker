@@ -7,38 +7,7 @@ import {rootReducer} from './store/reducers/index';
 
 import {thunk} from 'redux-thunk'; // Changed import
 
-import {
-  applyPolyfills,
-  defineCustomElements as colorDefineCustomElements,
-  JSX as ColorJSX,
-} from '@deckdeckgo/color/dist/loader';
-
 import {setupIonicReact} from '@ionic/react';
-import {DetailedHTMLProps, HTMLAttributes} from 'react';
-
-type StencilProps<T> = {
-  [P in keyof T]?: Omit<T[P], 'ref'> | HTMLAttributes<T>;
-};
-
-type ReactProps<T> = {
-  [P in keyof T]?: DetailedHTMLProps<HTMLAttributes<T[P]>, T[P]>;
-};
-
-type AllStencilElements = ColorJSX.IntrinsicElements;
-
-type StencilToReact<T = AllStencilElements, U = HTMLElementTagNameMap> = StencilProps<T> &
-  ReactProps<U>;
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  export namespace JSX {
-    interface IntrinsicElements extends StencilToReact {}
-  }
-}
-
-applyPolyfills().then(async () => {
-  await colorDefineCustomElements(window);
-});
 
 setupIonicReact({
   backButtonText: '',

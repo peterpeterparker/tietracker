@@ -15,6 +15,17 @@ ion-item.item {
     --inner-padding-end: 8px;
   }
 
+  &:has(input[type="color"]) {
+    padding: 0;
+  }
+
+  input[type="color"] {
+    height: 48px;
+    width: 100%;
+    background: var(--ion-color-light);
+    border: 0;
+  }
+
   ion-input[class*="sc-ion-input"],
   ion-textarea[class*="sc-ion-textarea"],
   div.MuiFormControl-root,
