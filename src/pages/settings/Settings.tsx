@@ -2,11 +2,11 @@ import React, {FormEvent, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonLabel,
   IonPage,
   IonSegment,
@@ -15,6 +15,7 @@ import {
   IonToast,
   IonToolbar,
 } from '@ionic/react';
+import {chevronBackOutline} from 'ionicons/icons';
 
 import {useTranslation} from 'react-i18next';
 
@@ -74,7 +75,9 @@ const Settings: React.FC<RootProps> = (props) => {
           <IonHeader>
             <IonToolbar className="title">
               <IonButtons slot="start">
-                <IonBackButton defaultHref="/more" />
+                <IonButton routerLink="/more" routerDirection="back">
+                  <IonIcon icon={chevronBackOutline} slot="icon-only" />
+                </IonButton>
               </IonButtons>
             </IonToolbar>
             <IonToolbar className="title">{renderSettingsCategory()}</IonToolbar>

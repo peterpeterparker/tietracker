@@ -1,12 +1,14 @@
 import {
-  IonBackButton,
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonPage,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import {chevronBackOutline} from 'ionicons/icons';
 import React from 'react';
 
 const Terms: React.FC = () => {
@@ -15,7 +17,9 @@ const Terms: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/about" />
+            <IonButton routerLink="/about" routerDirection="back">
+              <IonIcon icon={chevronBackOutline} slot="icon-only" />
+            </IonButton>
           </IonButtons>
           <IonTitle>Terms of use</IonTitle>
         </IonToolbar>

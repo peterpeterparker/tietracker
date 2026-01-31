@@ -5,11 +5,11 @@ import {useTranslation} from 'react-i18next';
 import {isBefore} from 'date-fns';
 
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonItem,
   IonLabel,
   IonList,
@@ -29,6 +29,7 @@ import {CalendarMonth} from '@mui/icons-material';
 import {InputAdornment} from '@mui/material';
 import {DatePicker, LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {chevronBackOutline} from 'ionicons/icons';
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
 
 const Period: React.FC = () => {
@@ -119,7 +120,9 @@ const Period: React.FC = () => {
           <IonHeader>
             <IonToolbar className="title">
               <IonButtons slot="start">
-                <IonBackButton defaultHref="/more" />
+                <IonButton routerLink="/more" routerDirection="back">
+                  <IonIcon icon={chevronBackOutline} slot="icon-only" />
+                </IonButton>
               </IonButtons>
             </IonToolbar>
           </IonHeader>
