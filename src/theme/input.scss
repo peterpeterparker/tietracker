@@ -59,9 +59,14 @@ ion-item.item {
     font-family: inherit;
     line-height: inherit;
 
+    div.MuiPickersSectionList-root {
+      padding: 12px 0;
+    }
+
     div.MuiPickersInputBase-root,
     div.MuiInputAdornment-root,
     button.MuiButtonBase-root {
+      padding: 0 10px;
       color: inherit;
 
       &::before {
