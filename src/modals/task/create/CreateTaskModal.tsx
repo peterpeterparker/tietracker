@@ -29,8 +29,6 @@ import {Settings as SettingsModel} from '../../../models/settings';
 
 import {pickerColor} from '../../../utils/utils.picker';
 
-import {CalendarMonth} from '@mui/icons-material';
-import {InputAdornment, TextField} from '@mui/material';
 import {LocalizationProvider, MobileDateTimePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {TaskData} from '../../../models/task';

@@ -388,9 +388,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
 
               <div className={styles.color + ` ${!validClientName ? 'disabled' : ''}`}>
                 {/* @ts-ignore */}
-                <deckgo-color
-                  ref={clientColorRef}
-                  className="ion-padding-bottom">
+                <deckgo-color ref={clientColorRef} className="ion-padding-bottom">
                   {/* @ts-ignore */}
                 </deckgo-color>
               </div>
