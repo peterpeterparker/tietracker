@@ -111,7 +111,7 @@ export class TasksService {
 
         const from: Date =
           roundTime > 0
-            ? roundToNearestMinutes(task.data.from, {nearestTo: roundTime})
+            ? roundToNearestMinutes(task.data.from, {nearestTo: roundTime as 1 | 5 | 15 | 30})
             : setSeconds(new Date(task.data.from), 0);
         task.data.from = from.getTime();
 
@@ -122,7 +122,7 @@ export class TasksService {
 
         task.data.to =
           roundTime > 0
-            ? roundToNearestMinutes(to, {nearestTo: roundTime}).getTime()
+            ? roundToNearestMinutes(to, {nearestTo: roundTime as 1 | 5 | 15 | 30}).getTime()
             : setSeconds(to.getTime(), 0);
 
         await this.saveTask(task);
