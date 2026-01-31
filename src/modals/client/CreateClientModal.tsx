@@ -1,5 +1,6 @@
 import type {IonInputCustomEvent} from '@ionic/core';
 import {
+  InputInputEventDetail,
   IonButton,
   IonButtons,
   IonCheckbox,
@@ -46,11 +47,11 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
 
   const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
-  const clientNameRef: RefObject<any> = useRef();
-  const clientColorRef: RefObject<any> = useRef();
-  const projectNameRef: RefObject<any> = useRef();
-  const projectRateRef: RefObject<any> = useRef();
-  const projectBudgetRef: RefObject<any> = useRef();
+  const clientNameRef: RefObject<any> = useRef(undefined);
+  const clientColorRef: RefObject<any> = useRef(undefined);
+  const projectNameRef: RefObject<any> = useRef(undefined);
+  const projectRateRef: RefObject<any> = useRef(undefined);
+  const projectBudgetRef: RefObject<any> = useRef(undefined);
 
   const [projectData, setProjectData] = useState<ProjectData | undefined>(undefined);
 
@@ -77,8 +78,6 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     setValidClientColor(clientData !== undefined && clientData.color !== undefined);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientData]);
 
   useEffect(() => {
@@ -87,11 +86,9 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     }
 
     clientColorRef.current.palette = PALETTE;
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientColorRef]);
 
-  function handleClientNameInput($event: IonInputCustomEvent<InputEvent>) {
+  function handleClientNameInput($event: IonInputCustomEvent<InputInputEventDetail>) {
     let data: ClientData;
 
     if (clientData) {
@@ -122,7 +119,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     setClientData(data);
   };
 
-  function handleProjectNameInput($event: IonInputCustomEvent<InputEvent>) {
+  function handleProjectNameInput($event: IonInputCustomEvent<InputInputEventDetail>) {
     if (!clientData) {
       return;
     }
@@ -146,7 +143,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     setProjectData(data);
   }
 
-  function handleProjectRateInput($event: IonInputCustomEvent<InputEvent>) {
+  function handleProjectRateInput($event: IonInputCustomEvent<InputInputEventDetail>) {
     if (!clientData) {
       return;
     }
@@ -170,7 +167,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     setProjectData(data);
   }
 
-  function handleProjectBudgetInput($event: IonInputCustomEvent<InputEvent>) {
+  function handleProjectBudgetInput($event: IonInputCustomEvent<InputInputEventDetail>) {
     if (!clientData) {
       return;
     }
@@ -234,7 +231,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     setProjectData(data);
   }
 
-  function inputMinZero($event: IonInputCustomEvent<InputEvent>): number {
+  function inputMinZero($event: IonInputCustomEvent<InputInputEventDetail>): number {
     return ($event.target as InputTargetEvent).value
       ? parseFloat(($event.target as InputTargetEvent).value)
       : 0;
@@ -355,8 +352,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                 '--color': colorContrast,
                 '--ion-toolbar-color': colorContrast,
               } as CSSProperties
-            }
-          >
+            }>
             <IonTitle>{t('clients:create.title')}</IonTitle>
             <IonButtons slot="start">
               <IonButton onClick={() => props.closeAction()}>
@@ -380,11 +376,10 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   maxlength={32}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                  onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
                     handleClientNameInput($event)
                   }
-                  onIonChange={() => validateClientName()}
-                ></IonInput>
+                  onIonChange={() => validateClientName()}></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title ion-margin-top">
@@ -392,10 +387,12 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
               </IonItem>
 
               <div className={styles.color + ` ${!validClientName ? 'disabled' : ''}`}>
+                {/* @ts-ignore */}
                 <deckgo-color
                   ref={clientColorRef}
-                  className="ion-padding-start ion-padding-end ion-padding-bottom"
-                ></deckgo-color>
+                  className="ion-padding-bottom">
+                  {/* @ts-ignore */}
+                </deckgo-color>
               </div>
 
               <IonItem disabled={!validClientName} className="item-title ion-margin-top">
@@ -409,11 +406,10 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   maxlength={32}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                  onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
                     handleProjectNameInput($event)
                   }
-                  onIonChange={() => validateProject()}
-                ></IonInput>
+                  onIonChange={() => validateProject()}></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title">
@@ -426,11 +422,10 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   minlength={1}
                   required={true}
                   input-mode="text"
-                  onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                  onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
                     handleProjectRateInput($event)
                   }
-                  onIonChange={() => validateProject()}
-                ></IonInput>
+                  onIonChange={() => validateProject()}></IonInput>
               </IonItem>
 
               {renderBudget()}
@@ -451,8 +446,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                     '--background-activated': colorContrast,
                     '--color-activated': color,
                   } as CSSProperties
-                }
-              >
+                }>
                 <IonLabel>{t('common:actions.submit')}</IonLabel>
               </IonButton>
 
@@ -484,8 +478,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
               {'--background-checked': color, '--border-color-checked': color} as CSSProperties
             }
             checked={projectData ? projectData.rate.vat : false}
-            onIonChange={($event: CustomEvent) => onVatChange($event)}
-          ></IonCheckbox>
+            onIonChange={($event: CustomEvent) => onVatChange($event)}></IonCheckbox>
         </IonItem>
       </>
     );
@@ -504,18 +497,16 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
               debounce={500}
               minlength={1}
               input-mode="text"
-              onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+              onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
                 handleProjectBudgetInput($event)
-              }
-            ></IonInput>
+              }></IonInput>
           </IonItem>
 
           <IonItem className="item-input" disabled={!validClientName}>
             <IonSelect
               interfaceOptions={{header: t('clients:budget.type')}}
               placeholder=""
-              onIonChange={($event: CustomEvent) => handleProjectBudgetType($event)}
-            >
+              onIonChange={($event: CustomEvent) => handleProjectBudgetType($event)}>
               <IonSelectOption value={'project'}>{t('clients:budget.project')}</IonSelectOption>
               <IonSelectOption value={'yearly'}>{t('clients:budget.yearly')}</IonSelectOption>
               <IonSelectOption value={'monthly'}>{t('clients:budget.monthly')}</IonSelectOption>

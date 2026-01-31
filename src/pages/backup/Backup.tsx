@@ -5,11 +5,11 @@ import {useHistory} from 'react-router';
 import {useSelector} from 'react-redux';
 
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonLabel,
   IonPage,
   IonToolbar,
@@ -30,6 +30,7 @@ import styles from './Backup.module.scss';
 
 import {RestoreService} from '../../services/restore/restore.service';
 
+import {chevronBackOutline} from 'ionicons/icons';
 import {emitError} from '../../utils/utils.events';
 import {initAllData} from '../../utils/utils.store';
 
@@ -38,7 +39,7 @@ const Backup: React.FC<RootProps> = (props) => {
 
   const [processing, setProcessing] = useState<boolean>(false);
 
-  const inputRef: RefObject<HTMLInputElement> = createRef();
+  const inputRef: RefObject<HTMLInputElement | null> | undefined = createRef();
 
   const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
@@ -107,7 +108,9 @@ const Backup: React.FC<RootProps> = (props) => {
           <IonHeader>
             <IonToolbar className="title">
               <IonButtons slot="start">
-                <IonBackButton defaultHref="/more" />
+                <IonButton routerLink="/more" routerDirection="back">
+                  <IonIcon icon={chevronBackOutline} slot="icon-only" />
+                </IonButton>
               </IonButtons>
             </IonToolbar>
           </IonHeader>

@@ -5,11 +5,11 @@ import {useTranslation} from 'react-i18next';
 import {isBefore} from 'date-fns';
 
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonItem,
   IonLabel,
   IonList,
@@ -25,10 +25,11 @@ import Loading from '../../components/loading/Loading';
 
 import {format} from '../../utils/utils.date';
 
-import {InputAdornment, TextField} from '@mui/material';
+import {CalendarMonth} from '@mui/icons-material';
+import {InputAdornment} from '@mui/material';
 import {DatePicker, LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
-import {Calendar} from '@mui/x-date-pickers/internals/components/icons';
+import {chevronBackOutline} from 'ionicons/icons';
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
 
 const Period: React.FC = () => {
@@ -36,8 +37,8 @@ const Period: React.FC = () => {
 
   const [period, setPeriod] = useState<InvoicesPeriod | undefined>(undefined);
 
-  const [from, setFrom] = useState<Date | undefined>(undefined);
-  const [to, setTo] = useState<Date | undefined>(undefined);
+  const [from, setFrom] = useState<Date | null>(null);
+  const [to, setTo] = useState<Date | null>(null);
 
   const [processing, setProcessing] = useState<boolean>(false);
 
@@ -45,15 +46,17 @@ const Period: React.FC = () => {
 
   const [present] = useIonAlert();
 
-  useIonViewWillEnter(async () => await initPeriod());
+  useIonViewWillEnter(() => {
+    initPeriod();
+  });
 
   useEffect(() => {
-    setFrom(period?.from);
-    setTo(period?.to);
+    setFrom(period?.from ?? null);
+    setTo(period?.to ?? null);
   }, [period]);
 
   useEffect(() => {
-    setValid(from !== undefined && to !== undefined && isBefore(from, to));
+    setValid(from !== null && to !== null && isBefore(from, to));
   }, [from, to]);
 
   const initPeriod = async () => {
@@ -106,8 +109,7 @@ const Period: React.FC = () => {
             from: format(period?.from) ?? t('period:unknown'),
             to: format(period?.to) ?? t('period:unknown'),
           }),
-        }}
-      ></p>
+        }}></p>
     );
   };
 
@@ -118,7 +120,9 @@ const Period: React.FC = () => {
           <IonHeader>
             <IonToolbar className="title">
               <IonButtons slot="start">
-                <IonBackButton defaultHref="/more" />
+                <IonButton routerLink="/more" routerDirection="back">
+                  <IonIcon icon={chevronBackOutline} slot="icon-only" />
+                </IonButton>
               </IonButtons>
             </IonToolbar>
           </IonHeader>
@@ -149,17 +153,22 @@ const Period: React.FC = () => {
 
           <IonItem className="item-input">
             <MobileDatePicker
-              DialogProps={{disableEnforceFocus: true}}
               value={from}
               onChange={(date: Date | null) => setFrom(date as Date)}
-              inputFormat="yyyy/MM/dd"
-              renderInput={(params) => <TextField {...params} />}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Calendar />
-                  </InputAdornment>
-                ),
+              format="yyyy/MM/dd"
+              slotProps={{
+                textField: {
+                  InputProps: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarMonth />
+                      </InputAdornment>
+                    ),
+                  },
+                },
+                dialog: {
+                  disableEnforceFocus: true,
+                },
               }}
             />
           </IonItem>
@@ -170,17 +179,22 @@ const Period: React.FC = () => {
 
           <IonItem className="item-input">
             <DatePicker
-              DialogProps={{disableEnforceFocus: true}}
               value={to}
               onChange={(date: Date | null) => setTo(date as Date)}
-              inputFormat="yyyy/MM/dd"
-              renderInput={(params) => <TextField {...params} />}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Calendar />
-                  </InputAdornment>
-                ),
+              format="yyyy/MM/dd"
+              slotProps={{
+                textField: {
+                  InputProps: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarMonth />
+                      </InputAdornment>
+                    ),
+                  },
+                },
+                dialog: {
+                  disableEnforceFocus: true,
+                },
               }}
             />
           </IonItem>
@@ -201,8 +215,7 @@ const Period: React.FC = () => {
           color="danger"
           onClick={doDeleteInvoices}
           style={{marginTop: '8px'}}
-          disabled={!valid}
-        >
+          disabled={!valid}>
           <IonLabel>{t('period:close')}</IonLabel>
         </IonButton>
       </>

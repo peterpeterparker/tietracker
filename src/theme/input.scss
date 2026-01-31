@@ -1,4 +1,5 @@
-ion-item.item-input {
+ion-item.item-input,
+ion-item.item {
   --border-color: transparent;
   --highlight-color-focused: transparent;
 
@@ -7,8 +8,11 @@ ion-item.item-input {
     --inner-padding-end: 0;
   }
 
-  &::part(native) {
-    caret-color: var(--ion-text-color);
+  &.item-radio {
+    --padding-start: 0;
+    --padding-end: 0;
+    --inner-padding-start: 8px;
+    --inner-padding-end: 8px;
   }
 
   ion-input[class*="sc-ion-input"],
@@ -16,12 +20,16 @@ ion-item.item-input {
   div.MuiFormControl-root,
   ion-select {
     --padding-start: 8px;
-    --background: var(--ion-color-card);
+    --background: var(--ion-color-light);
     background: var(--ion-color-light);
     border: 1px solid var(--ion-color-card-border);
     border-radius: 4px;
 
     --placeholder-opacity: 0.33;
+
+    &.has-focus input {
+      caret-color: var(--ion-text-color);
+    }
   }
 
   ion-select {
@@ -40,7 +48,9 @@ ion-item.item-input {
     font-family: inherit;
     line-height: inherit;
 
-    div.MuiInputBase-root {
+    div.MuiPickersInputBase-root,
+    div.MuiInputAdornment-root,
+    button.MuiButtonBase-root {
       color: inherit;
 
       &::before {

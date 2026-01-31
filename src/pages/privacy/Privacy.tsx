@@ -1,12 +1,14 @@
 import {
-  IonBackButton,
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonPage,
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import {chevronBackOutline} from 'ionicons/icons';
 import React from 'react';
 
 const Privacy: React.FC = () => {
@@ -15,7 +17,9 @@ const Privacy: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/about" />
+            <IonButton routerLink="/about" routerDirection="back">
+              <IonIcon icon={chevronBackOutline} slot="icon-only" />
+            </IonButton>
           </IonButtons>
           <IonTitle>Terms of use</IonTitle>
         </IonToolbar>
@@ -168,7 +172,8 @@ const Privacy: React.FC = () => {
 
           <p>
             Sometimes we’ll send you emails about your account, service changes or new policies. You
-            can’t opt out of this type of “transactional” email (unless you delete your account).{' '}
+            can’t opt out of this type of “transactional” email (unless you delete your
+            account).{' '}
           </p>
 
           <p>

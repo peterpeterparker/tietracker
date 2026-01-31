@@ -1,3 +1,7 @@
+ion-header[class*="header"] {
+  box-shadow: none;
+}
+
 ion-header[class*="header"] ion-toolbar[class*="in-toolbar"] {
   --border-width: 0;
 }

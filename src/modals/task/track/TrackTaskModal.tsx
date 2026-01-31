@@ -83,13 +83,11 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
   return (
     <div
       className={`${styles.task} ${task !== undefined ? styles.progress : ''}`}
-      style={client !== undefined ? {background: `${client.color}`} : undefined}
-    >
+      style={client !== undefined ? {background: `${client.color}`} : undefined}>
       {client?.name && (
         <IonLabel
           style={{color: contrastColor} as CSSProperties}
-          className={`${styles.client} ion-padding`}
-        >
+          className={`${styles.client} ion-padding`}>
           {client?.name}
         </IonLabel>
       )}
@@ -99,8 +97,7 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
           <Spinner
             freeze={freeze}
             color={client !== undefined ? client.color : undefined}
-            contrast={contrastColor}
-          ></Spinner>
+            contrast={contrastColor}></Spinner>
         ) : undefined}
 
         {renderTaskDescription()}
@@ -109,8 +106,7 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
           onClick={() => stopTask()}
           aria-label={t('tracker.stop')}
           className="ion-activatable"
-          disabled={freeze}
-        >
+          disabled={freeze}>
           <IonIcon icon={checkmarkCircle} />
         </button>
       </div>
@@ -131,8 +127,7 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
         interfaceOptions={{header: t('tracker.description')}}
         placeholder={t('tracker.description')}
         value={task.data.description}
-        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}
-      >
+        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}>
         {settings.descriptions.map((description: string, i: number) => {
           return (
             <IonSelectOption value={description} key={`desc-${i}`}>

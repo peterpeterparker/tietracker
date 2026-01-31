@@ -38,8 +38,7 @@ export const More = () => {
               detail={true}
               button={true}
               onClick={() => navigate('/statistics')}
-              className={styles.item}
-            >
+              className={styles.item}>
               <IonIcon slot="start" icon={statsChart} className={styles.icon} />
               <IonLabel>{t('common:navigation.statistics')}</IonLabel>
             </IonItem>
@@ -47,8 +46,7 @@ export const More = () => {
               detail={true}
               button={true}
               onClick={() => navigate('/settings')}
-              className={styles.item}
-            >
+              className={styles.item}>
               <IonIcon slot="start" icon={options} className={styles.icon} />
               <IonLabel>{t('common:navigation.settings')}</IonLabel>
             </IonItem>
@@ -56,8 +54,7 @@ export const More = () => {
               detail={true}
               button={true}
               onClick={() => navigate('/backup')}
-              className={styles.item}
-            >
+              className={styles.item}>
               <IonIcon slot="start" icon={server} className={styles.icon} />
               <IonLabel>{t('common:navigation.backup')}</IonLabel>
             </IonItem>
@@ -65,8 +62,7 @@ export const More = () => {
               detail={true}
               button={true}
               onClick={() => navigate('/period')}
-              className={styles.item}
-            >
+              className={styles.item}>
               <IonIcon slot="start" icon={calendarNumber} className={styles.icon} />
               <IonLabel>{t('common:navigation.period')}</IonLabel>
             </IonItem>
@@ -74,8 +70,7 @@ export const More = () => {
               detail={true}
               button={true}
               onClick={() => navigate('/about')}
-              className={styles.item}
-            >
+              className={styles.item}>
               <IonIcon slot="start" icon={information} className={styles.icon} />
               <IonLabel>{t('common:navigation.about')}</IonLabel>
             </IonItem>
@@ -84,8 +79,7 @@ export const More = () => {
               button={true}
               href="https://github.com/peterpeterparker/tietracker"
               target="_blank"
-              className={styles.item}
-            >
+              className={styles.item}>
               <IonIcon slot="start" icon={logoGithub} className={styles.icon} />
               <IonLabel>GitHub</IonLabel>
             </IonItem>

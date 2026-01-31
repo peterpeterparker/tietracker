@@ -18,8 +18,8 @@ import {format, toDateObj} from '../../../utils/utils.date';
 const WeekCharts: React.FC = () => {
   const {t} = useTranslation('statistics');
 
-  const chartsRef: RefObject<any> = useRef();
-  const containerRef: RefObject<any> = useRef();
+  const chartsRef: RefObject<any> = useRef(undefined);
+  const containerRef: RefObject<any> = useRef(undefined);
 
   const summary: SummaryData | undefined = useSelector((state: RootState) => state.summary.summary);
 
@@ -49,14 +49,10 @@ const WeekCharts: React.FC = () => {
 
       drawChart();
     }
-
-    // eslint-disable-next-line
   }, [data, chartsRef]);
 
   useEffect(() => {
     drawChart();
-
-    // eslint-disable-next-line
   }, [containerRef, chartsRef]);
 
   async function drawChart() {
@@ -116,19 +112,18 @@ const WeekCharts: React.FC = () => {
         <h1
           dangerouslySetInnerHTML={{
             __html: t('charts.week.title'),
-          }}
-        ></h1>
+          }}></h1>
         <div ref={containerRef} className={styles.container + ' chart-container'}>
-          {/*
-            // @ts-ignore */}
+          {/* @ts-ignore */}
           <deckgo-bar-chart
             ref={chartsRef}
             margin-top={0}
             margin-bottom={0}
             margin-left={128}
             margin-right={0}
-            y-axis-min={8}
-          ></deckgo-bar-chart>
+            y-axis-min={8}>
+            {/* @ts-ignore */}
+          </deckgo-bar-chart>
         </div>
       </>
     );

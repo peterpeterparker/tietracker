@@ -1,18 +1,20 @@
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import App from './App';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 import {Provider} from 'react-redux';
 import {applyMiddleware, createStore} from 'redux';
 import {rootReducer} from './store/reducers/index';
 
-import reduxThunk from 'redux-thunk';
+import {thunk} from 'redux-thunk'; // Changed import
 
-import {defineCustomElements as chartsDefineCustomElements} from '@deckdeckgo/charts/dist/loader';
+import {
+  defineCustomElements as chartsDefineCustomElements,
+  JSX as ChartsJSX,
+} from '@deckdeckgo/charts/dist/loader';
 import {
   applyPolyfills,
   defineCustomElements as colorDefineCustomElements,
-  JSX as LocalJSX,
+  JSX as ColorJSX,
 } from '@deckdeckgo/color/dist/loader';
 
 import {setupIonicReact} from '@ionic/react';
@@ -26,7 +28,9 @@ type ReactProps<T> = {
   [P in keyof T]?: DetailedHTMLProps<HTMLAttributes<T[P]>, T[P]>;
 };
 
-type StencilToReact<T = LocalJSX.IntrinsicElements, U = HTMLElementTagNameMap> = StencilProps<T> &
+type AllStencilElements = ColorJSX.IntrinsicElements & ChartsJSX.IntrinsicElements;
+
+type StencilToReact<T = AllStencilElements, U = HTMLElementTagNameMap> = StencilProps<T> &
   ReactProps<U>;
 
 declare global {
@@ -49,16 +53,13 @@ setupIonicReact({
 // https://github.com/jakearchibald/idb-keyval/issues/120
 window.indexedDB.open('test');
 
-const store = createStore(rootReducer, applyMiddleware(reduxThunk));
+const store = createStore(rootReducer, undefined, applyMiddleware(thunk));
 
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = createRoot(container!);
+
+root.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root'),
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://cra.link/PWA
-serviceWorkerRegistration.register();

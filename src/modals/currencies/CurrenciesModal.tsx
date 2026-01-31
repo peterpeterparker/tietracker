@@ -16,6 +16,7 @@ import {
   IonSearchbar,
   IonTitle,
   IonToolbar,
+  SearchbarInputEventDetail,
 } from '@ionic/react';
 
 import {close} from 'ionicons/icons';
@@ -40,7 +41,6 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     initCurrencies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
     setCurrencies(currencies);
   }
 
-  async function onFilter($event: IonSearchbarCustomEvent<KeyboardEvent>) {
+  async function onFilter($event: IonSearchbarCustomEvent<SearchbarInputEventDetail>) {
     if (!$event) {
       return;
     }
@@ -110,8 +110,7 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
             debounce={500}
             placeholder={t('tracker.currency.filter')}
             className={styles.searchbar}
-            onIonInput={($event: IonSearchbarCustomEvent<KeyboardEvent>) => onFilter($event)}
-          ></IonSearchbar>
+            onIonInput={onFilter}></IonSearchbar>
 
           <IonList>
             <IonRadioGroup value={props.currency.currency}>{renderCurrencies()}</IonRadioGroup>
@@ -131,12 +130,11 @@ const CurrenciesModal: React.FC<Props> = (props: Props) => {
         <IonItem
           key={`${key}`}
           className={styles.item}
-          onClick={() => props.closeAction({currency: key, format: filteredCurrencies[key]})}
-        >
+          onClick={() => props.closeAction({currency: key, format: filteredCurrencies[key]})}>
           <IonLabel>
             {filteredCurrencies[key].name} ({key})
           </IonLabel>
-          <IonRadio value={key} />
+          <IonRadio slot="end" value={key} />
         </IonItem>
       );
     });

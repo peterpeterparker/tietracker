@@ -1,5 +1,5 @@
 import {
-  IonBackButton,
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -13,7 +13,7 @@ import {Link} from 'react-router-dom';
 
 import styles from './About.module.scss';
 
-import {checkmark, globeOutline, logoGithub, logoTwitter} from 'ionicons/icons';
+import {checkmark, chevronBackOutline, globeOutline, logoGithub, logoTwitter} from 'ionicons/icons';
 
 const About: React.FC = () => {
   return (
@@ -23,7 +23,9 @@ const About: React.FC = () => {
           <IonHeader>
             <IonToolbar className="title">
               <IonButtons slot="start">
-                <IonBackButton defaultHref="/more" />
+                <IonButton routerLink="/more" routerDirection="back">
+                  <IonIcon icon={chevronBackOutline} slot="icon-only" />
+                </IonButton>
               </IonButtons>
             </IonToolbar>
             <IonToolbar className="title">
@@ -94,8 +96,7 @@ const About: React.FC = () => {
                 href="http://github.com/peterpeterparker/tietracker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={styles.github}
-              >
+                className={styles.github}>
                 GitHub <IonIcon md={logoGithub} ios={logoGithub} area-label="Github"></IonIcon>
               </a>
               .

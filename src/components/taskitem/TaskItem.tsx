@@ -31,8 +31,7 @@ const TaskItem: React.FC<TaskItemProps> = (props) => {
       className={styles.item}
       lines="none"
       detail={false}
-      routerLink={`/task/${props.tasksDay}/${props.task.id}`}
-    >
+      routerLink={`/task/${props.tasksDay}/${props.task.id}`}>
       <div slot="start" style={{background: props.task.data.client.color} as CSSProperties}></div>
 
       <IonLabel>

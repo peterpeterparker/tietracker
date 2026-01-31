@@ -2,11 +2,11 @@ import React, {FormEvent, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import {
-  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
   IonLabel,
   IonPage,
   IonSegment,
@@ -15,6 +15,7 @@ import {
   IonToast,
   IonToolbar,
 } from '@ionic/react';
+import {chevronBackOutline} from 'ionicons/icons';
 
 import {useTranslation} from 'react-i18next';
 
@@ -74,7 +75,9 @@ const Settings: React.FC<RootProps> = (props) => {
           <IonHeader>
             <IonToolbar className="title">
               <IonButtons slot="start">
-                <IonBackButton defaultHref="/more" />
+                <IonButton routerLink="/more" routerDirection="back">
+                  <IonIcon icon={chevronBackOutline} slot="icon-only" />
+                </IonButton>
               </IonButtons>
             </IonToolbar>
             <IonToolbar className="title">{renderSettingsCategory()}</IonToolbar>
@@ -126,8 +129,7 @@ const Settings: React.FC<RootProps> = (props) => {
           type="submit"
           disabled={saving}
           aria-label={t('settings:save.action')}
-          color="button"
-        >
+          color="button">
           <IonLabel>{t('common:actions.save')}</IonLabel>
         </IonButton>
       </div>
@@ -168,16 +170,15 @@ const Settings: React.FC<RootProps> = (props) => {
         mode="md"
         class="ion-padding-bottom"
         value={category}
-        onIonChange={($event: CustomEvent) => selectCategory($event)}
-      >
+        onIonChange={($event: CustomEvent) => selectCategory($event)}>
         <IonSegmentButton value={SettingsCategory.GENERAL} mode="md">
-          <ion-label>{t('settings:segments.general')}</ion-label>
+          <IonLabel>{t('settings:segments.general')}</IonLabel>
         </IonSegmentButton>
         <IonSegmentButton value={SettingsCategory.TRACKER} mode="md">
-          <ion-label>{t('settings:segments.tracker')}</ion-label>
+          <IonLabel>{t('settings:segments.tracker')}</IonLabel>
         </IonSegmentButton>
         <IonSegmentButton value={SettingsCategory.TEMPLATES} mode="md">
-          <ion-label>{t('settings:segments.templates')}</ion-label>
+          <IonLabel>{t('settings:segments.templates')}</IonLabel>
         </IonSegmentButton>
       </IonSegment>
     );

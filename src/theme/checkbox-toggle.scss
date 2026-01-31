@@ -4,7 +4,12 @@ ion-item.item-radio {
 
   --min-height: 38px;
 
-  --padding-start: 8px;
+  --padding-start: 16px;
+  --inner-padding-start: 16px;
+
+  --padding-end: 16px;
+  --inner-padding-end: 16px;
+
   --background: var(--ion-color-light);
   background: var(--ion-color-light);
   border: 1px solid var(--ion-color-card-border);

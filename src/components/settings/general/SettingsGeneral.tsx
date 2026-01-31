@@ -2,7 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import type {IonInputCustomEvent} from '@ionic/core';
-import {IonInput, IonItem, IonLabel, IonList, IonToggle, isPlatform} from '@ionic/react';
+import {
+  InputInputEventDetail,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonToggle,
+  isPlatform,
+} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -48,7 +56,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
     setBackup(!backup);
   }
 
-  function onSignatureInput($event: IonInputCustomEvent<InputEvent>) {
+  function onSignatureInput($event: IonInputCustomEvent<InputInputEventDetail>) {
     if (!$event) {
       return;
     }
@@ -64,7 +72,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
       </IonItem>
 
       <IonItem className="item-input item-radio with-padding">
-        <IonLabel>
+        <IonLabel style={{flex: 1}}>
           {darkTheme ? t('general.mode.dark') : t('general.mode.light')} {darkTheme ? '🌑' : '☀️'}
         </IonLabel>
         <IonToggle
@@ -72,8 +80,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
           checked={darkTheme}
           mode="md"
           color="medium"
-          onClick={() => toggleTheme()}
-        ></IonToggle>
+          onClick={() => toggleTheme()}></IonToggle>
       </IonItem>
 
       {renderNotifications()}
@@ -94,7 +101,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
         </IonItem>
 
         <IonItem className="item-input item-radio with-padding">
-          <IonLabel>
+          <IonLabel style={{flex: 1}}>
             {notificationsOn ? t('general.notifications.body') : t('general.notifications.dont')}
           </IonLabel>
           <IonToggle
@@ -102,8 +109,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
             checked={notificationsOn}
             mode="md"
             color="medium"
-            onClick={() => toggleNotifications()}
-          ></IonToggle>
+            onClick={() => toggleNotifications()}></IonToggle>
         </IonItem>
       </>
     );
@@ -117,14 +123,13 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
         </IonItem>
 
         <IonItem className="item-input item-radio with-padding">
-          <IonLabel>{backup ? t('general.backup.on') : t('general.backup.off')}</IonLabel>
+          <IonLabel style={{flex: 1}}>{backup ? t('general.backup.on') : t('general.backup.off')}</IonLabel>
           <IonToggle
             slot="end"
             checked={backup}
             mode="md"
             color="medium"
-            onClick={() => toggleBackup()}
-          ></IonToggle>
+            onClick={() => toggleBackup()}></IonToggle>
         </IonItem>
       </>
     );
@@ -142,8 +147,9 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
             input-mode="text"
             value={props.settings.signature ? `${props.settings.signature}` : ''}
             aria-label={t('general.signature')}
-            onIonInput={($event: IonInputCustomEvent<InputEvent>) => onSignatureInput($event)}
-          ></IonInput>
+            onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
+              onSignatureInput($event)
+            }></IonInput>
         </IonItem>
       </>
     );
