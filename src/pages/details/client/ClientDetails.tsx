@@ -1,4 +1,4 @@
-import React, {createRef, CSSProperties, FormEvent, RefObject, useEffect, useState} from 'react';
+import React, {CSSProperties, FormEvent, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {RouteComponentProps} from 'react-router';
 
@@ -26,13 +26,12 @@ import {
   IonTitle,
   IonToolbar,
   useIonViewWillEnter,
-  useIonViewWillLeave,
 } from '@ionic/react';
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 
 import {lockClosed, lockOpen, stopwatchOutline} from 'ionicons/icons';
 
-import {contrast, PALETTE} from '../../../utils/utils.color';
+import {contrast} from '../../../utils/utils.color';
 import {formatCurrency} from '../../../utils/utils.currency';
 
 import {Client} from '../../../models/client';
@@ -57,8 +56,6 @@ type Props = RootProps & ClientDetailsProps;
 
 const ClientDetails: React.FC<Props> = (props: Props) => {
   const {t} = useTranslation(['projects', 'common', 'clients']);
-
-  const clientColorRef: RefObject<any> = createRef();
 
   const [client, setClient] = useState<Client | undefined>(undefined);
   const [color, setColor] = useState<string | undefined>(undefined);
@@ -94,14 +91,6 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     })();
   });
 
-  useEffect(() => {
-    if (!clientColorRef || !clientColorRef.current) {
-      return;
-    }
-
-    clientColorRef.current.palette = PALETTE;
-  }, [clientColorRef]);
-
   async function loadProjects() {
     const projects: Project[] | undefined = await ProjectsService.getInstance().listForClient(
       props.match.params.id,
@@ -109,25 +98,11 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     setProjects(projects);
   }
 
-  useEffect(() => {
-    if (clientColorRef && clientColorRef.current) {
-      clientColorRef.current.addEventListener('colorChange', selectColor, false);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clientColorRef]);
-
-  useIonViewWillLeave(() => {
-    if (clientColorRef && clientColorRef.current) {
-      clientColorRef.current.removeEventListener('colorChange', selectColor, true);
-    }
-  });
-
-  function selectColor($event: CustomEvent) {
+  function handleColorChange($event: React.ChangeEvent<HTMLInputElement>) {
     if (client && client.data) {
-      client.data.color = $event.detail.hex;
-
-      setColor($event.detail.hex);
+      const newColor = $event.target.value;
+      client.data.color = newColor;
+      setColor(newColor);
     }
   }
 
@@ -270,15 +245,18 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
             <IonLabel>{t('clients:create.color')}</IonLabel>
           </IonItem>
 
-          <div className={styles.color}>
-            {/* @ts-ignore */}
-            <deckgo-color
-              className="ion-padding-bottom"
-              ref={clientColorRef}
-              color-hex={`${client.data.color}`}>
-              {/* @ts-ignore */}
-            </deckgo-color>
-          </div>
+          <IonItem className={styles.color}>
+            <input
+              type="color"
+              value={client.data.color}
+              onChange={handleColorChange}
+              style={{
+                margin: '0',
+                outline: '0',
+                padding: '0',
+              }}
+            />
+          </IonItem>
         </IonList>
 
         <IonList className={styles.projectListTitle + ' inputs-list'}>

@@ -4,9 +4,5 @@
 
   &:global(.disabled) {
     opacity: 0.4;
-
-    deckgo-color {
-      pointer-events: none;
-    }
   }
 }

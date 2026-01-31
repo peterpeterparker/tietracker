@@ -44,7 +44,6 @@ import './theme/alert.scss';
 import './theme/button.scss';
 import './theme/card.scss';
 import './theme/checkbox-toggle.scss';
-import './theme/color.scss';
 import './theme/content.scss';
 import './theme/datetime.picker.scss';
 import './theme/fonts.scss';
