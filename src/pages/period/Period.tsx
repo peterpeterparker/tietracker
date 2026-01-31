@@ -36,8 +36,8 @@ const Period: React.FC = () => {
 
   const [period, setPeriod] = useState<InvoicesPeriod | undefined>(undefined);
 
-  const [from, setFrom] = useState<Date | undefined>(undefined);
-  const [to, setTo] = useState<Date | undefined>(undefined);
+  const [from, setFrom] = useState<Date | null>(null);
+  const [to, setTo] = useState<Date | null>(null);
 
   const [processing, setProcessing] = useState<boolean>(false);
 
@@ -50,12 +50,12 @@ const Period: React.FC = () => {
   });
 
   useEffect(() => {
-    setFrom(period?.from);
-    setTo(period?.to);
+    setFrom(period?.from ?? null);
+    setTo(period?.to ?? null);
   }, [period]);
 
   useEffect(() => {
-    setValid(from !== undefined && to !== undefined && isBefore(from, to));
+    setValid(from !== null && to !== null && isBefore(from, to));
   }, [from, to]);
 
   const initPeriod = async () => {
