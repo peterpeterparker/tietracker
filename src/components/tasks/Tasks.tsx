@@ -20,8 +20,6 @@ import TaskItem from '../taskitem/TaskItem';
 
 import {format} from '../../utils/utils.date';
 
-import {CalendarMonth} from '@mui/icons-material';
-import {InputAdornment} from '@mui/material';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {Project} from '../../models/project';
 
@@ -42,13 +40,13 @@ const Tasks: React.FC<Props> = (props: Props) => {
   );
 
   function openDatePicker() {
-    const input: HTMLInputElement | null = document.querySelector('input.MuiInputBase-input');
+    const button = document.querySelector('.MuiInputAdornment-root button');
 
-    if (!input) {
+    if (!button) {
       return;
     }
 
-    input.click();
+    (button as HTMLButtonElement).click();
   }
 
   async function selectDate(day: Date | null) {
@@ -125,15 +123,6 @@ const Tasks: React.FC<Props> = (props: Props) => {
             onChange={selectDate}
             format="yyyy/MM/dd"
             slotProps={{
-              textField: {
-                InputProps: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <CalendarMonth />
-                    </InputAdornment>
-                  ),
-                },
-              },
               dialog: {
                 disableEnforceFocus: true,
               },
