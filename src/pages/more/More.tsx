@@ -12,7 +12,7 @@ import {
   IonPage,
   IonToolbar,
 } from '@ionic/react';
-import {calendarNumber, information, logoGithub, options, server, statsChart} from 'ionicons/icons';
+import {calendarNumber, information, logoGithub, options, server} from 'ionicons/icons';
 
 import styles from './More.module.scss';
 
@@ -34,14 +34,6 @@ export const More = () => {
           </IonHeader>
 
           <IonList>
-            <IonItem
-              detail={true}
-              button={true}
-              onClick={() => navigate('/statistics')}
-              className={styles.item}>
-              <IonIcon slot="start" icon={statsChart} className={styles.icon} />
-              <IonLabel>{t('common:navigation.statistics')}</IonLabel>
-            </IonItem>
             <IonItem
               detail={true}
               button={true}

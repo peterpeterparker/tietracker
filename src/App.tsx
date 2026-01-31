@@ -20,7 +20,6 @@ import {SplashScreen} from '@capacitor/splash-screen';
 
 import Invoices from './pages/invoices/Invoices';
 import Settings from './pages/settings/Settings';
-import Statistics from './pages/statistics/Statistics';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -44,7 +43,6 @@ import './theme/variables.scss';
 import './theme/alert.scss';
 import './theme/button.scss';
 import './theme/card.scss';
-import './theme/charts.scss';
 import './theme/checkbox-toggle.scss';
 import './theme/color.scss';
 import './theme/content.scss';
@@ -138,7 +136,6 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                 <Route path="/invoices" component={Invoices} exact={true} />
                 <Route path="/more" component={More} exact={true} />
 
-                <Route path="/statistics" component={Statistics} exact={true} />
                 <Route path="/settings" component={Settings} exact={true} />
                 <Route path="/backup" component={Backup} exact={true} />
                 <Route path="/about" component={About} exact={true} />

@@ -8,10 +8,6 @@ import {rootReducer} from './store/reducers/index';
 import {thunk} from 'redux-thunk'; // Changed import
 
 import {
-  defineCustomElements as chartsDefineCustomElements,
-  JSX as ChartsJSX,
-} from '@deckdeckgo/charts/dist/loader';
-import {
   applyPolyfills,
   defineCustomElements as colorDefineCustomElements,
   JSX as ColorJSX,
@@ -28,7 +24,7 @@ type ReactProps<T> = {
   [P in keyof T]?: DetailedHTMLProps<HTMLAttributes<T[P]>, T[P]>;
 };
 
-type AllStencilElements = ColorJSX.IntrinsicElements & ChartsJSX.IntrinsicElements;
+type AllStencilElements = ColorJSX.IntrinsicElements;
 
 type StencilToReact<T = AllStencilElements, U = HTMLElementTagNameMap> = StencilProps<T> &
   ReactProps<U>;
@@ -42,7 +38,6 @@ declare global {
 
 applyPolyfills().then(async () => {
   await colorDefineCustomElements(window);
-  await chartsDefineCustomElements(window);
 });
 
 setupIonicReact({
