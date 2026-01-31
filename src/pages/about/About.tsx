@@ -94,8 +94,7 @@ const About: React.FC = () => {
                 href="http://github.com/peterpeterparker/tietracker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={styles.github}
-              >
+                className={styles.github}>
                 GitHub <IonIcon md={logoGithub} ios={logoGithub} area-label="Github"></IonIcon>
               </a>
               .

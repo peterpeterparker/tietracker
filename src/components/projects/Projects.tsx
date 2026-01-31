@@ -25,7 +25,7 @@ import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {contrast} from '../../utils/utils.color';
 
 interface Props extends RootProps {
-  addAction: Function;
+  addAction: () => void;
 }
 
 const Projects: React.FC<Props> = (props: Props) => {
@@ -76,14 +76,12 @@ const Projects: React.FC<Props> = (props: Props) => {
                 onClick={() => startStopTask(project)}
                 mode="md"
                 className="ion-activatable ion-margin-bottom client"
-                color="card"
-              >
+                color="card">
                 <div
                   style={{
                     background: project.data.client ? project.data.client.color : undefined,
                     color: colorContrast,
-                  }}
-                >
+                  }}>
                   <IonLabel>Start</IonLabel>
                   <IonIcon icon={play} />
                 </div>

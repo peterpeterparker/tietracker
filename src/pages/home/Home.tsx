@@ -63,16 +63,14 @@ const Home: React.FC<RouteComponentProps> = (props) => {
         <IonModal
           isOpen={showModalClients}
           onDidDismiss={($event) => closeAndNavigate($event)}
-          className="fullscreen"
-        >
+          className="fullscreen">
           <ClientsModal />
         </IonModal>
 
         <IonModal
           isOpen={showModalTask}
           onDidDismiss={() => setShowModalTask(false)}
-          className="fullscreen"
-        >
+          className="fullscreen">
           <CreateTaskModal closeAction={() => setShowModalTask(false)}></CreateTaskModal>
         </IonModal>
 
@@ -82,8 +80,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
               <button
                 aria-label={t('search.clients')}
                 className={styles.searchbar + ' input'}
-                onClick={() => setShowModalClients(true)}
-              >
+                onClick={() => setShowModalClients(true)}>
                 <IonIcon icon={search} />
                 <IonLabel>{t('search.clients')}</IonLabel>
               </button>
@@ -114,8 +111,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
         color="medium"
         size="small"
         style={loading ? {visibility: 'hidden', opacity: 0} : undefined}
-        aria-label={t('add.client')}
-      >
+        aria-label={t('add.client')}>
         {empty ? t('add.start') : t('add.client')}
       </IonButton>
     );

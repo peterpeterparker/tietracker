@@ -126,8 +126,7 @@ const Settings: React.FC<RootProps> = (props) => {
           type="submit"
           disabled={saving}
           aria-label={t('settings:save.action')}
-          color="button"
-        >
+          color="button">
           <IonLabel>{t('common:actions.save')}</IonLabel>
         </IonButton>
       </div>
@@ -168,16 +167,15 @@ const Settings: React.FC<RootProps> = (props) => {
         mode="md"
         class="ion-padding-bottom"
         value={category}
-        onIonChange={($event: CustomEvent) => selectCategory($event)}
-      >
+        onIonChange={($event: CustomEvent) => selectCategory($event)}>
         <IonSegmentButton value={SettingsCategory.GENERAL} mode="md">
-          <ion-label>{t('settings:segments.general')}</ion-label>
+          <IonLabel>{t('settings:segments.general')}</IonLabel>
         </IonSegmentButton>
         <IonSegmentButton value={SettingsCategory.TRACKER} mode="md">
-          <ion-label>{t('settings:segments.tracker')}</ion-label>
+          <IonLabel>{t('settings:segments.tracker')}</IonLabel>
         </IonSegmentButton>
         <IonSegmentButton value={SettingsCategory.TEMPLATES} mode="md">
-          <ion-label>{t('settings:segments.templates')}</ion-label>
+          <IonLabel>{t('settings:segments.templates')}</IonLabel>
         </IonSegmentButton>
       </IonSegment>
     );

@@ -57,7 +57,7 @@ export class TasksService {
   stop(roundTime: number): Promise<Task> {
     return new Promise<Task>(async (resolve, reject) => {
       try {
-        let task: Task | undefined = await get('task-in-progress');
+        const task: Task | undefined = await get('task-in-progress');
 
         if (!task || !task.data) {
           reject('No task in progress found.');
@@ -178,7 +178,7 @@ export class TasksService {
       const now: number = new Date().getTime();
 
       // We create a TaskInProgress as, furthermore than being persisted, it gonna be added to the root state too
-      let task: TaskInProgress = {
+      const task: TaskInProgress = {
         id: uuid(),
         data: {
           from: now,
@@ -353,7 +353,7 @@ export class TasksService {
 
   private load(day: string): Promise<Task[]> {
     return new Promise<Task[]>(async (resolve, reject) => {
-      let tasks: Task[] | undefined = await get(`tasks-${day}`);
+      const tasks: Task[] | undefined = await get(`tasks-${day}`);
 
       if (!tasks || tasks.length <= 0) {
         reject('No tasks found for the specific day.');

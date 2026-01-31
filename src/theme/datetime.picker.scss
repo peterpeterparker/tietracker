@@ -7,7 +7,7 @@ div.MuiPickersToolbar-root {
   }
 
   span,
-  button > span {
+  button > span[data-selected] {
     color: var(--picker-color, var(--ion-color-dark));
 
     &.Mui-selected {
@@ -42,6 +42,7 @@ div.MuiDialogActions-root {
   }
 }
 
+li.MuiButtonBase-root.Mui-selected,
 button.MuiPickersDay-root.Mui-selected {
   background-color: var(--picker-background) !important;
   color: var(--picker-color);

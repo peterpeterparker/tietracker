@@ -154,8 +154,7 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
       <IonReorderGroup
         disabled={!reorder}
         className="reorder-list ion-margin-bottom"
-        onIonItemReorder={doReorder}
-      >
+        onIonItemReorder={doReorder}>
         {renderDescriptions()}
       </IonReorderGroup>
       <div>
@@ -164,15 +163,13 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
           onClick={($event: React.MouseEvent | React.TouchEvent) =>
             openAddTemplate($event, undefined, 'add')
           }
-          className={`${styles.templateAction} ion-margin-end`}
-        >
+          className={`${styles.templateAction} ion-margin-end`}>
           <IonIcon icon={addOutline} className={styles.icon} /> {t('templates.actions.add')}
         </button>
         <button
           type="button"
           onClick={($event: React.MouseEvent | React.TouchEvent) => toggleReorder($event)}
-          className={styles.templateAction}
-        >
+          className={styles.templateAction}>
           {!reorder ? (
             <>
               <IonIcon icon={repeatOutline} className={styles.icon} />{' '}
@@ -199,8 +196,7 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
           key={template.key}
           onClick={($event: React.MouseEvent | React.TouchEvent) =>
             openAddTemplate($event, template, 'edit')
-          }
-        >
+          }>
           <IonLabel>{template.description}</IonLabel>
           {reorder ? <IonReorder slot="end" /> : <IonIcon icon={pencilOutline} slot="end" />}
         </IonItem>
@@ -215,8 +211,7 @@ const SettingsTemplates: React.FC<SettingsDescriptionProps> = (props) => {
           template={selectedTemplate}
           closeAction={async (template?: Template, action?: 'edit' | 'delete') =>
             await editTemplateModal(template, action)
-          }
-        ></TemplateModal>
+          }></TemplateModal>
       </IonModal>
     );
   }

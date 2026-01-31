@@ -63,8 +63,7 @@ const Invoices: React.FC = () => {
         <IonModal
           isOpen={selectedInvoice !== undefined}
           onDidDismiss={closeAndRefresh}
-          className="fullscreen"
-        >
+          className="fullscreen">
           <InvoiceModal closeAction={closeAndRefresh} invoice={selectedInvoice}></InvoiceModal>
         </IonModal>
 
@@ -89,14 +88,12 @@ const Invoices: React.FC = () => {
               onClick={() => setSelectedInvoice(invoice)}
               mode="md"
               className="ion-activatable client"
-              color="card"
-            >
+              color="card">
               <div
                 style={{
                   background: invoice.client ? invoice.client.color : undefined,
                   color: colorContrast,
-                }}
-              >
+                }}>
                 <IonLabel>Export</IonLabel>
                 <IonIcon icon={share} />
               </div>

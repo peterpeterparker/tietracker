@@ -20,9 +20,9 @@ import TaskItem from '../taskitem/TaskItem';
 
 import {format} from '../../utils/utils.date';
 
-import {InputAdornment, TextField} from '@mui/material';
+import {CalendarMonth} from '@mui/icons-material';
+import {InputAdornment} from '@mui/material';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
-import {Calendar} from '@mui/x-date-pickers/internals/components/icons';
 import {Project} from '../../models/project';
 
 interface Props extends RootProps {
@@ -51,8 +51,10 @@ const Tasks: React.FC<Props> = (props: Props) => {
     input.click();
   }
 
-  async function selectDate(day: Date) {
-    await props.listTasks(day);
+  async function selectDate(day: Date | null) {
+    if (day) {
+      await props.listTasks(day);
+    }
   }
 
   return (
@@ -76,8 +78,7 @@ const Tasks: React.FC<Props> = (props: Props) => {
           fill="outline"
           color="medium"
           size="small"
-          aria-label={t('entries.select_date')}
-        >
+          aria-label={t('entries.select_date')}>
           {t('entries.select_date')}
         </IonButton>
 
@@ -97,8 +98,7 @@ const Tasks: React.FC<Props> = (props: Props) => {
         fill="outline"
         color="medium"
         size="small"
-        aria-label={t('entries.add_task')}
-      >
+        aria-label={t('entries.add_task')}>
         {t('entries.add_task')}
       </IonButton>
     );
@@ -117,22 +117,26 @@ const Tasks: React.FC<Props> = (props: Props) => {
       <>
         <p
           className="placeholder"
-          dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}
-        ></p>
+          dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></p>
 
         <div className={styles.picker}>
           <MobileDatePicker
-            DialogProps={{disableEnforceFocus: true}}
             value={selecteDay}
-            onChange={(date: Date | null) => selectDate(date as Date)}
-            inputFormat="yyyy/MM/dd"
-            renderInput={(params) => <TextField {...params} />}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Calendar />
-                </InputAdornment>
-              ),
+            onChange={selectDate}
+            format="yyyy/MM/dd"
+            slotProps={{
+              textField: {
+                InputProps: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <CalendarMonth />
+                    </InputAdornment>
+                  ),
+                },
+              },
+              dialog: {
+                disableEnforceFocus: true,
+              },
             }}
           />
         </div>

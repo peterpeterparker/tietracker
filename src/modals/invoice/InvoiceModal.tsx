@@ -33,10 +33,10 @@ import {pickerColor} from '../../utils/utils.picker';
 import {isChrome, isHttps} from '../../utils/utils.platform';
 import {formatTime} from '../../utils/utils.time';
 
-import {InputAdornment, TextField} from '@mui/material';
+import {CalendarMonth} from '@mui/icons-material';
+import {InputAdornment} from '@mui/material';
 import {LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
-import {Calendar} from '@mui/x-date-pickers/internals/components/icons';
 import {ExportService} from '../../services/export/export.service';
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
 import {ThemeService} from '../../services/theme/theme.service';
@@ -280,8 +280,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
               hours: formatTime(billable.hours * 3600 * 1000),
               ratio,
             }),
-          }}
-        ></p>
+          }}></p>
       );
     }
 
@@ -292,8 +291,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             amount: formatCurrency(billable.billable, settings.currency.currency),
             hours: formatTime(billable.hours * 3600 * 1000),
           }),
-        }}
-      ></p>
+        }}></p>
     );
   }
 
@@ -321,8 +319,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
     ) {
       return (
         <p
-          dangerouslySetInnerHTML={{__html: t('invoices:invoice.billed', {amount: cumulated})}}
-        ></p>
+          dangerouslySetInnerHTML={{__html: t('invoices:invoice.billed', {amount: cumulated})}}></p>
       );
     }
 
@@ -330,8 +327,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
       <p
         dangerouslySetInnerHTML={{
           __html: t('invoices:invoice.budget', {amount: cumulated, ratio: ratio}),
-        }}
-      ></p>
+        }}></p>
     );
   }
 
@@ -345,17 +341,22 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
           <IonItem className="item-input">
             <MobileDatePicker
-              DialogProps={{disableEnforceFocus: true}}
               value={from}
               onChange={(date: Date | null) => setFrom(date as Date)}
-              inputFormat="yyyy/MM/dd"
-              renderInput={(params) => <TextField {...params} />}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Calendar />
-                  </InputAdornment>
-                ),
+              format="yyyy/MM/dd"
+              slotProps={{
+                textField: {
+                  InputProps: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarMonth />
+                      </InputAdornment>
+                    ),
+                  },
+                },
+                dialog: {
+                  disableEnforceFocus: true,
+                },
               }}
             />
           </IonItem>
@@ -366,17 +367,22 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
           <IonItem className="item-input">
             <MobileDatePicker
-              DialogProps={{disableEnforceFocus: true}}
               value={to}
               onChange={(date: Date | null) => setTo(date as Date)}
-              inputFormat="yyyy/MM/dd"
-              renderInput={(params) => <TextField {...params} />}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Calendar />
-                  </InputAdornment>
-                ),
+              format="yyyy/MM/dd"
+              slotProps={{
+                textField: {
+                  InputProps: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarMonth />
+                      </InputAdornment>
+                    ),
+                  },
+                },
+                dialog: {
+                  disableEnforceFocus: true,
+                },
               }}
             />
           </IonItem>
@@ -393,8 +399,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
                 {'--background-checked': color, '--border-color-checked': color} as CSSProperties
               }
               checked={bill}
-              onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}
-            ></IonCheckbox>
+              onIonChange={($event: CustomEvent) => setBill($event.detail.checked)}></IonCheckbox>
           </IonItem>
         </IonList>
 
@@ -426,8 +431,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--background-activated': colorContrast,
             '--color-activated': color,
           } as CSSProperties
-        }
-      >
+        }>
         <IonLabel>{t('export:excel')}</IonLabel>
       </IonButton>
     );
@@ -450,8 +454,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--background-activated': colorContrast,
             '--color-activated': color,
           } as CSSProperties
-        }
-      >
+        }>
         <IonLabel>{t('export:pdf')}</IonLabel>
       </IonButton>
     );

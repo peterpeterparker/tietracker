@@ -29,10 +29,10 @@ import {Settings as SettingsModel} from '../../../models/settings';
 
 import {pickerColor} from '../../../utils/utils.picker';
 
+import {CalendarMonth} from '@mui/icons-material';
 import {InputAdornment, TextField} from '@mui/material';
 import {LocalizationProvider, MobileDateTimePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
-import {Calendar} from '@mui/x-date-pickers/internals/components/icons';
 import {TaskData} from '../../../models/task';
 import {ThemeService} from '../../../services/theme/theme.service';
 
@@ -133,8 +133,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
                 '--color': colorContrast,
                 '--ion-toolbar-color': colorContrast,
               } as CSSProperties
-            }
-          >
+            }>
             <IonTitle>{t('tasks:create.title')}</IonTitle>
             <IonButtons slot="start">
               <IonButton onClick={() => props.closeAction()}>
@@ -183,8 +182,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
                 '--background-activated': colorContrast,
                 '--color-activated': color,
               } as CSSProperties
-            }
-          >
+            }>
             <IonLabel>{t('common:actions.submit')}</IonLabel>
           </IonButton>
 
@@ -208,8 +206,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
             interfaceOptions={{header: t('tasks:create.project')}}
             placeholder={t('tasks:create.project')}
             value={project}
-            onIonChange={($event: CustomEvent) => onProjectChange($event)}
-          >
+            onIonChange={($event: CustomEvent) => onProjectChange($event)}>
             {renderProjectOptions()}
           </IonSelect>
         </IonItem>
@@ -223,7 +220,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
     }
 
     return projects.map((project) => {
-      let client: string =
+      const client: string =
         project.data && project.data.client ? `${project.data.client.name} - ` : '';
 
       return (
@@ -244,8 +241,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
         interfaceOptions={{header: t('tasks:tracker.description')}}
         placeholder={t('tasks:tracker.description')}
         value={description}
-        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}
-      >
+        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}>
         {settings.descriptions.map((description: string, i: number) => {
           return (
             <IonSelectOption value={description} key={`desc-${i}`}>
@@ -263,22 +259,22 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
         <IonItem className="item-title">
           <IonLabel>{t('tasks:details.from')}</IonLabel>
         </IonItem>
-
         <IonItem className="item-input">
           <MobileDateTimePicker
             value={from}
             onChange={(date: Date | null) => setFrom(date as Date)}
-            aria-label={t('tasks:details.from')}
             ampm={false}
-            hideTabs={true}
-            inputFormat="yyyy/MM/dd HH:mm"
-            renderInput={(params) => <TextField {...params} />}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Calendar />
-                </InputAdornment>
-              ),
+            format="yyyy/MM/dd HH:mm"
+            slotProps={{
+              textField: {
+                'aria-label': t('tasks:details.from'),
+              },
+              tabs: {
+                hidden: true,
+              },
+              dialog: {
+                disableEnforceFocus: true,
+              },
             }}
           />
         </IonItem>
@@ -291,17 +287,18 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
           <MobileDateTimePicker
             value={to}
             onChange={(date: Date | null) => setTo(date as Date)}
-            aria-label={t('tasks:details.to')}
             ampm={false}
-            hideTabs={true}
-            inputFormat="yyyy/MM/dd HH:mm"
-            renderInput={(params) => <TextField {...params} />}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Calendar />
-                </InputAdornment>
-              ),
+            format="yyyy/MM/dd HH:mm"
+            slotProps={{
+              textField: {
+                'aria-label': t('tasks:details.to'),
+              },
+              tabs: {
+                hidden: true,
+              },
+              dialog: {
+                disableEnforceFocus: true,
+              },
             }}
           />
         </IonItem>

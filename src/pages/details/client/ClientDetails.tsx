@@ -9,6 +9,7 @@ import {useTranslation} from 'react-i18next';
 import styles from './ClientDetails.module.scss';
 
 import {
+  InputInputEventDetail,
   IonBackButton,
   IonButton,
   IonButtons,
@@ -48,10 +49,9 @@ import ProjectModal, {ProjectModalAction} from '../../../modals/project/ProjectM
 import Budget from '../../../components/budget/Budget';
 import {emitError} from '../../../utils/utils.events';
 
-interface ClientDetailsProps
-  extends RouteComponentProps<{
-    id: string;
-  }> {}
+interface ClientDetailsProps extends RouteComponentProps<{
+  id: string;
+}> {}
 
 type Props = RootProps & ClientDetailsProps;
 
@@ -77,19 +77,21 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     undefined,
   );
 
-  useIonViewWillEnter(async () => {
-    setSaving(false);
+  useIonViewWillEnter(() => {
+    (async () => {
+      setSaving(false);
 
-    const client: Client | undefined = await ClientsService.getInstance().find(
-      props.match.params.id,
-    );
-    setClient(client);
+      const client: Client | undefined = await ClientsService.getInstance().find(
+        props.match.params.id,
+      );
+      setClient(client);
 
-    await loadProjects();
+      await loadProjects();
 
-    setColor(client && client.data ? client.data.color : undefined);
+      setColor(client && client.data ? client.data.color : undefined);
 
-    setLoading(false);
+      setLoading(false);
+    })();
   });
 
   useEffect(() => {
@@ -98,8 +100,6 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     }
 
     clientColorRef.current.palette = PALETTE;
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientColorRef]);
 
   async function loadProjects() {
@@ -131,7 +131,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     }
   }
 
-  function handleClientNameInput($event: IonInputCustomEvent<InputEvent>) {
+  function handleClientNameInput($event: IonInputCustomEvent<InputInputEventDetail>) {
     if (client && client.data) {
       client.data.name = ($event.target as InputTargetEvent).value;
     }
@@ -223,16 +223,14 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
           <IonModal
             isOpen={projectModalAction !== undefined}
             onDidDismiss={() => closeProjectModal(false)}
-            className="fullscreen"
-          >
+            className="fullscreen">
             <ProjectModal
               action={projectModalAction}
               projectId={selectedProjectId}
               color={color}
               colorContrast={colorContrast}
               closeAction={closeProjectModal}
-              client={client}
-            ></ProjectModal>
+              client={client}></ProjectModal>
           </IonModal>
         </IonContent>
       </>
@@ -262,11 +260,10 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
               required={true}
               input-mode="text"
               value={client.data.name}
-              onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+              onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
                 handleClientNameInput($event)
               }
-              onIonChange={() => validateClientName()}
-            ></IonInput>
+              onIonChange={() => validateClientName()}></IonInput>
           </IonItem>
 
           <IonItem className="item-title ion-margin-top">
@@ -274,11 +271,13 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
           </IonItem>
 
           <div className={styles.color}>
+            {/* @ts-ignore */}
             <deckgo-color
-              className="ion-padding-start ion-padding-end ion-padding-bottom"
+              className="ion-padding-bottom"
               ref={clientColorRef}
-              color-hex={`${client.data.color}`}
-            ></deckgo-color>
+              color-hex={`${client.data.color}`}>
+              {/* @ts-ignore */}
+            </deckgo-color>
           </div>
         </IonList>
 
@@ -304,8 +303,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
                 '--background-activated': colorContrast,
                 '--color-activated': color,
               } as CSSProperties
-            }
-          >
+            }>
             <IonLabel>{t('common:actions.update')}</IonLabel>
           </IonButton>
 
@@ -315,8 +313,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
             color="button"
             onClick={() => setProjectModalAction(ProjectModalAction.CREATE)}
             aria-label={t('clients:details.create_project')}
-            aria-disabled={saving}
-          >
+            aria-disabled={saving}>
             <IonLabel>{t('clients:details.create_project')}</IonLabel>
           </IonButton>
 
@@ -338,8 +335,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
         <IonItem
           key={project.id}
           className={styles.projectItem + ' item-input'}
-          onClick={() => updateProject(project.id)}
-        >
+          onClick={() => updateProject(project.id)}>
           <div className={styles.summary}>
             <h2>{project.data.name}</h2>
             <IonLabel>

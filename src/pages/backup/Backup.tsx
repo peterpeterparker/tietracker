@@ -38,7 +38,7 @@ const Backup: React.FC<RootProps> = (props) => {
 
   const [processing, setProcessing] = useState<boolean>(false);
 
-  const inputRef: RefObject<HTMLInputElement> = createRef();
+  const inputRef: RefObject<HTMLInputElement | null> | undefined = createRef();
 
   const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 

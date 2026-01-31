@@ -1,5 +1,6 @@
 import type {IonInputCustomEvent} from '@ionic/core';
 import {
+  InputInputEventDetail,
   IonInput,
   IonItem,
   IonLabel,
@@ -49,7 +50,7 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
     props.settings.roundTime = $event.detail.value;
   }
 
-  function onVatInput($event: IonInputCustomEvent<InputEvent>) {
+  function onVatInput($event: IonInputCustomEvent<InputInputEventDetail>) {
     if (!$event) {
       return;
     }
@@ -74,8 +75,7 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
       <IonModal isOpen={showPopover} onDidDismiss={() => setShowPopover(false)}>
         <CurrenciesModal
           currency={props.settings.currency}
-          closeAction={(currency?: Currency) => onCurrencyChange(currency)}
-        ></CurrenciesModal>
+          closeAction={(currency?: Currency) => onCurrencyChange(currency)}></CurrenciesModal>
       </IonModal>
 
       <IonList className="inputs-list">
@@ -88,8 +88,7 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
             interfaceOptions={{header: t('tracker.time.title')}}
             placeholder={t('tracker.time.title')}
             value={props.settings.roundTime}
-            onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}
-          >
+            onIonChange={($event: CustomEvent) => onRoundTimeChange($event)}>
             <IonSelectOption value={1}>{t('tracker.time.minute.1')}</IonSelectOption>
             <IonSelectOption value={5}>{t('tracker.time.minute.5')}</IonSelectOption>
             <IonSelectOption value={15}>{t('tracker.time.minute.15')}</IonSelectOption>
@@ -115,8 +114,9 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
             input-mode="text"
             value={props.settings.vat ? `${props.settings.vat}` : ''}
             aria-label={t('tracker.vat.input')}
-            onIonInput={($event: IonInputCustomEvent<InputEvent>) => onVatInput($event)}
-          ></IonInput>
+            onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
+              onVatInput($event)
+            }></IonInput>
         </IonItem>
       </IonList>
     </>

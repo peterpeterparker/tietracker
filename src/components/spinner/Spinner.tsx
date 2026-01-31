@@ -51,7 +51,7 @@ const Spinner: React.FC<SpinnerProps> = (props: SpinnerProps) => {
         if (summary && summary.total && summary.total.today.milliseconds > 0) {
           const todaySeconds: number = summary.total.today.milliseconds / 1000;
 
-          let todayTimeElapsed = await formatTime(todaySeconds + seconds);
+          const todayTimeElapsed = await formatTime(todaySeconds + seconds);
 
           if (todayTimeElapsedRef && todayTimeElapsedRef.current) {
             todayTimeElapsedRef.current.innerHTML = `${todayTimeLabel} ${todayTimeElapsed}`;
@@ -60,7 +60,6 @@ const Spinner: React.FC<SpinnerProps> = (props: SpinnerProps) => {
       }
     }, 1000);
 
-    // eslint-disable-next-line
     return () => clearInterval(progressInterval);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

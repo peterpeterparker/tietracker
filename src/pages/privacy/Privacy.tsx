@@ -168,7 +168,8 @@ const Privacy: React.FC = () => {
 
           <p>
             Sometimes we’ll send you emails about your account, service changes or new policies. You
-            can’t opt out of this type of “transactional” email (unless you delete your account).{' '}
+            can’t opt out of this type of “transactional” email (unless you delete your
+            account).{' '}
           </p>
 
           <p>

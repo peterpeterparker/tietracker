@@ -14,6 +14,7 @@ import {
   IonSearchbar,
   IonTitle,
   IonToolbar,
+  SearchbarInputEventDetail,
 } from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
@@ -30,7 +31,7 @@ import {Client} from '../../models/client';
 const ClientsModal = () => {
   const {t} = useTranslation('clients');
 
-  const headerRef: RefObject<HTMLIonHeaderElement> | null = useRef(null);
+  const headerRef: RefObject<HTMLIonHeaderElement | null> = useRef(null);
 
   const clients: Client[] | undefined = useSelector((state: RootState) => state.clients.clients);
 
@@ -38,10 +39,9 @@ const ClientsModal = () => {
 
   useEffect(() => {
     setFilteredClients(clients === undefined ? [] : clients);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clients]);
 
-  function onFilter($event: IonSearchbarCustomEvent<KeyboardEvent>) {
+  function onFilter($event: IonSearchbarCustomEvent<SearchbarInputEventDetail>) {
     if (!$event) {
       return;
     }
@@ -92,8 +92,7 @@ const ClientsModal = () => {
           debounce={500}
           placeholder={t('search.filter')}
           className={styles.searchbar}
-          onIonInput={($event: IonSearchbarCustomEvent<KeyboardEvent>) => onFilter($event)}
-        ></IonSearchbar>
+          onIonInput={onFilter}></IonSearchbar>
 
         <IonList className="ion-margin-top">{renderClients()}</IonList>
       </main>
@@ -116,8 +115,7 @@ const ClientsModal = () => {
           className={styles.item}
           lines="none"
           detail={false}
-          onClick={() => closeModal(client.id)}
-        >
+          onClick={() => closeModal(client.id)}>
           <div slot="start" style={{background: client.data.color} as CSSProperties}></div>
 
           <IonLabel>

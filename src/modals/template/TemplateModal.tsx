@@ -2,6 +2,7 @@ import React, {FormEvent, useEffect, useState} from 'react';
 
 import type {IonInputCustomEvent} from '@ionic/core';
 import {
+  InputInputEventDetail,
   IonButton,
   IonButtons,
   IonContent,
@@ -36,7 +37,7 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
     setDescription(props.template ? props.template.description : undefined);
   }, [props.template]);
 
-  function handleTemplateInput($event: IonInputCustomEvent<InputEvent>) {
+  function handleTemplateInput($event: IonInputCustomEvent<InputInputEventDetail>) {
     setDescription(($event.target as InputTargetEvent).value);
   }
 
@@ -96,11 +97,10 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
                   required={true}
                   input-mode="text"
                   value={description}
-                  onIonInput={($event: IonInputCustomEvent<InputEvent>) =>
+                  onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
                     handleTemplateInput($event)
                   }
-                  onIonChange={() => validateTemplate()}
-                ></IonInput>
+                  onIonChange={() => validateTemplate()}></IonInput>
               </IonItem>
             </IonList>
 
@@ -132,8 +132,7 @@ const TemplateModal: React.FC<Props> = (props: Props) => {
         onClick={($event: React.MouseEvent | React.TouchEvent) => deleteTemplate($event)}
         color="button"
         fill="outline"
-        disabled={props.template === undefined}
-      >
+        disabled={props.template === undefined}>
         <IonLabel>{t('common:actions.delete')}</IonLabel>
       </IonButton>
     );

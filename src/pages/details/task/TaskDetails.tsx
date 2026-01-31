@@ -1,5 +1,6 @@
 import type {IonInputCustomEvent} from '@ionic/core';
 import {
+  InputInputEventDetail,
   IonAlert,
   IonBackButton,
   IonButton,
@@ -35,20 +36,19 @@ import {pickerColor} from '../../../utils/utils.picker';
 
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 
-import {InputAdornment, TextField} from '@mui/material';
+import {CalendarMonth} from '@mui/icons-material';
+import {InputAdornment} from '@mui/material';
 import {LocalizationProvider, MobileDateTimePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
-import {Calendar} from '@mui/x-date-pickers/internals/components/icons';
 import {ClientsService} from '../../../services/clients/clients.service';
 import {ProjectsService} from '../../../services/projects/projects.service';
 import {TasksService} from '../../../services/tasks/tasks.service';
 import {emitError} from '../../../utils/utils.events';
 
-interface TaskDetailsProps
-  extends RouteComponentProps<{
-    day: string;
-    id: string;
-  }> {}
+interface TaskDetailsProps extends RouteComponentProps<{
+  day: string;
+  id: string;
+}> {}
 
 type Props = RootProps & TaskDetailsProps;
 
@@ -71,7 +71,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
   const [client, setClient] = useState<Client | undefined>(undefined);
   const [project, setProject] = useState<Project | undefined>(undefined);
 
-  const headerRef: RefObject<any> = useRef();
+  const headerRef: RefObject<any> = useRef(undefined);
 
   const [showAlertDelete, setShowAlertDelete] = useState(false);
 
@@ -95,39 +95,41 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     );
   }, [task]);
 
-  useIonViewWillEnter(async () => {
-    setSaving(false);
-    setLoading(true);
+  useIonViewWillEnter(() => {
+    (async () => {
+      setSaving(false);
+      setLoading(true);
 
-    const task: Task | undefined = await TasksService.getInstance().find(
-      props.match.params.id,
-      props.match.params.day,
-    );
-    setTask(task);
-
-    if (task && task.data) {
-      setFrom(toDateObj(task.data.from));
-      setTo(toDateObj(task.data.to));
-      setDescription(task.data.description);
-
-      const project: Project | undefined = await ProjectsService.getInstance().find(
-        task.data.project_id,
+      const task: Task | undefined = await TasksService.getInstance().find(
+        props.match.params.id,
+        props.match.params.day,
       );
-      setProject(project);
+      setTask(task);
 
-      const client: Client | undefined = await ClientsService.getInstance().find(
-        task.data.client_id,
-      );
-      setClient(client);
-    } else {
-      setFrom(undefined);
-      setTo(undefined);
-      setDescription(undefined);
-      setProject(undefined);
-      setClient(undefined);
-    }
+      if (task && task.data) {
+        setFrom(toDateObj(task.data.from));
+        setTo(toDateObj(task.data.to));
+        setDescription(task.data.description);
 
-    setLoading(false);
+        const project: Project | undefined = await ProjectsService.getInstance().find(
+          task.data.project_id,
+        );
+        setProject(project);
+
+        const client: Client | undefined = await ClientsService.getInstance().find(
+          task.data.client_id,
+        );
+        setClient(client);
+      } else {
+        setFrom(undefined);
+        setTo(undefined);
+        setDescription(undefined);
+        setProject(undefined);
+        setClient(undefined);
+      }
+
+      setLoading(false);
+    })();
   });
 
   async function handleSubmit($event: FormEvent<HTMLFormElement>) {
@@ -201,7 +203,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     await props.listProjectsInvoices();
   }
 
-  function onDescriptionChange($event: IonInputCustomEvent<InputEvent>) {
+  function onDescriptionChange($event: IonInputCustomEvent<InputInputEventDetail>) {
     setDescription(($event.target as InputTargetEvent).value);
   }
 
@@ -262,29 +264,31 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
               maxlength={256}
               value={description}
               input-mode="text"
-              onIonInput={($event: IonInputCustomEvent<InputEvent>) => onDescriptionChange($event)}
-            ></IonInput>
+              onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
+                onDescriptionChange($event)
+              }></IonInput>
           </IonItem>
 
           <IonItem className="item-title">
             <IonLabel>{t('tasks:details.from')}</IonLabel>
           </IonItem>
 
-          <IonItem className="item-input">
+          <IonItem className="item-input" button={false} detail={false}>
             <MobileDateTimePicker
               value={from}
               onChange={(date: Date | null) => setFrom(date as Date)}
-              aria-label={t('tasks:details.from')}
               ampm={false}
-              hideTabs={true}
-              inputFormat="yyyy/MM/dd HH:mm"
-              renderInput={(params) => <TextField {...params} />}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Calendar />
-                  </InputAdornment>
-                ),
+              format="yyyy/MM/dd HH:mm"
+              slotProps={{
+                textField: {
+                  'aria-label': t('tasks:details.from'),
+                },
+                tabs: {
+                  hidden: true,
+                },
+                dialog: {
+                  disableEnforceFocus: true,
+                },
               }}
             />
           </IonItem>
@@ -293,21 +297,22 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
             <IonLabel>{t('tasks:details.to')}</IonLabel>
           </IonItem>
 
-          <IonItem className="item-input">
+          <IonItem className="item-input" button={false} detail={false}>
             <MobileDateTimePicker
               value={to}
               onChange={(date: Date | null) => setTo(date as Date)}
-              aria-label={t('tasks:details.to')}
               ampm={false}
-              hideTabs={true}
-              inputFormat="yyyy/MM/dd HH:mm"
-              renderInput={(params) => <TextField {...params} />}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Calendar />
-                  </InputAdornment>
-                ),
+              format="yyyy/MM/dd HH:mm"
+              slotProps={{
+                textField: {
+                  'aria-label': t('tasks:details.to'),
+                },
+                tabs: {
+                  hidden: true,
+                },
+                dialog: {
+                  disableEnforceFocus: true,
+                },
               }}
             />
           </IonItem>
@@ -327,8 +332,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
                 '--background-activated': colorContrast,
                 '--color-activated': color,
               } as CSSProperties
-            }
-          >
+            }>
             <IonLabel>{t('common:actions.update')}</IonLabel>
           </IonButton>
 
@@ -337,8 +341,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
             onClick={() => (taskBilled ? setShowAlertDelete(true) : deleteTask())}
             color="button"
             fill="outline"
-            disabled={saving}
-          >
+            disabled={saving}>
             <IonLabel>{t('common:actions.delete')}</IonLabel>
           </IonButton>
 
