@@ -23,8 +23,7 @@ export function startTask(project: Project, settings: Settings): RootThunkResult
   return async (dispatch, getState) => {
     const task: TaskInProgress = await TasksService.getInstance().start(project, settings);
 
-    // Not awaited on purpose. iOS takes some time.
-    NotificationsService.getInstance().schedule(project, settings);
+    await NotificationsService.getInstance().schedule(project, settings);
 
     dispatch({type: START_TASK, payload: task});
   };
