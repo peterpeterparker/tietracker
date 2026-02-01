@@ -57,6 +57,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^8.0.2",
+    "@junobuild/config": "^2.10.0",
     "@types/node": "^25.1.0",
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
