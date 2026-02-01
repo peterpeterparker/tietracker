@@ -16,7 +16,6 @@ import {
   shareMobile,
   writeFile,
 } from '../../utils/utils.filesystem';
-import {isChrome, isHttps} from '../../utils/utils.platform';
 
 import {Settings} from '../../models/settings';
 
@@ -65,10 +64,10 @@ export class BackupService {
   }
 
   async backup(type: 'excel' | 'idb', settings: Settings) {
-    if (isPlatform('desktop') && isChrome() && isHttps()) {
-      await this.exportNativeFileSystem(type, settings);
-    } else if (isPlatform('hybrid')) {
+    if (isPlatform('hybrid')) {
       await this.exportMobileFileSystem(type, settings);
+    } else if ('showSaveFilePicker' in window) {
+      await this.exportNativeFileSystem(type, settings);
     } else {
       await this.exportDownload(type, settings);
     }
