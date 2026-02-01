@@ -1,5 +1,5 @@
 div.MuiPickersToolbar-root {
-  background: var(--picker-background, var(--ion-color-primary));
+  background: var(--picker-background);
 
   .MuiTypography-overline,
   button.MuiPickersToolbar-penIconButton {
@@ -44,6 +44,6 @@ div.MuiDialogActions-root {
 
 li.MuiButtonBase-root.Mui-selected,
 button.MuiPickersDay-root.Mui-selected {
-  background-color: var(--picker-background) !important;
-  color: var(--picker-color);
+  background-color: var(--picker-background, var(--ion-color-button)) !important;
+  color: var(--picker-color, var(--ion-color-button-contrast));
 }
