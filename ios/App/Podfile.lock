@@ -31,7 +31,7 @@ SPEC CHECKSUMS:
   Capacitor: 2b79172ad27f3be2d103cce88b8eb9803fdcc744
   CapacitorCordova: 921bdb690ebe82421b24fce45552fd3dea2ae43a
   CapacitorSplashScreen: 422880d7117605c30699eb4b21644b62db42e86c
-  CordovaPlugins: 1ec62265357355f22f2c421cda2b5831fb82b790
+  CordovaPlugins: 99da022c5430ce8ee475c7c728d91590a5c56fe8
   CordovaPluginsResources: da93847212bf7b16ba770e4d6c3e7dba820174c7
 
 PODFILE CHECKSUM: 1d0327d03b77e22534e6bf6b6dc37526f44b68f2
