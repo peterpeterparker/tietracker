@@ -24,6 +24,7 @@
     "type": "Budget (type)",
     "project": "Project",
     "yearly": "Yearly",
-    "monthly": "Monthly"
+    "monthly": "Monthly",
+    "weekly": "Weekly"
   }
 }

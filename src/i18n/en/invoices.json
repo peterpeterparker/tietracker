@@ -3,7 +3,7 @@
     "no_period": "No period defined.",
     "empty": "For the selected period nothing can be billed.",
     "billable": "For the selected period <strong>{{amount}}</strong> can be billed, i.e. {{hours}}.",
-    "billable_period": "For the selected period <strong>{{amount}}</strong> can be billed, i.e. {{hours}} or <strong>{{ratio}}</strong> of the budget.",
+    "billable_period": "For the selected period <strong>{{amount}}</strong> can be billed, i.e. {{hours}} or <strong>{{ratio}}</strong> of the maximal budget.",
     "from": "From",
     "to": "To",
     "close": "Close invoice",

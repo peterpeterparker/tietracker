@@ -384,6 +384,7 @@ const ProjectModal: React.FC<Props> = (props) => {
               <IonSelectOption value={'project'}>{t('clients:budget.project')}</IonSelectOption>
               <IonSelectOption value={'yearly'}>{t('clients:budget.yearly')}</IonSelectOption>
               <IonSelectOption value={'monthly'}>{t('clients:budget.monthly')}</IonSelectOption>
+              <IonSelectOption value={'weekly'}>{t('clients:budget.weekly')}</IonSelectOption>
             </IonSelect>
           </IonItem>
         </div>

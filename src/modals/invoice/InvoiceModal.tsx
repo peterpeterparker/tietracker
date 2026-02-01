@@ -249,9 +249,10 @@ const InvoiceModal: React.FC<Props> = (props) => {
       ratio = '0%';
     }
 
-    const period: boolean =
+    const period =
       props.invoice?.project?.budget?.type === 'yearly' ||
-      props.invoice?.project?.budget?.type === 'monthly';
+      props.invoice?.project?.budget?.type === 'monthly' ||
+      props.invoice?.project?.budget?.type === 'weekly';
 
     return (
       <>
