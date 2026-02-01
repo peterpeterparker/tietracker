@@ -2,20 +2,20 @@ import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import {initReactI18next} from 'react-i18next';
 
-import enBackup from '../../public/assets/i18n/en/backup.json';
-import enClients from '../../public/assets/i18n/en/clients.json';
-import enCommon from '../../public/assets/i18n/en/common.json';
-import enExport from '../../public/assets/i18n/en/export.json';
-import enHeader from '../../public/assets/i18n/en/header.json';
-import enHome from '../../public/assets/i18n/en/home.json';
-import enInvoices from '../../public/assets/i18n/en/invoices.json';
-import enMore from '../../public/assets/i18n/en/more.json';
-import enNotifications from '../../public/assets/i18n/en/notifications.json';
-import enPeriod from '../../public/assets/i18n/en/period.json';
-import enProjects from '../../public/assets/i18n/en/projects.json';
-import enSettings from '../../public/assets/i18n/en/settings.json';
-import enSummary from '../../public/assets/i18n/en/summary.json';
-import enTasks from '../../public/assets/i18n/en/tasks.json';
+import enBackup from '../i18n/en/backup.json';
+import enClients from '../i18n/en/clients.json';
+import enCommon from '../i18n/en/common.json';
+import enExport from '../i18n/en/export.json';
+import enHeader from '../i18n/en/header.json';
+import enHome from '../i18n/en/home.json';
+import enInvoices from '../i18n/en/invoices.json';
+import enMore from '../i18n/en/more.json';
+import enNotifications from '../i18n/en/notifications.json';
+import enPeriod from '../i18n/en/period.json';
+import enProjects from '../i18n/en/projects.json';
+import enSettings from '../i18n/en/settings.json';
+import enSummary from '../i18n/en/summary.json';
+import enTasks from '../i18n/en/tasks.json';
 
 i18n
   .use(LanguageDetector)
