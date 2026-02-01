@@ -14,6 +14,7 @@ import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 
 import {Summary as SummaryData} from '../../store/interfaces/summary';
 import {TaskInProgress} from '../../store/interfaces/task.inprogress';
+import {formatSeconds} from '../../utils/utils.time';
 
 interface SpinnerProps extends RootProps {
   color: string | undefined;
@@ -38,20 +39,20 @@ const Spinner: React.FC<SpinnerProps> = (props: SpinnerProps) => {
   const todayTimeLabel: string = t('tracker.today');
 
   useEffect(() => {
-    const progressInterval = window.setInterval(async () => {
+    const progressInterval = window.setInterval(() => {
       if (taskInProgress && taskInProgress.data && !props.freeze) {
-        const now: Date = new Date();
+        const now = new Date();
 
-        const seconds: number = differenceInSeconds(now, taskInProgress.data.from);
+        const seconds = differenceInSeconds(now, taskInProgress.data.from);
 
         if (timeElapsedRef && timeElapsedRef.current) {
-          timeElapsedRef.current.innerHTML = await formatTime(seconds);
+          timeElapsedRef.current.innerHTML = formatSeconds(seconds);
         }
 
         if (summary && summary.total && summary.total.today.milliseconds > 0) {
-          const todaySeconds: number = summary.total.today.milliseconds / 1000;
+          const todaySeconds = summary.total.today.milliseconds / 1000;
 
-          const todayTimeElapsed = await formatTime(todaySeconds + seconds);
+          const todayTimeElapsed = formatSeconds(todaySeconds + seconds);
 
           if (todayTimeElapsedRef && todayTimeElapsedRef.current) {
             todayTimeElapsedRef.current.innerHTML = `${todayTimeLabel} ${todayTimeElapsed}`;
@@ -64,17 +65,6 @@ const Spinner: React.FC<SpinnerProps> = (props: SpinnerProps) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [summary]);
-
-  async function formatTime(seconds: number): Promise<string> {
-    const diffHours: number = Math.floor(seconds / 3600);
-    seconds = seconds % 3600;
-    const diffMinutes: number = Math.floor(seconds / 60);
-    const diffSeconds: number = Math.floor(seconds % 60);
-
-    return `${diffHours >= 99 ? '99' : diffHours < 10 ? '0' + diffHours : diffHours}:${
-      diffMinutes < 10 ? '0' + diffMinutes : diffMinutes
-    }:${diffSeconds < 10 ? '0' + diffSeconds : diffSeconds}`;
-  }
 
   const inlineStyle =
     props.color !== undefined
