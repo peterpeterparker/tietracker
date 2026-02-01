@@ -11,6 +11,7 @@ import {setupIonicReact} from '@ionic/react';
 
 setupIonicReact({
   backButtonText: '',
+  innerHTMLTemplatesEnabled: true,
 });
 
 // Safari 14 workaround 🤮
