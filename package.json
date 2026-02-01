@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:pwa": "tsc && vite build --mode pwa",
     "preview": "vite preview",
     "lint": "eslint",
     "prettier": "prettier --write 'src/**/*.{ts,js,css,html,jsx,tsx}' && prettier --write 'public/workers/**/*.{ts,js,css,html,jsx,tsx}' && prettier --write '*.md'",
