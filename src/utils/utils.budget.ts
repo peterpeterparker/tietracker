@@ -1,6 +1,13 @@
 import i18n from 'i18next';
 
-import {differenceInMonths, differenceInYears, startOfMonth, startOfYear} from 'date-fns';
+import {
+  differenceInMonths,
+  differenceInWeeks,
+  differenceInYears,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+} from 'date-fns';
 
 import {ProjectDataBudget} from '../models/project';
 
@@ -36,10 +43,12 @@ export function budgetRatio({
     return undefined;
   }
 
-  const multiplyBudget: number =
-    type === 'monthly'
-      ? differenceInMonths(startOfMonth(period.to), startOfMonth(period.from))
-      : differenceInYears(startOfYear(period.to), startOfYear(period.from));
+  const multiplyBudget =
+    type === 'weekly'
+      ? differenceInWeeks(startOfWeek(period.to), startOfWeek(period.from))
+      : type === 'monthly'
+        ? differenceInMonths(startOfMonth(period.to), startOfMonth(period.from))
+        : differenceInYears(startOfYear(period.to), startOfYear(period.from));
 
   return new Intl.NumberFormat(i18n.language, {style: 'percent'}).format(
     extra / (limit * (multiplyBudget + 1)),

@@ -10,7 +10,7 @@ export interface ProjectDataRate {
   vat: boolean;
 }
 
-export type ProjectDataType = 'project' | 'yearly' | 'monthly';
+export type ProjectDataType = 'project' | 'yearly' | 'monthly' | 'weekly';
 
 export interface ProjectDataBudget {
   budget: number;
