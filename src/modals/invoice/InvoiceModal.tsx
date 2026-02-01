@@ -30,7 +30,6 @@ import {budgetRatio} from '../../utils/utils.budget';
 import {contrast} from '../../utils/utils.color';
 import {formatCurrency} from '../../utils/utils.currency';
 import {pickerColor} from '../../utils/utils.picker';
-import {isChrome, isHttps} from '../../utils/utils.platform';
 import {formatTime} from '../../utils/utils.time';
 
 import {CalendarMonth} from '@mui/icons-material';
@@ -125,8 +124,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
     setInProgress(true);
 
     try {
-      if (isPlatform('desktop') && isChrome() && isHttps()) {
-        await ExportService.getInstance().exportNativeFileSystem(
+      if (isPlatform('hybrid')) {
+        await ExportService.getInstance().exportMobileFileSystem(
           props.invoice,
           from,
           to,
@@ -136,8 +135,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
           type,
           settings.signature,
         );
-      } else if (isPlatform('hybrid')) {
-        await ExportService.getInstance().exportMobileFileSystem(
+      } else if ('showSaveFilePicker' in window) {
+        await ExportService.getInstance().exportNativeFileSystem(
           props.invoice,
           from,
           to,
