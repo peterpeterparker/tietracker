@@ -3,7 +3,7 @@ import type {CapacitorConfig} from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'com.tietracker.app',
   appName: 'Tie Tracker',
-  webDir: 'build',
+  webDir: 'dist',
   cordova: {},
   plugins: {
     SplashScreen: {
