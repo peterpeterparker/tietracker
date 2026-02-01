@@ -12,7 +12,8 @@
   "tracker": {
     "stop": "Stop current task",
     "description": "Description of the task",
-    "today": "Today"
+    "today": "Today",
+    "week": "Week"
   },
   "details": {
     "description": "Description",

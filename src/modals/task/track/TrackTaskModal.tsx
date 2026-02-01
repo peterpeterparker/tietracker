@@ -1,7 +1,7 @@
 import React, {CSSProperties, useState} from 'react';
 import {useSelector} from 'react-redux';
 
-import {IonIcon, IonLabel, IonSelect, IonSelectOption} from '@ionic/react';
+import {IonIcon, IonSelect, IonSelectOption} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -19,6 +19,7 @@ import {
 } from '../../../store/interfaces/task.inprogress';
 
 import Spinner from '../../../components/spinner/Spinner';
+import TrackDetails from '../../../components/track-details/TrackDetails';
 
 import {Settings as SettingsModel} from '../../../models/settings';
 import {contrast} from '../../../utils/utils.color';
@@ -85,14 +86,10 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
       className={`${styles.task} ${task !== undefined ? styles.progress : ''}`}
       style={client !== undefined ? {background: `${client.color}`} : undefined}>
       {client?.name && (
-        <IonLabel
-          style={{color: contrastColor} as CSSProperties}
-          className={`${styles.client} ion-padding`}>
-          {client?.name}
-        </IonLabel>
+        <TrackDetails freeze={freeze} client={client} contrastColor={contrastColor} />
       )}
 
-      <div style={{'--color': contrastColor} as CSSProperties}>
+      <div style={{'--color': contrastColor} as CSSProperties} className={styles.section}>
         {task !== undefined ? (
           <Spinner
             freeze={freeze}

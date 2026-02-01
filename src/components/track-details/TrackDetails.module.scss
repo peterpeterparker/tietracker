@@ -1,0 +1,19 @@
+.container {
+  position: absolute;
+  bottom: env(safe-area-inset-bottom, 0);
+  right: 0;
+  font-size: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.client {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  white-space: nowrap;
+  max-width: 50%;
+}
