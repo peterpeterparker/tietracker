@@ -14,7 +14,8 @@
     "postinstall": "jetifier",
     "libs": "node scripts/download-libs.mjs",
     "format": "prettier --write .",
-    "patch": "node ./scripts/patch-cordova-plugin-badge.mjs"
+    "patch": "node ./scripts/patch-cordova-plugin-badge.mjs",
+    "cap:ios": "npx cap add ios --packagemanager CocoaPods"
   },
   "dependencies": {
     "@awesome-cordova-plugins/core": "^8.1.0",
