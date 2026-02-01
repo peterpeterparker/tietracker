@@ -1,6 +1,0 @@
-{
-  "projects": {
-    "default": "tie-tracker",
-    "staging": "tie-tracker-staging"
-  }
-}
