@@ -493,8 +493,9 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
               }></IonInput>
           </IonItem>
 
-          <IonItem className="item-input" disabled={!validClientName}>
+          <IonItem disabled={!validClientName}>
             <IonSelect
+              label={t('clients:budget.type')}
               interfaceOptions={{header: t('clients:budget.type')}}
               placeholder=""
               onIonChange={($event: CustomEvent) => handleProjectBudgetType($event)}>
