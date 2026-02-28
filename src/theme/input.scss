@@ -50,8 +50,14 @@ ion-item.item {
     padding-right: 16px;
 
     &.ios {
-      height: 46px;
+      height: auto;
     }
+  }
+
+  ion-select::part(label) {
+    visibility: hidden;
+    opacity: 0;
+    height: auto;
   }
 
   div.MuiFormControl-root {
