@@ -15,6 +15,7 @@ import {
   IonSpinner,
   IonTitle,
   IonToolbar,
+  useIonAlert,
   useIonViewWillEnter,
 } from '@ionic/react';
 import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
@@ -52,6 +53,8 @@ type Props = RootProps & TaskDetailsProps;
 
 const TaskDetails: React.FC<Props> = (props: Props) => {
   const {t} = useTranslation(['tasks', 'common']);
+
+  const [presentAlert] = useIonAlert();
 
   const [task, setTask] = useState<Task | undefined>(undefined);
   const [from, setFrom] = useState<Date | undefined>(undefined);
@@ -165,6 +168,32 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
   async function deleteTask() {
     if (!task || !task.data || from === undefined || to === undefined) {
+      return;
+    }
+
+    const confirm = async (): Promise<{action: 'confirmed' | 'cancelled'}> => {
+      return new Promise<{action: 'confirmed' | 'cancelled'}>(async (resolve) => {
+        await presentAlert({
+          message: t('tasks:delete.confirm'),
+          buttons: [
+            {
+              text: t('tasks:delete.cancel'),
+              role: 'cancel',
+              handler: () => resolve({action: 'cancelled'}),
+            },
+            {
+              text: t('tasks:delete.delete'),
+              role: 'confirm',
+              handler: () => resolve({action: 'confirmed'}),
+            },
+          ],
+        });
+      });
+    };
+
+    const {action} = await confirm();
+
+    if (action === 'cancelled') {
       return;
     }
 

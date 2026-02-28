@@ -26,6 +26,9 @@
   },
   "delete": {
     "warning": "WARNING",
-    "message": "This entry has been billed. Are you sure you want to delete it?"
+    "message": "This entry has been billed. Are you sure you want to delete it?",
+    "confirm": "Are you sure you want to delete this entry?",
+    "delete": "Delete",
+    "cancel": "Cancel"
   }
 }
