@@ -13,6 +13,7 @@
     "postinstall": "jetifier",
     "libs": "node scripts/download-libs.mjs",
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "cap:ios": "npx cap add ios --packagemanager CocoaPods"
   },
   "dependencies": {

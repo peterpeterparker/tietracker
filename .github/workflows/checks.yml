@@ -13,9 +13,9 @@ jobs:
       - name: Prepare
         uses: ./.github/actions/prepare
       - name: Lint
-        run: npm run lint
+        run: npm run lint -- --max-warnings 0
 
-  check:
+  format:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,8 +23,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Prepare
         uses: ./.github/actions/prepare
-      - name: Lint
-        run: npm run check
+      - name: Format
+        run: npm run format:check
 
   build:
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
         run: npm run build
 
   may-merge:
-    needs: ['check', 'lint', 'build']
+    needs: ['format', 'lint', 'build']
     runs-on: ubuntu-latest
     steps:
       - name: Cleared for merging
