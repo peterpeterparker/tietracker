@@ -25,7 +25,6 @@
     "@capacitor/core": "^8.0.2",
     "@capacitor/ios": "^8.0.2",
     "@capacitor/splash-screen": "^8.0.0",
-    "@deckdeckgo/utils": "^5.1.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@ionic/react": "^8.7.17",
