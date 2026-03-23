@@ -16,6 +16,20 @@
   }
 }
 
+.clickable {
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  h2::after {
+    content: ' ›';
+    opacity: 0.6;
+  }
+}
+
 .title {
   margin-bottom: 0;
   padding-top: 12px;

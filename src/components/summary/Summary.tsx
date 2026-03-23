@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 
-import {IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle} from '@ionic/react';
+import {IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal} from '@ionic/react';
 
 import {useTranslation} from 'react-i18next';
 
@@ -17,6 +17,9 @@ import {formatCurrency} from '../../utils/utils.currency';
 import {formatTime} from '../../utils/utils.time';
 
 import {Settings} from '../../models/settings';
+
+import DayHistoryModal from '../../modals/history/DayHistoryModal';
+import WeekHistoryModal from '../../modals/history/WeekHistoryModal';
 
 interface Props extends RootProps {
   extended: boolean;
@@ -40,6 +43,9 @@ const Summary: React.FC<Props> = (props: Props) => {
     hours: 0,
   });
 
+  const [showDayHistory, setShowDayHistory] = useState(false);
+  const [showWeekHistory, setShowWeekHistory] = useState(false);
+
   useEffect(() => {
     if (invoices && invoices.length > 0) {
       const openSum: OpenBillable = invoices.reduce(
@@ -60,10 +66,28 @@ const Summary: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="ion-padding-end">
+      <IonModal
+        isOpen={showDayHistory}
+        onDidDismiss={() => setShowDayHistory(false)}
+        className="fullscreen">
+        <DayHistoryModal closeAction={() => setShowDayHistory(false)} />
+      </IonModal>
+
+      <IonModal
+        isOpen={showWeekHistory}
+        onDidDismiss={() => setShowWeekHistory(false)}
+        className="fullscreen">
+        <WeekHistoryModal closeAction={() => setShowWeekHistory(false)} />
+      </IonModal>
+
       <h1 className={`${styles.title} ${props.extended ? 'extended' : ''}`}>{t('title')}</h1>
 
       <div className={`${styles.summary} ${props.extended ? 'extended' : ''}`}>
-        <IonCard className={styles.card} color="card">
+        <IonCard
+          className={`${styles.card} ${styles.clickable}`}
+          color="card"
+          button
+          onClick={() => setShowDayHistory(true)}>
           <h2 className={styles.title}>{t('today')}</h2>
           <IonCardHeader className={styles.header}>
             <IonCardSubtitle className={styles.subtitle}>
@@ -80,7 +104,11 @@ const Summary: React.FC<Props> = (props: Props) => {
           </IonCardHeader>
         </IonCard>
 
-        <IonCard className={styles.card} color="card">
+        <IonCard
+          className={`${styles.card} ${styles.clickable}`}
+          color="card"
+          button
+          onClick={() => setShowWeekHistory(true)}>
           <h2 className={styles.title}>{t('week')}</h2>
           <IonCardHeader className={styles.header}>
             <IonCardSubtitle className={styles.subtitle}>
