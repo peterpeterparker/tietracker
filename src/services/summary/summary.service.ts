@@ -16,7 +16,7 @@ export class SummaryService {
     return SummaryService.instance;
   }
 
-  compute(updateStateFunction: Function): Promise<void> {
+  compute(updateStateFunction: Function, days: Date[] = this.week()): Promise<void> {
     return new Promise<void>((resolve) => {
       this.summaryWorker.onmessage = ($event: MessageEvent) => {
         if ($event && $event.data) {
@@ -24,7 +24,7 @@ export class SummaryService {
         }
       };
 
-      this.summaryWorker.postMessage({msg: 'compute', days: this.week()});
+      this.summaryWorker.postMessage({msg: 'compute', days: days});
 
       resolve();
     });

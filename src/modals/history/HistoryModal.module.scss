@@ -1,24 +1,3 @@
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  padding: 16px 0;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    label {
-      display: none;
-    }
-  }
-}
-
 .card {
   margin: 0;
 
@@ -39,6 +18,12 @@
 
 .subtitle {
   text-transform: inherit;
+
+  @media (max-width: 768px) {
+    label {
+      display: none;
+    }
+  }
 }
 
 .header {
