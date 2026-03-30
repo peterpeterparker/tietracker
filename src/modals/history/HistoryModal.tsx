@@ -23,7 +23,14 @@ import {SummaryService} from '../../services/summary/summary.service';
 import {Summary} from '../../store/interfaces/summary';
 import {RootState} from '../../store/reducers';
 import {formatCurrency} from '../../utils/utils.currency';
-import {buildPastDays, buildWeek, DayResult, mapDays} from '../../utils/utils.history';
+import {
+  buildPastDays,
+  buildWeekDays,
+  buildWeekRanges,
+  DayResult,
+  mapDays,
+  mapWeeks,
+} from '../../utils/utils.history';
 import {formatTime} from '../../utils/utils.time';
 import styles from './HistoryModal.module.scss';
 
@@ -43,14 +50,25 @@ const HistoryModal: React.FC<Props> = ({type, closeAction}) => {
   const [loading, setLoading] = useState(true);
 
   const loadHistory = async () => {
-    const daysRangeFn = type === 'daily' ? buildPastDays : buildWeek;
-    const pastDays = daysRangeFn();
+    if (type === 'daily') {
+      const pastDays = buildPastDays();
+
+      const updateFn = (data: Summary) => {
+        setResults(mapDays({days: data.days, ranges: pastDays}));
+      };
+
+      await SummaryService.getInstance().compute({updateFn, days: pastDays});
+      return;
+    }
+
+    const weekRanges = buildWeekRanges();
+    const allDays = buildWeekDays({weekRanges});
 
     const updateFn = (data: Summary) => {
-      setResults(mapDays({days: data.days, pastDays}));
+      setResults(mapWeeks({days: data.days, weekRanges}));
     };
 
-    await SummaryService.getInstance().compute({updateFn, days: pastDays});
+    await SummaryService.getInstance().compute({updateFn, days: allDays});
   };
 
   useEffect(() => {

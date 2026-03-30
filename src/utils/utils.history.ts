@@ -14,15 +14,15 @@ export const buildPastDays = (): Date[] => {
   return eachDayOfInterval({start: startOfMonth, end: subDays(today, 1)}).reverse();
 };
 
-export const mapDays = ({days, pastDays}: {days: SummaryDay[]; pastDays: Date[]}): DayResult[] => {
+export const mapDays = ({days, ranges}: {days: SummaryDay[]; ranges: Date[]}): DayResult[] => {
   return days.map((d, i) => ({
-    label: fnsFormat(pastDays[i], 'EEEE, MMM dd yyyy'),
+    label: fnsFormat(ranges[i], 'EEEE, MMM dd yyyy'),
     milliseconds: d.milliseconds,
     billable: d.billable,
   }));
 };
 
-const mapWeeks = ({
+export const mapWeeks = ({
   days,
   weekRanges,
 }: {
@@ -40,7 +40,7 @@ const mapWeeks = ({
   });
 };
 
-const buildWeekRanges = (): {weekStart: Date; weekEnd: Date}[] => {
+export const buildWeekRanges = (): {weekStart: Date; weekEnd: Date}[] => {
   const now = new Date();
 
   return Array.from({length: 12}, (_, i) => {
@@ -53,8 +53,11 @@ const buildWeekRanges = (): {weekStart: Date; weekEnd: Date}[] => {
   });
 };
 
-export const buildWeek = (): Date[] => {
-  const weekRanges = buildWeekRanges();
+export const buildWeekDays = ({
+  weekRanges,
+}: {
+  weekRanges: {weekStart: Date; weekEnd: Date}[];
+}): Date[] => {
   return weekRanges.flatMap(({weekStart, weekEnd}) =>
     eachDayOfInterval({start: weekStart, end: weekEnd}),
   );
