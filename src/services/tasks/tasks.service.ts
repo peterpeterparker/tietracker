@@ -1,7 +1,3 @@
-import {del, get, set} from 'idb-keyval';
-
-import {v4 as uuid} from 'uuid';
-
 import {
   addMinutes,
   isBefore,
@@ -10,11 +6,11 @@ import {
   setSeconds,
   subMinutes,
 } from 'date-fns';
-
+import {del, get, set} from 'idb-keyval';
+import {v4 as uuid} from 'uuid';
 import {Project} from '../../models/project';
-import {Task, TaskData} from '../../models/task';
-
 import {Settings} from '../../models/settings';
+import {Task, TaskData} from '../../models/task';
 import {TaskInProgress, TaskInProgressData} from '../../store/interfaces/task.inprogress';
 
 export class TasksService {

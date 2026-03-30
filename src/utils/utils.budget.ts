@@ -1,5 +1,3 @@
-import i18n from 'i18next';
-
 import {
   differenceInMonths,
   differenceInWeeks,
@@ -8,7 +6,7 @@ import {
   startOfWeek,
   startOfYear,
 } from 'date-fns';
-
+import i18n from 'i18next';
 import {ProjectDataBudget} from '../models/project';
 
 export function budgetRatio({

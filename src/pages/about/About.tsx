@@ -8,12 +8,10 @@ import {
   IonPage,
   IonToolbar,
 } from '@ionic/react';
+import {checkmark, chevronBackOutline, globeOutline, logoGithub, logoTwitter} from 'ionicons/icons';
 import React from 'react';
 import {Link} from 'react-router-dom';
-
 import styles from './About.module.scss';
-
-import {checkmark, chevronBackOutline, globeOutline, logoGithub, logoTwitter} from 'ionicons/icons';
 
 const About: React.FC = () => {
   return (

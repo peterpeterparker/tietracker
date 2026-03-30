@@ -1,24 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-
 import {IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal} from '@ionic/react';
-
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-
-import styles from './Summary.module.scss';
-
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-
+import {useSelector} from 'react-redux';
+import HistoryModal, {HistoryType} from '../../modals/history/HistoryModal';
+import {Settings} from '../../models/settings';
 import {Invoice} from '../../store/interfaces/invoice';
 import {Summary as SummaryData} from '../../store/interfaces/summary';
-
+import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {formatCurrency} from '../../utils/utils.currency';
 import {formatTime} from '../../utils/utils.time';
-
-import {Settings} from '../../models/settings';
-
-import HistoryModal, {HistoryType} from '../../modals/history/HistoryModal';
+import styles from './Summary.module.scss';
 
 interface Props extends RootProps {
   extended: boolean;

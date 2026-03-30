@@ -1,5 +1,4 @@
 import {IonSpinner} from '@ionic/react';
-
 import styles from './Loading.module.scss';
 
 function Loading() {

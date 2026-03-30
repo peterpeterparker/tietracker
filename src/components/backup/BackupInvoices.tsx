@@ -1,20 +1,13 @@
-import {useState} from 'react';
-
-import {useSelector} from 'react-redux';
-
 import {IonFab, IonFabButton, IonIcon, IonLabel, IonLoading} from '@ionic/react';
 import {saveOutline} from 'ionicons/icons';
-
+import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-
-import styles from './BackupInvoices.module.scss';
-
+import {useSelector} from 'react-redux';
 import {Settings} from '../../models/settings';
-
 import {BackupService} from '../../services/backup/backup.service';
-
 import {RootState} from '../../store/reducers';
 import {emitError} from '../../utils/utils.events';
+import styles from './BackupInvoices.module.scss';
 
 export const BackupInvoices = () => {
   const {t} = useTranslation(['backup', 'common']);

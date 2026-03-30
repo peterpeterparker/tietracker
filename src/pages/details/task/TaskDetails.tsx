@@ -18,31 +18,23 @@ import {
   useIonAlert,
   useIonViewWillEnter,
 } from '@ionic/react';
-import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
-
-import {RouteComponentProps} from 'react-router';
-
-import {isSameDay, parse} from 'date-fns';
-
-import {useTranslation} from 'react-i18next';
-
-import {Task} from '../../../models/task';
-
-import {Client} from '../../../models/client';
-import {Project} from '../../../models/project';
-
-import {contrast} from '../../../utils/utils.color';
-import {toDateObj} from '../../../utils/utils.date';
-import {pickerColor} from '../../../utils/utils.picker';
-
-import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
-
 import {LocalizationProvider, MobileDateTimePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {isSameDay, parse} from 'date-fns';
+import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {RouteComponentProps} from 'react-router';
+import {Client} from '../../../models/client';
+import {Project} from '../../../models/project';
+import {Task} from '../../../models/task';
 import {ClientsService} from '../../../services/clients/clients.service';
 import {ProjectsService} from '../../../services/projects/projects.service';
 import {TasksService} from '../../../services/tasks/tasks.service';
+import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
+import {contrast} from '../../../utils/utils.color';
+import {toDateObj} from '../../../utils/utils.date';
 import {emitError} from '../../../utils/utils.events';
+import {pickerColor} from '../../../utils/utils.picker';
 
 interface TaskDetailsProps extends RouteComponentProps<{
   day: string;

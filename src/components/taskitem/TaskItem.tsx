@@ -1,20 +1,14 @@
-import React, {CSSProperties} from 'react';
-import {useSelector} from 'react-redux';
-
 import {IonItem, IonLabel} from '@ionic/react';
-
+import React, {CSSProperties} from 'react';
 import {useTranslation} from 'react-i18next';
-
-import styles from './TaskItem.module.scss';
-
+import {useSelector} from 'react-redux';
+import {Settings} from '../../models/settings';
 import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
 import {RootState} from '../../store/reducers';
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-
 import {formatCurrency} from '../../utils/utils.currency';
 import {formatTime} from '../../utils/utils.time';
-
-import {Settings} from '../../models/settings';
+import styles from './TaskItem.module.scss';
 
 interface TaskItemProps extends RootProps {
   task: TaskItemStore;

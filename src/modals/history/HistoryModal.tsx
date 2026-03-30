@@ -1,6 +1,3 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-
 import {
   IonButton,
   IonButtons,
@@ -17,7 +14,6 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-
 import {
   eachDayOfInterval,
   endOfWeek,
@@ -27,18 +23,17 @@ import {
   subWeeks,
 } from 'date-fns';
 import {close} from 'ionicons/icons';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-
-import styles from './HistoryModal.module.scss';
-
+import {useSelector} from 'react-redux';
+import Loading from '../../components/loading/Loading';
 import {Settings} from '../../models/settings';
 import {SummaryService} from '../../services/summary/summary.service';
 import {SummaryDay} from '../../store/interfaces/summary';
 import {RootState} from '../../store/reducers';
 import {formatCurrency} from '../../utils/utils.currency';
 import {formatTime} from '../../utils/utils.time';
-
-import Loading from '../../components/loading/Loading';
+import styles from './HistoryModal.module.scss';
 
 export type HistoryType = 'daily' | 'weekly';
 

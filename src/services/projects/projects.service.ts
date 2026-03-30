@@ -1,7 +1,5 @@
 import {get, set} from 'idb-keyval';
-
 import {v4 as uuid} from 'uuid';
-
 import {Client} from '../../models/client';
 import {Project, ProjectData} from '../../models/project';
 

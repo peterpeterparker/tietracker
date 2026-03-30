@@ -1,6 +1,3 @@
-import React, {FormEvent, useState} from 'react';
-import {useSelector} from 'react-redux';
-
 import {
   IonButton,
   IonButtons,
@@ -16,17 +13,15 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import {chevronBackOutline} from 'ionicons/icons';
-
+import React, {FormEvent, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-
-import {Settings as SettingsModel} from '../../models/settings';
-
+import {useSelector} from 'react-redux';
 import SettingsGeneral from '../../components/settings/general/SettingsGeneral';
 import SettingsTemplates from '../../components/settings/templates/SettingsTemplates';
 import SettingsTracker from '../../components/settings/tracker/SettingsTracker';
+import {Settings as SettingsModel} from '../../models/settings';
+import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {emitError} from '../../utils/utils.events';
 
 enum SettingsCategory {

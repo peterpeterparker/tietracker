@@ -1,15 +1,11 @@
-import {isPlatform} from '@ionic/react';
-
-import i18next from 'i18next';
-
-import {Project} from '../../models/project';
-
-import {Settings} from '../../models/settings';
-
 import {
   ELocalNotificationTriggerUnit,
   LocalNotifications,
 } from '@awesome-cordova-plugins/local-notifications';
+import {isPlatform} from '@ionic/react';
+import i18next from 'i18next';
+import {Project} from '../../models/project';
+import {Settings} from '../../models/settings';
 
 export class NotificationsService {
   private static instance: NotificationsService;

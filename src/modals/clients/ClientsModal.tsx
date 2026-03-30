@@ -1,6 +1,3 @@
-import {CSSProperties, RefObject, useEffect, useRef, useState} from 'react';
-import {useSelector} from 'react-redux';
-
 import type {IonSearchbarCustomEvent} from '@ionic/core';
 import {
   IonButton,
@@ -16,17 +13,14 @@ import {
   IonToolbar,
   SearchbarInputEventDetail,
 } from '@ionic/react';
-
-import {useTranslation} from 'react-i18next';
-
 import {close} from 'ionicons/icons';
-
-import styles from './ClientsModal.module.scss';
-
+import {CSSProperties, RefObject, useEffect, useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import {Client} from '../../models/client';
 import {RootState} from '../../store/reducers';
 import {rootConnector} from '../../store/thunks/index.thunks';
-
-import {Client} from '../../models/client';
+import styles from './ClientsModal.module.scss';
 
 const ClientsModal = () => {
   const {t} = useTranslation('clients');

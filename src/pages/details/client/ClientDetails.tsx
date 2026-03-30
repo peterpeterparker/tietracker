@@ -1,13 +1,4 @@
-import React, {CSSProperties, FormEvent, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {RouteComponentProps} from 'react-router';
-
 import type {IonInputCustomEvent} from '@ionic/core';
-
-import {useTranslation} from 'react-i18next';
-
-import styles from './ClientDetails.module.scss';
-
 import {
   InputInputEventDetail,
   IonBackButton,
@@ -27,26 +18,24 @@ import {
   IonToolbar,
   useIonViewWillEnter,
 } from '@ionic/react';
-import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
-
 import {lockClosed, lockOpen, stopwatchOutline} from 'ionicons/icons';
-
-import {contrast} from '../../../utils/utils.color';
-import {formatCurrency} from '../../../utils/utils.currency';
-
+import React, {CSSProperties, FormEvent, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import {RouteComponentProps} from 'react-router';
+import Budget from '../../../components/budget/Budget';
+import ProjectModal, {ProjectModalAction} from '../../../modals/project/ProjectModal';
 import {Client} from '../../../models/client';
 import {Project} from '../../../models/project';
 import {Settings} from '../../../models/settings';
-
 import {ClientsService} from '../../../services/clients/clients.service';
 import {ProjectsService} from '../../../services/projects/projects.service';
-
 import {RootState} from '../../../store/reducers';
-
-import ProjectModal, {ProjectModalAction} from '../../../modals/project/ProjectModal';
-
-import Budget from '../../../components/budget/Budget';
+import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
+import {contrast} from '../../../utils/utils.color';
+import {formatCurrency} from '../../../utils/utils.currency';
 import {emitError} from '../../../utils/utils.events';
+import styles from './ClientDetails.module.scss';
 
 interface ClientDetailsProps extends RouteComponentProps<{
   id: string;

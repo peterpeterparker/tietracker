@@ -1,3 +1,5 @@
+import {TaskInProgress} from '../interfaces/task.inprogress';
+import {TaskItem} from '../interfaces/task.item';
 import {
   CREATE_TASK,
   INIT_TASK,
@@ -8,9 +10,6 @@ import {
   TasksActionTypes,
   UPDATE_TASK,
 } from '../types/tasks.types';
-
-import {TaskInProgress} from '../interfaces/task.inprogress';
-import {TaskItem} from '../interfaces/task.item';
 
 export interface TaskState {
   taskInProgress: TaskInProgress | undefined;

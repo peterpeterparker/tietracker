@@ -13,27 +13,19 @@ import {
   IonRippleEffect,
   IonToolbar,
 } from '@ionic/react';
-import React, {useState} from 'react';
-
-import {useTranslation} from 'react-i18next';
-
-import {useSelector} from 'react-redux';
-
 import {cashOutline, share} from 'ionicons/icons';
-
-import styles from './Invoices.module.scss';
-
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import {BackupInvoices} from '../../components/backup/BackupInvoices';
+import InvoiceModal from '../../modals/invoice/InvoiceModal';
+import {Settings} from '../../models/settings';
 import {Invoice} from '../../store/interfaces/invoice';
 import {RootState} from '../../store/reducers';
 import {rootConnector} from '../../store/thunks/index.thunks';
-
 import {contrast} from '../../utils/utils.color';
 import {formatCurrency} from '../../utils/utils.currency';
-
-import {Settings} from '../../models/settings';
-
-import {BackupInvoices} from '../../components/backup/BackupInvoices';
-import InvoiceModal from '../../modals/invoice/InvoiceModal';
+import styles from './Invoices.module.scss';
 
 const Invoices: React.FC = () => {
   const {t} = useTranslation(['invoices', 'common']);

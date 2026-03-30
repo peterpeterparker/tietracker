@@ -1,7 +1,6 @@
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import {initReactI18next} from 'react-i18next';
-
 import enBackup from '../i18n/en/backup.json';
 import enClients from '../i18n/en/clients.json';
 import enCommon from '../i18n/en/common.json';

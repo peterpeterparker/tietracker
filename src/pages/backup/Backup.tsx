@@ -1,9 +1,3 @@
-import React, {createRef, RefObject, useState} from 'react';
-
-import {useHistory} from 'react-router';
-
-import {useSelector} from 'react-redux';
-
 import {
   IonButton,
   IonButtons,
@@ -15,24 +9,20 @@ import {
   IonToolbar,
   useIonAlert,
 } from '@ionic/react';
-
+import {chevronBackOutline} from 'ionicons/icons';
+import React, {createRef, RefObject, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-
-import {BackupService} from '../../services/backup/backup.service';
-
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-
+import {useSelector} from 'react-redux';
+import {useHistory} from 'react-router';
 import Loading from '../../components/loading/Loading';
 import {Settings} from '../../models/settings';
-
-import styles from './Backup.module.scss';
-
+import {BackupService} from '../../services/backup/backup.service';
 import {RestoreService} from '../../services/restore/restore.service';
-
-import {chevronBackOutline} from 'ionicons/icons';
+import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {emitError} from '../../utils/utils.events';
 import {initAllData} from '../../utils/utils.store';
+import styles from './Backup.module.scss';
 
 const Backup: React.FC<RootProps> = (props) => {
   const {t} = useTranslation(['backup', 'common']);

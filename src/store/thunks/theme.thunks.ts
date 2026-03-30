@@ -1,8 +1,6 @@
-import {RootThunkResult} from './types.thunks';
-
 import {ThemeService} from '../../services/theme/theme.service';
-
 import {INIT_THEME, SWITCH_THEME} from '../types/theme.types';
+import {RootThunkResult} from './types.thunks';
 
 export function switchTheme(): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {

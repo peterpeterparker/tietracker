@@ -1,3 +1,4 @@
+import {SplashScreen} from '@capacitor/splash-screen';
 import {
   IonApp,
   IonIcon,
@@ -8,15 +9,10 @@ import {
   IonTabs,
 } from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
-import React, {useEffect, useState} from 'react';
-import {Redirect, Route} from 'react-router-dom';
-
-import {Translation} from 'react-i18next';
-
 import {card, ellipsisHorizontal} from 'ionicons/icons';
-
-import {SplashScreen} from '@capacitor/splash-screen';
-
+import React, {useEffect, useState} from 'react';
+import {Translation} from 'react-i18next';
+import {Redirect, Route} from 'react-router-dom';
 import Invoices from './pages/invoices/Invoices';
 import Settings from './pages/settings/Settings';
 
@@ -37,8 +33,21 @@ import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 
 /* Theme variables */
-import './theme/variables.scss';
-
+import {createTheme, ThemeProvider} from '@mui/material';
+import BackupAlert from './alerts/backup/BackupAlert';
+import {ErrorToast} from './alerts/error/ErrorToast';
+import './helpers/i18n';
+import TrackTaskModal from './modals/task/track/TrackTaskModal';
+import About from './pages/about/About';
+import Backup from './pages/backup/Backup';
+import ClientDetails from './pages/details/client/ClientDetails';
+import TaskDetails from './pages/details/task/TaskDetails';
+import Home from './pages/home/Home';
+import {More} from './pages/more/More';
+import Period from './pages/period/Period';
+import Privacy from './pages/privacy/Privacy';
+import Terms from './pages/terms/Terms';
+import {rootConnector, RootProps} from './store/thunks/index.thunks';
 import './theme/alert.scss';
 import './theme/button.scss';
 import './theme/card.scss';
@@ -57,28 +66,8 @@ import './theme/segment.scss';
 import './theme/spinner.scss';
 import './theme/tabs.scss';
 import './theme/toolbar.scss';
-
-import './helpers/i18n';
-
-import {rootConnector, RootProps} from './store/thunks/index.thunks';
-
-import TrackTaskModal from './modals/task/track/TrackTaskModal';
-import ClientDetails from './pages/details/client/ClientDetails';
-import TaskDetails from './pages/details/task/TaskDetails';
-
-import BackupAlert from './alerts/backup/BackupAlert';
-import About from './pages/about/About';
-import Backup from './pages/backup/Backup';
-import Home from './pages/home/Home';
-import {More} from './pages/more/More';
-import Period from './pages/period/Period';
-import Privacy from './pages/privacy/Privacy';
-import Terms from './pages/terms/Terms';
-
-import {ErrorToast} from './alerts/error/ErrorToast';
+import './theme/variables.scss';
 import {initAllData} from './utils/utils.store';
-
-import {createTheme, ThemeProvider} from '@mui/material';
 
 const theme = createTheme({
   typography: {

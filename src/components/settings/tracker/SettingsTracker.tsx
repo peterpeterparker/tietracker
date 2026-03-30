@@ -10,16 +10,11 @@ import {
   IonSelectOption,
 } from '@ionic/react';
 import React, {useState} from 'react';
-
 import {useTranslation} from 'react-i18next';
-
-import styles from './SettingsTracker.module.scss';
-
 import {Currency} from '../../../definitions/currency';
-
-import {Settings} from '../../../models/settings';
-
 import CurrenciesModal from '../../../modals/currencies/CurrenciesModal';
+import {Settings} from '../../../models/settings';
+import styles from './SettingsTracker.module.scss';
 
 export interface SettingsGeneralProps {
   settings: Settings;

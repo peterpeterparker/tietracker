@@ -1,7 +1,4 @@
-import React, {useEffect, useState} from 'react';
-
-import {useTranslation} from 'react-i18next';
-
+import {IonSearchbarCustomEvent} from '@ionic/core';
 import {
   IonButton,
   IonButtons,
@@ -18,15 +15,12 @@ import {
   IonToolbar,
   SearchbarInputEventDetail,
 } from '@ionic/react';
-
 import {close} from 'ionicons/icons';
-
-import {Currencies, SettingsService} from '../../services/settings/settings.service';
-
-import styles from './CurrenciesModal.module.scss';
-
-import {IonSearchbarCustomEvent} from '@ionic/core';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {Currency} from '../../definitions/currency';
+import {Currencies, SettingsService} from '../../services/settings/settings.service';
+import styles from './CurrenciesModal.module.scss';
 
 interface Props {
   closeAction: Function;
