@@ -18,7 +18,6 @@ import {
   IonToolbar,
 } from '@ionic/react';
 
-import {close} from 'ionicons/icons';
 import {
   eachDayOfInterval,
   endOfWeek,
@@ -27,16 +26,17 @@ import {
   subDays,
   subWeeks,
 } from 'date-fns';
+import {close} from 'ionicons/icons';
 import {useTranslation} from 'react-i18next';
 
 import styles from './HistoryModal.module.scss';
 
-import {RootState} from '../../store/reducers';
 import {Settings} from '../../models/settings';
+import {SummaryService} from '../../services/summary/summary.service';
 import {SummaryDay} from '../../store/interfaces/summary';
+import {RootState} from '../../store/reducers';
 import {formatCurrency} from '../../utils/utils.currency';
 import {formatTime} from '../../utils/utils.time';
-import {SummaryService} from '../../services/summary/summary.service';
 
 import Loading from '../../components/loading/Loading';
 
@@ -66,25 +66,19 @@ const HistoryModal: React.FC<Props> = ({type, closeAction}) => {
 
     if (type === 'daily') {
       const pastDays = buildPastDays();
-      SummaryService.getInstance().compute(
-        (data: {days: SummaryDay[]}) => {
-          setResults(mapDays(data.days, pastDays));
-          setLoading(false);
-        },
-        pastDays,
-      );
+      SummaryService.getInstance().compute((data: {days: SummaryDay[]}) => {
+        setResults(mapDays(data.days, pastDays));
+        setLoading(false);
+      }, pastDays);
     } else {
       const weekRanges = buildWeekRanges();
       const allDays = weekRanges.flatMap(({weekStart, weekEnd}) =>
         eachDayOfInterval({start: weekStart, end: weekEnd}),
       );
-      SummaryService.getInstance().compute(
-        (data: {days: SummaryDay[]}) => {
-          setResults(mapWeeks(data.days, weekRanges));
-          setLoading(false);
-        },
-        allDays,
-      );
+      SummaryService.getInstance().compute((data: {days: SummaryDay[]}) => {
+        setResults(mapWeeks(data.days, weekRanges));
+        setLoading(false);
+      }, allDays);
     }
   }, [type]);
 
