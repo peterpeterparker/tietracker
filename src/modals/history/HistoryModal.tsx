@@ -34,7 +34,7 @@ import {
 import {formatTime} from '../../utils/utils.time';
 import styles from './HistoryModal.module.scss';
 
-type HistoryType = 'daily' | 'weekly';
+export type HistoryType = 'daily' | 'weekly';
 
 interface Props {
   type: HistoryType;
