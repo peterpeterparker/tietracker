@@ -18,7 +18,7 @@ import {formatTime} from '../../utils/utils.time';
 
 import {Settings} from '../../models/settings';
 
-import HistoryModal, {HistoryType} from '../../modals/history/HistoryModal.tsx';
+import HistoryModal, {HistoryType} from '../../modals/history/HistoryModal';
 
 interface Props extends RootProps {
   extended: boolean;

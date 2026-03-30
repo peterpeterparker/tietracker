@@ -61,42 +61,10 @@ const HistoryModal: React.FC<Props> = ({type, closeAction}) => {
   const [results, setResults] = useState<DayResult[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setLoading(true);
-
-    if (type === 'daily') {
-      const pastDays = buildPastDays();
-      SummaryService.getInstance().compute((data: {days: SummaryDay[]}) => {
-        setResults(mapDays(data.days, pastDays));
-        setLoading(false);
-      }, pastDays);
-    } else {
-      const weekRanges = buildWeekRanges();
-      const allDays = weekRanges.flatMap(({weekStart, weekEnd}) =>
-        eachDayOfInterval({start: weekStart, end: weekEnd}),
-      );
-      SummaryService.getInstance().compute((data: {days: SummaryDay[]}) => {
-        setResults(mapWeeks(data.days, weekRanges));
-        setLoading(false);
-      }, allDays);
-    }
-  }, [type]);
-
   function buildPastDays(): Date[] {
     const today = new Date();
     const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     return eachDayOfInterval({start: startOfMonth, end: subDays(today, 1)}).reverse();
-  }
-
-  function buildWeekRanges(): {weekStart: Date; weekEnd: Date}[] {
-    const now = new Date();
-    return Array.from({length: 12}, (_, i) => {
-      const ref = subWeeks(now, i + 1);
-      return {
-        weekStart: startOfWeek(ref, {weekStartsOn: 1}),
-        weekEnd: endOfWeek(ref, {weekStartsOn: 1}),
-      };
-    });
   }
 
   function mapDays(days: SummaryDay[], pastDays: Date[]): DayResult[] {
@@ -120,6 +88,38 @@ const HistoryModal: React.FC<Props> = ({type, closeAction}) => {
       };
     });
   }
+
+  function buildWeekRanges(): {weekStart: Date; weekEnd: Date}[] {
+    const now = new Date();
+    return Array.from({length: 12}, (_, i) => {
+      const ref = subWeeks(now, i + 1);
+      return {
+        weekStart: startOfWeek(ref, {weekStartsOn: 1}),
+        weekEnd: endOfWeek(ref, {weekStartsOn: 1}),
+      };
+    });
+  }
+
+  useEffect(() => {
+    setLoading(true);
+
+    if (type === 'daily') {
+      const pastDays = buildPastDays();
+      SummaryService.getInstance().compute((data: {days: SummaryDay[]}) => {
+        setResults(mapDays(data.days, pastDays));
+        setLoading(false);
+      }, pastDays);
+    } else {
+      const weekRanges = buildWeekRanges();
+      const allDays = weekRanges.flatMap(({weekStart, weekEnd}) =>
+        eachDayOfInterval({start: weekStart, end: weekEnd}),
+      );
+      SummaryService.getInstance().compute((data: {days: SummaryDay[]}) => {
+        setResults(mapWeeks(data.days, weekRanges));
+        setLoading(false);
+      }, allDays);
+    }
+  }, [type]);
 
   return (
     <IonContent>
