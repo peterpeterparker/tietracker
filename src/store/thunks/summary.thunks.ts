@@ -5,8 +5,10 @@ import {RootThunkResult} from './types.thunks';
 
 export function computeSummary(): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {
-    await SummaryService.getInstance().compute((data: Summary) => {
+    const updateFn = (data: Summary) => {
       dispatch({type: COMPUTE_SUMMARY, payload: data});
-    });
+    };
+
+    await SummaryService.getInstance().compute({updateFn});
   };
 }
