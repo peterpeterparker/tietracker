@@ -1,9 +1,10 @@
 import {eachDayOfInterval, endOfWeek, startOfWeek} from 'date-fns';
+import {Summary} from '../../store/interfaces/summary';
 
 export class SummaryService {
   private static instance: SummaryService;
 
-  private summaryWorker: Worker = new Worker('./workers/summary.js');
+  private summaryWorker = new Worker('./workers/summary.js');
 
   private constructor() {
     // Private constructor, singleton
@@ -16,22 +17,24 @@ export class SummaryService {
     return SummaryService.instance;
   }
 
-  compute(updateStateFunction: Function, days: Date[] = this.week()): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.summaryWorker.onmessage = ($event: MessageEvent) => {
-        if ($event && $event.data) {
-          updateStateFunction($event.data);
-        }
-      };
+  async compute({
+    updateFn,
+    days,
+  }: {
+    updateFn: (data: Summary) => void;
+    days?: Date[];
+  }): Promise<void> {
+    this.summaryWorker.onmessage = ($event: MessageEvent) => {
+      if ($event && $event.data) {
+        updateFn($event.data);
+      }
+    };
 
-      this.summaryWorker.postMessage({msg: 'compute', days: days});
-
-      resolve();
-    });
+    this.summaryWorker.postMessage({msg: 'compute', days: days ?? this.#week()});
   }
 
-  private week(): Date[] {
-    const today: Date = new Date();
+  #week(): Date[] {
+    const today = new Date();
 
     return eachDayOfInterval({
       start: startOfWeek(today, {weekStartsOn: 1}),
