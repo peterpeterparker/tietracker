@@ -4,5 +4,15 @@
   "today": "Today",
   "total": "Open Invoices",
   "tracked": "Tracked:",
-  "billable": "Billable:"
+  "billable": "Billable:",
+  "history": {
+    "daily": {
+      "title": "Day History",
+      "empty": "No entries recorded."
+    },
+    "weekly": {
+      "title": "Week History",
+      "empty": "No entries recorded."
+    }
+  }
 }
