@@ -1,27 +1,17 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
-
-import {useTranslation} from 'react-i18next';
-
-import {lightFormat} from 'date-fns';
-
-import {LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
-
 import {IonButton, IonList} from '@ionic/react';
-
-import styles from './Tasks.module.scss';
-
+import {LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {lightFormat} from 'date-fns';
+import React from 'react';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import {Project} from '../../models/project';
 import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
-
 import {RootState} from '../../store/reducers';
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-
-import TaskItem from '../taskitem/TaskItem';
-
 import {format} from '../../utils/utils.date';
-
-import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
-import {Project} from '../../models/project';
+import TaskItem from '../taskitem/TaskItem';
+import styles from './Tasks.module.scss';
 
 interface Props extends RootProps {
   addAction: Function;

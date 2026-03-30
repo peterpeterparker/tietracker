@@ -1,5 +1,10 @@
-import {RootThunkResult} from './types.thunks';
-
+import {Project} from '../../models/project';
+import {Settings} from '../../models/settings';
+import {TaskData} from '../../models/task';
+import {NotificationsService} from '../../services/notifications/notifications.service';
+import {TasksService} from '../../services/tasks/tasks.service';
+import {TaskInProgress} from '../interfaces/task.inprogress';
+import {TaskItem} from '../interfaces/task.item';
 import {
   CREATE_TASK,
   INIT_TASK,
@@ -8,16 +13,7 @@ import {
   STOP_TASK,
   UPDATE_TASK,
 } from '../types/tasks.types';
-
-import {TaskInProgress} from '../interfaces/task.inprogress';
-import {TaskItem} from '../interfaces/task.item';
-
-import {Project} from '../../models/project';
-import {Settings} from '../../models/settings';
-
-import {TaskData} from '../../models/task';
-import {NotificationsService} from '../../services/notifications/notifications.service';
-import {TasksService} from '../../services/tasks/tasks.service';
+import {RootThunkResult} from './types.thunks';
 
 export function startTask(project: Project, settings: Settings): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {

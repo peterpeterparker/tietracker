@@ -1,15 +1,12 @@
-import {RootThunkResult} from './types.thunks';
-
 import {Client} from '../../models/client';
 import {Project, ProjectData} from '../../models/project';
-
+import {ProjectsService} from '../../services/projects/projects.service';
 import {
   CREATE_PROJECT,
   INIT_ACTIVE_PROJECTS,
   UPDATE_ACTIVE_PROJECTS,
 } from '../types/projects.types';
-
-import {ProjectsService} from '../../services/projects/projects.service';
+import {RootThunkResult} from './types.thunks';
 
 export function createProject(client: Client, data: ProjectData): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {

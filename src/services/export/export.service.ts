@@ -1,7 +1,8 @@
+import {DirectoryEntry, File, IWriteOptions} from '@awesome-cordova-plugins/file';
 import {format} from 'date-fns';
-
 import i18next from 'i18next';
-
+import {Currency} from '../../definitions/currency';
+import {Invoice} from '../../store/interfaces/invoice';
 import {interval} from '../../utils/utils.date';
 import {exportLabels} from '../../utils/utils.export';
 import {
@@ -11,12 +12,6 @@ import {
   shareMobile,
   writeFile,
 } from '../../utils/utils.filesystem';
-
-import {Invoice} from '../../store/interfaces/invoice';
-
-import {DirectoryEntry, File, IWriteOptions} from '@awesome-cordova-plugins/file';
-
-import {Currency} from '../../definitions/currency';
 
 export class ExportService {
   private static instance: ExportService;

@@ -16,27 +16,19 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import React, {CSSProperties, FormEvent, RefObject, useRef, useState} from 'react';
-
-import {useSelector} from 'react-redux';
-
-import {useTranslation} from 'react-i18next';
-
 import {close} from 'ionicons/icons';
-
-import styles from './CreateClientModal.module.scss';
-
+import React, {CSSProperties, FormEvent, RefObject, useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
 import {Client, ClientData} from '../../models/client';
 import {ProjectData} from '../../models/project';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-
-import {contrast} from '../../utils/utils.color';
-
 import {Settings} from '../../models/settings';
 import {ThemeService} from '../../services/theme/theme.service';
-
 import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
+import {contrast} from '../../utils/utils.color';
 import {emitError} from '../../utils/utils.events';
+import styles from './CreateClientModal.module.scss';
 
 interface Props extends RootProps {
   closeAction: Function;

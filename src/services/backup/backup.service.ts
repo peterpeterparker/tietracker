@@ -1,13 +1,9 @@
-import {isPlatform} from '@ionic/react';
-
-import {get, set} from 'idb-keyval';
-
-import {differenceInWeeks, format} from 'date-fns';
-
-import i18next from 'i18next';
-
 import {DirectoryEntry, File, IWriteOptions} from '@awesome-cordova-plugins/file';
-
+import {isPlatform} from '@ionic/react';
+import {differenceInWeeks, format} from 'date-fns';
+import i18next from 'i18next';
+import {get, set} from 'idb-keyval';
+import {Settings} from '../../models/settings';
 import {exportLabels} from '../../utils/utils.export';
 import {
   download,
@@ -16,8 +12,6 @@ import {
   shareMobile,
   writeFile,
 } from '../../utils/utils.filesystem';
-
-import {Settings} from '../../models/settings';
 
 export class BackupService {
   private static instance: BackupService;

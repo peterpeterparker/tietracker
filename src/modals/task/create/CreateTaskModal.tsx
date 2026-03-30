@@ -12,27 +12,20 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import React, {CSSProperties, FormEvent, useState} from 'react';
-import {useSelector} from 'react-redux';
-
-import {useTranslation} from 'react-i18next';
-
-import {close} from 'ionicons/icons';
-
-import {contrast} from '../../../utils/utils.color';
-
-import {RootState} from '../../../store/reducers';
-import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
-
-import {Project} from '../../../models/project';
-import {Settings as SettingsModel} from '../../../models/settings';
-
-import {pickerColor} from '../../../utils/utils.picker';
-
 import {LocalizationProvider, MobileDateTimePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {close} from 'ionicons/icons';
+import React, {CSSProperties, FormEvent, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import {Project} from '../../../models/project';
+import {Settings as SettingsModel} from '../../../models/settings';
 import {TaskData} from '../../../models/task';
 import {ThemeService} from '../../../services/theme/theme.service';
+import {RootState} from '../../../store/reducers';
+import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
+import {contrast} from '../../../utils/utils.color';
+import {pickerColor} from '../../../utils/utils.picker';
 
 interface Props extends RootProps {
   closeAction: Function;

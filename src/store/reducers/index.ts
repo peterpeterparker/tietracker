@@ -1,5 +1,4 @@
 import {combineReducers} from 'redux';
-
 import {clientsReducer} from './clients.reducer';
 import {invoicesReducer} from './invoices.reducer';
 import {projectsReducer} from './projects.reducer';

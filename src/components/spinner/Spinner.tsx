@@ -1,20 +1,14 @@
 import {IonLabel} from '@ionic/react';
-import React, {CSSProperties, Ref, useEffect, useRef} from 'react';
-
-import {useSelector} from 'react-redux';
-
-import {useTranslation} from 'react-i18next';
-
-import styles from './Spinner.module.scss';
-
 import {differenceInSeconds} from 'date-fns';
-
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-
+import React, {CSSProperties, Ref, useEffect, useRef} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
 import {Summary as SummaryData} from '../../store/interfaces/summary';
 import {TaskInProgress} from '../../store/interfaces/task.inprogress';
+import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {formatSeconds} from '../../utils/utils.time';
+import styles from './Spinner.module.scss';
 
 interface SpinnerProps extends RootProps {
   color: string | undefined;

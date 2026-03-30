@@ -1,13 +1,10 @@
+import {setupIonicReact} from '@ionic/react';
 import {createRoot} from 'react-dom/client';
-import App from './App';
-
 import {Provider} from 'react-redux';
 import {applyMiddleware, createStore} from 'redux';
-import {rootReducer} from './store/reducers/index';
-
 import {thunk} from 'redux-thunk'; // Changed import
-
-import {setupIonicReact} from '@ionic/react';
+import App from './App';
+import {rootReducer} from './store/reducers/index';
 
 setupIonicReact({
   backButtonText: '',

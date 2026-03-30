@@ -1,5 +1,3 @@
-import React, {FormEvent, useEffect, useState} from 'react';
-
 import type {IonInputCustomEvent} from '@ionic/core';
 import {
   InputInputEventDetail,
@@ -15,12 +13,10 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-
 import {close} from 'ionicons/icons';
-
-import {v4 as uuid} from 'uuid';
-
+import React, {FormEvent, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {v4 as uuid} from 'uuid';
 
 interface Props {
   closeAction: (template?: Template, action?: 'edit' | 'delete') => Promise<void>;

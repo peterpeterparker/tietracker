@@ -1,5 +1,4 @@
 import {get, set} from 'idb-keyval';
-
 import {Settings} from '../../models/settings';
 
 // Source MIT: https://github.com/xsolla/currency-format

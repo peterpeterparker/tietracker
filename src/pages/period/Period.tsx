@@ -1,9 +1,3 @@
-import React, {useEffect, useState} from 'react';
-
-import {useTranslation} from 'react-i18next';
-
-import {isBefore} from 'date-fns';
-
 import {
   IonButton,
   IonButtons,
@@ -18,19 +12,18 @@ import {
   useIonAlert,
   useIonViewWillEnter,
 } from '@ionic/react';
-
-import styles from './Period.module.scss';
-
-import Loading from '../../components/loading/Loading';
-
-import {format} from '../../utils/utils.date';
-
 import {CalendarMonth} from '@mui/icons-material';
 import {InputAdornment} from '@mui/material';
 import {DatePicker, LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {isBefore} from 'date-fns';
 import {chevronBackOutline} from 'ionicons/icons';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import Loading from '../../components/loading/Loading';
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
+import {format} from '../../utils/utils.date';
+import styles from './Period.module.scss';
 
 const Period: React.FC = () => {
   const {t} = useTranslation(['period', 'common', 'invoices']);

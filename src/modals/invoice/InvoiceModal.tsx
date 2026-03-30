@@ -13,33 +13,27 @@ import {
   IonToolbar,
   isPlatform,
 } from '@ionic/react';
-import React, {CSSProperties, useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-
-import {close} from 'ionicons/icons';
-
-import {useTranslation} from 'react-i18next';
-
-import {Invoice} from '../../store/interfaces/invoice';
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-
-import {Settings} from '../../models/settings';
-
-import {budgetRatio} from '../../utils/utils.budget';
-import {contrast} from '../../utils/utils.color';
-import {formatCurrency} from '../../utils/utils.currency';
-import {pickerColor} from '../../utils/utils.picker';
-import {formatTime} from '../../utils/utils.time';
-
 import {CalendarMonth} from '@mui/icons-material';
 import {InputAdornment} from '@mui/material';
 import {LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {close} from 'ionicons/icons';
+import React, {CSSProperties, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import {Settings} from '../../models/settings';
 import {ExportService} from '../../services/export/export.service';
 import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
 import {ThemeService} from '../../services/theme/theme.service';
+import {Invoice} from '../../store/interfaces/invoice';
+import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
+import {budgetRatio} from '../../utils/utils.budget';
+import {contrast} from '../../utils/utils.color';
+import {formatCurrency} from '../../utils/utils.currency';
 import {emitError} from '../../utils/utils.events';
+import {pickerColor} from '../../utils/utils.picker';
+import {formatTime} from '../../utils/utils.time';
 
 interface Props extends RootProps {
   closeAction: Function;

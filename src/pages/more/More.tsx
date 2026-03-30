@@ -1,7 +1,3 @@
-import {useTranslation} from 'react-i18next';
-
-import {useHistory} from 'react-router';
-
 import {
   IonContent,
   IonHeader,
@@ -13,7 +9,8 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import {calendarNumber, information, logoGithub, options, server} from 'ionicons/icons';
-
+import {useTranslation} from 'react-i18next';
+import {useHistory} from 'react-router';
 import styles from './More.module.scss';
 
 export const More = () => {

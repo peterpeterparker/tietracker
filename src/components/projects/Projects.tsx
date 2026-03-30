@@ -1,8 +1,3 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
-
-import {play} from 'ionicons/icons';
-
 import {
   IonCard,
   IonCardHeader,
@@ -12,17 +7,17 @@ import {
   IonLabel,
   IonRippleEffect,
 } from '@ionic/react';
-
-import styles from './Projects.module.scss';
-
-import {Project} from '../../models/project';
-import {Task} from '../../models/task';
-
+import {play} from 'ionicons/icons';
+import React from 'react';
 import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import {Project} from '../../models/project';
 import {Settings as SettingsModel} from '../../models/settings';
+import {Task} from '../../models/task';
 import {RootState} from '../../store/reducers';
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {contrast} from '../../utils/utils.color';
+import styles from './Projects.module.scss';
 
 interface Props extends RootProps {
   addAction: () => void;

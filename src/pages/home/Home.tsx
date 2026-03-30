@@ -1,8 +1,3 @@
-import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
-
-import {RouteComponentProps} from 'react-router';
-
 import {
   IonButton,
   IonContent,
@@ -13,24 +8,20 @@ import {
   IonPage,
   IonToolbar,
 } from '@ionic/react';
-
 import {search} from 'ionicons/icons';
-
+import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-
-import styles from './Home.module.scss';
-
-import CreateClientModal from '../../modals/client/CreateClientModal';
-import ClientsModal from '../../modals/clients/ClientsModal';
-import CreateTaskModal from '../../modals/task/create/CreateTaskModal';
-
+import {useSelector} from 'react-redux';
+import {RouteComponentProps} from 'react-router';
 import Projects from '../../components/projects/Projects';
 import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
-
+import CreateClientModal from '../../modals/client/CreateClientModal';
+import ClientsModal from '../../modals/clients/ClientsModal';
+import CreateTaskModal from '../../modals/task/create/CreateTaskModal';
 import {Client} from '../../models/client';
-
 import {RootState} from '../../store/reducers';
+import styles from './Home.module.scss';
 
 const Home: React.FC<RouteComponentProps> = (props) => {
   const {t} = useTranslation('home');

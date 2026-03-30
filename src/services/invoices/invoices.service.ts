@@ -1,6 +1,5 @@
-import {get} from 'idb-keyval';
-
 import {compareAsc, compareDesc, parse} from 'date-fns';
+import {get} from 'idb-keyval';
 import {interval} from '../../utils/utils.date';
 import {emitError} from '../../utils/utils.events';
 

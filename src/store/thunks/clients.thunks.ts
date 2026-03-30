@@ -1,9 +1,7 @@
-import {RootThunkResult} from './types.thunks';
-
 import {Client, ClientData} from '../../models/client';
-import {CREATE_CLIENT, INIT_CLIENTS} from '../types/clients.types';
-
 import {ClientsService} from '../../services/clients/clients.service';
+import {CREATE_CLIENT, INIT_CLIENTS} from '../types/clients.types';
+import {RootThunkResult} from './types.thunks';
 
 export function createClient(data: ClientData): RootThunkResult<Promise<Client>> {
   return async (dispatch, getState) => {

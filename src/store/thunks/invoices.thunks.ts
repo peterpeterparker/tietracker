@@ -1,10 +1,7 @@
-import {RootThunkResult} from './types.thunks';
-
-import {LIST_PROJECTS_INVOICES} from '../types/invoices.types';
-
 import {InvoicesService} from '../../services/invoices/invoices.service';
-
 import {Invoice} from '../interfaces/invoice';
+import {LIST_PROJECTS_INVOICES} from '../types/invoices.types';
+import {RootThunkResult} from './types.thunks';
 
 export function listProjectsInvoices(): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {

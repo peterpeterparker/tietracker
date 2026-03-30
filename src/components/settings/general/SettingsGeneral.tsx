@@ -1,6 +1,3 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-
 import type {IonInputCustomEvent} from '@ionic/core';
 import {
   InputInputEventDetail,
@@ -11,12 +8,11 @@ import {
   IonToggle,
   isPlatform,
 } from '@ionic/react';
-
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-
-import {RootState} from '../../../store/reducers';
-
+import {useSelector} from 'react-redux';
 import {Settings} from '../../../models/settings';
+import {RootState} from '../../../store/reducers';
 
 export interface SettingsGeneralProps {
   settings: Settings;

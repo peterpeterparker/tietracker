@@ -1,13 +1,3 @@
-import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
-import {useSelector} from 'react-redux';
-
-import {useTranslation} from 'react-i18next';
-
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-
-import {Project, ProjectData, ProjectDataType} from '../../models/project';
-import {ProjectsService} from '../../services/projects/projects.service';
-
 import type {IonInputCustomEvent} from '@ionic/core';
 import {
   InputInputEventDetail,
@@ -27,13 +17,16 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-
 import {close} from 'ionicons/icons';
-
-import {Settings} from '../../models/settings';
-
+import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
 import {Client} from '../../models/client';
+import {Project, ProjectData, ProjectDataType} from '../../models/project';
+import {Settings} from '../../models/settings';
+import {ProjectsService} from '../../services/projects/projects.service';
 import {RootState} from '../../store/reducers';
+import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {emitError} from '../../utils/utils.events';
 
 export enum ProjectModalAction {
