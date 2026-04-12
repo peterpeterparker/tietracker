@@ -1,10 +1,10 @@
 PODS:
-  - Capacitor (8.1.0):
+  - Capacitor (8.3.0):
     - CapacitorCordova
-  - CapacitorCordova (8.1.0)
+  - CapacitorCordova (8.3.0)
   - CapacitorSplashScreen (8.0.1):
     - Capacitor
-  - CordovaPlugins (8.1.0):
+  - CordovaPlugins (8.3.0):
     - CapacitorCordova
   - CordovaPluginsResources (0.0.105)
 
@@ -28,10 +28,10 @@ EXTERNAL SOURCES:
     :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
-  Capacitor: 47b825120c6b8b6d6f9f053e9350a8960d436710
-  CapacitorCordova: e8b76fd95fc1e157775abc484c59cc0de464095d
+  Capacitor: 22e541237135648c9aa736232bb4d2eec35fddcb
+  CapacitorCordova: 2e1e2bb93b2f365309dc4ff18b72b9a69a7814a9
   CapacitorSplashScreen: 4b46c72298db552b3c57ce021ef028b6dc7f1fa7
-  CordovaPlugins: 3a963028e9cc3672da2ad7b30ebe318d2898b785
+  CordovaPlugins: 3e1c58b135b0227a968899f706a88ca7fa2b4bb1
   CordovaPluginsResources: da93847212bf7b16ba770e4d6c3e7dba820174c7
 
 PODFILE CHECKSUM: 1d0327d03b77e22534e6bf6b6dc37526f44b68f2
