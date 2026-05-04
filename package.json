@@ -53,7 +53,7 @@
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0",
     "rxjs": "^7.8.2",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.3.0",
