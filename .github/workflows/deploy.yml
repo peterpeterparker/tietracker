@@ -55,5 +55,5 @@ jobs:
 
       - name: Deploy
         run: |
-          rsync -avz ./worker myuser@${{ secrets.KYUSHU_HOST }}:/opt/tietracker/
-          ssh myuser@${{ secrets.KYUSHU_HOST }} "sudo systemctl restart tietracker"
+          rsync -avz ./worker deploy-tietracker@${{ secrets.KYUSHU_HOST }}:/opt/tietracker/
+          ssh deploy-tietracker@${{ secrets.KYUSHU_HOST }} "sudo systemctl restart tietracker"
