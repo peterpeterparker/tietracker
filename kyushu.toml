@@ -6,3 +6,6 @@ port = 5990
 
 [assets]
 dir = "dist"
+
+[scripts]
+prebuild = ["npm run build"]
