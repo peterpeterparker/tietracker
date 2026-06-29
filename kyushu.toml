@@ -1,0 +1,8 @@
+[input]
+src = "src/server.ts"
+
+[run]
+port = 5990
+
+[assets]
+dir = "dist"
