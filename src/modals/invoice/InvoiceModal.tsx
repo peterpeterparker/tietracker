@@ -339,15 +339,10 @@ const InvoiceModal: React.FC<Props> = (props) => {
               onChange={(date: Date | null) => setFrom(date as Date)}
               format="yyyy/MM/dd"
               slotProps={{
-                textField: {
-                  InputProps: {
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <CalendarMonth />
-                      </InputAdornment>
-                    ),
-                  },
+                inputAdornment: {
+                  position: 'end',
                 },
+                openPickerIcon: () => <CalendarMonth />,
                 dialog: {
                   disableEnforceFocus: true,
                 },
@@ -365,15 +360,10 @@ const InvoiceModal: React.FC<Props> = (props) => {
               onChange={(date: Date | null) => setTo(date as Date)}
               format="yyyy/MM/dd"
               slotProps={{
-                textField: {
-                  InputProps: {
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <CalendarMonth />
-                      </InputAdornment>
-                    ),
-                  },
+                inputAdornment: {
+                  position: 'end',
                 },
+                openPickerIcon: () => <CalendarMonth />,
                 dialog: {
                   disableEnforceFocus: true,
                 },
