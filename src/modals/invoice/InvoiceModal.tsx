@@ -14,7 +14,6 @@ import {
   isPlatform,
 } from '@ionic/react';
 import {CalendarMonth} from '@mui/icons-material';
-import {InputAdornment} from '@mui/material';
 import {LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {close} from 'ionicons/icons';

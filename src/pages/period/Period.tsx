@@ -13,7 +13,6 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 import {CalendarMonth} from '@mui/icons-material';
-import {InputAdornment} from '@mui/material';
 import {DatePicker, LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {isBefore} from 'date-fns';
