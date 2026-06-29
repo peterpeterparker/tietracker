@@ -1,10 +1,10 @@
 <div align="center">
   <a href="https://tietracker.com"><img src="public/assets/icon/logo.svg" alt="Tie Tracker logo" height="160"></a>
-  
+
   <br/>
-  
+
   <p><strong>Tie Tracker</strong> - A simple, open source and free time tracking app ⏱️</p>
-  
+
   <br/>
 
 [![App Store](https://img.shields.io/static/v1?label=App%20Store&message=Download&color=ff69b4)](https://apps.apple.com/us/app/tie-tracker/id1493399075)
