@@ -13,7 +13,6 @@ import {
   useIonViewWillEnter,
 } from '@ionic/react';
 import {CalendarMonth} from '@mui/icons-material';
-import {InputAdornment} from '@mui/material';
 import {DatePicker, LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {isBefore} from 'date-fns';
@@ -150,15 +149,10 @@ const Period: React.FC = () => {
               onChange={(date: Date | null) => setFrom(date as Date)}
               format="yyyy/MM/dd"
               slotProps={{
-                textField: {
-                  InputProps: {
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <CalendarMonth />
-                      </InputAdornment>
-                    ),
-                  },
+                inputAdornment: {
+                  position: 'end',
                 },
+                openPickerIcon: () => <CalendarMonth />,
                 dialog: {
                   disableEnforceFocus: true,
                 },
@@ -176,15 +170,10 @@ const Period: React.FC = () => {
               onChange={(date: Date | null) => setTo(date as Date)}
               format="yyyy/MM/dd"
               slotProps={{
-                textField: {
-                  InputProps: {
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <CalendarMonth />
-                      </InputAdornment>
-                    ),
-                  },
+                inputAdornment: {
+                  position: 'end',
                 },
+                openPickerIcon: () => <CalendarMonth />,
                 dialog: {
                   disableEnforceFocus: true,
                 },

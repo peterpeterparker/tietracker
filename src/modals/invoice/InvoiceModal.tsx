@@ -14,7 +14,6 @@ import {
   isPlatform,
 } from '@ionic/react';
 import {CalendarMonth} from '@mui/icons-material';
-import {InputAdornment} from '@mui/material';
 import {LocalizationProvider, MobileDatePicker} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {close} from 'ionicons/icons';
@@ -339,15 +338,10 @@ const InvoiceModal: React.FC<Props> = (props) => {
               onChange={(date: Date | null) => setFrom(date as Date)}
               format="yyyy/MM/dd"
               slotProps={{
-                textField: {
-                  InputProps: {
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <CalendarMonth />
-                      </InputAdornment>
-                    ),
-                  },
+                inputAdornment: {
+                  position: 'end',
                 },
+                openPickerIcon: () => <CalendarMonth />,
                 dialog: {
                   disableEnforceFocus: true,
                 },
@@ -365,15 +359,10 @@ const InvoiceModal: React.FC<Props> = (props) => {
               onChange={(date: Date | null) => setTo(date as Date)}
               format="yyyy/MM/dd"
               slotProps={{
-                textField: {
-                  InputProps: {
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <CalendarMonth />
-                      </InputAdornment>
-                    ),
-                  },
+                inputAdornment: {
+                  position: 'end',
                 },
+                openPickerIcon: () => <CalendarMonth />,
                 dialog: {
                   disableEnforceFocus: true,
                 },
