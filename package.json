@@ -72,6 +72,7 @@
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.7.0",
     "jetifier": "^2.0.0",
+    "kyushu-types": "^0.1.0",
     "node-fetch": "^3.3.2",
     "prettier": "3.9.1",
     "prettier-plugin-organize-imports": "^4.3.0",
