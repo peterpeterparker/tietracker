@@ -6,6 +6,7 @@ port = 5990
 
 [assets]
 dir = "dist"
+precompress = ["brotli"]
 
 [scripts]
 prebuild = ["npm run build"]
