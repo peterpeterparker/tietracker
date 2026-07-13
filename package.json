@@ -40,6 +40,7 @@
     "cordova-plugin-x-socialsharing": "^6.0.4",
     "date-fns": "^4.4.0",
     "es6-promise-plugin": "^4.2.2",
+    "exceljs": "^4.4.0",
     "i18next": "^26.3.6",
     "i18next-browser-languagedetector": "^8.2.1",
     "idb-keyval": "^6.3.0",

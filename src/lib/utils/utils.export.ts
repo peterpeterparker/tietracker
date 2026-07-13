@@ -1,5 +1,7 @@
 import {default as i18n, default as i18next} from 'i18next';
 
+export type i18nExportLabels = ReturnType<typeof exportLabels>;
+
 export function exportLabels() {
   return {
     language: i18n.language,
