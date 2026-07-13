@@ -1,4 +1,4 @@
-import {InvoicesService} from '../../services/invoices/invoices.service';
+import {InvoicesService} from '../../services/invoices.service';
 import {Invoice} from '../interfaces/invoice';
 import {LIST_PROJECTS_INVOICES} from '../types/invoices.types';
 import {RootThunkResult} from './types.thunks';

@@ -21,7 +21,7 @@ import {useSelector} from 'react-redux';
 import {Project} from '../../../models/project';
 import {Settings as SettingsModel} from '../../../models/settings';
 import {TaskData} from '../../../models/task';
-import {ThemeService} from '../../../services/theme/theme.service';
+import {ThemeService} from '../../../services/theme.service';
 import {RootState} from '../../../store/reducers';
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 import {contrast} from '../../../utils/utils.color';

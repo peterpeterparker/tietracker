@@ -19,7 +19,7 @@ import {close} from 'ionicons/icons';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Currency} from '../../definitions/currency';
-import {Currencies, SettingsService} from '../../services/settings/settings.service';
+import {Currencies, SettingsService} from '../../services/settings.service';
 import styles from './CurrenciesModal.module.scss';
 
 interface Props {

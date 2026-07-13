@@ -1,7 +1,7 @@
 import {get, set} from 'idb-keyval';
 import {v4 as uuid} from 'uuid';
-import {Client} from '../../models/client';
-import {Project, ProjectData} from '../../models/project';
+import {Client} from '../models/client';
+import {Project, ProjectData} from '../models/project';
 
 export class ProjectsService {
   private static instance: ProjectsService;

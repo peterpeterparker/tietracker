@@ -19,7 +19,7 @@ import {close} from 'ionicons/icons';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {SummaryService} from '../../services/summary/summary.service';
+import {SummaryService} from '../../services/summary.service';
 import {Summary} from '../../store/interfaces/summary';
 import {RootState} from '../../store/reducers';
 import {formatCurrency} from '../../utils/utils.currency';

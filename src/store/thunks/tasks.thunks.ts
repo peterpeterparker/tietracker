@@ -1,8 +1,8 @@
 import {Project} from '../../models/project';
 import {Settings} from '../../models/settings';
 import {TaskData} from '../../models/task';
-import {NotificationsService} from '../../services/notifications/notifications.service';
-import {TasksService} from '../../services/tasks/tasks.service';
+import {NotificationsService} from '../../services/notifications.service';
+import {TasksService} from '../../services/tasks.service';
 import {TaskInProgress} from '../interfaces/task.inprogress';
 import {TaskItem} from '../interfaces/task.item';
 import {

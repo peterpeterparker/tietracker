@@ -24,7 +24,7 @@ import {useSelector} from 'react-redux';
 import {Client} from '../../models/client';
 import {Project, ProjectData, ProjectDataType} from '../../models/project';
 import {Settings} from '../../models/settings';
-import {ProjectsService} from '../../services/projects/projects.service';
+import {ProjectsService} from '../../services/projects.service';
 import {RootState} from '../../store/reducers';
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {emitError} from '../../utils/utils.events';

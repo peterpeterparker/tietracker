@@ -1,5 +1,5 @@
 import {Client, ClientData} from '../../models/client';
-import {ClientsService} from '../../services/clients/clients.service';
+import {ClientsService} from '../../services/clients.service';
 import {CREATE_CLIENT, INIT_CLIENTS} from '../types/clients.types';
 import {RootThunkResult} from './types.thunks';
 
