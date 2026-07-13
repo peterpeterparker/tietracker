@@ -2,26 +2,13 @@ import {DirectoryEntry, File} from '@awesome-cordova-plugins/file';
 import {SocialSharing} from '@awesome-cordova-plugins/social-sharing';
 import {isPlatform} from '@ionic/react';
 
-export async function getNewFileHandle(
-  type: 'pdf' | 'xlsx' | 'zip',
-): Promise<FileSystemFileHandle> {
+export async function getNewFileHandle(type: 'xlsx' | 'zip'): Promise<FileSystemFileHandle> {
   const xlsxOpts: SaveFilePickerOptions = {
     types: [
       {
         description: 'Excel Files',
         accept: {
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
-        },
-      },
-    ],
-  };
-
-  const pdfOpts: SaveFilePickerOptions = {
-    types: [
-      {
-        description: 'PDF Files',
-        accept: {
-          'application/pdf': ['.pdf'],
         },
       },
     ],
@@ -38,7 +25,7 @@ export async function getNewFileHandle(
     ],
   };
 
-  return showSaveFilePicker(type === 'pdf' ? pdfOpts : type === 'zip' ? zipOpts : xlsxOpts);
+  return showSaveFilePicker(type === 'zip' ? zipOpts : xlsxOpts);
 }
 
 export async function writeFile(

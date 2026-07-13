@@ -109,7 +109,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
     }
   }
 
-  async function exportInvoice(type: 'xlsx' | 'pdf') {
+  async function exportInvoice() {
     if (!props.invoice) {
       return;
     }
@@ -125,7 +125,6 @@ const InvoiceModal: React.FC<Props> = (props) => {
           settings.currency,
           settings.vat,
           bill,
-          type,
           settings.signature,
         );
       } else if ('showSaveFilePicker' in window) {
@@ -136,7 +135,6 @@ const InvoiceModal: React.FC<Props> = (props) => {
           settings.currency,
           settings.vat,
           bill,
-          type,
           settings.signature,
         );
       } else {
@@ -147,7 +145,6 @@ const InvoiceModal: React.FC<Props> = (props) => {
           settings.currency,
           settings.vat,
           bill,
-          type,
           settings.signature,
         );
       }
@@ -389,8 +386,6 @@ const InvoiceModal: React.FC<Props> = (props) => {
         <div className="actions">
           {renderExportExcel()}
 
-          {renderExportPdf()}
-
           <button type="button" onClick={() => props.closeAction()} disabled={inProgress}>
             {t('common:actions.cancel')}
           </button>
@@ -403,7 +398,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
     return (
       <IonButton
         type="button"
-        onClick={() => exportInvoice('xlsx')}
+        onClick={() => exportInvoice()}
         disabled={billable === undefined || inProgress}
         style={
           {
@@ -416,29 +411,6 @@ const InvoiceModal: React.FC<Props> = (props) => {
           } as CSSProperties
         }>
         <IonLabel>{t('export:excel')}</IonLabel>
-      </IonButton>
-    );
-  }
-
-  function renderExportPdf() {
-    return (
-      <IonButton
-        type="button"
-        onClick={() => exportInvoice('pdf')}
-        fill="outline"
-        disabled={billable === undefined || inProgress}
-        style={
-          {
-            '--border-color': color,
-            '--background': 'transparent',
-            '--color': 'inherit',
-            '--background-hover': color,
-            '--color-hover': colorContrast,
-            '--background-activated': colorContrast,
-            '--color-activated': color,
-          } as CSSProperties
-        }>
-        <IonLabel>{t('export:pdf')}</IonLabel>
       </IonButton>
     );
   }

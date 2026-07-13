@@ -36,7 +36,6 @@ export class ExportService {
     currency: Currency,
     vat: number | undefined,
     bill: boolean,
-    type: 'xlsx' | 'pdf',
     signature: string | undefined,
   ): Promise<void> {
     if (invoice === undefined || invoice.project_id === undefined) {
@@ -49,7 +48,7 @@ export class ExportService {
       throw new Error('No invoices to export.');
     }
 
-    const fileHandle = await getNewFileHandle(type);
+    const fileHandle = await getNewFileHandle('xlsx');
 
     if (!fileHandle) {
       throw new Error('Cannot access filesystem.');
@@ -61,7 +60,7 @@ export class ExportService {
       }
     };
 
-    await this.postMessage(invoice, invoices, currency, vat, bill, type, signature);
+    await this.postMessage(invoice, invoices, currency, vat, bill, signature);
   }
 
   async exportDownload(
@@ -71,7 +70,6 @@ export class ExportService {
     currency: Currency,
     vat: number | undefined,
     bill: boolean,
-    type: 'xlsx' | 'pdf',
     signature: string | undefined,
   ): Promise<void> {
     if (invoice === undefined || invoice.project_id === undefined) {
@@ -84,7 +82,7 @@ export class ExportService {
       throw new Error('No invoices to export.');
     }
 
-    const filename = this.filename(invoice, from, to, type);
+    const filename = this.filename(invoice, from, to, 'xlsx');
 
     this.exportWorker.onmessage = async ($event: MessageEvent) => {
       if ($event && $event.data) {
@@ -92,7 +90,7 @@ export class ExportService {
       }
     };
 
-    await this.postMessage(invoice, invoices, currency, vat, bill, type, signature);
+    await this.postMessage(invoice, invoices, currency, vat, bill, signature);
   }
 
   async exportMobileFileSystem(
@@ -102,7 +100,6 @@ export class ExportService {
     currency: Currency,
     vat: number | undefined,
     bill: boolean,
-    type: 'xlsx' | 'pdf',
     signature: string | undefined,
   ): Promise<void> {
     if (invoice === undefined || invoice.project_id === undefined) {
@@ -115,7 +112,7 @@ export class ExportService {
       throw new Error('No invoices to export.');
     }
 
-    const filename = this.filename(invoice, from, to, type);
+    const filename = this.filename(invoice, from, to, 'xlsx');
 
     this.exportWorker.onmessage = async ($event: MessageEvent) => {
       if ($event && $event.data) {
@@ -132,7 +129,7 @@ export class ExportService {
       }
     };
 
-    await this.postMessage(invoice, invoices, currency, vat, bill, type, signature);
+    await this.postMessage(invoice, invoices, currency, vat, bill, signature);
   }
 
   private shareSubject(invoice: Invoice): string {
@@ -143,9 +140,9 @@ export class ExportService {
     invoice: Invoice,
     from: Date | undefined,
     to: Date | undefined,
-    type: 'xlsx' | 'pdf',
+    type: 'xlsx',
   ): string {
-    const name: string = invoice.client && invoice.client.name ? invoice.client.name : 'export';
+    const name = invoice.client && invoice.client.name ? invoice.client.name : 'export';
     return `${name}${from ? '-' + format(from, 'yyyy-MM-dd') : ''}${
       to ? '-' + format(to, 'yyyy-MM-dd') : ''
     }.${type}`;
@@ -157,7 +154,6 @@ export class ExportService {
     currency: Currency,
     vat: number | undefined,
     bill: boolean,
-    type: 'xlsx' | 'pdf',
     signature: string | undefined,
   ) {
     await i18next.loadNamespaces('export');
@@ -171,7 +167,6 @@ export class ExportService {
       vat: vat,
       bill: bill,
       i18n: exportLabels(),
-      type,
       signature,
     });
   }
