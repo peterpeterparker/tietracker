@@ -4,8 +4,8 @@ import {
 } from '@awesome-cordova-plugins/local-notifications';
 import {isPlatform} from '@ionic/react';
 import i18next from 'i18next';
-import {Project} from '../models/project';
-import {Settings} from '../models/settings';
+import type {Project} from '../types/project';
+import type {Settings} from '../types/settings';
 
 export class NotificationsService {
   private static instance: NotificationsService;
