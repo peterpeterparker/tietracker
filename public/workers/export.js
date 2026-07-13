@@ -2,13 +2,11 @@ importScripts('./libs/idb-keyval.umd.js');
 importScripts('./libs/dayjs.min.js');
 
 importScripts('./libs/exceljs.min.js');
-importScripts('./libs/jspdf.umd.min.js');
 
 importScripts('./utils/utils.js');
 importScripts('./utils/utils.export.js');
 importScripts('./utils/utils.budget.js');
 importScripts('./utils/utils.excel.js');
-importScripts('./utils/utils.pdf.js');
 
 self.onmessage = async ($event) => {
   if ($event && $event.data && $event.data.msg === 'export') {
@@ -20,23 +18,12 @@ self.onmessage = async ($event) => {
       $event.data.bill,
       $event.data.client,
       $event.data.i18n,
-      $event.data.type,
       $event.data.signature,
     );
   }
 };
 
-self.export = async (
-  invoices,
-  filterProjectId,
-  currency,
-  vat,
-  bill,
-  client,
-  i18n,
-  type,
-  signature,
-) => {
+self.export = async (invoices, filterProjectId, currency, vat, bill, client, i18n, signature) => {
   if (!invoices || invoices.length <= 0) {
     self.postMessage(undefined);
     return;
@@ -62,7 +49,6 @@ self.export = async (
     vat,
     client,
     i18n,
-    type,
     signature,
   );
 
@@ -82,7 +68,6 @@ async function exportInvoices(
   vat,
   client,
   i18n,
-  type,
   signature,
 ) {
   const promises = [];
@@ -113,10 +98,7 @@ async function exportInvoices(
 
   const concatenedInvoices = filteredInvoices.reduce((a, b) => a.concat(b), []);
 
-  const results =
-    type === 'pdf'
-      ? await exportToPdf(concatenedInvoices, client, currency, vat, i18n, signature)
-      : await exportToExcel(concatenedInvoices, client, currency, vat, i18n, signature);
+  const results = await exportToExcel(concatenedInvoices, client, currency, vat, i18n, signature);
 
   return {
     excel: results,

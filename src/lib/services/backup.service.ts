@@ -66,9 +66,7 @@ export class BackupService {
   }
 
   async exportNativeFileSystem(type: 'excel' | 'idb', settings: Settings): Promise<void> {
-    const fileHandle: FileSystemFileHandle = await getNewFileHandle(
-      type === 'excel' ? 'xlsx' : 'zip',
-    );
+    const fileHandle = await getNewFileHandle(type === 'excel' ? 'xlsx' : 'zip');
 
     if (!fileHandle) {
       throw new Error('Cannot access filesystem.');
