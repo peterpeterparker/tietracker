@@ -36,7 +36,9 @@ import '@ionic/react/css/text-transformation.css';
 import {createTheme, ThemeProvider} from '@mui/material';
 import BackupAlert from './alerts/backup/BackupAlert';
 import {ErrorToast} from './alerts/error/ErrorToast';
-import './helpers/i18n';
+import './lib/helpers/i18n';
+import {rootConnector, RootProps} from './lib/store/thunks/index.thunks';
+import {initAllData} from './lib/utils/utils.store';
 import TrackTaskModal from './modals/task/track/TrackTaskModal';
 import About from './pages/about/About';
 import Backup from './pages/backup/Backup';
@@ -47,7 +49,6 @@ import {More} from './pages/more/More';
 import Period from './pages/period/Period';
 import Privacy from './pages/privacy/Privacy';
 import Terms from './pages/terms/Terms';
-import {rootConnector, RootProps} from './store/thunks/index.thunks';
 import './theme/alert.scss';
 import './theme/button.scss';
 import './theme/card.scss';
@@ -67,7 +68,6 @@ import './theme/spinner.scss';
 import './theme/tabs.scss';
 import './theme/toolbar.scss';
 import './theme/variables.scss';
-import {initAllData} from './utils/utils.store';
 
 const theme = createTheme({
   typography: {

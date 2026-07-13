@@ -1,5 +1,5 @@
-import {ProjectDataBudget, ProjectDataRate} from '../../models/project';
-import {TaskData} from '../../models/task';
+import {ProjectDataBudget, ProjectDataRate} from '../../types/project';
+import {TaskData} from '../../types/task';
 
 // Denormalization
 export interface TaskInProgressClientData {

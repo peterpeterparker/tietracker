@@ -15,13 +15,13 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router';
 import Loading from '../../components/loading/Loading';
-import {Settings} from '../../models/settings';
-import {BackupService} from '../../services/backup.service';
-import {RestoreService} from '../../services/restore.service';
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {emitError} from '../../utils/utils.events';
-import {initAllData} from '../../utils/utils.store';
+import {BackupService} from '../../lib/services/backup.service';
+import {RestoreService} from '../../lib/services/restore.service';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {Settings} from '../../lib/types/settings';
+import {emitError} from '../../lib/utils/utils.events';
+import {initAllData} from '../../lib/utils/utils.store';
 import styles from './Backup.module.scss';
 
 const Backup: React.FC<RootProps> = (props) => {

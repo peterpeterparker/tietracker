@@ -21,13 +21,13 @@ import {close} from 'ionicons/icons';
 import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {Client} from '../../models/client';
-import {Project, ProjectData, ProjectDataType} from '../../models/project';
-import {Settings} from '../../models/settings';
-import {ProjectsService} from '../../services/projects.service';
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {emitError} from '../../utils/utils.events';
+import {ProjectsService} from '../../lib/services/projects.service';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {Client} from '../../lib/types/client';
+import {Project, ProjectData, ProjectDataType} from '../../lib/types/project';
+import {Settings} from '../../lib/types/settings';
+import {emitError} from '../../lib/utils/utils.events';
 
 export enum ProjectModalAction {
   CREATE,

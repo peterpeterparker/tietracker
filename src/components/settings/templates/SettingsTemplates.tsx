@@ -12,8 +12,8 @@ import {addOutline, pencilOutline, repeatOutline} from 'ionicons/icons';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {v4 as uuid} from 'uuid';
+import {Settings} from '../../../lib/types/settings';
 import TemplateModal from '../../../modals/template/TemplateModal';
-import {Settings} from '../../../models/settings';
 import styles from './SettingsTemplates.module.scss';
 
 export interface SettingsDescriptionProps {

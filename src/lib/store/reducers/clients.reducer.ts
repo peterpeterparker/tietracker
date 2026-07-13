@@ -1,4 +1,4 @@
-import {Client} from '../../models/client';
+import {Client} from '../../types/client';
 import {ClientActionTypes, CREATE_CLIENT, INIT_CLIENTS} from '../types/clients.types';
 
 export interface ClientsState {

@@ -1,4 +1,4 @@
-import {Project} from '../../models/project';
+import {Project} from '../../types/project';
 import {
   CREATE_PROJECT,
   INIT_ACTIVE_PROJECTS,

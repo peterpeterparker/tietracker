@@ -18,13 +18,13 @@ import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {BackupInvoices} from '../../components/backup/BackupInvoices';
+import {Invoice} from '../../lib/store/interfaces/invoice';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector} from '../../lib/store/thunks/index.thunks';
+import {Settings} from '../../lib/types/settings';
+import {contrast} from '../../lib/utils/utils.color';
+import {formatCurrency} from '../../lib/utils/utils.currency';
 import InvoiceModal from '../../modals/invoice/InvoiceModal';
-import {Settings} from '../../models/settings';
-import {Invoice} from '../../store/interfaces/invoice';
-import {RootState} from '../../store/reducers';
-import {rootConnector} from '../../store/thunks/index.thunks';
-import {contrast} from '../../utils/utils.color';
-import {formatCurrency} from '../../utils/utils.currency';
 import styles from './Invoices.module.scss';
 
 const Invoices: React.FC = () => {

@@ -3,11 +3,11 @@ import {differenceInSeconds} from 'date-fns';
 import React, {CSSProperties, Ref, useEffect, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {Summary as SummaryData} from '../../store/interfaces/summary';
-import {TaskInProgress} from '../../store/interfaces/task.inprogress';
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {formatSeconds} from '../../utils/utils.time';
+import {Summary as SummaryData} from '../../lib/store/interfaces/summary';
+import {TaskInProgress} from '../../lib/store/interfaces/task.inprogress';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {formatSeconds} from '../../lib/utils/utils.time';
 import styles from './Spinner.module.scss';
 
 interface SpinnerProps extends RootProps {

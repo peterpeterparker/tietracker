@@ -24,17 +24,17 @@ import {isSameDay, parse} from 'date-fns';
 import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {RouteComponentProps} from 'react-router';
-import {Client} from '../../../models/client';
-import {Project} from '../../../models/project';
-import {Task} from '../../../models/task';
-import {ClientsService} from '../../../services/clients.service';
-import {ProjectsService} from '../../../services/projects.service';
-import {TasksService} from '../../../services/tasks.service';
-import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
-import {contrast} from '../../../utils/utils.color';
-import {toDateObj} from '../../../utils/utils.date';
-import {emitError} from '../../../utils/utils.events';
-import {pickerColor} from '../../../utils/utils.picker';
+import {ClientsService} from '../../../lib/services/clients.service';
+import {ProjectsService} from '../../../lib/services/projects.service';
+import {TasksService} from '../../../lib/services/tasks.service';
+import {rootConnector, RootProps} from '../../../lib/store/thunks/index.thunks';
+import {Client} from '../../../lib/types/client';
+import {Project} from '../../../lib/types/project';
+import {Task} from '../../../lib/types/task';
+import {contrast} from '../../../lib/utils/utils.color';
+import {toDateObj} from '../../../lib/utils/utils.date';
+import {emitError} from '../../../lib/utils/utils.events';
+import {pickerColor} from '../../../lib/utils/utils.picker';
 
 interface TaskDetailsProps extends RouteComponentProps<{
   day: string;

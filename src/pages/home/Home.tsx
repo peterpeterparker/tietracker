@@ -16,11 +16,11 @@ import {RouteComponentProps} from 'react-router';
 import Projects from '../../components/projects/Projects';
 import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
+import {RootState} from '../../lib/store/reducers';
+import {Client} from '../../lib/types/client';
 import CreateClientModal from '../../modals/client/CreateClientModal';
 import ClientsModal from '../../modals/clients/ClientsModal';
 import CreateTaskModal from '../../modals/task/create/CreateTaskModal';
-import {Client} from '../../models/client';
-import {RootState} from '../../store/reducers';
 import styles from './Home.module.scss';
 
 const Home: React.FC<RouteComponentProps> = (props) => {

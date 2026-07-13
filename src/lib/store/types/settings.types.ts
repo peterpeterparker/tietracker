@@ -1,4 +1,4 @@
-import {Settings} from '../../models/settings';
+import {Settings} from '../../types/settings';
 
 export const INIT_SETTINGS = 'INIT_SETTINGS';
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';

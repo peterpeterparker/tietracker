@@ -1,4 +1,4 @@
-import {Project} from '../../models/project';
+import {Project} from '../../types/project';
 
 export const CREATE_PROJECT = 'CREATE_PROJECT';
 export const INIT_ACTIVE_PROJECTS = 'INIT_ACTIVE_PROJECTS';

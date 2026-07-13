@@ -5,15 +5,15 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import Spinner from '../../../components/spinner/Spinner';
 import TrackDetails from '../../../components/track-details/TrackDetails';
-import {Settings as SettingsModel} from '../../../models/settings';
 import {
   TaskInProgress,
   TaskInProgressClientData,
   TaskInProgressData,
-} from '../../../store/interfaces/task.inprogress';
-import {RootState} from '../../../store/reducers';
-import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
-import {contrast} from '../../../utils/utils.color';
+} from '../../../lib/store/interfaces/task.inprogress';
+import {RootState} from '../../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../../lib/store/thunks/index.thunks';
+import {Settings as SettingsModel} from '../../../lib/types/settings';
+import {contrast} from '../../../lib/utils/utils.color';
 import styles from './TrackTaskModal.module.scss';
 
 const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {

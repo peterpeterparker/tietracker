@@ -17,9 +17,9 @@ import {close} from 'ionicons/icons';
 import {CSSProperties, RefObject, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {Client} from '../../models/client';
-import {RootState} from '../../store/reducers';
-import {rootConnector} from '../../store/thunks/index.thunks';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector} from '../../lib/store/thunks/index.thunks';
+import {Client} from '../../lib/types/client';
 import styles from './ClientsModal.module.scss';
 
 const ClientsModal = () => {

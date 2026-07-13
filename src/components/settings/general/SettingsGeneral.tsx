@@ -11,8 +11,8 @@ import {
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {Settings} from '../../../models/settings';
-import {RootState} from '../../../store/reducers';
+import {RootState} from '../../../lib/store/reducers';
+import {Settings} from '../../../lib/types/settings';
 
 export interface SettingsGeneralProps {
   settings: Settings;

@@ -19,10 +19,10 @@ import {useSelector} from 'react-redux';
 import SettingsGeneral from '../../components/settings/general/SettingsGeneral';
 import SettingsTemplates from '../../components/settings/templates/SettingsTemplates';
 import SettingsTracker from '../../components/settings/tracker/SettingsTracker';
-import {Settings as SettingsModel} from '../../models/settings';
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {emitError} from '../../utils/utils.events';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {Settings as SettingsModel} from '../../lib/types/settings';
+import {emitError} from '../../lib/utils/utils.events';
 
 enum SettingsCategory {
   GENERAL = 'general',

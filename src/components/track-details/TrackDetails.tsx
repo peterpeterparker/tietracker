@@ -3,10 +3,10 @@ import {differenceInSeconds} from 'date-fns';
 import React, {CSSProperties, useEffect, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {TaskInProgressClientData} from '../../store/interfaces/task.inprogress';
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {formatSeconds} from '../../utils/utils.time';
+import {TaskInProgressClientData} from '../../lib/store/interfaces/task.inprogress';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {formatSeconds} from '../../lib/utils/utils.time';
 import styles from './TrackDetails.module.scss';
 
 interface TrackDetailsProps extends RootProps {

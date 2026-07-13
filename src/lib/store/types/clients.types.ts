@@ -1,4 +1,4 @@
-import {Client} from '../../models/client';
+import {Client} from '../../types/client';
 
 export const CREATE_CLIENT = 'CREATE_CLIENT';
 export const INIT_CLIENTS = 'INIT_CLIENTS';
