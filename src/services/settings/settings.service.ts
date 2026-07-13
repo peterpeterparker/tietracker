@@ -31,22 +31,20 @@ export class SettingsService {
     return SettingsService.instance;
   }
 
-  init(): Promise<Settings> {
-    return new Promise<Settings>(async (resolve) => {
-      try {
-        let settings: Settings | undefined = await get('settings');
+  async init(): Promise<Settings> {
+    try {
+      let settings = await get<Settings>('settings');
 
-        if (!settings) {
-          settings = this.getDefaultSettings();
+      if (!settings) {
+        settings = this.getDefaultSettings();
 
-          await set('settings', settings);
-        }
-
-        resolve(settings);
-      } catch (err) {
-        resolve(this.getDefaultSettings());
+        await set('settings', settings);
       }
-    });
+
+      return settings;
+    } catch (_err: unknown) {
+      return this.getDefaultSettings();
+    }
   }
 
   getDefaultSettings(): Settings {
@@ -70,41 +68,31 @@ export class SettingsService {
     };
   }
 
-  currencies(): Promise<Currencies | undefined> {
-    return new Promise<Currencies | undefined>(async (resolve) => {
-      try {
-        const res: Response = await fetch('./assets/currency/currency.json');
+  async currencies(): Promise<Currencies | undefined> {
+    try {
+      const res = await fetch('./assets/currency/currency.json');
 
-        if (!res) {
-          resolve(undefined);
-          return;
-        }
-
-        const currencies: Currencies = await res.json();
-
-        resolve(currencies);
-      } catch (err) {
-        resolve(undefined);
+      if (!res || !res.ok) {
+        return undefined;
       }
-    });
+
+      const currencies: Currencies = await res.json();
+
+      return currencies;
+    } catch (_err: unknown) {
+      return undefined;
+    }
   }
 
-  update(settings: Settings): Promise<Settings> {
-    return new Promise<Settings>(async (resolve, reject) => {
-      try {
-        if (!settings) {
-          reject('Settings not defined.');
-          return;
-        }
+  async update(settings: Settings): Promise<Settings> {
+    if (!settings) {
+      throw new Error('Settings not defined.');
+    }
 
-        settings.updated_at = new Date().getTime();
+    settings.updated_at = new Date().getTime();
 
-        await set('settings', settings);
+    await set('settings', settings);
 
-        resolve(settings);
-      } catch (err) {
-        reject(err);
-      }
-    });
+    return settings;
   }
 }

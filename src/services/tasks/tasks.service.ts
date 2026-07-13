@@ -29,356 +29,266 @@ export class TasksService {
     return TasksService.instance;
   }
 
-  start(project: Project, settings: Settings): Promise<TaskInProgress> {
-    return new Promise<TaskInProgress>(async (resolve, reject) => {
-      try {
-        const taskInProgress: TaskInProgress | undefined = await get('task-in-progress');
+  async start(project: Project, settings: Settings): Promise<TaskInProgress> {
+    const taskInProgress = await get<TaskInProgress>('task-in-progress');
 
-        if (taskInProgress) {
-          reject('Only one task at a time.');
-          return;
-        }
+    if (taskInProgress) {
+      throw new Error('Only one task at a time.');
+    }
 
-        const task: TaskInProgress = await this.createTaskInProgress(project, settings);
+    const task = await this.createTaskInProgress(project, settings);
 
-        await set('task-in-progress', task);
+    await set('task-in-progress', task);
 
-        resolve(task);
-      } catch (err) {
-        reject(err);
-      }
-    });
+    return task;
   }
 
-  stop(roundTime: number): Promise<Task> {
-    return new Promise<Task>(async (resolve, reject) => {
-      try {
-        const task: Task | undefined = await get('task-in-progress');
+  async stop(roundTime: number): Promise<Task> {
+    const task = await get<Task>('task-in-progress');
 
-        if (!task || !task.data) {
-          reject('No task in progress found.');
-          return;
-        }
+    if (!task || !task.data) {
+      throw new Error('No task in progress found.');
+    }
 
-        await this.saveTaskAndInvoice(task, roundTime, true);
+    await this.saveTaskAndInvoice(task, roundTime, true);
 
-        await del('task-in-progress');
+    await del('task-in-progress');
 
-        resolve(task);
-      } catch (err) {
-        reject(err);
-      }
-    });
+    return task;
   }
 
-  create(taskData: TaskData, roundTime: number): Promise<Task> {
-    return new Promise<Task>(async (resolve, reject) => {
-      try {
-        if (!taskData) {
-          reject('No task data provided.');
-          return;
-        }
+  async create(taskData: TaskData, roundTime: number): Promise<Task> {
+    if (!taskData) {
+      throw new Error('No task data provided.');
+    }
 
-        const task: Task = {
-          id: uuid(),
-          data: taskData,
-        };
+    const task: Task = {
+      id: uuid(),
+      data: taskData,
+    };
 
-        await this.saveTaskAndInvoice(task, roundTime, false);
+    await this.saveTaskAndInvoice(task, roundTime, false);
 
-        resolve(task);
-      } catch (err) {
-        reject(err);
-      }
-    });
+    return task;
   }
 
-  private saveTaskAndInvoice(task: Task, roundTime: number, endNow: boolean): Promise<Task> {
-    return new Promise<Task>(async (resolve, reject) => {
-      try {
-        if (!task || !task.data) {
-          reject('No task provided.');
-          return;
-        }
+  private async saveTaskAndInvoice(task: Task, roundTime: number, endNow: boolean): Promise<Task> {
+    if (!task || !task.data) {
+      throw new Error('No task provided.');
+    }
 
-        const now: Date = new Date();
+    const now = new Date();
 
-        task.data.updated_at = now.getTime();
+    task.data.updated_at = now.getTime();
 
-        const from: Date =
-          roundTime > 0
-            ? roundToNearestMinutes(task.data.from, {nearestTo: roundTime as 1 | 5 | 15 | 30})
-            : setSeconds(new Date(task.data.from), 0);
-        task.data.from = from.getTime();
+    const from: Date =
+      roundTime > 0
+        ? roundToNearestMinutes(task.data.from, {nearestTo: roundTime as 1 | 5 | 15 | 30})
+        : setSeconds(new Date(task.data.from), 0);
+    task.data.from = from.getTime();
 
-        const toCompare: Date = endNow ? now : new Date(task.data.to as number | Date);
-        const to: Date = isBefore(subMinutes(toCompare, roundTime), from)
-          ? addMinutes(from, roundTime)
-          : toCompare;
+    const toCompare = endNow ? now : new Date(task.data.to as number | Date);
+    const to = isBefore(subMinutes(toCompare, roundTime), from)
+      ? addMinutes(from, roundTime)
+      : toCompare;
 
-        task.data.to =
-          roundTime > 0
-            ? roundToNearestMinutes(to, {nearestTo: roundTime as 1 | 5 | 15 | 30}).getTime()
-            : setSeconds(to.getTime(), 0);
+    task.data.to =
+      roundTime > 0
+        ? roundToNearestMinutes(to, {nearestTo: roundTime as 1 | 5 | 15 | 30}).getTime()
+        : setSeconds(to.getTime(), 0);
 
-        await this.saveTask(task);
+    await this.saveTask(task);
 
-        const dayShort: string = lightFormat(task.data.from, 'yyyy-MM-dd');
-        await this.addTaskToInvoices(dayShort);
+    const dayShort = lightFormat(task.data.from, 'yyyy-MM-dd');
+    await this.addTaskToInvoices(dayShort);
 
-        resolve(task);
-      } catch (err) {
-        reject(err);
-      }
-    });
+    return task;
   }
 
-  updateTaskInProgress(task: TaskInProgress): Promise<TaskInProgress | undefined> {
-    return new Promise<TaskInProgress | undefined>(async (resolve, reject) => {
-      try {
-        if (!task || !task.data) {
-          reject('Task is not defined.');
-          return;
-        }
+  async updateTaskInProgress(task: TaskInProgress): Promise<TaskInProgress | undefined> {
+    if (!task || !task.data) {
+      throw new Error('Task is not defined.');
+    }
 
-        task.data.updated_at = new Date().getTime();
+    task.data.updated_at = new Date().getTime();
 
-        await set('task-in-progress', task);
+    await set('task-in-progress', task);
 
-        resolve(task);
-      } catch (err) {
-        reject(err);
-      }
-    });
+    return task;
   }
 
-  current(): Promise<TaskInProgress | undefined> {
-    return new Promise<TaskInProgress | undefined>(async (resolve, reject) => {
-      try {
-        const task: TaskInProgress | undefined = await get('task-in-progress');
-
-        resolve(task);
-      } catch (err) {
-        reject(err);
-      }
-    });
+  async current(): Promise<TaskInProgress | undefined> {
+    return await get<TaskInProgress>('task-in-progress');
   }
 
-  private createTaskInProgress(project: Project, settings: Settings): Promise<TaskInProgress> {
-    return new Promise<TaskInProgress>((resolve, reject) => {
-      if (!project || !project.data || !project.data.client) {
-        reject('Project is empty.');
-        return;
-      }
+  private async createTaskInProgress(
+    project: Project,
+    settings: Settings,
+  ): Promise<TaskInProgress> {
+    if (!project || !project.data || !project.data.client) {
+      throw new Error('Project is empty.');
+    }
 
-      const now: number = new Date().getTime();
+    const now = new Date().getTime();
 
-      // We create a TaskInProgress as, furthermore than being persisted, it gonna be added to the root state too
-      const task: TaskInProgress = {
-        id: uuid(),
-        data: {
-          from: now,
-          client_id: project.data.client.id,
-          project_id: project.id,
-          created_at: now,
-          updated_at: now,
-          project: {
-            name: project.data.name,
-            rate: project.data.rate,
-          },
-          client: {
-            name: project.data.client.name,
-            color: project.data.client.color,
-          },
-          invoice: {
-            status: 'open',
-          },
+    // We create a TaskInProgress as, furthermore than being persisted, it gonna be added to the root state too
+    const task: TaskInProgress = {
+      id: uuid(),
+      data: {
+        from: now,
+        client_id: project.data.client.id,
+        project_id: project.id,
+        created_at: now,
+        updated_at: now,
+        project: {
+          name: project.data.name,
+          rate: project.data.rate,
         },
-      };
+        client: {
+          name: project.data.client.name,
+          color: project.data.client.color,
+        },
+        invoice: {
+          status: 'open',
+        },
+      },
+    };
 
-      // Per default, if defined, we use the first description from the settings
-      if (settings && settings.descriptions && settings.descriptions.length > 0) {
-        task.data.description = settings.descriptions[0];
-      }
+    // Per default, if defined, we use the first description from the settings
+    if (settings && settings.descriptions && settings.descriptions.length > 0) {
+      task.data.description = settings.descriptions[0];
+    }
 
-      resolve(task);
-    });
+    return task;
   }
 
-  private addTaskToInvoices(day: string): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      let invoices: string[] | undefined = await get('invoices');
+  private async addTaskToInvoices(day: string): Promise<void> {
+    let invoices = await get<string[]>('invoices');
 
-      if (invoices && invoices.indexOf(day) > -1) {
-        resolve();
-        return;
-      }
+    if (invoices && invoices.indexOf(day) > -1) {
+      return;
+    }
 
-      if (!invoices || invoices.length <= 0) {
-        invoices = [];
-      }
+    if (!invoices || invoices.length <= 0) {
+      invoices = [];
+    }
 
-      invoices.push(day);
+    invoices.push(day);
 
-      await set('invoices', invoices);
-
-      resolve();
-    });
+    await set('invoices', invoices);
   }
 
-  private saveTask(task: Task): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        if (!task || !task.data) {
-          reject('Task is not defined.');
-          return;
-        }
+  private async saveTask(task: Task): Promise<void> {
+    if (!task || !task.data) {
+      throw new Error('Task is not defined.');
+    }
 
-        const taskToPersist: Task = {...task};
+    const taskToPersist: Task = {...task};
 
-        // Clean before save
-        delete (taskToPersist.data as TaskInProgressData)['client'];
-        delete (taskToPersist.data as TaskInProgressData)['project'];
+    // Clean before save
+    delete (taskToPersist.data as TaskInProgressData)['client'];
+    delete (taskToPersist.data as TaskInProgressData)['project'];
 
-        const storeDate: string = lightFormat(task.data.from, 'yyyy-MM-dd');
+    const storeDate = lightFormat(task.data.from, 'yyyy-MM-dd');
 
-        let tasks: Task[] | undefined = await get(`tasks-${storeDate}`);
+    let tasks = await get<Task[]>(`tasks-${storeDate}`);
 
-        if (!tasks || tasks.length <= 0) {
-          tasks = [];
-        }
+    if (!tasks || tasks.length <= 0) {
+      tasks = [];
+    }
 
-        tasks.push(task);
+    tasks.push(task);
 
-        await set(`tasks-${storeDate}`, tasks);
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
+    await set(`tasks-${storeDate}`, tasks);
   }
 
-  list(updateStateFunction: Function, forDate: Date): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.tasksWorker.onmessage = ($event: MessageEvent) => {
-        if ($event && $event.data) {
-          updateStateFunction($event.data, forDate);
-        }
-      };
+  async list(updateStateFunction: Function, forDate: Date): Promise<void> {
+    this.tasksWorker.onmessage = ($event: MessageEvent) => {
+      if ($event && $event.data) {
+        updateStateFunction($event.data, forDate);
+      }
+    };
 
-      this.tasksWorker.postMessage({msg: 'listTasks', day: lightFormat(forDate, 'yyyy-MM-dd')});
-
-      resolve();
-    });
+    this.tasksWorker.postMessage({msg: 'listTasks', day: lightFormat(forDate, 'yyyy-MM-dd')});
   }
 
   /**
    * @param task
    * @param day The store index, like saved in indexDB tasks-2019-12-19
    */
-  update(task: Task | undefined, day: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        if (!task || !task.data || !day) {
-          reject('Task is not defined.');
-          return;
-        }
+  async update(task: Task | undefined, day: string): Promise<void> {
+    if (!task || !task.data || !day) {
+      throw new Error('Task is not defined.');
+    }
 
-        const taskToPersist: Task = {...task};
+    const taskToPersist: Task = {...task};
 
-        // Clean before save
-        delete (taskToPersist.data as TaskInProgressData)['client'];
-        delete (taskToPersist.data as TaskInProgressData)['project'];
+    // Clean before save
+    delete (taskToPersist.data as TaskInProgressData)['client'];
+    delete (taskToPersist.data as TaskInProgressData)['project'];
 
-        const tasks: Task[] = await this.load(day);
+    const tasks: Task[] = await this.load(day);
 
-        const index: number = tasks.findIndex((filteredTask: Task) => {
-          return filteredTask.id === taskToPersist.id;
-        });
-
-        if (index < 0) {
-          reject('Tasks not found.');
-          return;
-        }
-
-        taskToPersist.data.updated_at = new Date().getTime();
-
-        tasks[index] = taskToPersist;
-
-        await set(`tasks-${day}`, tasks);
-
-        await this.addTaskToInvoices(day);
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
+    const index = tasks.findIndex((filteredTask: Task) => {
+      return filteredTask.id === taskToPersist.id;
     });
+
+    if (index < 0) {
+      throw new Error('Tasks not found.');
+    }
+
+    taskToPersist.data.updated_at = new Date().getTime();
+
+    tasks[index] = taskToPersist;
+
+    await set(`tasks-${day}`, tasks);
+
+    await this.addTaskToInvoices(day);
   }
 
-  delete(task: Task | undefined, day: string): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        if (!task || !task.data || !day) {
-          reject('Task is not defined.');
-          return;
-        }
+  async delete(task: Task | undefined, day: string): Promise<void> {
+    if (!task || !task.data || !day) {
+      throw new Error('Task is not defined.');
+    }
 
-        const tasks: Task[] = await this.load(day);
+    const tasks = await this.load(day);
 
-        const index: number = tasks.findIndex((filteredTask: Task) => {
-          return filteredTask.id === task.id;
-        });
-
-        if (index < 0) {
-          reject('Tasks not found.');
-          return;
-        }
-
-        tasks.splice(index, 1);
-
-        await set(`tasks-${day}`, tasks);
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
+    const index = tasks.findIndex((filteredTask: Task) => {
+      return filteredTask.id === task.id;
     });
+
+    if (index < 0) {
+      throw new Error('Tasks not found.');
+    }
+
+    tasks.splice(index, 1);
+
+    await set(`tasks-${day}`, tasks);
   }
 
-  private load(day: string): Promise<Task[]> {
-    return new Promise<Task[]>(async (resolve, reject) => {
-      const tasks: Task[] | undefined = await get(`tasks-${day}`);
+  private async load(day: string): Promise<Task[]> {
+    const tasks = await get<Task[]>(`tasks-${day}`);
 
-      if (!tasks || tasks.length <= 0) {
-        reject('No tasks found for the specific day.');
-        return;
-      }
+    if (!tasks || tasks.length <= 0) {
+      throw new Error('No tasks found for the specific day.');
+    }
 
-      resolve(tasks);
-    });
+    return tasks;
   }
 
-  find(id: string, day: string): Promise<Task | undefined> {
-    return new Promise<Task | undefined>(async (resolve) => {
-      if (!id || id === undefined || !day || day === undefined) {
-        resolve(undefined);
-        return;
-      }
+  async find(id: string, day: string): Promise<Task | undefined> {
+    if (!id || id === undefined || !day || day === undefined) {
+      return undefined;
+    }
 
-      const tasks: Task[] | undefined = await get(`tasks-${day}`);
+    const tasks = await get<Task[]>(`tasks-${day}`);
 
-      if (!tasks || tasks.length <= 0) {
-        resolve(undefined);
-        return;
-      }
+    if (!tasks || tasks.length <= 0) {
+      return undefined;
+    }
 
-      const task: Task | undefined = tasks.find((filteredTask: Task) => {
-        return filteredTask.id === id;
-      });
-
-      resolve(task);
+    return tasks.find((filteredTask: Task) => {
+      return filteredTask.id === id;
     });
   }
 }

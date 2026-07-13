@@ -55,7 +55,7 @@ export class ThemeService {
         await this.switch(savedDarkModePreference);
         return savedDarkModePreference;
       }
-    } catch (err) {
+    } catch (_err: unknown) {
       await this.switch(false);
       return false;
     }
@@ -65,7 +65,7 @@ export class ThemeService {
       '(prefers-color-scheme: dark)',
     );
 
-    this.switch(darkModePreferenceFromMedia.matches);
+    await this.switch(darkModePreferenceFromMedia.matches);
     return darkModePreferenceFromMedia.matches;
   }
 }

@@ -1,4 +1,4 @@
-import {DirectoryEntry, File, IWriteOptions} from '@awesome-cordova-plugins/file';
+import {File, IWriteOptions} from '@awesome-cordova-plugins/file';
 import {isPlatform} from '@ionic/react';
 import {differenceInWeeks, format} from 'date-fns';
 import i18next from 'i18next';
@@ -29,28 +29,24 @@ export class BackupService {
     return BackupService.instance;
   }
 
-  needBackup(): Promise<boolean> {
-    return new Promise<boolean>(async (resolve) => {
-      try {
-        const invoices: string[] | undefined = await get('invoices');
+  async needBackup(): Promise<boolean> {
+    try {
+      const invoices = await get('invoices');
 
-        if (!invoices || invoices.length <= 0) {
-          resolve(false);
-          return;
-        }
-
-        const lastBackup: Date | undefined = await get('backup');
-
-        if (lastBackup && differenceInWeeks(new Date(), lastBackup) > 0) {
-          resolve(true);
-          return;
-        }
-
-        resolve(lastBackup === undefined);
-      } catch (err) {
-        resolve(false);
+      if (!invoices || invoices.length <= 0) {
+        return false;
       }
-    });
+
+      const lastBackup = await get('backup');
+
+      if (lastBackup && differenceInWeeks(new Date(), lastBackup) > 0) {
+        return true;
+      }
+
+      return lastBackup === undefined;
+    } catch (_err: unknown) {
+      return false;
+    }
   }
 
   async setBackup() {
@@ -69,87 +65,59 @@ export class BackupService {
     await this.setBackup();
   }
 
-  exportNativeFileSystem(type: 'excel' | 'idb', settings: Settings): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const fileHandle: FileSystemFileHandle = await getNewFileHandle(
-          type === 'excel' ? 'xlsx' : 'zip',
+  async exportNativeFileSystem(type: 'excel' | 'idb', settings: Settings): Promise<void> {
+    const fileHandle: FileSystemFileHandle = await getNewFileHandle(
+      type === 'excel' ? 'xlsx' : 'zip',
+    );
+
+    if (!fileHandle) {
+      throw new Error('Cannot access filesystem.');
+    }
+
+    this.backupWorker.onmessage = async ($event: MessageEvent) => {
+      if ($event && $event.data) {
+        await writeFile(fileHandle, $event.data);
+      }
+    };
+
+    await this.postMessage(type, settings);
+  }
+
+  async exportMobileFileSystem(type: 'excel' | 'idb', settings: Settings): Promise<void> {
+    const filename = this.filename(type);
+
+    this.backupWorker.onmessage = async ($event: MessageEvent) => {
+      if ($event && $event.data) {
+        const dir = await getMobileDir();
+
+        const writeOptions: IWriteOptions = {
+          replace: true,
+          append: false,
+        };
+
+        await File.writeFile(dir.nativeURL, filename, $event.data, writeOptions);
+
+        await shareMobile(
+          `Tie Tracker - Backup - ${format(new Date(), 'yyyy-MM-dd')}`,
+          dir.nativeURL,
+          filename,
         );
-
-        if (!fileHandle) {
-          reject('Cannot access filesystem.');
-          return;
-        }
-
-        this.backupWorker.onmessage = async ($event: MessageEvent) => {
-          if ($event && $event.data) {
-            await writeFile(fileHandle, $event.data);
-          }
-        };
-
-        await this.postMessage(type, settings);
-
-        resolve();
-      } catch (err) {
-        console.error(err);
-        reject(err);
       }
-    });
+    };
+
+    await this.postMessage(type, settings);
   }
 
-  exportMobileFileSystem(type: 'excel' | 'idb', settings: Settings): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const filename: string = this.filename(type);
+  async exportDownload(type: 'excel' | 'idb', settings: Settings): Promise<void> {
+    const filename = this.filename(type);
 
-        this.backupWorker.onmessage = async ($event: MessageEvent) => {
-          if ($event && $event.data) {
-            const dir: DirectoryEntry = await getMobileDir();
-
-            const writeOptions: IWriteOptions = {
-              replace: true,
-              append: false,
-            };
-
-            await File.writeFile(dir.nativeURL, filename, $event.data, writeOptions);
-
-            await shareMobile(
-              `Tie Tracker - Backup - ${format(new Date(), 'yyyy-MM-dd')}`,
-              dir.nativeURL,
-              filename,
-            );
-          }
-        };
-
-        await this.postMessage(type, settings);
-
-        resolve();
-      } catch (err) {
-        console.error(err);
-        reject(err);
+    this.backupWorker.onmessage = ($event: MessageEvent) => {
+      if ($event && $event.data) {
+        download(filename, $event.data);
       }
-    });
-  }
+    };
 
-  exportDownload(type: 'excel' | 'idb', settings: Settings): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const filename: string = this.filename(type);
-
-        this.backupWorker.onmessage = async ($event: MessageEvent) => {
-          if ($event && $event.data) {
-            download(filename, $event.data);
-          }
-        };
-
-        await this.postMessage(type, settings);
-
-        resolve();
-      } catch (err) {
-        console.error(err);
-        reject(err);
-      }
-    });
+    await this.postMessage(type, settings);
   }
 
   private filename(type: 'excel' | 'idb'): string {

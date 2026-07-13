@@ -24,47 +24,38 @@ export class InvoicesService {
     return InvoicesService.instance;
   }
 
-  listProjectsInvoices(updateStateFunction: Function): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.invoicesWorker.onmessage = ($event: MessageEvent) => {
-        if ($event && $event.data) {
-          updateStateFunction($event.data);
-        }
-      };
+  async listProjectsInvoices(updateStateFunction: Function): Promise<void> {
+    this.invoicesWorker.onmessage = ($event: MessageEvent) => {
+      if ($event && $event.data) {
+        updateStateFunction($event.data);
+      }
+    };
 
-      this.invoicesWorker.postMessage({msg: 'listProjectsInvoices'});
-
-      resolve();
-    });
+    this.invoicesWorker.postMessage({msg: 'listProjectsInvoices'});
   }
 
-  listProjectInvoice(
+  async listProjectInvoice(
     updateStateFunction: Function,
     projectId: string,
     from: Date,
     to: Date,
   ): Promise<void> {
-    return new Promise<void>((resolve) => {
-      const invoices: string[] | undefined = interval(from, to);
+    const invoices = interval(from, to);
 
-      if (invoices === undefined) {
-        resolve();
-        return;
+    if (invoices === undefined) {
+      return;
+    }
+
+    this.invoicesWorker.onmessage = ($event: MessageEvent) => {
+      if ($event && $event.data) {
+        updateStateFunction($event.data.length > 0 ? $event.data[0] : undefined);
       }
+    };
 
-      this.invoicesWorker.onmessage = ($event: MessageEvent) => {
-        if ($event && $event.data) {
-          updateStateFunction($event.data.length > 0 ? $event.data[0] : undefined);
-        }
-      };
-
-      this.invoicesWorker.postMessage({
-        msg: 'listProjectInvoice',
-        invoices: invoices,
-        projectId: projectId,
-      });
-
-      resolve();
+    this.invoicesWorker.postMessage({
+      msg: 'listProjectInvoice',
+      invoices: invoices,
+      projectId: projectId,
     });
   }
 
@@ -91,37 +82,34 @@ export class InvoicesService {
     });
   }
 
-  period(): Promise<InvoicesPeriod | undefined> {
-    return new Promise<InvoicesPeriod | undefined>(async (resolve) => {
-      try {
-        const invoices: string[] | undefined = await get('invoices');
+  async period(): Promise<InvoicesPeriod | undefined> {
+    try {
+      const invoices = await get('invoices');
 
-        if (!invoices || invoices.length <= 0) {
-          resolve(undefined);
-          return;
-        }
-
-        const min: string = invoices.reduce((a: string, b: string) => {
-          const aDate: Date = parse(a, 'yyyy-MM-dd', new Date());
-          const bDate: Date = parse(b, 'yyyy-MM-dd', new Date());
-
-          return compareAsc(aDate, bDate) <= 0 ? a : b;
-        });
-
-        const max: string = invoices.reduce((a: string, b: string) => {
-          const aDate: Date = parse(a, 'yyyy-MM-dd', new Date());
-          const bDate: Date = parse(b, 'yyyy-MM-dd', new Date());
-
-          return compareDesc(aDate, bDate) <= 0 ? a : b;
-        });
-
-        resolve({
-          from: parse(min, 'yyyy-MM-dd', new Date()),
-          to: parse(max, 'yyyy-MM-dd', new Date()),
-        });
-      } catch (err) {
-        resolve(undefined);
+      if (!invoices || invoices.length <= 0) {
+        return undefined;
       }
-    });
+
+      const min = invoices.reduce((a: string, b: string) => {
+        const aDate: Date = parse(a, 'yyyy-MM-dd', new Date());
+        const bDate: Date = parse(b, 'yyyy-MM-dd', new Date());
+
+        return compareAsc(aDate, bDate) <= 0 ? a : b;
+      });
+
+      const max = invoices.reduce((a: string, b: string) => {
+        const aDate: Date = parse(a, 'yyyy-MM-dd', new Date());
+        const bDate: Date = parse(b, 'yyyy-MM-dd', new Date());
+
+        return compareDesc(aDate, bDate) <= 0 ? a : b;
+      });
+
+      return {
+        from: parse(min, 'yyyy-MM-dd', new Date()),
+        to: parse(max, 'yyyy-MM-dd', new Date()),
+      };
+    } catch (err) {
+      return undefined;
+    }
   }
 }

@@ -21,49 +21,37 @@ export class NotificationsService {
     return NotificationsService.instance;
   }
 
-  schedule(project: Project, settings: Settings): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!isPlatform('hybrid')) {
-        resolve();
-        return;
-      }
+  async schedule(project: Project, settings: Settings): Promise<void> {
+    if (!isPlatform('hybrid')) {
+      return;
+    }
 
-      if (!project || !project.data) {
-        resolve();
-        return;
-      }
+    if (!project || !project.data) {
+      return;
+    }
 
-      if (!settings || !settings.notifications) {
-        resolve();
-        return;
-      }
+    if (!settings || !settings.notifications) {
+      return;
+    }
 
-      await i18next.loadNamespaces('notifications');
+    await i18next.loadNamespaces('notifications');
 
-      LocalNotifications.schedule({
-        title: project.data.client
-          ? `${project.data.client.name}`
-          : i18next.t('notifications:fallback_title'),
-        text: i18next.t('notifications:body', {project: project.data.name}),
-        trigger: {
-          every: ELocalNotificationTriggerUnit.HOUR,
-        },
-      });
-
-      resolve();
+    LocalNotifications.schedule({
+      title: project.data.client
+        ? `${project.data.client.name}`
+        : i18next.t('notifications:fallback_title'),
+      text: i18next.t('notifications:body', {project: project.data.name}),
+      trigger: {
+        every: ELocalNotificationTriggerUnit.HOUR,
+      },
     });
   }
 
-  cancel(): Promise<void> {
-    return new Promise<void>(async (resolve) => {
-      if (!isPlatform('hybrid')) {
-        resolve();
-        return;
-      }
+  async cancel(): Promise<void> {
+    if (!isPlatform('hybrid')) {
+      return;
+    }
 
-      await LocalNotifications.cancelAll();
-
-      resolve();
-    });
+    await LocalNotifications.cancelAll();
   }
 }
