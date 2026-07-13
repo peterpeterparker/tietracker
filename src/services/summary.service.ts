@@ -1,5 +1,5 @@
 import {eachDayOfInterval, endOfWeek, startOfWeek} from 'date-fns';
-import {Summary} from '../../store/interfaces/summary';
+import {Summary} from '../store/interfaces/summary';
 
 export class SummaryService {
   private static instance: SummaryService;

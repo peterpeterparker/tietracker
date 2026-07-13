@@ -1,4 +1,4 @@
-import {SummaryService} from '../../services/summary/summary.service';
+import {SummaryService} from '../../services/summary.service';
 import {Summary} from '../interfaces/summary';
 import {COMPUTE_SUMMARY} from '../types/summary.types';
 import {RootThunkResult} from './types.thunks';

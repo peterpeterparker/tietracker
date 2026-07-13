@@ -1,4 +1,4 @@
-import {emitError} from '../../utils/utils.events';
+import {emitError} from '../utils/utils.events';
 
 export class RestoreService {
   private static instance: RestoreService;

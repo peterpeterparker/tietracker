@@ -4,7 +4,7 @@ import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {Settings} from '../../models/settings';
-import {BackupService} from '../../services/backup/backup.service';
+import {BackupService} from '../../services/backup.service';
 import {RootState} from '../../store/reducers';
 import {emitError} from '../../utils/utils.events';
 import styles from './BackupInvoices.module.scss';

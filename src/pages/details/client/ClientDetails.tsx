@@ -28,8 +28,8 @@ import ProjectModal, {ProjectModalAction} from '../../../modals/project/ProjectM
 import {Client} from '../../../models/client';
 import {Project} from '../../../models/project';
 import {Settings} from '../../../models/settings';
-import {ClientsService} from '../../../services/clients/clients.service';
-import {ProjectsService} from '../../../services/projects/projects.service';
+import {ClientsService} from '../../../services/clients.service';
+import {ProjectsService} from '../../../services/projects.service';
 import {RootState} from '../../../store/reducers';
 import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
 import {contrast} from '../../../utils/utils.color';

@@ -1,6 +1,6 @@
 import {Client} from '../../models/client';
 import {Project, ProjectData} from '../../models/project';
-import {ProjectsService} from '../../services/projects/projects.service';
+import {ProjectsService} from '../../services/projects.service';
 import {
   CREATE_PROJECT,
   INIT_ACTIVE_PROJECTS,

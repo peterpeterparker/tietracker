@@ -23,7 +23,7 @@ import {useSelector} from 'react-redux';
 import {Client, ClientData} from '../../models/client';
 import {ProjectData} from '../../models/project';
 import {Settings} from '../../models/settings';
-import {ThemeService} from '../../services/theme/theme.service';
+import {ThemeService} from '../../services/theme.service';
 import {RootState} from '../../store/reducers';
 import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
 import {contrast} from '../../utils/utils.color';

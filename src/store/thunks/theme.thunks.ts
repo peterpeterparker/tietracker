@@ -1,4 +1,4 @@
-import {ThemeService} from '../../services/theme/theme.service';
+import {ThemeService} from '../../services/theme.service';
 import {INIT_THEME, SWITCH_THEME} from '../types/theme.types';
 import {RootThunkResult} from './types.thunks';
 

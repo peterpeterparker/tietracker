@@ -3,15 +3,15 @@ import {isPlatform} from '@ionic/react';
 import {differenceInWeeks, format} from 'date-fns';
 import i18next from 'i18next';
 import {get, set} from 'idb-keyval';
-import {Settings} from '../../models/settings';
-import {exportLabels} from '../../utils/utils.export';
+import {Settings} from '../models/settings';
+import {exportLabels} from '../utils/utils.export';
 import {
   download,
   getMobileDir,
   getNewFileHandle,
   shareMobile,
   writeFile,
-} from '../../utils/utils.filesystem';
+} from '../utils/utils.filesystem';
 
 export class BackupService {
   private static instance: BackupService;

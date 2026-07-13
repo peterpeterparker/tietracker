@@ -1,5 +1,5 @@
 import {Settings} from '../../models/settings';
-import {SettingsService} from '../../services/settings/settings.service';
+import {SettingsService} from '../../services/settings.service';
 import {INIT_SETTINGS, UPDATE_SETTINGS} from '../types/settings.types';
 import {RootThunkResult} from './types.thunks';
 

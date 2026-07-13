@@ -20,7 +20,7 @@ import {chevronBackOutline} from 'ionicons/icons';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import Loading from '../../components/loading/Loading';
-import {InvoicesPeriod, InvoicesService} from '../../services/invoices/invoices.service';
+import {InvoicesPeriod, InvoicesService} from '../../services/invoices.service';
 import {format} from '../../utils/utils.date';
 import styles from './Period.module.scss';
 
