@@ -3,6 +3,7 @@ import {format} from 'date-fns';
 import i18next from 'i18next';
 import {Invoice} from '../store/interfaces/invoice';
 import type {Currency} from '../types/currency';
+import {DateString} from '../types/date';
 import {interval} from '../utils/utils.date';
 import {exportLabels} from '../utils/utils.export';
 import {
@@ -12,12 +13,11 @@ import {
   shareMobile,
   writeFile,
 } from '../utils/utils.filesystem';
-import {isNullish, nonNullish} from '../utils/utils.nullish';
+import {isNullish} from '../utils/utils.nullish';
+import {ExportWorker} from '../workers/export.worker';
 
 export class ExportService {
   static #instance: ExportService;
-
-  #exportWorker = new Worker('./workers/export.js');
 
   private constructor() {}
 
@@ -53,13 +53,19 @@ export class ExportService {
       throw new Error('Cannot access filesystem.');
     }
 
-    this.#exportWorker.onmessage = async ($event: MessageEvent) => {
-      if (nonNullish($event?.data)) {
-        await writeFile(fileHandle, $event.data);
-      }
+    const exportFn = async (blob: Blob) => {
+      await writeFile(fileHandle, blob);
     };
 
-    await this.postMessage(invoice, invoices, currency, vat, bill, signature);
+    await this.export({
+      invoice,
+      invoices: invoices as DateString[],
+      currency,
+      vat,
+      bill,
+      signature,
+      exportFn,
+    });
   }
 
   async exportDownload(
@@ -83,13 +89,19 @@ export class ExportService {
 
     const filename = this.filename(invoice, from, to, 'xlsx');
 
-    this.#exportWorker.onmessage = async ($event: MessageEvent) => {
-      if (nonNullish($event?.data)) {
-        download(filename, $event.data);
-      }
+    const exportFn = async (blob: Blob) => {
+      download(filename, blob);
     };
 
-    await this.postMessage(invoice, invoices, currency, vat, bill, signature);
+    await this.export({
+      invoice,
+      invoices: invoices as DateString[],
+      currency,
+      vat,
+      bill,
+      signature,
+      exportFn,
+    });
   }
 
   async exportMobileFileSystem(
@@ -113,22 +125,28 @@ export class ExportService {
 
     const filename = this.filename(invoice, from, to, 'xlsx');
 
-    this.#exportWorker.onmessage = async ($event: MessageEvent) => {
-      if (nonNullish($event?.data)) {
-        const dir = await getMobileDir();
+    const exportFn = async (blob: Blob) => {
+      const dir = await getMobileDir();
 
-        const writeOptions: IWriteOptions = {
-          replace: true,
-          append: false,
-        };
+      const writeOptions: IWriteOptions = {
+        replace: true,
+        append: false,
+      };
 
-        await File.writeFile(dir.nativeURL, filename, $event.data, writeOptions);
+      await File.writeFile(dir.nativeURL, filename, blob, writeOptions);
 
-        await shareMobile(this.shareSubject(invoice), dir.nativeURL, filename);
-      }
+      await shareMobile(this.shareSubject(invoice), dir.nativeURL, filename);
     };
 
-    await this.postMessage(invoice, invoices, currency, vat, bill, signature);
+    await this.export({
+      invoice,
+      invoices: invoices as DateString[],
+      currency,
+      vat,
+      bill,
+      signature,
+      exportFn,
+    });
   }
 
   private shareSubject(invoice: Invoice): string {
@@ -147,26 +165,27 @@ export class ExportService {
     }.${type}`;
   }
 
-  private async postMessage(
-    invoice: Invoice,
-    invoices: string[],
-    currency: Currency,
-    vat: number | undefined,
-    bill: boolean,
-    signature: string | undefined,
-  ) {
+  private async export({
+    exportFn,
+    ...rest
+  }: {
+    invoice: Invoice;
+    invoices: DateString[];
+    currency: Currency;
+    vat: number | undefined;
+    bill: boolean;
+    signature: string | undefined;
+    exportFn: (blob: Blob) => Promise<void>;
+  }) {
     await i18next.loadNamespaces('export');
 
-    this.#exportWorker.postMessage({
-      msg: 'export',
-      invoices: invoices,
-      projectId: invoice.project_id,
-      client: invoice.client,
-      currency: currency,
-      vat: vat,
-      bill: bill,
-      i18n: exportLabels(),
-      signature,
-    });
+    const worker = new ExportWorker();
+    const result = await worker.export({...rest, i18n: exportLabels()});
+
+    if (isNullish(result)) {
+      return;
+    }
+
+    await exportFn(result);
   }
 }

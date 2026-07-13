@@ -4,12 +4,13 @@ import type {Currency} from '../types/currency';
 import {DateString} from '../types/date';
 import {ProjectId} from '../types/project';
 import {Task} from '../types/task';
-import {isNullish, nonNullish} from '../utils/utils.nullish';
-import {convertTasks, ExportableInvoices} from './utils/utils.export';
-import type {WorkerProjects} from './utils/utils.types';
-import {exportToExcel} from './utils/utils.excel';
 import {i18nExportLabels} from '../utils/utils.export';
+import {isNullish, nonNullish} from '../utils/utils.nullish';
 import {loadProjects} from './utils/utils';
+import {updateBudget} from './utils/utils.budget';
+import {exportToExcel} from './utils/utils.excel';
+import {convertTasks, ExportableInvoice, ExportableInvoices} from './utils/utils.export';
+import type {WorkerProjects} from './utils/utils.types';
 
 interface ExportWorkerParams {
   invoice: Invoice;
@@ -18,28 +19,39 @@ interface ExportWorkerParams {
   vat: number | undefined;
   bill: boolean;
   signature: string | undefined;
-  i18n: i18nExportLabels
+  i18n: i18nExportLabels;
 }
 
 export class ExportWorker {
-  async export(args: ExportWorkerParams) {
+  async export({invoice, bill, ...rest}: ExportWorkerParams): Promise<Option<Blob>> {
     const projects = await loadProjects();
 
     if (isNullish(projects)) {
-      return;
+      return undefined;
     }
 
     const results = await this.exportInvoices({
       projects,
-      ...args,
+      invoice,
+      ...rest,
     });
 
-    await updateBudget(results.invoices, filterProjectId, bill);
+    const {project_id: filterProjectId} = invoice;
+
+    await updateBudget({
+      invoices: results.invoices,
+      filterProjectId,
+      bill,
+    });
 
     // We set all invoices as billed regardless if they contain or not tasks
-    await self.billInvoices(invoices, filterProjectId, bill);
+    await this.billInvoices({
+      invoices: results.invoices,
+      filterProjectId,
+      bill,
+    });
 
-    self.postMessage(results.excel);
+    return results.excel;
   }
 
   private async exportInvoices({
@@ -47,7 +59,7 @@ export class ExportWorker {
     projects,
     invoice: {client, project_id: filterProjectId},
     ...rest
-  }: ExportWorkerParams & {
+  }: Omit<ExportWorkerParams, 'bill'> & {
     projects: WorkerProjects;
   }): Promise<{excel: Option<Blob>; invoices: Option<ExportableInvoices>}> {
     const promises: Promise<Option<ExportableInvoices>>[] = [];
@@ -123,41 +135,39 @@ export class ExportWorker {
       clients: undefined,
     });
   }
-}
 
-async function billInvoices(invoices, filterProjectId, bill) {
-  const promises = [];
-
-  invoices.forEach((invoice) => {
-    promises.push(billInvoice(invoice, filterProjectId, bill));
-  });
-
-  await Promise.all(promises);
-}
-
-function billInvoice(invoice, filterProjectId, bill) {
-  return new Promise(async (resolve) => {
-    if (!bill) {
-      resolve();
-      return;
-    }
-
-    const tasks = await idbKeyval.get(`tasks-${invoice}`);
-
-    if (!tasks || tasks.length <= 0) {
-      resolve();
-      return;
-    }
-
-    tasks.forEach((task) => {
-      if (task.data.invoice.status === 'open' && task.data.project_id === filterProjectId) {
-        task.data.invoice.status = 'billed';
-        task.data.updated_at = new Date().getTime();
+  private async billInvoices({
+    invoices,
+    filterProjectId,
+    bill,
+  }: {
+    invoices: Option<ExportableInvoices>;
+    filterProjectId: ProjectId;
+    bill: boolean;
+  }) {
+    const billInvoice = async (invoice: ExportableInvoice) => {
+      if (!bill) {
+        return;
       }
-    });
 
-    await idbKeyval.set(`tasks-${invoice}`, tasks);
+      const storage = new IdbStorage<Task[]>({key: `tasks-${invoice}`});
+      const tasks = await storage.get();
 
-    resolve();
-  });
+      if (isNullish(tasks) || tasks.length <= 0) {
+        return;
+      }
+
+      tasks.forEach((task) => {
+        if (task.data.invoice.status === 'open' && task.data.project_id === filterProjectId) {
+          task.data.invoice.status = 'billed';
+          task.data.updated_at = new Date().getTime();
+        }
+      });
+
+      await storage.set(tasks);
+    };
+
+    const promises = (invoices ?? []).map(billInvoice);
+    await Promise.all(promises);
+  }
 }

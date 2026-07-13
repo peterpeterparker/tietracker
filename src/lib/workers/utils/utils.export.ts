@@ -4,7 +4,8 @@ import {i18nExportLabels} from '../../utils/utils.export';
 import {nonNullish} from '../../utils/utils.nullish';
 import {WorkerClients, WorkerProjects} from './utils.types';
 
-export type ExportableInvoices = (string | number | Date)[][];
+export type ExportableInvoice = (string | number | Date)[];
+export type ExportableInvoices = ExportableInvoice[];
 
 export const convertTasks = ({
   tasks,

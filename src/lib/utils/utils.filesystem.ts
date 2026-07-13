@@ -1,6 +1,7 @@
 import {DirectoryEntry, File} from '@awesome-cordova-plugins/file';
 import {SocialSharing} from '@awesome-cordova-plugins/social-sharing';
 import {isPlatform} from '@ionic/react';
+import {nonNullish} from './utils.nullish';
 
 export async function getNewFileHandle(type: 'xlsx' | 'zip'): Promise<FileSystemFileHandle> {
   const xlsxOpts: SaveFilePickerOptions = {
@@ -80,13 +81,12 @@ export function shareMobile(subject: string, path: string, filename: string): Pr
 }
 
 // https://stackoverflow.com/a/19328891/5404186
-export function download(filename: string, data: string) {
+export function download(filename: string, blob: Blob) {
   const a: HTMLAnchorElement = document.createElement('a');
   a.style.display = 'none';
   document.body.appendChild(a);
 
-  const blob: Blob = new Blob([data], {type: 'octet/stream'});
-  const url: string = window.URL.createObjectURL(blob);
+  const url = window.URL.createObjectURL(blob);
 
   a.href = url;
   a.download = filename;
@@ -95,7 +95,7 @@ export function download(filename: string, data: string) {
 
   window.URL.revokeObjectURL(url);
 
-  if (a && a.parentElement) {
+  if (nonNullish(a) && nonNullish(a.parentElement)) {
     a.parentElement.removeChild(a);
   }
 }
