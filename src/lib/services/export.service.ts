@@ -1,8 +1,8 @@
 import {DirectoryEntry, File, IWriteOptions} from '@awesome-cordova-plugins/file';
 import {format} from 'date-fns';
 import i18next from 'i18next';
-import {Currency} from '../definitions/currency';
 import {Invoice} from '../store/interfaces/invoice';
+import {Currency} from '../types/currency';
 import {interval} from '../utils/utils.date';
 import {exportLabels} from '../utils/utils.export';
 import {
