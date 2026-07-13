@@ -18,7 +18,6 @@ import {close} from 'ionicons/icons';
 import React, {CSSProperties, FormEvent, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {ThemeService} from '../../../lib/services/theme.service';
 import {RootState} from '../../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../../lib/store/thunks/index.thunks';
 import {Project} from '../../../lib/types/project';
@@ -108,9 +107,9 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
   );
 
   function renderContent() {
-    const color: string | undefined =
+    const color =
       project && project.data && project.data.client ? project.data.client.color : undefined;
-    const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
+    const colorContrast = contrast(color);
 
     pickerColor(colorContrast, color);
 

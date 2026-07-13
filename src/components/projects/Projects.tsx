@@ -61,7 +61,7 @@ const Projects: React.FC<Props> = (props: Props) => {
       <div className={styles.projects}>
         <div>
           {projects.map((project: Project) => {
-            const colorContrast: string = contrast(
+            const colorContrast = contrast(
               project.data.client ? project.data.client.color : undefined,
             );
 
