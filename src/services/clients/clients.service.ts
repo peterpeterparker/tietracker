@@ -16,112 +16,83 @@ export class ClientsService {
     return ClientsService.instance;
   }
 
-  create(data: ClientData): Promise<Client> {
-    return new Promise<Client>(async (resolve, reject) => {
-      try {
-        let clients: Client[] | undefined = await get('clients');
+  async create(data: ClientData): Promise<Client> {
+    let clients = await get<Client[]>('clients');
 
-        if (!clients || clients.length <= 0) {
-          clients = [];
-        }
+    if (!clients || clients.length <= 0) {
+      clients = [];
+    }
 
-        const now: number = new Date().getTime();
+    const now = new Date().getTime();
 
-        data.created_at = now;
-        data.updated_at = now;
+    data.created_at = now;
+    data.updated_at = now;
 
-        if (!data.color) {
-          data.color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-        }
+    if (!data.color) {
+      data.color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    }
 
-        const client: Client = {
-          id: uuid(),
-          data: data,
-        };
+    const client: Client = {
+      id: uuid(),
+      data: data,
+    };
 
-        clients.push(client);
+    clients.push(client);
 
-        await set('clients', clients);
+    await set('clients', clients);
 
-        resolve(client);
-      } catch (err) {
-        reject(err);
-      }
-    });
+    return client;
   }
 
-  list(): Promise<Client[]> {
-    return new Promise<Client[]>(async (resolve, reject) => {
-      try {
-        const clients: Client[] | undefined = await get('clients');
+  async list(): Promise<Client[]> {
+    const clients = await get<Client[]>('clients');
 
-        if (!clients || clients.length <= 0) {
-          resolve([]);
-          return;
-        }
+    if (!clients || clients.length <= 0) {
+      return [];
+    }
 
-        resolve(clients);
-      } catch (err) {
-        reject(err);
-      }
-    });
+    return clients;
   }
 
-  find(id: string): Promise<Client | undefined> {
-    return new Promise<Client | undefined>(async (resolve) => {
-      try {
-        const clients: Client[] | undefined = await get('clients');
+  async find(id: string): Promise<Client | undefined> {
+    try {
+      const clients = await get<Client[]>('clients');
 
-        if (!clients || clients.length <= 0) {
-          resolve(undefined);
-          return;
-        }
-
-        const client: Client | undefined = clients.find((filteredClient: Client) => {
-          return filteredClient.id === id;
-        });
-
-        resolve(client);
-      } catch (err) {
-        resolve(undefined);
+      if (!clients || clients.length <= 0) {
+        return undefined;
       }
-    });
+
+      return clients.find((filteredClient: Client) => {
+        return filteredClient.id === id;
+      });
+    } catch (_err: unknown) {
+      return undefined;
+    }
   }
 
-  update(client: Client | undefined): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        if (!client || !client.data) {
-          reject('Client is not defined.');
-          return;
-        }
+  async update(client: Client | undefined): Promise<void> {
+    if (!client || !client.data) {
+      throw new Error('Client is not defined.');
+    }
 
-        const clients: Client[] | undefined = await get('clients');
+    const clients = await get<Client[]>('clients');
 
-        if (!clients || clients.length <= 0) {
-          reject('No clients found.');
-          return;
-        }
+    if (!clients || clients.length <= 0) {
+      throw new Error('No clients found.');
+    }
 
-        const index: number = clients.findIndex((filteredClient: Client) => {
-          return filteredClient.id === client.id;
-        });
-
-        if (index < 0) {
-          reject('Client not found.');
-          return;
-        }
-
-        client.data.updated_at = new Date().getTime();
-
-        clients[index] = client;
-
-        await set(`clients`, clients);
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
+    const index = clients.findIndex((filteredClient: Client) => {
+      return filteredClient.id === client.id;
     });
+
+    if (index < 0) {
+      throw new Error('Client not found.');
+    }
+
+    client.data.updated_at = new Date().getTime();
+
+    clients[index] = client;
+
+    await set(`clients`, clients);
   }
 }
