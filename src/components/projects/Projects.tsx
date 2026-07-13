@@ -11,12 +11,12 @@ import {play} from 'ionicons/icons';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {Project} from '../../models/project';
-import {Settings as SettingsModel} from '../../models/settings';
-import {Task} from '../../models/task';
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {contrast} from '../../utils/utils.color';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {Project} from '../../lib/types/project';
+import {Settings as SettingsModel} from '../../lib/types/settings';
+import {Task} from '../../lib/types/task';
+import {contrast} from '../../lib/utils/utils.color';
 import styles from './Projects.module.scss';
 
 interface Props extends RootProps {

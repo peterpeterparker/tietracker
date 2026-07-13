@@ -5,11 +5,11 @@ import {lightFormat} from 'date-fns';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {Project} from '../../models/project';
-import {TaskItem as TaskItemStore} from '../../store/interfaces/task.item';
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {format} from '../../utils/utils.date';
+import {TaskItem as TaskItemStore} from '../../lib/store/interfaces/task.item';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {Project} from '../../lib/types/project';
+import {format} from '../../lib/utils/utils.date';
 import TaskItem from '../taskitem/TaskItem';
 import styles from './Tasks.module.scss';
 

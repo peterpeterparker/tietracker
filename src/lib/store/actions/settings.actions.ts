@@ -1,4 +1,4 @@
-import {Settings} from '../../models/settings';
+import {Settings} from '../../types/settings';
 import {INIT_SETTINGS, SettingsActionTypes, UPDATE_SETTINGS} from '../types/settings.types';
 
 export function initSettings(settings: Settings): SettingsActionTypes {

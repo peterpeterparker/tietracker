@@ -2,14 +2,14 @@ import {IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonModal} from '@
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
+import {Invoice} from '../../lib/store/interfaces/invoice';
+import {Summary as SummaryData} from '../../lib/store/interfaces/summary';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {Settings} from '../../lib/types/settings';
+import {formatCurrency} from '../../lib/utils/utils.currency';
+import {formatTime} from '../../lib/utils/utils.time';
 import HistoryModal, {HistoryType} from '../../modals/history/HistoryModal';
-import {Settings} from '../../models/settings';
-import {Invoice} from '../../store/interfaces/invoice';
-import {Summary as SummaryData} from '../../store/interfaces/summary';
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {formatCurrency} from '../../utils/utils.currency';
-import {formatTime} from '../../utils/utils.time';
 import styles from './Summary.module.scss';
 
 interface Props extends RootProps {

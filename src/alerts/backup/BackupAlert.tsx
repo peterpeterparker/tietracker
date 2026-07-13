@@ -2,11 +2,11 @@ import {IonAlert, IonLoading} from '@ionic/react';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {Settings} from '../../models/settings';
-import {BackupService} from '../../services/backup.service';
-import {RootState} from '../../store/reducers';
-import {rootConnector} from '../../store/thunks/index.thunks';
-import {emitError} from '../../utils/utils.events';
+import {BackupService} from '../../lib/services/backup.service';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector} from '../../lib/store/thunks/index.thunks';
+import {Settings} from '../../lib/types/settings';
+import {emitError} from '../../lib/utils/utils.events';
 
 const BackupAlert: React.FC = () => {
   const {t} = useTranslation(['backup', 'common']);

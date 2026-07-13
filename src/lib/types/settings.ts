@@ -1,4 +1,4 @@
-import {Currency} from '../definitions/currency';
+import {Currency} from './currency';
 
 export interface Settings {
   currency: Currency;

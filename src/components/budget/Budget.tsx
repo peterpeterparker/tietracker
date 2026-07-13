@@ -2,9 +2,9 @@ import {IonIcon, IonLabel} from '@ionic/react';
 import {pricetagOutline, trendingUpOutline} from 'ionicons/icons';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {ProjectDataBudget} from '../../models/project';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {formatCurrency} from '../../utils/utils.currency';
+import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {ProjectDataBudget} from '../../lib/types/project';
+import {formatCurrency} from '../../lib/utils/utils.currency';
 
 interface BudgetProps extends RootProps {
   budget: ProjectDataBudget | undefined;

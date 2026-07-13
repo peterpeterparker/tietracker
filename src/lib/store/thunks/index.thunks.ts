@@ -1,10 +1,10 @@
 import {connect, ConnectedProps} from 'react-redux';
 import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
-import {Client, ClientData} from '../../models/client';
-import {Project, ProjectData} from '../../models/project';
-import {Settings} from '../../models/settings';
-import {TaskData} from '../../models/task';
+import {Client, ClientData} from '../../types/client';
+import {Project, ProjectData} from '../../types/project';
+import {Settings} from '../../types/settings';
+import {TaskData} from '../../types/task';
 import {TaskInProgress} from '../interfaces/task.inprogress';
 import {RootState} from '../reducers';
 import {createClient, initClients} from './clients.thunks';

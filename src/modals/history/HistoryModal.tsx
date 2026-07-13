@@ -19,10 +19,10 @@ import {close} from 'ionicons/icons';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {SummaryService} from '../../services/summary.service';
-import {Summary} from '../../store/interfaces/summary';
-import {RootState} from '../../store/reducers';
-import {formatCurrency} from '../../utils/utils.currency';
+import {SummaryService} from '../../lib/services/summary.service';
+import {Summary} from '../../lib/store/interfaces/summary';
+import {RootState} from '../../lib/store/reducers';
+import {formatCurrency} from '../../lib/utils/utils.currency';
 import {
   buildPastDays,
   buildWeekDays,
@@ -30,8 +30,8 @@ import {
   DayResult,
   mapDays,
   mapWeeks,
-} from '../../utils/utils.history';
-import {formatTime} from '../../utils/utils.time';
+} from '../../lib/utils/utils.history';
+import {formatTime} from '../../lib/utils/utils.time';
 import styles from './HistoryModal.module.scss';
 
 export type HistoryType = 'daily' | 'weekly';

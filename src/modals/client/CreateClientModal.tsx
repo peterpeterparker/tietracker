@@ -20,14 +20,14 @@ import {close} from 'ionicons/icons';
 import React, {CSSProperties, FormEvent, RefObject, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {Client, ClientData} from '../../models/client';
-import {ProjectData} from '../../models/project';
-import {Settings} from '../../models/settings';
-import {ThemeService} from '../../services/theme.service';
-import {RootState} from '../../store/reducers';
-import {rootConnector, RootProps} from '../../store/thunks/index.thunks';
-import {contrast} from '../../utils/utils.color';
-import {emitError} from '../../utils/utils.events';
+import {ThemeService} from '../../lib/services/theme.service';
+import {RootState} from '../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {Client, ClientData} from '../../lib/types/client';
+import {ProjectData} from '../../lib/types/project';
+import {Settings} from '../../lib/types/settings';
+import {contrast} from '../../lib/utils/utils.color';
+import {emitError} from '../../lib/utils/utils.events';
 import styles from './CreateClientModal.module.scss';
 
 interface Props extends RootProps {

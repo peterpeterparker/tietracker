@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {applyMiddleware, createStore} from 'redux';
 import {thunk} from 'redux-thunk'; // Changed import
 import App from './App';
-import {rootReducer} from './store/reducers/index';
+import {rootReducer} from './lib/store/reducers/index';
 
 setupIonicReact({
   backButtonText: '',

@@ -18,14 +18,14 @@ import {close} from 'ionicons/icons';
 import React, {CSSProperties, FormEvent, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {Project} from '../../../models/project';
-import {Settings as SettingsModel} from '../../../models/settings';
-import {TaskData} from '../../../models/task';
-import {ThemeService} from '../../../services/theme.service';
-import {RootState} from '../../../store/reducers';
-import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
-import {contrast} from '../../../utils/utils.color';
-import {pickerColor} from '../../../utils/utils.picker';
+import {ThemeService} from '../../../lib/services/theme.service';
+import {RootState} from '../../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../../lib/store/thunks/index.thunks';
+import {Project} from '../../../lib/types/project';
+import {Settings as SettingsModel} from '../../../lib/types/settings';
+import {TaskData} from '../../../lib/types/task';
+import {contrast} from '../../../lib/utils/utils.color';
+import {pickerColor} from '../../../lib/utils/utils.picker';
 
 interface Props extends RootProps {
   closeAction: Function;

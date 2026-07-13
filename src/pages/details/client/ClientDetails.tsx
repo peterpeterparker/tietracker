@@ -24,17 +24,17 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {RouteComponentProps} from 'react-router';
 import Budget from '../../../components/budget/Budget';
+import {ClientsService} from '../../../lib/services/clients.service';
+import {ProjectsService} from '../../../lib/services/projects.service';
+import {RootState} from '../../../lib/store/reducers';
+import {rootConnector, RootProps} from '../../../lib/store/thunks/index.thunks';
+import {Client} from '../../../lib/types/client';
+import {Project} from '../../../lib/types/project';
+import {Settings} from '../../../lib/types/settings';
+import {contrast} from '../../../lib/utils/utils.color';
+import {formatCurrency} from '../../../lib/utils/utils.currency';
+import {emitError} from '../../../lib/utils/utils.events';
 import ProjectModal, {ProjectModalAction} from '../../../modals/project/ProjectModal';
-import {Client} from '../../../models/client';
-import {Project} from '../../../models/project';
-import {Settings} from '../../../models/settings';
-import {ClientsService} from '../../../services/clients.service';
-import {ProjectsService} from '../../../services/projects.service';
-import {RootState} from '../../../store/reducers';
-import {rootConnector, RootProps} from '../../../store/thunks/index.thunks';
-import {contrast} from '../../../utils/utils.color';
-import {formatCurrency} from '../../../utils/utils.currency';
-import {emitError} from '../../../utils/utils.events';
 import styles from './ClientDetails.module.scss';
 
 interface ClientDetailsProps extends RouteComponentProps<{

@@ -7,7 +7,7 @@ import {
   startOfYear,
 } from 'date-fns';
 import i18n from 'i18next';
-import {ProjectDataBudget} from '../models/project';
+import {ProjectDataBudget} from '../types/project';
 
 export function budgetRatio({
   budget,
