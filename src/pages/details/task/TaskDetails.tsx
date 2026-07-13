@@ -29,6 +29,7 @@ import {ProjectsService} from '../../../lib/services/projects.service';
 import {TasksService} from '../../../lib/services/tasks.service';
 import {rootConnector, RootProps} from '../../../lib/store/thunks/index.thunks';
 import {Client} from '../../../lib/types/client';
+import type {DateString} from '../../../lib/types/date';
 import {Project} from '../../../lib/types/project';
 import {Task} from '../../../lib/types/task';
 import {contrast} from '../../../lib/utils/utils.color';
@@ -37,7 +38,7 @@ import {emitError} from '../../../lib/utils/utils.events';
 import {pickerColor} from '../../../lib/utils/utils.picker';
 
 interface TaskDetailsProps extends RouteComponentProps<{
-  day: string;
+  day: DateString;
   id: string;
 }> {}
 
@@ -93,7 +94,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
       setSaving(false);
       setLoading(true);
 
-      const task: Task | undefined = await TasksService.getInstance().find(
+      const task = await TasksService.getInstance().find(
         props.match.params.id,
         props.match.params.day,
       );

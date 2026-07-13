@@ -1,37 +1,39 @@
 import {compareAsc, compareDesc, parse} from 'date-fns';
-import {get} from 'idb-keyval';
+import {DateString} from '../types/date';
 import {interval} from '../utils/utils.date';
 import {emitError} from '../utils/utils.events';
+import {isNullish, nonNullish} from '../utils/utils.nullish';
+import {Service} from './_service';
 
 export interface InvoicesPeriod {
   from: Date;
   to: Date;
 }
 
-export class InvoicesService {
-  private static instance: InvoicesService;
+export class InvoicesService extends Service<DateString[]> {
+  static #instance: InvoicesService;
 
-  private invoicesWorker: Worker = new Worker('./workers/billable.js');
+  #invoicesWorker = new Worker('./workers/billable.js');
 
   private constructor() {
-    // Private constructor, singleton
+    super({key: 'invoices'});
   }
 
   static getInstance() {
-    if (!InvoicesService.instance) {
-      InvoicesService.instance = new InvoicesService();
+    if (isNullish(InvoicesService.#instance)) {
+      InvoicesService.#instance = new InvoicesService();
     }
-    return InvoicesService.instance;
+    return InvoicesService.#instance;
   }
 
   async listProjectsInvoices(updateStateFunction: Function): Promise<void> {
-    this.invoicesWorker.onmessage = ($event: MessageEvent) => {
-      if ($event && $event.data) {
+    this.#invoicesWorker.onmessage = ($event: MessageEvent) => {
+      if (nonNullish($event?.data)) {
         updateStateFunction($event.data);
       }
     };
 
-    this.invoicesWorker.postMessage({msg: 'listProjectsInvoices'});
+    this.#invoicesWorker.postMessage({msg: 'listProjectsInvoices'});
   }
 
   async listProjectInvoice(
@@ -42,17 +44,17 @@ export class InvoicesService {
   ): Promise<void> {
     const invoices = interval(from, to);
 
-    if (invoices === undefined) {
+    if (isNullish(invoices)) {
       return;
     }
 
-    this.invoicesWorker.onmessage = ($event: MessageEvent) => {
-      if ($event && $event.data) {
+    this.#invoicesWorker.onmessage = ($event: MessageEvent) => {
+      if (nonNullish($event?.data)) {
         updateStateFunction($event.data.length > 0 ? $event.data[0] : undefined);
       }
     };
 
-    this.invoicesWorker.postMessage({
+    this.#invoicesWorker.postMessage({
       msg: 'listProjectInvoice',
       invoices: invoices,
       projectId: projectId,
@@ -68,7 +70,7 @@ export class InvoicesService {
     to: Date;
     done: (success: boolean) => Promise<void>;
   }) {
-    this.invoicesWorker.onmessage = async ($event: MessageEvent) => {
+    this.#invoicesWorker.onmessage = async ($event: MessageEvent) => {
       if ($event.data?.result === 'error') {
         emitError($event.data.msg);
       }
@@ -76,28 +78,28 @@ export class InvoicesService {
       await done($event.data?.result === 'success');
     };
 
-    this.invoicesWorker.postMessage({
+    this.#invoicesWorker.postMessage({
       msg: `close-invoices`,
       data: {from, to},
     });
   }
 
-  async period(): Promise<InvoicesPeriod | undefined> {
+  async period(): Promise<Option<InvoicesPeriod>> {
     try {
-      const invoices = await get('invoices');
+      const invoices = await this.get();
 
-      if (!invoices || invoices.length <= 0) {
+      if (isNullish(invoices) || invoices.length <= 0) {
         return undefined;
       }
 
-      const min = invoices.reduce((a: string, b: string) => {
+      const min = invoices.reduce((a, b) => {
         const aDate: Date = parse(a, 'yyyy-MM-dd', new Date());
         const bDate: Date = parse(b, 'yyyy-MM-dd', new Date());
 
         return compareAsc(aDate, bDate) <= 0 ? a : b;
       });
 
-      const max = invoices.reduce((a: string, b: string) => {
+      const max = invoices.reduce((a, b) => {
         const aDate: Date = parse(a, 'yyyy-MM-dd', new Date());
         const bDate: Date = parse(b, 'yyyy-MM-dd', new Date());
 
@@ -108,7 +110,7 @@ export class InvoicesService {
         from: parse(min, 'yyyy-MM-dd', new Date()),
         to: parse(max, 'yyyy-MM-dd', new Date()),
       };
-    } catch (err) {
+    } catch (_err: unknown) {
       return undefined;
     }
   }

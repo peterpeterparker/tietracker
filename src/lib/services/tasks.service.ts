@@ -6,82 +6,73 @@ import {
   setSeconds,
   subMinutes,
 } from 'date-fns';
-import {del, get, set} from 'idb-keyval';
 import {v4 as uuid} from 'uuid';
 import {TaskInProgress, TaskInProgressData} from '../store/interfaces/task.inprogress';
+import type {DateString} from '../types/date';
 import type {Project} from '../types/project';
 import type {Settings} from '../types/settings';
 import type {Task, TaskData} from '../types/task';
+import {isNullish, nonNullish} from '../utils/utils.nullish';
+import {IdbStorage} from './_idb.storage';
+import {ServiceWithInvoices} from './_service';
 
-export class TasksService {
-  private static instance: TasksService;
+export class TasksService extends ServiceWithInvoices<TaskInProgress> {
+  static #instance: TasksService;
 
-  private tasksWorker: Worker = new Worker('./workers/tasks.js');
+  #tasksWorker = new Worker('./workers/tasks.js');
 
   private constructor() {
-    // Private constructor, singleton
+    super({key: 'task-in-progress'});
   }
 
   static getInstance() {
-    if (!TasksService.instance) {
-      TasksService.instance = new TasksService();
+    if (isNullish(TasksService.#instance)) {
+      TasksService.#instance = new TasksService();
     }
-    return TasksService.instance;
+    return TasksService.#instance;
   }
 
   async start(project: Project, settings: Settings): Promise<TaskInProgress> {
-    const taskInProgress = await get<TaskInProgress>('task-in-progress');
+    const taskInProgress = await this.get();
 
-    if (taskInProgress) {
+    if (nonNullish(taskInProgress)) {
       throw new Error('Only one task at a time.');
     }
 
     const task = await this.createTaskInProgress(project, settings);
 
-    await set('task-in-progress', task);
+    await this.set(task);
 
     return task;
   }
 
-  async stop(roundTime: number): Promise<Task> {
-    const task = await get<Task>('task-in-progress');
+  async stop(roundTime: number): Promise<void> {
+    const task = await this.get();
 
-    if (!task || !task.data) {
+    if (isNullish(task)) {
       throw new Error('No task in progress found.');
     }
 
     await this.saveTaskAndInvoice(task, roundTime, true);
 
-    await del('task-in-progress');
-
-    return task;
+    await this.del();
   }
 
-  async create(taskData: TaskData, roundTime: number): Promise<Task> {
-    if (!taskData) {
-      throw new Error('No task data provided.');
-    }
-
+  async create(taskData: TaskData, roundTime: number): Promise<void> {
     const task: Task = {
       id: uuid(),
       data: taskData,
     };
 
     await this.saveTaskAndInvoice(task, roundTime, false);
-
-    return task;
   }
 
-  private async saveTaskAndInvoice(task: Task, roundTime: number, endNow: boolean): Promise<Task> {
-    if (!task || !task.data) {
-      throw new Error('No task provided.');
-    }
-
+  private async saveTaskAndInvoice(task: Task, roundTime: number, endNow: boolean): Promise<void> {
     const now = new Date();
 
     task.data.updated_at = now.getTime();
 
-    const from: Date =
+    const from =
       roundTime > 0
         ? roundToNearestMinutes(task.data.from, {nearestTo: roundTime as 1 | 5 | 15 | 30})
         : setSeconds(new Date(task.data.from), 0);
@@ -99,33 +90,27 @@ export class TasksService {
 
     await this.saveTask(task);
 
-    const dayShort = lightFormat(task.data.from, 'yyyy-MM-dd');
+    const dayShort = lightFormat(task.data.from, 'yyyy-MM-dd') as DateString;
     await this.addTaskToInvoices(dayShort);
-
-    return task;
   }
 
-  async updateTaskInProgress(task: TaskInProgress): Promise<TaskInProgress | undefined> {
-    if (!task || !task.data) {
-      throw new Error('Task is not defined.');
-    }
-
+  async updateTaskInProgress(task: TaskInProgress): Promise<TaskInProgress> {
     task.data.updated_at = new Date().getTime();
 
-    await set('task-in-progress', task);
+    await this.set(task);
 
     return task;
   }
 
-  async current(): Promise<TaskInProgress | undefined> {
-    return await get<TaskInProgress>('task-in-progress');
+  async current(): Promise<Option<TaskInProgress>> {
+    return await this.get();
   }
 
   private async createTaskInProgress(
     project: Project,
     settings: Settings,
   ): Promise<TaskInProgress> {
-    if (!project || !project.data || !project.data.client) {
+    if (isNullish(project.data) || isNullish(project.data.client)) {
       throw new Error('Project is empty.');
     }
 
@@ -162,27 +147,23 @@ export class TasksService {
     return task;
   }
 
-  private async addTaskToInvoices(day: string): Promise<void> {
-    let invoices = await get<string[]>('invoices');
+  private async addTaskToInvoices(day: DateString): Promise<void> {
+    let invoices = await this.getInvoices();
 
-    if (invoices && invoices.indexOf(day) > -1) {
+    if (nonNullish(invoices) && invoices.indexOf(day) > -1) {
       return;
     }
 
-    if (!invoices || invoices.length <= 0) {
+    if (isNullish(invoices) || invoices.length <= 0) {
       invoices = [];
     }
 
     invoices.push(day);
 
-    await set('invoices', invoices);
+    await this.setInvoices(invoices);
   }
 
   private async saveTask(task: Task): Promise<void> {
-    if (!task || !task.data) {
-      throw new Error('Task is not defined.');
-    }
-
     const taskToPersist: Task = {...task};
 
     // Clean before save
@@ -191,33 +172,35 @@ export class TasksService {
 
     const storeDate = lightFormat(task.data.from, 'yyyy-MM-dd');
 
-    let tasks = await get<Task[]>(`tasks-${storeDate}`);
+    const storage = new IdbStorage<Task[]>({key: `tasks-${storeDate}`});
 
-    if (!tasks || tasks.length <= 0) {
+    let tasks = await storage.get();
+
+    if (isNullish(tasks) || tasks.length <= 0) {
       tasks = [];
     }
 
     tasks.push(task);
 
-    await set(`tasks-${storeDate}`, tasks);
+    await storage.set(tasks);
   }
 
   async list(updateStateFunction: Function, forDate: Date): Promise<void> {
-    this.tasksWorker.onmessage = ($event: MessageEvent) => {
-      if ($event && $event.data) {
+    this.#tasksWorker.onmessage = ($event: MessageEvent) => {
+      if (nonNullish($event?.data)) {
         updateStateFunction($event.data, forDate);
       }
     };
 
-    this.tasksWorker.postMessage({msg: 'listTasks', day: lightFormat(forDate, 'yyyy-MM-dd')});
+    this.#tasksWorker.postMessage({msg: 'listTasks', day: lightFormat(forDate, 'yyyy-MM-dd')});
   }
 
   /**
    * @param task
    * @param day The store index, like saved in indexDB tasks-2019-12-19
    */
-  async update(task: Task | undefined, day: string): Promise<void> {
-    if (!task || !task.data || !day) {
+  async update(task: Option<Task>, day: DateString): Promise<void> {
+    if (isNullish(task?.data)) {
       throw new Error('Task is not defined.');
     }
 
@@ -227,11 +210,9 @@ export class TasksService {
     delete (taskToPersist.data as TaskInProgressData)['client'];
     delete (taskToPersist.data as TaskInProgressData)['project'];
 
-    const tasks: Task[] = await this.load(day);
+    const tasks = await this.load(day);
 
-    const index = tasks.findIndex((filteredTask: Task) => {
-      return filteredTask.id === taskToPersist.id;
-    });
+    const index = tasks.findIndex((filteredTask) => filteredTask.id === taskToPersist.id);
 
     if (index < 0) {
       throw new Error('Tasks not found.');
@@ -241,21 +222,20 @@ export class TasksService {
 
     tasks[index] = taskToPersist;
 
-    await set(`tasks-${day}`, tasks);
+    const storage = new IdbStorage<Task[]>({key: `tasks-${day}`});
+    await storage.set(tasks);
 
     await this.addTaskToInvoices(day);
   }
 
-  async delete(task: Task | undefined, day: string): Promise<void> {
-    if (!task || !task.data || !day) {
+  async delete(task: Task | undefined, day: DateString): Promise<void> {
+    if (isNullish(task?.data)) {
       throw new Error('Task is not defined.');
     }
 
     const tasks = await this.load(day);
 
-    const index = tasks.findIndex((filteredTask: Task) => {
-      return filteredTask.id === task.id;
-    });
+    const index = tasks.findIndex((filteredTask: Task) => filteredTask.id === task.id);
 
     if (index < 0) {
       throw new Error('Tasks not found.');
@@ -263,32 +243,33 @@ export class TasksService {
 
     tasks.splice(index, 1);
 
-    await set(`tasks-${day}`, tasks);
+    const storage = new IdbStorage<Task[]>({key: `tasks-${day}`});
+    await storage.set(tasks);
   }
 
-  private async load(day: string): Promise<Task[]> {
-    const tasks = await get<Task[]>(`tasks-${day}`);
+  private async load(day: DateString): Promise<Task[]> {
+    const storage = new IdbStorage<Task[]>({key: `tasks-${day}`});
+    const tasks = await storage.get();
 
-    if (!tasks || tasks.length <= 0) {
+    if (isNullish(tasks) || tasks.length <= 0) {
       throw new Error('No tasks found for the specific day.');
     }
 
     return tasks;
   }
 
-  async find(id: string, day: string): Promise<Task | undefined> {
-    if (!id || id === undefined || !day || day === undefined) {
+  async find(id: Option<string>, day: string): Promise<Task | undefined> {
+    if (isNullish(id)) {
       return undefined;
     }
 
-    const tasks = await get<Task[]>(`tasks-${day}`);
+    const storage = new IdbStorage<Task[]>({key: `tasks-${day}`});
+    const tasks = await storage.get();
 
-    if (!tasks || tasks.length <= 0) {
+    if (isNullish(tasks) || tasks.length <= 0) {
       return undefined;
     }
 
-    return tasks.find((filteredTask: Task) => {
-      return filteredTask.id === id;
-    });
+    return tasks.find((filteredTask: Task) => filteredTask.id === id);
   }
 }

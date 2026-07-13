@@ -6,19 +6,18 @@ import {isPlatform} from '@ionic/react';
 import i18next from 'i18next';
 import type {Project} from '../types/project';
 import type {Settings} from '../types/settings';
+import {isNullish} from '../utils/utils.nullish';
 
 export class NotificationsService {
-  private static instance: NotificationsService;
+  static #instance: NotificationsService;
 
-  private constructor() {
-    // Private constructor, singleton
-  }
+  private constructor() {}
 
   static getInstance() {
-    if (!NotificationsService.instance) {
-      NotificationsService.instance = new NotificationsService();
+    if (isNullish(NotificationsService.#instance)) {
+      NotificationsService.#instance = new NotificationsService();
     }
-    return NotificationsService.instance;
+    return NotificationsService.#instance;
   }
 
   async schedule(project: Project, settings: Settings): Promise<void> {
@@ -26,11 +25,11 @@ export class NotificationsService {
       return;
     }
 
-    if (!project || !project.data) {
+    if (isNullish(project?.data)) {
       return;
     }
 
-    if (!settings || !settings.notifications) {
+    if (isNullish(settings?.notifications)) {
       return;
     }
 

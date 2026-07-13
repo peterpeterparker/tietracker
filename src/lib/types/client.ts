@@ -1,3 +1,5 @@
+import type {UUID} from './uuid';
+
 export interface ClientData {
   name: string;
   color?: string;
@@ -7,6 +9,6 @@ export interface ClientData {
 }
 
 export interface Client {
-  id?: string;
+  id?: UUID;
   data: ClientData;
 }

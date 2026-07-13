@@ -1,34 +1,27 @@
 import {emitError} from '../utils/utils.events';
+import {isNullish} from '../utils/utils.nullish';
 
 export class RestoreService {
-  private static instance: RestoreService;
+  static #instance: RestoreService;
 
-  private restoreWorker: Worker = new Worker('./workers/restore.js');
+  #restoreWorker = new Worker('./workers/restore.js');
 
-  private constructor() {
-    // Private constructor, singleton
-  }
+  private constructor() {}
 
   static getInstance() {
-    if (!RestoreService.instance) {
-      RestoreService.instance = new RestoreService();
+    if (isNullish(RestoreService.#instance)) {
+      RestoreService.#instance = new RestoreService();
     }
-    return RestoreService.instance;
+    return RestoreService.#instance;
   }
 
-  async restore({
-    zip,
-    done,
-  }: {
-    zip: File | undefined | null;
-    done: (success: boolean) => Promise<void>;
-  }) {
-    if (!zip) {
+  async restore({zip, done}: {zip: Nullish<File>; done: (success: boolean) => Promise<void>}) {
+    if (isNullish(zip)) {
       await done(false);
       return;
     }
 
-    this.restoreWorker.onmessage = async ($event: MessageEvent) => {
+    this.#restoreWorker.onmessage = async ($event: MessageEvent) => {
       if ($event.data?.result === 'error') {
         emitError($event.data.msg);
       }
@@ -40,7 +33,7 @@ export class RestoreService {
   }
 
   private async postMessage(zip: Blob) {
-    this.restoreWorker.postMessage({
+    this.#restoreWorker.postMessage({
       msg: `restore-idb`,
       zip,
     });

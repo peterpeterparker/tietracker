@@ -1,20 +1,19 @@
 import {eachDayOfInterval, endOfWeek, startOfWeek} from 'date-fns';
 import {Summary} from '../store/interfaces/summary';
+import {isNullish, nonNullish} from '../utils/utils.nullish';
 
 export class SummaryService {
-  private static instance: SummaryService;
+  static #instance: SummaryService;
 
-  private summaryWorker = new Worker('./workers/summary.js');
+  #summaryWorker = new Worker('./workers/summary.js');
 
-  private constructor() {
-    // Private constructor, singleton
-  }
+  private constructor() {}
 
   static getInstance() {
-    if (!SummaryService.instance) {
-      SummaryService.instance = new SummaryService();
+    if (isNullish(SummaryService.#instance)) {
+      SummaryService.#instance = new SummaryService();
     }
-    return SummaryService.instance;
+    return SummaryService.#instance;
   }
 
   async compute({
@@ -24,13 +23,13 @@ export class SummaryService {
     updateFn: (data: Summary) => void;
     days?: Date[];
   }): Promise<void> {
-    this.summaryWorker.onmessage = ($event: MessageEvent) => {
-      if ($event && $event.data) {
+    this.#summaryWorker.onmessage = ($event: MessageEvent) => {
+      if (nonNullish($event?.data)) {
         updateFn($event.data);
       }
     };
 
-    this.summaryWorker.postMessage({msg: 'compute', days: days ?? this.#week()});
+    this.#summaryWorker.postMessage({msg: 'compute', days: days ?? this.#week()});
   }
 
   #week(): Date[] {
