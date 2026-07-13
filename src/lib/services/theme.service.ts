@@ -1,31 +1,30 @@
 import {get, set} from 'idb-keyval';
+import {isNullish, nonNullish} from '../utils/utils.nullish';
 
 export class ThemeService {
-  private static instance: ThemeService;
+  static #instance: ThemeService;
 
-  private darkTheme: boolean | undefined = undefined;
+  #darkTheme: Option<boolean> = undefined;
 
-  private constructor() {
-    // Private constructor, singleton
-  }
+  private constructor() {}
 
   static getInstance() {
-    if (!ThemeService.instance) {
-      ThemeService.instance = new ThemeService();
+    if (isNullish(ThemeService.#instance)) {
+      ThemeService.#instance = new ThemeService();
     }
-    return ThemeService.instance;
+    return ThemeService.#instance;
   }
 
-  isDark(): boolean | undefined {
-    return this.darkTheme;
+  isDark(): Option<boolean> {
+    return this.#darkTheme;
   }
 
-  private async switch(dark: boolean | undefined) {
-    this.darkTheme = dark;
+  private async switch(dark: Option<boolean>) {
+    this.#darkTheme = dark;
 
-    const body: HTMLElement | null = document.querySelector('body');
+    const body = document.querySelector('body');
 
-    if (body) {
+    if (nonNullish(body)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       dark ? body.classList.add('dark') : body.classList.remove('dark');
     }
@@ -41,17 +40,17 @@ export class ThemeService {
   }
 
   async switchTheme(): Promise<boolean | undefined> {
-    await this.switch(!this.darkTheme);
+    await this.switch(!this.#darkTheme);
 
-    return this.darkTheme;
+    return this.#darkTheme;
   }
 
   async initDarkModePreference(): Promise<boolean> {
     try {
-      const savedDarkModePreference: boolean | undefined = await get('dark_mode');
+      const savedDarkModePreference = await get<boolean>('dark_mode');
 
       // If user already specified once a preference, we use that as default
-      if (savedDarkModePreference !== undefined) {
+      if (nonNullish(savedDarkModePreference)) {
         await this.switch(savedDarkModePreference);
         return savedDarkModePreference;
       }

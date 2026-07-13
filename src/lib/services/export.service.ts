@@ -1,4 +1,4 @@
-import {DirectoryEntry, File, IWriteOptions} from '@awesome-cordova-plugins/file';
+import {File, IWriteOptions} from '@awesome-cordova-plugins/file';
 import {format} from 'date-fns';
 import i18next from 'i18next';
 import {Invoice} from '../store/interfaces/invoice';
@@ -12,21 +12,20 @@ import {
   shareMobile,
   writeFile,
 } from '../utils/utils.filesystem';
+import {isNullish, nonNullish} from '../utils/utils.nullish';
 
 export class ExportService {
-  private static instance: ExportService;
+  static #instance: ExportService;
 
-  private exportWorker: Worker = new Worker('./workers/export.js');
+  #exportWorker = new Worker('./workers/export.js');
 
-  private constructor() {
-    // Private constructor, singleton
-  }
+  private constructor() {}
 
   static getInstance() {
-    if (!ExportService.instance) {
-      ExportService.instance = new ExportService();
+    if (isNullish(ExportService.#instance)) {
+      ExportService.#instance = new ExportService();
     }
-    return ExportService.instance;
+    return ExportService.#instance;
   }
 
   async exportNativeFileSystem(
@@ -38,24 +37,24 @@ export class ExportService {
     bill: boolean,
     signature: string | undefined,
   ): Promise<void> {
-    if (invoice === undefined || invoice.project_id === undefined) {
+    if (isNullish(invoice?.project_id)) {
       throw new Error('No invoice data.');
     }
 
     const invoices = interval(from, to);
 
-    if (invoices === undefined) {
+    if (isNullish(invoices)) {
       throw new Error('No invoices to export.');
     }
 
     const fileHandle = await getNewFileHandle('xlsx');
 
-    if (!fileHandle) {
+    if (isNullish(fileHandle)) {
       throw new Error('Cannot access filesystem.');
     }
 
-    this.exportWorker.onmessage = async ($event: MessageEvent) => {
-      if ($event && $event.data) {
+    this.#exportWorker.onmessage = async ($event: MessageEvent) => {
+      if (nonNullish($event?.data)) {
         await writeFile(fileHandle, $event.data);
       }
     };
@@ -72,20 +71,20 @@ export class ExportService {
     bill: boolean,
     signature: string | undefined,
   ): Promise<void> {
-    if (invoice === undefined || invoice.project_id === undefined) {
+    if (isNullish(invoice?.project_id)) {
       throw new Error('No invoice data.');
     }
 
     const invoices = interval(from, to);
 
-    if (invoices === undefined) {
+    if (isNullish(invoices)) {
       throw new Error('No invoices to export.');
     }
 
     const filename = this.filename(invoice, from, to, 'xlsx');
 
-    this.exportWorker.onmessage = async ($event: MessageEvent) => {
-      if ($event && $event.data) {
+    this.#exportWorker.onmessage = async ($event: MessageEvent) => {
+      if (nonNullish($event?.data)) {
         download(filename, $event.data);
       }
     };
@@ -102,21 +101,21 @@ export class ExportService {
     bill: boolean,
     signature: string | undefined,
   ): Promise<void> {
-    if (invoice === undefined || invoice.project_id === undefined) {
+    if (isNullish(invoice?.project_id)) {
       throw new Error('No invoice data.');
     }
 
     const invoices = interval(from, to);
 
-    if (invoices === undefined) {
+    if (isNullish(invoices)) {
       throw new Error('No invoices to export.');
     }
 
     const filename = this.filename(invoice, from, to, 'xlsx');
 
-    this.exportWorker.onmessage = async ($event: MessageEvent) => {
-      if ($event && $event.data) {
-        const dir: DirectoryEntry = await getMobileDir();
+    this.#exportWorker.onmessage = async ($event: MessageEvent) => {
+      if (nonNullish($event?.data)) {
+        const dir = await getMobileDir();
 
         const writeOptions: IWriteOptions = {
           replace: true,
@@ -158,7 +157,7 @@ export class ExportService {
   ) {
     await i18next.loadNamespaces('export');
 
-    this.exportWorker.postMessage({
+    this.#exportWorker.postMessage({
       msg: 'export',
       invoices: invoices,
       projectId: invoice.project_id,

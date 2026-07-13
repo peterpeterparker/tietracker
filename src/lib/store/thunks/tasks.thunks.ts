@@ -17,7 +17,7 @@ import {RootThunkResult} from './types.thunks';
 
 export function startTask(project: Project, settings: Settings): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {
-    const task: TaskInProgress = await TasksService.getInstance().start(project, settings);
+    const task = await TasksService.getInstance().start(project, settings);
 
     await NotificationsService.getInstance().schedule(project, settings);
 
@@ -27,8 +27,7 @@ export function startTask(project: Project, settings: Settings): RootThunkResult
 
 export function updateTask(data: TaskInProgress): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {
-    const task: TaskInProgress | undefined =
-      await TasksService.getInstance().updateTaskInProgress(data);
+    const task = await TasksService.getInstance().updateTaskInProgress(data);
 
     dispatch({type: UPDATE_TASK, payload: task});
   };
@@ -59,7 +58,7 @@ export function createTask(taskData: TaskData, roundTime: number): RootThunkResu
 
 export function initTask(): RootThunkResult<Promise<void>> {
   return async (dispatch, getState) => {
-    const task: TaskInProgress | undefined = await TasksService.getInstance().current();
+    const task = await TasksService.getInstance().current();
 
     dispatch({type: INIT_TASK, payload: task});
   };

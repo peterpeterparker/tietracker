@@ -1,6 +1,10 @@
+import type {UUID} from './uuid';
+
+export type ProjectId = UUID;
+
 // Denormalization
 export interface ProjectClientData {
-  id: string;
+  id: ProjectId;
   name: string;
   color: string;
 }
@@ -34,6 +38,6 @@ export interface ProjectData {
 }
 
 export interface Project {
-  id: string;
+  id: ProjectId;
   data: ProjectData;
 }

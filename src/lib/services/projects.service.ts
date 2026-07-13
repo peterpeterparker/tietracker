@@ -1,35 +1,36 @@
-import {get, set} from 'idb-keyval';
 import {v4 as uuid} from 'uuid';
 import type {Client} from '../types/client';
-import type {Project, ProjectData} from '../types/project';
+import {Project, ProjectData} from '../types/project';
+import {isEmptyString, isNullish} from '../utils/utils.nullish';
+import {ServiceWithActiveProjects} from './_service';
 
-export class ProjectsService {
-  private static instance: ProjectsService;
+export class ProjectsService extends ServiceWithActiveProjects<Project[]> {
+  static #instance: ProjectsService;
 
   private constructor() {
-    // Private constructor, singleton
+    super({key: 'projects'});
   }
 
   static getInstance() {
-    if (!ProjectsService.instance) {
-      ProjectsService.instance = new ProjectsService();
+    if (isNullish(ProjectsService.#instance)) {
+      ProjectsService.#instance = new ProjectsService();
     }
-    return ProjectsService.instance;
+    return ProjectsService.#instance;
   }
 
-  async create(client: Client | undefined, data: ProjectData): Promise<Project> {
-    if (!client || client === undefined) {
+  async create(client: Option<Client>, data: ProjectData): Promise<Project> {
+    if (isNullish(client) || isNullish(client?.id)) {
       throw new Error('Client not defined.');
     }
 
-    let projects = await get<Project[]>('projects');
+    let projects = await this.get();
 
-    if (!projects || projects.length <= 0) {
+    if (isNullish(projects) || projects.length <= 0) {
       projects = [];
     }
 
     data.client = {
-      id: client.id as string,
+      id: client.id,
       name: client.data.name,
       color: client.data.color as string,
     };
@@ -46,15 +47,15 @@ export class ProjectsService {
 
     projects.push(project);
 
-    await set('projects', projects);
+    await this.set(projects);
 
     return project;
   }
 
   async list(filterActive: boolean = true): Promise<Project[]> {
-    const projects = await get<Project[]>('projects');
+    const projects = await this.get();
 
-    if (!projects || projects.length <= 0) {
+    if (isNullish(projects) || projects.length <= 0) {
       return [];
     }
 
@@ -62,19 +63,17 @@ export class ProjectsService {
       return projects;
     }
 
-    const filteredProjects: Project[] = projects.filter((project: Project) => {
-      return !project.data.disabled;
-    });
+    const filteredProjects = projects.filter((project: Project) => !project.data.disabled);
 
-    if (!filteredProjects || filteredProjects.length <= 0) {
+    if (filteredProjects.length <= 0) {
       return [];
     }
 
-    const activeProjects = await get<string[]>('active-projects');
+    const activeProjects = await this.getActiveProjects();
 
-    const sortedProjects = filteredProjects.sort((a: Project, b: Project) => {
-      const indexA: number | undefined = activeProjects?.findIndex((id: string) => a.id === id);
-      const indexB: number | undefined = activeProjects?.findIndex((id: string) => b.id === id);
+    return filteredProjects.sort((a: Project, b: Project) => {
+      const indexA = activeProjects?.findIndex((id) => a.id === id);
+      const indexB = activeProjects?.findIndex((id) => b.id === id);
 
       if ((indexA === -1 || indexA === undefined) && (indexB === -1 || indexB === undefined)) {
         return (
@@ -93,63 +92,51 @@ export class ProjectsService {
 
       return indexA - indexB;
     });
-
-    return sortedProjects !== undefined ? sortedProjects : [];
   }
 
-  async find(id: string | undefined): Promise<Project | undefined> {
+  async find(id: Option<string>): Promise<Option<Project>> {
     try {
-      const projects = await get<Project[]>('projects');
+      const projects = await this.get();
 
-      if (!projects || projects.length <= 0) {
+      if (isNullish(projects) || projects.length <= 0) {
         return undefined;
       }
 
-      return projects.find((filteredProject: Project) => {
-        return filteredProject.id === id;
-      });
+      return projects.find((filteredProject) => filteredProject.id === id);
     } catch (_err: unknown) {
       return undefined;
     }
   }
 
   async listForClient(clientId: string): Promise<Project[]> {
-    if (!clientId || clientId === undefined) {
+    if (isEmptyString(clientId)) {
       throw new Error('Client not defined.');
     }
 
-    const projects = await get<Project[]>('projects');
+    const projects = await this.get();
 
-    if (!projects || projects.length <= 0) {
+    if (isNullish(projects) || projects.length <= 0) {
       return [];
     }
 
-    const filteredProjects = projects.filter((project: Project) => {
-      return project.data.client !== undefined && project.data.client.id === clientId;
-    });
-
-    if (!filteredProjects || filteredProjects.length <= 0) {
-      return [];
-    }
-
-    return filteredProjects;
+    return projects.filter((project) => project.data.client?.id === clientId);
   }
 
   async updateForClient(client: Client): Promise<void> {
-    if (!client || !client.id) {
+    if (isNullish(client) || isNullish(client.id)) {
       throw new Error('Client not defined.');
     }
 
-    const projects = await get<Project[]>('projects');
+    const projects = await this.get();
 
-    if (!projects || projects.length <= 0) {
+    if (isNullish(projects) || projects.length <= 0) {
       return;
     }
 
-    projects.forEach((project: Project) => {
+    projects.forEach((project) => {
       if (project.data.client && project.data.client.id === client.id) {
         project.data.client = {
-          id: client.id as string,
+          id: client.id,
           name: client.data.name,
           color: client.data.color as string,
         };
@@ -158,23 +145,21 @@ export class ProjectsService {
       }
     });
 
-    await set('projects', projects);
+    await this.set(projects);
   }
 
-  async update(project: Project | undefined): Promise<void> {
-    if (!project || !project.data) {
+  async update(project: Option<Project>): Promise<void> {
+    if (isNullish(project) || isNullish(project.data)) {
       throw new Error('Project is not defined.');
     }
 
-    const projects = await get<Project[]>('projects');
+    const projects = await this.get();
 
-    if (!projects || projects.length <= 0) {
+    if (isNullish(projects) || projects.length <= 0) {
       throw new Error('No projects found.');
     }
 
-    const index = projects.findIndex((filteredProject: Project) => {
-      return filteredProject.id === project.id;
-    });
+    const index = projects.findIndex((filteredProject) => filteredProject.id === project.id);
 
     if (index < 0) {
       throw new Error('Project not found.');
@@ -184,38 +169,35 @@ export class ProjectsService {
 
     projects[index] = project;
 
-    await set(`projects`, projects);
+    await this.set(projects);
   }
 
-  async updateActiveProject(project: Project | undefined): Promise<void> {
-    if (!project) {
+  async updateActiveProject(project: Option<Project>): Promise<void> {
+    if (isNullish(project)) {
       return;
     }
 
-    const projects = await get<string[]>('active-projects');
+    const projects = await this.getActiveProjects();
 
-    if (!projects) {
-      await set('active-projects', [project.id]);
+    if (isNullish(projects)) {
+      await this.setActiveProjects([project.id]);
       return;
     }
 
-    await set('active-projects', [
-      project.id,
-      ...projects.filter((id: string) => id !== project.id),
-    ]);
+    await this.setActiveProjects([project.id, ...projects.filter((id) => id !== project.id)]);
   }
 
-  async deleteActiveProject(project: Project | undefined): Promise<void> {
-    if (!project) {
+  async deleteActiveProject(project: Option<Project>): Promise<void> {
+    if (isNullish(project)) {
       return;
     }
 
-    const projects = await get<string[]>('active-projects');
+    const projects = await this.getActiveProjects();
 
-    if (!projects) {
+    if (isNullish(projects)) {
       return;
     }
 
-    await set('active-projects', [...projects.filter((id: string) => id !== project.id)]);
+    await this.setActiveProjects([...projects.filter((id) => id !== project.id)]);
   }
 }

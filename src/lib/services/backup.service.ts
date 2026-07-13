@@ -24,7 +24,7 @@ export class BackupService extends ServiceWithInvoices<Date> {
   }
 
   static getInstance() {
-    if (!BackupService.#instance) {
+    if (isNullish(BackupService.#instance)) {
       BackupService.#instance = new BackupService();
     }
     return BackupService.#instance;
