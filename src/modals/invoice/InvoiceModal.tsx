@@ -22,7 +22,6 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {ExportService} from '../../lib/services/export.service';
 import {InvoicesPeriod, InvoicesService} from '../../lib/services/invoices.service';
-import {ThemeService} from '../../lib/services/theme.service';
 import {Invoice} from '../../lib/store/interfaces/invoice';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
@@ -53,9 +52,9 @@ const InvoiceModal: React.FC<Props> = (props) => {
   const [to, setTo] = useState<Date | undefined>(undefined);
   const [bill, setBill] = useState<boolean>(false);
 
-  const color: string | undefined =
+  const color =
     props.invoice !== undefined && props.invoice.client ? props.invoice.client.color : undefined;
-  const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
+  const colorContrast = contrast(color);
 
   const [billable, setBillable] = useState<Billable | undefined>(undefined);
 
@@ -202,7 +201,14 @@ const InvoiceModal: React.FC<Props> = (props) => {
     return (
       <IonContent>
         <IonHeader>
-          <IonToolbar style={{'--background': color, '--color': colorContrast} as CSSProperties}>
+          <IonToolbar
+            style={
+              {
+                '--background': color,
+                '--color': colorContrast,
+                '--ion-toolbar-color': colorContrast,
+              } as CSSProperties
+            }>
             <IonTitle>
               {props.invoice !== undefined &&
               props.invoice.client &&

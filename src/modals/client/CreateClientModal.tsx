@@ -20,7 +20,6 @@ import {close} from 'ionicons/icons';
 import React, {CSSProperties, FormEvent, RefObject, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {ThemeService} from '../../lib/services/theme.service';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
 import {Client, ClientData} from '../../lib/types/client';
@@ -318,9 +317,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
   function renderContent() {
     const valid: boolean = validClientName && validProject && validClientColor;
 
-    const color: string | undefined =
-      clientData && clientData.color ? clientData.color : 'var(--ion-color-light)';
-    const colorContrast: string = contrast(color, 128, ThemeService.getInstance().isDark());
+    const color = clientData && clientData.color ? clientData.color : 'var(--ion-color-light)';
+    const colorContrast = contrast(color);
 
     return (
       <IonContent>
