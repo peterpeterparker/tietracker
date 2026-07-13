@@ -1,13 +1,15 @@
+import {IdbStorage} from '../services/_idb.storage';
 import {Invoice} from '../store/interfaces/invoice';
 import type {Currency} from '../types/currency';
-import type {WorkerProjects} from './utils/utils.types';
-import {isNullish, nonNullish} from '../utils/utils.nullish';
-import {IdbStorage} from '../services/_idb.storage';
-import {Client} from '../types/client';
-import {Task} from '../types/task';
 import {DateString} from '../types/date';
 import {ProjectId} from '../types/project';
+import {Task} from '../types/task';
+import {isNullish, nonNullish} from '../utils/utils.nullish';
 import {convertTasks, ExportableInvoices} from './utils/utils.export';
+import type {WorkerProjects} from './utils/utils.types';
+import {exportToExcel} from './utils/utils.excel';
+import {i18nExportLabels} from '../utils/utils.export';
+import {loadProjects} from './utils/utils';
 
 interface ExportWorkerParams {
   invoice: Invoice;
@@ -16,26 +18,21 @@ interface ExportWorkerParams {
   vat: number | undefined;
   bill: boolean;
   signature: string | undefined;
+  i18n: i18nExportLabels
 }
 
 export class ExportWorker {
-  async export({}: ExportWorkerParams) {
-    const projects = await this.loadProjects();
+  async export(args: ExportWorkerParams) {
+    const projects = await loadProjects();
 
     if (isNullish(projects)) {
       return;
     }
 
-    const results = await this.exportInvoices(
-      invoices,
+    const results = await this.exportInvoices({
       projects,
-      filterProjectId,
-      currency,
-      vat,
-      client,
-      i18n,
-      signature,
-    );
+      ...args,
+    });
 
     await updateBudget(results.invoices, filterProjectId, bill);
 
@@ -48,11 +45,11 @@ export class ExportWorker {
   private async exportInvoices({
     invoices,
     projects,
-    filterProjectId,
-  }: Pick<ExportWorkerParams, 'invoices'> & {
+    invoice: {client, project_id: filterProjectId},
+    ...rest
+  }: ExportWorkerParams & {
     projects: WorkerProjects;
-    filterProjectId: ProjectId;
-  }) {
+  }): Promise<{excel: Option<Blob>; invoices: Option<ExportableInvoices>}> {
     const promises: Promise<Option<ExportableInvoices>>[] = [];
 
     invoices.forEach((invoice) => {
@@ -79,9 +76,15 @@ export class ExportWorker {
       };
     }
 
-    const concatenedInvoices = filteredInvoices.filter((invoice) => nonNullish(invoice)).reduce((a, b) => a.concat(b), []);
+    const concatenedInvoices = filteredInvoices
+      .filter((invoice) => nonNullish(invoice))
+      .reduce((a, b) => a.concat(b), []);
 
-    const results = await exportToExcel(concatenedInvoices, client, currency, vat, i18n, signature);
+    const results = await exportToExcel({
+      invoices: concatenedInvoices,
+      client,
+      ...rest,
+    });
 
     return {
       excel: results,
@@ -131,7 +134,6 @@ async function billInvoices(invoices, filterProjectId, bill) {
 
   await Promise.all(promises);
 }
-
 
 function billInvoice(invoice, filterProjectId, bill) {
   return new Promise(async (resolve) => {

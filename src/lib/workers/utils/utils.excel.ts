@@ -1,9 +1,9 @@
 import Exceljs from 'exceljs';
-import {ExportableInvoices, footerText, initColumns, totalInvoices} from './utils.export';
 import type {TaskInProgressClientData} from '../../store/interfaces/task.inprogress';
 import type {Currency} from '../../types/currency';
-import {isNullish, nonNullish} from '../../utils/utils.nullish';
 import {i18nExportLabels} from '../../utils/utils.export';
+import {isNullish, nonNullish} from '../../utils/utils.nullish';
+import {ExportableInvoices, footerText, initColumns, totalInvoices} from './utils.export';
 
 interface ExportToExcelParams {
   invoices: ExportableInvoices;
@@ -11,9 +11,19 @@ interface ExportToExcelParams {
   currency: Currency;
   vat: number | undefined;
   signature: string | undefined;
+  i18n: i18nExportLabels;
 }
 
-const exportToExcel = async ({invoices, signature, client}: ExportToExcelParams): Promise<Blob> => {
+type BackupToExcelParams = Omit<ExportToExcelParams, 'client'>;
+
+export const exportToExcel = async ({
+  invoices,
+  signature,
+  i18n,
+  client,
+  currency,
+  vat,
+}: ExportToExcelParams): Promise<Blob> => {
   const workbook = initWorkbook();
 
   const footer = footerText(signature);
@@ -24,10 +34,24 @@ const exportToExcel = async ({invoices, signature, client}: ExportToExcelParams)
     headerFooter: {firstFooter: footer, oddFooter: footer},
   });
 
-  return exportExcelTable(workbook, worksheet, invoices, currency, i18n, vat, false);
+  return exportExcelTable({
+    workbook,
+    worksheet,
+    invoices,
+    currency,
+    i18n,
+    vat,
+    backup: false,
+  });
 };
 
-async function backupToExcel(invoices, currency, vat, i18n, signature) {
+export const backupToExcel = async ({
+  invoices,
+  currency,
+  vat,
+  i18n,
+  signature,
+}: BackupToExcelParams): Promise<Blob> => {
   const workbook = initWorkbook();
 
   const footer = footerText(signature);
@@ -37,8 +61,16 @@ async function backupToExcel(invoices, currency, vat, i18n, signature) {
     headerFooter: {firstFooter: footer, oddFooter: footer},
   });
 
-  return exportExcelTable(workbook, worksheet, invoices, currency, i18n, vat, true);
-}
+  return exportExcelTable({
+    workbook,
+    worksheet,
+    invoices,
+    currency,
+    i18n,
+    vat,
+    backup: true,
+  });
+};
 
 const excelCurrencyFormat = (currency: Option<Currency>): string => {
   if (isNullish(currency) || isNullish(currency.currency)) {
@@ -63,13 +95,13 @@ const extractInvoicesTable = ({
   backup,
   i18n,
   worksheet,
-  currencyFormat
+  currencyFormat,
 }: {
   worksheet: Exceljs.Worksheet;
   backup: boolean;
   i18n: i18nExportLabels;
   currencyFormat: string;
-} & Pick<ExportToExcelParams, 'invoices'>)=>  {
+} & Pick<ExportToExcelParams, 'invoices'>) => {
   const total = totalInvoices(invoices);
 
   const columns = initColumns({
@@ -122,15 +154,21 @@ const extractInvoicesTable = ({
   // Format total duration table last line
   const index = invoices.length + 2;
   worksheet.getCell(`${String.fromCharCode(70 + col)}${index}`).alignment = {horizontal: 'right'};
-}
+};
 
 function generateTotal({
   worksheet,
-  invoices, backup, i18n, currencyFormat, vat
-}: {worksheet: Exceljs.Worksheet; currencyFormat: string; i18n: i18nExportLabels; backup: boolean} & Pick<
-  ExportToExcelParams,
-  'invoices' | 'vat'
->) {
+  invoices,
+  backup,
+  i18n,
+  currencyFormat,
+  vat,
+}: {
+  worksheet: Exceljs.Worksheet;
+  currencyFormat: string;
+  i18n: i18nExportLabels;
+  backup: boolean;
+} & Pick<ExportToExcelParams, 'invoices' | 'vat'>) {
   let index = invoices.length + 4;
 
   // Char ASCII code 69 = E
@@ -234,13 +272,13 @@ const exportExcelTable = async ({
   vat,
   i18n,
   backup,
-  invoices
+  invoices,
 }: {
-  workbook: Exceljs.Workbook
+  workbook: Exceljs.Workbook;
   worksheet: Exceljs.Worksheet;
-  i18n: i18nExportLabels,
-  backup: boolean
-} & Pick<ExportToExcelParams, "invoices" | "currency" | "vat">) => {
+  i18n: i18nExportLabels;
+  backup: boolean;
+} & Pick<ExportToExcelParams, 'invoices' | 'currency' | 'vat'>) => {
   const currencyFormat = excelCurrencyFormat(currency);
 
   extractInvoicesTable({
@@ -248,7 +286,7 @@ const exportExcelTable = async ({
     currencyFormat,
     backup,
     invoices,
-    worksheet
+    worksheet,
   });
 
   generateTotal({

@@ -1,13 +1,8 @@
-import {IdbStorage} from '../../services/_idb.storage';
-import {Project, ProjectData, ProjectId} from '../../types/project';
-import {isNullish, nonNullish} from '../../utils/utils.nullish';
-import {Client, ClientData, ClientId} from '../../types/client';
-import {Task} from "../../types/task";
-import {addMinutes, differenceInMilliseconds} from 'date-fns';
-import {WorkerClients, WorkerProjects} from './utils.types';
-import {format} from 'date-fns';
-import {differenceInMilliseconds} from 'date-fns';
+import {addMinutes, differenceInMilliseconds, format} from 'date-fns';
+import {Task} from '../../types/task';
 import {i18nExportLabels} from '../../utils/utils.export';
+import {nonNullish} from '../../utils/utils.nullish';
+import {WorkerClients, WorkerProjects} from './utils.types';
 
 export type ExportableInvoices = (string | number | Date)[][];
 
@@ -55,7 +50,7 @@ export const convertTasks = ({
 
     return result;
   });
-}
+};
 
 const printMilliseconds = (milliseconds: number): string => {
   const seconds = Math.floor(milliseconds / 1000);
@@ -65,7 +60,7 @@ const printMilliseconds = (milliseconds: number): string => {
   minutes = minutes % 60;
 
   return `${hours >= 10 ? hours : '0' + hours}:${minutes >= 10 ? minutes : '0' + minutes}`;
-}
+};
 
 export const initColumns = ({
   i18n,
@@ -114,7 +109,7 @@ interface TotalInvoices {
   sum: number;
 }
 
-export const totalInvoices = (invoices: ExportableInvoices): {duration: number, sum: number} => {
+export const totalInvoices = (invoices: ExportableInvoices): {duration: number; sum: number} => {
   const totalDuration = invoices.reduce((accumulator, invoice) => {
     return accumulator + differenceInMilliseconds(new Date(invoice[4]), new Date(invoice[2]));
   }, 0);
