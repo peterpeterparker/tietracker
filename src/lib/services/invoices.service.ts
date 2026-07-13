@@ -84,7 +84,7 @@ export class InvoicesService {
 
   async period(): Promise<InvoicesPeriod | undefined> {
     try {
-      const invoices = await get('invoices');
+      const invoices = await get<string[]>('invoices');
 
       if (!invoices || invoices.length <= 0) {
         return undefined;

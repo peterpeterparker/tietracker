@@ -2,7 +2,6 @@ import {File, IWriteOptions} from '@awesome-cordova-plugins/file';
 import {isPlatform} from '@ionic/react';
 import {differenceInWeeks, format} from 'date-fns';
 import i18next from 'i18next';
-import {get, set} from 'idb-keyval';
 import type {Settings} from '../types/settings';
 import {exportLabels} from '../utils/utils.export';
 import {
@@ -12,45 +11,47 @@ import {
   shareMobile,
   writeFile,
 } from '../utils/utils.filesystem';
+import {isNullish, nonNullish} from '../utils/utils.nullish';
+import {ServiceWithInvoices} from './_service';
 
-export class BackupService {
-  private static instance: BackupService;
+export class BackupService extends ServiceWithInvoices<Date> {
+  static #instance: BackupService;
 
-  private backupWorker: Worker = new Worker('./workers/backup.js');
+  #backupWorker = new Worker('./workers/backup.js');
 
   private constructor() {
-    // Private constructor, singleton
+    super({key: 'backup'});
   }
 
   static getInstance() {
-    if (!BackupService.instance) {
-      BackupService.instance = new BackupService();
+    if (!BackupService.#instance) {
+      BackupService.#instance = new BackupService();
     }
-    return BackupService.instance;
+    return BackupService.#instance;
   }
 
   async needBackup(): Promise<boolean> {
     try {
-      const invoices = await get('invoices');
+      const invoices = await this.getInvoices();
 
-      if (!invoices || invoices.length <= 0) {
+      if (isNullish(invoices) || invoices.length <= 0) {
         return false;
       }
 
-      const lastBackup = await get('backup');
+      const lastBackup = await this.get();
 
-      if (lastBackup && differenceInWeeks(new Date(), lastBackup) > 0) {
+      if (nonNullish(lastBackup) && differenceInWeeks(new Date(), lastBackup) > 0) {
         return true;
       }
 
-      return lastBackup === undefined;
+      return isNullish(lastBackup);
     } catch (_err: unknown) {
       return false;
     }
   }
 
   async setBackup() {
-    await set('backup', new Date());
+    await this.set(new Date());
   }
 
   async backup(type: 'excel' | 'idb', settings: Settings) {
@@ -68,12 +69,12 @@ export class BackupService {
   async exportNativeFileSystem(type: 'excel' | 'idb', settings: Settings): Promise<void> {
     const fileHandle = await getNewFileHandle(type === 'excel' ? 'xlsx' : 'zip');
 
-    if (!fileHandle) {
+    if (isNullish(fileHandle)) {
       throw new Error('Cannot access filesystem.');
     }
 
-    this.backupWorker.onmessage = async ($event: MessageEvent) => {
-      if ($event && $event.data) {
+    this.#backupWorker.onmessage = async ($event: MessageEvent) => {
+      if (nonNullish($event.data)) {
         await writeFile(fileHandle, $event.data);
       }
     };
@@ -84,8 +85,8 @@ export class BackupService {
   async exportMobileFileSystem(type: 'excel' | 'idb', settings: Settings): Promise<void> {
     const filename = this.filename(type);
 
-    this.backupWorker.onmessage = async ($event: MessageEvent) => {
-      if ($event && $event.data) {
+    this.#backupWorker.onmessage = async ($event: MessageEvent) => {
+      if (nonNullish($event.data)) {
         const dir = await getMobileDir();
 
         const writeOptions: IWriteOptions = {
@@ -109,8 +110,8 @@ export class BackupService {
   async exportDownload(type: 'excel' | 'idb', settings: Settings): Promise<void> {
     const filename = this.filename(type);
 
-    this.backupWorker.onmessage = ($event: MessageEvent) => {
-      if ($event && $event.data) {
+    this.#backupWorker.onmessage = ($event: MessageEvent) => {
+      if (nonNullish($event.data)) {
         download(filename, $event.data);
       }
     };
@@ -127,7 +128,7 @@ export class BackupService {
   private async postMessage(type: 'excel' | 'idb', {currency, vat, signature}: Settings) {
     await i18next.loadNamespaces('export');
 
-    this.backupWorker.postMessage({
+    this.#backupWorker.postMessage({
       msg: `backup-${type}`,
       currency: currency,
       vat,
