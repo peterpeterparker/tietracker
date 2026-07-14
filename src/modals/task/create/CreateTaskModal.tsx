@@ -20,6 +20,8 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../../lib/store/thunks/index.thunks';
+import {testIds} from '../../../lib/tests/test-ids.constants';
+import {testId} from '../../../lib/tests/test.utils';
 import {Project} from '../../../lib/types/project';
 import {Settings as SettingsModel} from '../../../lib/types/settings';
 import {TaskData} from '../../../lib/types/task';
@@ -163,6 +165,7 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
           <IonButton
             type="submit"
             disabled={!valid}
+            {...testId(testIds.tasks.submit)}
             style={
               {
                 '--background': color,
@@ -196,7 +199,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
             interfaceOptions={{header: t('tasks:create.project')}}
             placeholder={t('tasks:create.project')}
             value={project}
-            onIonChange={($event: CustomEvent) => onProjectChange($event)}>
+            onIonChange={($event: CustomEvent) => onProjectChange($event)}
+            {...testId(testIds.tasks.openSelectProject)}>
             {renderProjectOptions()}
           </IonSelect>
         </IonItem>
@@ -231,7 +235,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
         interfaceOptions={{header: t('tasks:tracker.description')}}
         placeholder={t('tasks:tracker.description')}
         value={description}
-        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}>
+        onIonChange={($event: CustomEvent) => onDescriptionChange($event)}
+        {...testId(testIds.tasks.openSelectDescription)}>
         {settings.descriptions.map((description: string, i: number) => {
           return (
             <IonSelectOption value={description} key={`desc-${i}`}>
