@@ -20,16 +20,20 @@ import {close} from 'ionicons/icons';
 import React, {CSSProperties, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
+import {isTest} from '../../lib/env';
 import {ExportService} from '../../lib/services/export.service';
 import {InvoicesPeriod, InvoicesService} from '../../lib/services/invoices.service';
 import {Invoice} from '../../lib/store/interfaces/invoice';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {testIds} from '../../lib/tests/test-ids.constants';
+import {testId} from '../../lib/tests/test.utils';
 import {Settings} from '../../lib/types/settings';
 import {budgetRatio} from '../../lib/utils/utils.budget';
 import {contrast} from '../../lib/utils/utils.color';
 import {formatCurrency} from '../../lib/utils/utils.currency';
 import {emitError} from '../../lib/utils/utils.events';
+import {isNullish} from '../../lib/utils/utils.nullish';
 import {pickerColor} from '../../lib/utils/utils.picker';
 import {formatTime} from '../../lib/utils/utils.time';
 
@@ -109,14 +113,28 @@ const InvoiceModal: React.FC<Props> = (props) => {
   }
 
   async function exportInvoice() {
-    if (!props.invoice) {
+    if (isNullish(props.invoice)) {
       return;
     }
 
     setInProgress(true);
 
+    const download = async () => {
+      await ExportService.getInstance().exportDownload(
+        props.invoice as Invoice,
+        from,
+        to,
+        settings.currency,
+        settings.vat,
+        bill,
+        settings.signature,
+      );
+    };
     try {
-      if (isPlatform('hybrid')) {
+      if (isTest()) {
+        // Playwright does not support File System API?
+        await download();
+      } else if (isPlatform('hybrid')) {
         await ExportService.getInstance().exportMobileFileSystem(
           props.invoice,
           from,
@@ -137,15 +155,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
           settings.signature,
         );
       } else {
-        await ExportService.getInstance().exportDownload(
-          props.invoice,
-          from,
-          to,
-          settings.currency,
-          settings.vat,
-          bill,
-          settings.signature,
-        );
+        await download();
       }
 
       if (bill) {
@@ -415,7 +425,8 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--background-activated': colorContrast,
             '--color-activated': color,
           } as CSSProperties
-        }>
+        }
+        {...testId(testIds.invoices.export)}>
         <IonLabel>{t('export:excel')}</IonLabel>
       </IonButton>
     );

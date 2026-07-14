@@ -38,6 +38,8 @@ import BackupAlert from './alerts/backup/BackupAlert';
 import {ErrorToast} from './alerts/error/ErrorToast';
 import './lib/helpers/i18n';
 import {rootConnector, RootProps} from './lib/store/thunks/index.thunks';
+import {testIds} from './lib/tests/test-ids.constants';
+import {testId} from './lib/tests/test.utils';
 import {initAllData} from './lib/utils/utils.store';
 import TrackTaskModal from './modals/task/track/TrackTaskModal';
 import About from './pages/about/About';
@@ -144,13 +146,13 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                   {(t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>}
                 </Translation>
               </IonTabButton>
-              <IonTabButton tab="invoices" href="/invoices">
+              <IonTabButton tab="invoices" href="/invoices" {...testId(testIds.nav.invoices)}>
                 <IonIcon icon={card} />
                 <Translation ns="common">
                   {(t, {i18n}) => <IonLabel>{t('navigation.invoices')}</IonLabel>}
                 </Translation>
               </IonTabButton>
-              <IonTabButton tab="more" href="/more">
+              <IonTabButton tab="more" href="/more" {...testId(testIds.nav.more)}>
                 <IonIcon icon={ellipsisHorizontal} />
                 <Translation ns="common">
                   {(t, {i18n}) => <IonLabel>{t('navigation.more')}</IonLabel>}
