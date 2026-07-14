@@ -127,7 +127,12 @@ const Backup: React.FC<RootProps> = (props) => {
 
     return (
       <>
-        <IonButton type="button" color="button" onClick={doBackup} style={{marginTop: '8px'}}>
+        <IonButton
+          type="button"
+          color="button"
+          onClick={doBackup}
+          style={{marginTop: '8px'}}
+          {...testId(testIds.backup.backup)}>
           <IonLabel>{t('backup:backup')}</IonLabel>
         </IonButton>
 
