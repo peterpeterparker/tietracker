@@ -1,4 +1,5 @@
 import {v4 as uuid} from 'uuid';
+import {CLIENT_COLOR_FALLBACK} from '../constants';
 import type {Client, ClientData} from '../types/client';
 import {isEmptyString, isNullish} from '../utils/utils.nullish';
 import {Service} from './_service';
@@ -31,7 +32,7 @@ export class ClientsService extends Service<Client[]> {
     data.updated_at = now;
 
     if (isEmptyString(data.color)) {
-      data.color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+      data.color = CLIENT_COLOR_FALLBACK;
     }
 
     const client: Client = {
