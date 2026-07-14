@@ -14,7 +14,7 @@ import {
   writeFile,
 } from '../utils/utils.filesystem';
 import {isNullish} from '../utils/utils.nullish';
-import {ExportWorker} from '../workers/export.worker';
+import {exportInvoices} from '../workers/export.worker';
 
 export class ExportService {
   static #instance: ExportService;
@@ -179,8 +179,7 @@ export class ExportService {
   }) {
     await i18next.loadNamespaces('export');
 
-    const worker = new ExportWorker();
-    const result = await worker.export({...rest, i18n: exportLabels()});
+    const result = await exportInvoices({...rest, i18n: exportLabels()});
 
     if (isNullish(result)) {
       return;
