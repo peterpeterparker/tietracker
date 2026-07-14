@@ -112,15 +112,23 @@ export class BackupService extends ServiceWithInvoices<Date> {
   }
 
   async exportDownload(type: 'excel' | 'idb', settings: Settings): Promise<void> {
-    const filename = this.filename(type);
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const filename = this.filename(type);
 
-    this.#backupWorker.onmessage = ($event: MessageEvent) => {
-      if (nonNullish($event.data)) {
-        download(filename, $event.data);
+        this.#backupWorker.onmessage = ($event: MessageEvent) => {
+          if (nonNullish($event.data)) {
+            download(filename, $event.data);
+          }
+
+          resolve();
+        };
+
+        await this.postMessage(type, settings);
+      } catch (err: unknown) {
+        reject(err);
       }
-    };
-
-    await this.postMessage(type, settings);
+    });
   }
 
   private filename(type: 'excel' | 'idb'): string {
