@@ -19,6 +19,8 @@ import {BackupService} from '../../lib/services/backup.service';
 import {RestoreService} from '../../lib/services/restore.service';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {testIds} from '../../lib/tests/test-ids.constants';
+import {testId} from '../../lib/tests/test.utils';
 import {Settings} from '../../lib/types/settings';
 import {emitError} from '../../lib/utils/utils.events';
 import {initAllData} from '../../lib/utils/utils.store';
@@ -59,6 +61,9 @@ const Backup: React.FC<RootProps> = (props) => {
         t('common:actions.cancel'),
         {
           text: t('common:actions.ok'),
+          htmlAttributes: {
+            ...testId(testIds.backup.restoreConfirm),
+          },
           handler: async () => {
             setProcessing(true);
 
@@ -136,6 +141,7 @@ const Backup: React.FC<RootProps> = (props) => {
           ref={inputRef}
           onChange={() => onInputChange()}
           className={styles.input}
+          {...testId(testIds.backup.restore)}
         />
       </>
     );
