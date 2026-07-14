@@ -4,7 +4,7 @@ import {initTestSuite} from './utils/init.utils';
 
 const getHomePage = initTestSuite(HomePage);
 
-test.only('should compute summary', async () => {
+test('should compute summary', async () => {
   const homePage = getHomePage();
 
   await homePage.restore(); // We need a client and project
