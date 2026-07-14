@@ -1,3 +1,7 @@
+export abstract class Storage {
+  abstract entries(): Promise<[string, unknown][]>;
+}
+
 export abstract class KeyedStorage<T> {
   protected readonly key: string;
 

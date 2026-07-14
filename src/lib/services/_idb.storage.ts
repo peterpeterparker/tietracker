@@ -1,5 +1,11 @@
-import {del, get, set} from 'idb-keyval';
-import {KeyedStorage} from './_storage';
+import {del, entries, get, set} from 'idb-keyval';
+import {KeyedStorage, Storage} from './_storage';
+
+export class IdbStorage extends Storage {
+  entries(): Promise<[string, unknown][]> {
+    return entries();
+  }
+}
 
 export class KeyedIdbStorage<T> extends KeyedStorage<T> {
   override get(): Promise<Option<T>> {

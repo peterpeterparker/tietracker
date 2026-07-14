@@ -13,12 +13,11 @@ import {
   writeFile,
 } from '../utils/utils.filesystem';
 import {isNullish, nonNullish} from '../utils/utils.nullish';
+import {backupExcel, backupZip} from '../workers/backup.worker';
 import {ServiceWithInvoices} from './_service';
 
 export class BackupService extends ServiceWithInvoices<Date> {
   static #instance: BackupService;
-
-  #backupWorker = new Worker('./workers/backup.js');
 
   private constructor() {
     super({key: 'backup'});
@@ -77,58 +76,44 @@ export class BackupService extends ServiceWithInvoices<Date> {
       throw new Error('Cannot access filesystem.');
     }
 
-    this.#backupWorker.onmessage = async ($event: MessageEvent) => {
-      if (nonNullish($event.data)) {
-        await writeFile(fileHandle, $event.data);
-      }
+    const backupFn = async (blob: Blob) => {
+      await writeFile(fileHandle, blob);
     };
 
-    await this.postMessage(type, settings);
+    await this.backupAndExport({type, settings, backupFn});
   }
 
   async exportMobileFileSystem(type: 'excel' | 'idb', settings: Settings): Promise<void> {
     const filename = this.filename(type);
 
-    this.#backupWorker.onmessage = async ($event: MessageEvent) => {
-      if (nonNullish($event.data)) {
-        const dir = await getMobileDir();
+    const backupFn = async (blob: Blob) => {
+      const dir = await getMobileDir();
 
-        const writeOptions: IWriteOptions = {
-          replace: true,
-          append: false,
-        };
+      const writeOptions: IWriteOptions = {
+        replace: true,
+        append: false,
+      };
 
-        await File.writeFile(dir.nativeURL, filename, $event.data, writeOptions);
+      await File.writeFile(dir.nativeURL, filename, blob, writeOptions);
 
-        await shareMobile(
-          `Tie Tracker - Backup - ${format(new Date(), 'yyyy-MM-dd')}`,
-          dir.nativeURL,
-          filename,
-        );
-      }
+      await shareMobile(
+        `Tie Tracker - Backup - ${format(new Date(), 'yyyy-MM-dd')}`,
+        dir.nativeURL,
+        filename,
+      );
     };
 
-    await this.postMessage(type, settings);
+    await this.backupAndExport({type, settings, backupFn});
   }
 
   async exportDownload(type: 'excel' | 'idb', settings: Settings): Promise<void> {
-    return new Promise<void>(async (resolve, reject) => {
-      try {
-        const filename = this.filename(type);
+    const filename = this.filename(type);
 
-        this.#backupWorker.onmessage = ($event: MessageEvent) => {
-          if (nonNullish($event.data)) {
-            download(filename, $event.data);
-          }
+    const backupFn = async (blob: Blob) => {
+      download(filename, blob);
+    };
 
-          resolve();
-        };
-
-        await this.postMessage(type, settings);
-      } catch (err: unknown) {
-        reject(err);
-      }
-    });
+    await this.backupAndExport({type, settings, backupFn});
   }
 
   private filename(type: 'excel' | 'idb'): string {
@@ -137,15 +122,38 @@ export class BackupService extends ServiceWithInvoices<Date> {
     }`;
   }
 
-  private async postMessage(type: 'excel' | 'idb', {currency, vat, signature}: Settings) {
+  private async backupAndExport({
+    type,
+    settings: {currency, vat, signature},
+    backupFn,
+  }: {
+    type: 'excel' | 'idb';
+    settings: Settings;
+    backupFn: (blob: Blob) => Promise<void>;
+  }) {
     await i18next.loadNamespaces('export');
 
-    this.#backupWorker.postMessage({
-      msg: `backup-${type}`,
+    const params = {
       currency: currency,
       vat,
       i18n: exportLabels(),
       signature,
-    });
+    };
+
+    const backup = async () => {
+      if (type === 'excel') {
+        return await backupExcel(params);
+      }
+
+      return await backupZip();
+    };
+
+    const result = await backup();
+
+    if (isNullish(result)) {
+      return;
+    }
+
+    await backupFn(result);
   }
 }
