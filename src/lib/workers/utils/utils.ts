@@ -1,4 +1,4 @@
-import {KeyedIdbStorage} from '../../services/_idb.storage';
+import {KeyedIdbStorage} from '../../storages/idb.storage';
 import {Client} from '../../types/client';
 import {Project, ProjectData, ProjectId} from '../../types/project';
 import {isNullish, nonNullish} from '../../utils/utils.nullish';

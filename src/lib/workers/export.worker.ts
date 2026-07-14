@@ -1,4 +1,4 @@
-import {KeyedIdbStorage} from '../services/_idb.storage';
+import {KeyedIdbStorage} from '../storages/idb.storage';
 import {Invoice} from '../store/interfaces/invoice';
 import type {Currency} from '../types/currency';
 import {DateString} from '../types/date';

@@ -1,5 +1,5 @@
 import {del, entries, get, set} from 'idb-keyval';
-import {KeyedStorage, Storage} from './_storage';
+import {KeyedStorage, Storage} from './storage';
 
 export class IdbStorage extends Storage {
   entries(): Promise<[string, unknown][]> {

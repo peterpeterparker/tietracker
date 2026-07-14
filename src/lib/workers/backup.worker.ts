@@ -1,5 +1,5 @@
 import JSZip from 'jszip';
-import {IdbStorage, KeyedIdbStorage} from '../services/_idb.storage';
+import {IdbStorage, KeyedIdbStorage} from '../storages/idb.storage';
 import type {Currency} from '../types/currency';
 import {DateString} from '../types/date';
 import {Task} from '../types/task';

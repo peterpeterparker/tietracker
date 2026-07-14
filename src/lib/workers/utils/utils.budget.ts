@@ -1,4 +1,4 @@
-import {KeyedIdbStorage} from '../../services/_idb.storage';
+import {KeyedIdbStorage} from '../../storages/idb.storage';
 import {Project, ProjectId} from '../../types/project';
 import {isNullish, nonNullish} from '../../utils/utils.nullish';
 import {ExportableInvoices} from './utils.export';

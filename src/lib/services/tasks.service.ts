@@ -7,13 +7,13 @@ import {
   subMinutes,
 } from 'date-fns';
 import {v4 as uuid} from 'uuid';
+import {KeyedIdbStorage} from '../storages/idb.storage';
 import {TaskInProgress, TaskInProgressData} from '../store/interfaces/task.inprogress';
 import type {DateString} from '../types/date';
 import type {Project} from '../types/project';
 import type {Settings} from '../types/settings';
 import type {Task, TaskData} from '../types/task';
 import {isNullish, nonNullish} from '../utils/utils.nullish';
-import {KeyedIdbStorage} from './_idb.storage';
 import {ServiceWithInvoices} from './_service';
 
 export class TasksService extends ServiceWithInvoices<TaskInProgress> {
