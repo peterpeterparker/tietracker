@@ -49,7 +49,9 @@ export abstract class AppPage {
       .getByTestId(testIds.backup.restore)
       .setInputFiles(join(process.cwd(), 'e2e', 'fixtures', 'backup.zip'));
 
-    await expect(this.#page.getByTestId(testIds.backup.restoreConfirm)).toBeVisible(TIMEOUT_AVERAGE);
+    await expect(this.#page.getByTestId(testIds.backup.restoreConfirm)).toBeVisible(
+      TIMEOUT_AVERAGE,
+    );
     await this.#page.getByTestId(testIds.backup.restoreConfirm).click();
   }
 }

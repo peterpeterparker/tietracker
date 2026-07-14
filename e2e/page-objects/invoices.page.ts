@@ -1,9 +1,9 @@
-import {testIds} from '../../src/lib/tests/test-ids.constants';
-import {AppPage} from './app.page';
 import {expect} from '@playwright/test';
-import {TIMEOUT_AVERAGE} from '../constants/e2e.constants';
 import {join} from 'node:path';
+import {testIds} from '../../src/lib/tests/test-ids.constants';
+import {TIMEOUT_AVERAGE} from '../constants/e2e.constants';
 import {compareWorkbooks, readWorkbook} from '../utils/excel.utils';
+import {AppPage} from './app.page';
 
 export class InvoicesPage extends AppPage {
   readonly #DOWNLOAD_PATH = join(process.cwd(), 'tmp', 'invoice.xlsx');

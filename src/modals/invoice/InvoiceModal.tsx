@@ -20,22 +20,22 @@ import {close} from 'ionicons/icons';
 import React, {CSSProperties, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
+import {isTest} from '../../lib/env';
 import {ExportService} from '../../lib/services/export.service';
 import {InvoicesPeriod, InvoicesService} from '../../lib/services/invoices.service';
 import {Invoice} from '../../lib/store/interfaces/invoice';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {testIds} from '../../lib/tests/test-ids.constants';
+import {testId} from '../../lib/tests/test.utils';
 import {Settings} from '../../lib/types/settings';
 import {budgetRatio} from '../../lib/utils/utils.budget';
 import {contrast} from '../../lib/utils/utils.color';
 import {formatCurrency} from '../../lib/utils/utils.currency';
 import {emitError} from '../../lib/utils/utils.events';
+import {isNullish} from '../../lib/utils/utils.nullish';
 import {pickerColor} from '../../lib/utils/utils.picker';
 import {formatTime} from '../../lib/utils/utils.time';
-import {testId} from '../../lib/tests/test.utils';
-import {testIds} from '../../lib/tests/test-ids.constants';
-import {isTest} from '../../lib/env';
-import {isNullish} from '../../lib/utils/utils.nullish';
 
 interface Props extends RootProps {
   closeAction: Function;
@@ -129,8 +129,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
         bill,
         settings.signature,
       );
-    }
-    ;
+    };
     try {
       if (isTest()) {
         // Playwright does not support File System API?
