@@ -27,6 +27,7 @@ export default defineConfig({
     baseURL: 'http://localhost:4173',
     trace: 'on',
     ...(DEV && {headless: false}),
+    timezoneId: 'Europe/Zurich',
   },
   projects: [
     {
