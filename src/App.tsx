@@ -136,7 +136,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
             </IonRouterOutlet>
 
             <IonTabBar slot="bottom">
-              <IonTabButton tab="home" href="/home">
+              <IonTabButton tab="home" href="/home" {...testId(testIds.nav.home)}>
                 {selectedTab === 'home' ? (
                   <IonIcon src="/assets/icon/logo.svg" aria-label="Tie Tracker logo" />
                 ) : (

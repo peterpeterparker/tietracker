@@ -8,6 +8,8 @@ import {useSelector} from 'react-redux';
 import {TaskItem as TaskItemStore} from '../../lib/store/interfaces/task.item';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {testIds} from '../../lib/tests/test-ids.constants';
+import {testId} from '../../lib/tests/test.utils';
 import {Project} from '../../lib/types/project';
 import {format} from '../../lib/utils/utils.date';
 import TaskItem from '../taskitem/TaskItem';
@@ -86,7 +88,8 @@ const Tasks: React.FC<Props> = (props: Props) => {
         fill="outline"
         color="medium"
         size="small"
-        aria-label={t('entries.add_task')}>
+        aria-label={t('entries.add_task')}
+        {...testId(testIds.tasks.openAddEntry)}>
         {t('entries.add_task')}
       </IonButton>
     );
