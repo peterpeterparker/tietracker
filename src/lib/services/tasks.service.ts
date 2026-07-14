@@ -13,7 +13,7 @@ import type {Project} from '../types/project';
 import type {Settings} from '../types/settings';
 import type {Task, TaskData} from '../types/task';
 import {isNullish, nonNullish} from '../utils/utils.nullish';
-import {IdbStorage} from './_idb.storage';
+import {KeyedIdbStorage} from './_idb.storage';
 import {ServiceWithInvoices} from './_service';
 
 export class TasksService extends ServiceWithInvoices<TaskInProgress> {
@@ -172,7 +172,7 @@ export class TasksService extends ServiceWithInvoices<TaskInProgress> {
 
     const storeDate = lightFormat(task.data.from, 'yyyy-MM-dd');
 
-    const storage = new IdbStorage<Task[]>({key: `tasks-${storeDate}`});
+    const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${storeDate}`});
 
     let tasks = await storage.get();
 
@@ -222,7 +222,7 @@ export class TasksService extends ServiceWithInvoices<TaskInProgress> {
 
     tasks[index] = taskToPersist;
 
-    const storage = new IdbStorage<Task[]>({key: `tasks-${day}`});
+    const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${day}`});
     await storage.set(tasks);
 
     await this.addTaskToInvoices(day);
@@ -243,12 +243,12 @@ export class TasksService extends ServiceWithInvoices<TaskInProgress> {
 
     tasks.splice(index, 1);
 
-    const storage = new IdbStorage<Task[]>({key: `tasks-${day}`});
+    const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${day}`});
     await storage.set(tasks);
   }
 
   private async load(day: DateString): Promise<Task[]> {
-    const storage = new IdbStorage<Task[]>({key: `tasks-${day}`});
+    const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${day}`});
     const tasks = await storage.get();
 
     if (isNullish(tasks) || tasks.length <= 0) {
@@ -263,7 +263,7 @@ export class TasksService extends ServiceWithInvoices<TaskInProgress> {
       return undefined;
     }
 
-    const storage = new IdbStorage<Task[]>({key: `tasks-${day}`});
+    const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${day}`});
     const tasks = await storage.get();
 
     if (isNullish(tasks) || tasks.length <= 0) {

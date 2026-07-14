@@ -1,4 +1,4 @@
-export abstract class Storage<T> {
+export abstract class KeyedStorage<T> {
   protected readonly key: string;
 
   constructor({key}: {key: string}) {
