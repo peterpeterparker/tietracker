@@ -43,8 +43,8 @@ export const compareZips = async ({
     const expectedJson: unknown = JSON.parse(expectedText);
 
     if (entryName === 'backup.json') {
-      expect(new Date(actualJson as string).getTime()).toBeGreaterThan(
-        new Date(expectedJson as string).getTime(),
+      expect(new Date(actualJson as string | number).getTime()).toEqual(
+        new Date(expectedJson as string | number).getTime(),
       );
     } else {
       expect(actualJson, `Mismatch in entry "${entryName}"`).toEqual(expectedJson);

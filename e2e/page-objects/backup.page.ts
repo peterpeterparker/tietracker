@@ -24,6 +24,6 @@ export class BackupPage extends AppPage {
     const fixturePath = join(process.cwd(), 'e2e', 'fixtures', 'backup.zip');
     const expected = await readZip({filePath: fixturePath});
 
-    compareZips({actual, expected});
+    await compareZips({actual, expected});
   }
 }
