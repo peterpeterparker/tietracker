@@ -1,3 +1,4 @@
-export const isDev = (): boolean => import.meta.env.DEV;
+export const isTest = (): boolean => JSON.parse(import.meta.env.VITE_E2E ?? "false") === true;
 
-export const isProd = (): boolean => import.meta.env.PROD;
+
+console.log(import.meta.env, isTest());

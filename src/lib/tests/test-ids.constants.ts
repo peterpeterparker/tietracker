@@ -7,6 +7,7 @@ export const testIds = {
   },
   invoices: {
     open: 'btn-open-export',
+    export: 'btn-export-invoice',
   },
   more: {
     openBackup: 'btn-open-backup',

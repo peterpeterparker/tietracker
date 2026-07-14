@@ -5,8 +5,8 @@ const DEV = (process.env.NODE_ENV ?? 'production') === 'development';
 export default defineConfig({
   webServer: [
     {
-      command: 'npm run dev',
-      url: 'http://localhost:5173',
+      command: 'npm run build:e2e && npm run preview',
+      url: 'http://localhost:4173',
       reuseExistingServer: true,
     },
   ],
@@ -24,7 +24,7 @@ export default defineConfig({
   },
   use: {
     testIdAttribute: 'data-tid',
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:4173',
     trace: 'on',
     ...(DEV && {headless: false}),
   },

@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "build:e2e": "tsc && VITE_E2E=true vite build",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint",
