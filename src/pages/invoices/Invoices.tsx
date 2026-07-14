@@ -21,6 +21,8 @@ import {BackupInvoices} from '../../components/backup/BackupInvoices';
 import {Invoice} from '../../lib/store/interfaces/invoice';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector} from '../../lib/store/thunks/index.thunks';
+import {testIds} from '../../lib/tests/test-ids.constants';
+import {testId} from '../../lib/tests/test.utils';
 import {Settings} from '../../lib/types/settings';
 import {contrast} from '../../lib/utils/utils.color';
 import {formatCurrency} from '../../lib/utils/utils.currency';
@@ -80,7 +82,8 @@ const Invoices: React.FC = () => {
               onClick={() => setSelectedInvoice(invoice)}
               mode="md"
               className="ion-activatable client"
-              color="card">
+              color="card"
+              {...testId(testIds.invoices.open)}>
               <div
                 style={{
                   background: invoice.client ? invoice.client.color : undefined,
