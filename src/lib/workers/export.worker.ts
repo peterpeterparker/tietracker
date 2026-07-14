@@ -1,4 +1,4 @@
-import {IdbStorage} from '../services/_idb.storage';
+import {KeyedIdbStorage} from '../services/_idb.storage';
 import {Invoice} from '../store/interfaces/invoice';
 import type {Currency} from '../types/currency';
 import {DateString} from '../types/date';
@@ -116,7 +116,7 @@ const exportInvoice = async ({
   projects: WorkerProjects;
   filterProjectId: ProjectId;
 }): Promise<Option<ExportableInvoices>> => {
-  const storage = new IdbStorage<Task[]>({key: `tasks-${invoice}`});
+  const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${invoice}`});
   const tasks = await storage.get();
 
   if (isNullish(tasks) || tasks.length <= 0) {
@@ -153,7 +153,7 @@ const billInvoices = async ({
       return;
     }
 
-    const storage = new IdbStorage<Task[]>({key: `tasks-${invoice}`});
+    const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${invoice}`});
     const tasks = await storage.get();
 
     if (isNullish(tasks) || tasks.length <= 0) {

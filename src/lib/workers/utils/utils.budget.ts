@@ -1,4 +1,4 @@
-import {IdbStorage} from '../../services/_idb.storage';
+import {KeyedIdbStorage} from '../../services/_idb.storage';
 import {Project, ProjectId} from '../../types/project';
 import {isNullish, nonNullish} from '../../utils/utils.nullish';
 import {ExportableInvoices} from './utils.export';
@@ -16,7 +16,7 @@ export const updateBudget = async ({
     return;
   }
 
-  const storage = new IdbStorage<Project[]>({key: 'projects'});
+  const storage = new KeyedIdbStorage<Project[]>({key: 'projects'});
   const projects = await storage.get();
 
   if (isNullish(projects)) {
