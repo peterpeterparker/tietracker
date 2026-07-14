@@ -22,8 +22,6 @@ export const initTestSuite = <T extends AppPage>(
     });
 
     await appPage.goto();
-
-    await appPage.restore();
   });
 
   return (): T => appPage;

@@ -7,9 +7,21 @@ const getInvoicesPage = initTestSuite(InvoicesPage);
 test('should export an invoice', async () => {
   const invoicesPage = getInvoicesPage();
 
+  await invoicesPage.restore();
+
   await invoicesPage.gotoInvoices();
 
-  await invoicesPage.export();
+  await invoicesPage.exportInvoice();
 
-  await invoicesPage.assertExcel();
+  await invoicesPage.assertInvoiceContent();
+
+  await invoicesPage.closeModal();
+});
+
+test('should export all invoices', async () => {
+  const invoicesPage = getInvoicesPage();
+
+  await invoicesPage.backupInvoices();
+
+  await invoicesPage.assertInvoicesContent();
 });
