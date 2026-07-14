@@ -5,9 +5,13 @@ export const testIds = {
     more: 'btn-nav-more',
     invoices: 'btn-nav-invoices',
   },
+  header: {
+    close: 'btn-header-close',
+  },
   invoices: {
     open: 'btn-open-export',
-    export: 'btn-export-invoice',
+    exportInvoice: 'btn-export-invoice',
+    backupInvoices: 'btn-backup-invoices',
   },
   more: {
     openBackup: 'btn-open-backup',
