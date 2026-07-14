@@ -14,7 +14,7 @@ import {
   writeFile,
 } from '../utils/utils.filesystem';
 import {isNullish} from '../utils/utils.nullish';
-import {exportInvoices} from '../workers/export.worker';
+import {exportInvoices} from './workers/export.worker';
 
 export class ExportService {
   static #instance: ExportService;

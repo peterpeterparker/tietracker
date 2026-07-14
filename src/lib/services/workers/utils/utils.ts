@@ -1,7 +1,7 @@
+import {Client} from '../../../types/client';
+import {Project, ProjectData, ProjectId} from '../../../types/project';
+import {isNullish, nonNullish} from '../../../utils/utils.nullish';
 import {KeyedIdbStorage} from '../../storages/idb.storage';
-import {Client} from '../../types/client';
-import {Project, ProjectData, ProjectId} from '../../types/project';
-import {isNullish, nonNullish} from '../../utils/utils.nullish';
 import {WorkerClients, WorkerProjects} from './utils.types';
 
 export const loadClients = async (): Promise<Option<WorkerClients>> => {

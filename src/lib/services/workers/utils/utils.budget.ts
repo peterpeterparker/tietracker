@@ -1,6 +1,6 @@
+import {Project, ProjectId} from '../../../types/project';
+import {isNullish, nonNullish} from '../../../utils/utils.nullish';
 import {KeyedIdbStorage} from '../../storages/idb.storage';
-import {Project, ProjectId} from '../../types/project';
-import {isNullish, nonNullish} from '../../utils/utils.nullish';
 import {ExportableInvoices} from './utils.export';
 
 export const updateBudget = async ({

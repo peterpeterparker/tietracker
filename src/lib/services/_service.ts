@@ -1,7 +1,7 @@
-import {KeyedIdbStorage} from '../storages/idb.storage';
-import {KeyedStorage} from '../storages/storage';
 import {DateString} from '../types/date';
 import {ProjectId} from '../types/project';
+import {KeyedIdbStorage} from './storages/idb.storage';
+import {KeyedStorage} from './storages/storage';
 
 export abstract class Service<T> {
   readonly #storage: KeyedStorage<T>;
