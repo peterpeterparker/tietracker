@@ -4,10 +4,12 @@ import {initTestSuite} from './utils/init.utils';
 
 const getInvoicesPage = initTestSuite(InvoicesPage);
 
-test('restore', async () => {
+test('should export an invoice', async () => {
   const invoicesPage = getInvoicesPage();
 
   await invoicesPage.gotoInvoices();
 
   await invoicesPage.export();
+
+  await invoicesPage.assertExcel();
 });
