@@ -1,6 +1,5 @@
 export interface TaskDataInvoice {
   status: 'open' | 'billed';
-  billed_at?: Date | number;
 }
 
 export interface TaskData {
