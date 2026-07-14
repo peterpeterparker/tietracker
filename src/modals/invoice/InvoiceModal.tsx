@@ -227,7 +227,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
                 : ''}
             </IonTitle>
             <IonButtons slot="start">
-              <IonButton onClick={() => props.closeAction()}>
+              <IonButton onClick={() => props.closeAction()} {...testId(testIds.header.close)}>
                 <IonIcon icon={close} slot="icon-only"></IonIcon>
               </IonButton>
             </IonButtons>
@@ -426,7 +426,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
             '--color-activated': color,
           } as CSSProperties
         }
-        {...testId(testIds.invoices.export)}>
+        {...testId(testIds.invoices.exportInvoice)}>
         <IonLabel>{t('export:excel')}</IonLabel>
       </IonButton>
     );

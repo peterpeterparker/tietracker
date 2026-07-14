@@ -36,8 +36,16 @@ export abstract class AppPage {
   }
 
   async open(testId: TestId): Promise<void> {
+    await this.click(testId);
+  }
+
+  async click(testId: TestId): Promise<void> {
     await expect(this.#page.getByTestId(testId)).toBeVisible(TIMEOUT_AVERAGE);
     await this.#page.getByTestId(testId).click();
+  }
+
+  async closeModal(): Promise<void> {
+    await this.click(testIds.header.close);
   }
 
   async restore(): Promise<void> {

@@ -2,6 +2,7 @@ import {File, IWriteOptions} from '@awesome-cordova-plugins/file';
 import {isPlatform} from '@ionic/react';
 import {differenceInWeeks, format} from 'date-fns';
 import i18next from 'i18next';
+import {isTest} from '../env';
 import type {Settings} from '../types/settings';
 import {exportLabels} from '../utils/utils.export';
 import {
@@ -54,7 +55,10 @@ export class BackupService extends ServiceWithInvoices<Date> {
   }
 
   async backup(type: 'excel' | 'idb', settings: Settings) {
-    if (isPlatform('hybrid')) {
+    if (isTest()) {
+      // Playwright does not support File System API?
+      await this.exportDownload(type, settings);
+    } else if (isPlatform('hybrid')) {
       await this.exportMobileFileSystem(type, settings);
     } else if ('showSaveFilePicker' in window) {
       await this.exportNativeFileSystem(type, settings);

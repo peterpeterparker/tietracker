@@ -6,28 +6,52 @@ import {compareWorkbooks, readWorkbook} from '../utils/excel.utils';
 import {AppPage} from './app.page';
 
 export class InvoicesPage extends AppPage {
-  readonly #DOWNLOAD_PATH = join(process.cwd(), 'tmp', 'invoice.xlsx');
+  readonly #DOWNLOAD_INVOICE_PATH = join(process.cwd(), 'tmp', 'invoice.xlsx');
+  readonly #DOWNLOAD_INVOICES_PATH = join(process.cwd(), 'tmp', 'invoices.xlsx');
 
   async gotoInvoices(): Promise<void> {
     await this.open(testIds.nav.invoices);
   }
 
-  async export(): Promise<void> {
+  async exportInvoice(): Promise<void> {
     await this.open(testIds.invoices.open);
 
-    await expect(this.page.getByTestId(testIds.invoices.export)).toBeVisible(TIMEOUT_AVERAGE);
+    await expect(this.page.getByTestId(testIds.invoices.exportInvoice)).toBeVisible(
+      TIMEOUT_AVERAGE,
+    );
 
     const downloadPromise = this.page.waitForEvent('download');
-    await this.page.getByTestId(testIds.invoices.export).click();
+    await this.page.getByTestId(testIds.invoices.exportInvoice).click();
     const download = await downloadPromise;
 
-    await download.saveAs(this.#DOWNLOAD_PATH);
+    await download.saveAs(this.#DOWNLOAD_INVOICE_PATH);
   }
 
-  async assertExcel(): Promise<void> {
-    const actual = await readWorkbook({filePath: this.#DOWNLOAD_PATH});
+  async backupInvoices(): Promise<void> {
+    await expect(this.page.getByTestId(testIds.invoices.backupInvoices)).toBeVisible(
+      TIMEOUT_AVERAGE,
+    );
+
+    const downloadPromise = this.page.waitForEvent('download');
+    await this.page.getByTestId(testIds.invoices.backupInvoices).click();
+    const download = await downloadPromise;
+
+    await download.saveAs(this.#DOWNLOAD_INVOICES_PATH);
+  }
+
+  async assertInvoiceContent(): Promise<void> {
+    const actual = await readWorkbook({filePath: this.#DOWNLOAD_INVOICE_PATH});
 
     const fixturePath = join(process.cwd(), 'e2e', 'fixtures', 'invoice.xlsx');
+    const expected = await readWorkbook({filePath: fixturePath});
+
+    compareWorkbooks({actual, expected});
+  }
+
+  async assertInvoicesContent(): Promise<void> {
+    const actual = await readWorkbook({filePath: this.#DOWNLOAD_INVOICES_PATH});
+
+    const fixturePath = join(process.cwd(), 'e2e', 'fixtures', 'invoices.xlsx');
     const expected = await readWorkbook({filePath: fixturePath});
 
     compareWorkbooks({actual, expected});

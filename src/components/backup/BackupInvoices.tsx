@@ -5,6 +5,8 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {BackupService} from '../../lib/services/backup.service';
 import {RootState} from '../../lib/store/reducers';
+import {testIds} from '../../lib/tests/test-ids.constants';
+import {testId} from '../../lib/tests/test.utils';
 import {Settings} from '../../lib/types/settings';
 import {emitError} from '../../lib/utils/utils.events';
 import styles from './BackupInvoices.module.scss';
@@ -31,7 +33,10 @@ export const BackupInvoices = () => {
   return (
     <>
       <IonFab vertical="bottom" horizontal="end" slot="fixed" className={`${styles.backup}`}>
-        <IonFabButton onClick={() => doBackup()} color="button">
+        <IonFabButton
+          onClick={() => doBackup()}
+          color="button"
+          {...testId(testIds.invoices.backupInvoices)}>
           <IonIcon icon={saveOutline} />
         </IonFabButton>
 
