@@ -8,4 +8,11 @@ export const testIds = {
   invoices: {
     open: 'btn-open-export',
   },
+  more: {
+    openBackup: 'btn-open-backup',
+  },
+  backup: {
+    restore: 'input-restore',
+    restoreConfirm: "btn-restore-confirm",
+  },
 } as const satisfies TestIds;

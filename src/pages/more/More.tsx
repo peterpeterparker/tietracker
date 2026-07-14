@@ -11,6 +11,8 @@ import {
 import {calendarNumber, information, logoGithub, options, server} from 'ionicons/icons';
 import {useTranslation} from 'react-i18next';
 import {useHistory} from 'react-router';
+import {testIds} from '../../lib/tests/test-ids.constants';
+import {testId} from '../../lib/tests/test.utils';
 import styles from './More.module.scss';
 
 export const More = () => {
@@ -43,7 +45,8 @@ export const More = () => {
               detail={true}
               button={true}
               onClick={() => navigate('/backup')}
-              className={styles.item}>
+              className={styles.item}
+              {...testId(testIds.more.openBackup)}>
               <IonIcon slot="start" icon={server} className={styles.icon} />
               <IonLabel>{t('common:navigation.backup')}</IonLabel>
             </IonItem>
