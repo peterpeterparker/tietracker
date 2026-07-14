@@ -19,5 +19,6 @@ export const testIds = {
   backup: {
     restore: 'input-restore',
     restoreConfirm: 'btn-restore-confirm',
+    backup: 'btn-backup',
   },
 } as const satisfies TestIds;
