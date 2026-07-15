@@ -1,9 +1,17 @@
-import {del, entries, get, set} from 'idb-keyval';
+import {clear, del, entries, get, set, setMany} from 'idb-keyval';
 import {KeyedStorage, Storage} from './storage';
 
 export class IdbStorage extends Storage {
-  entries(): Promise<[string, unknown][]> {
+  override entries(): Promise<[string, unknown][]> {
     return entries();
+  }
+
+  override async clear(): Promise<void> {
+    await clear();
+  }
+
+  override async setMany(entries: [string, unknown][]): Promise<void> {
+    await setMany(entries);
   }
 }
 
