@@ -1,11 +1,26 @@
 import {Capacitor} from '@capacitor/core';
-import {Directory, Encoding, FileInfo, Filesystem, PluginError} from '@capacitor/filesystem';
+import {
+  Directory,
+  Encoding,
+  type FileInfo,
+  Filesystem,
+  PluginError,
+  type ReadFileOptions,
+  type WriteFileOptions,
+} from '@capacitor/filesystem';
 import {nonNullish} from '../../utils/utils.nullish';
 import {KeyedStorage, Storage} from './storage';
 
-const DATA_DIR = 'tietracker';
+// TODO: option Directory.Library or Directory.LibraryNoCloud
+const DIRECTORY: Directory = Directory.Library;
 
-const filePath = (key: string): string => `${DATA_DIR}/${key}.json`;
+const ENCODING: Pick<ReadFileOptions, 'encoding'> | Pick<WriteFileOptions, 'encoding'> = {
+  encoding: Encoding.UTF8,
+};
+
+const STORAGE_DIR_PATH = '__storage__';
+
+const filePath = (key: string): string => `${STORAGE_DIR_PATH}/${key}.json`;
 
 // https://capacitorjs.com/docs/apis/filesystem#errors
 const FILE_NOT_FOUND_ERROR_CODE = 'OS-PLUG-FILE-0008';
@@ -22,9 +37,9 @@ const isNotFoundError = (err: unknown): boolean =>
 const get = async <T>(key: string): Promise<Option<T>> => {
   try {
     const {data} = await Filesystem.readFile({
+      ...ENCODING,
       path: filePath(key),
-      directory: Directory.Data,
-      encoding: Encoding.UTF8,
+      directory: DIRECTORY,
     });
 
     const text = data instanceof Blob ? await data.text() : data;
@@ -42,14 +57,14 @@ const get = async <T>(key: string): Promise<Option<T>> => {
 const ensureDataDirExists = async (): Promise<void> => {
   try {
     await Filesystem.stat({
-      path: DATA_DIR,
-      directory: Directory.Data,
+      path: STORAGE_DIR_PATH,
+      directory: DIRECTORY,
     });
   } catch {
     // stat rejects if the path does not exist yet.
     await Filesystem.mkdir({
-      path: DATA_DIR,
-      directory: Directory.Data,
+      path: STORAGE_DIR_PATH,
+      directory: DIRECTORY,
       recursive: true,
     });
   }
@@ -59,9 +74,9 @@ const set = async (key: string, value: unknown): Promise<void> => {
   await ensureDataDirExists();
 
   await Filesystem.writeFile({
+    ...ENCODING,
     path: filePath(key),
-    directory: Directory.Data,
-    encoding: Encoding.UTF8,
+    directory: DIRECTORY,
     data: JSON.stringify(value),
   });
 };
@@ -69,8 +84,8 @@ const set = async (key: string, value: unknown): Promise<void> => {
 const listFiles = async (): Promise<{files: FileInfo[]}> => {
   try {
     return await Filesystem.readdir({
-      path: DATA_DIR,
-      directory: Directory.Data,
+      path: STORAGE_DIR_PATH,
+      directory: DIRECTORY,
     });
   } catch (err: unknown) {
     if (isNotFoundError(err)) {
@@ -101,8 +116,8 @@ export class FilesystemStorage extends Storage {
   override async clear(): Promise<void> {
     try {
       await Filesystem.rmdir({
-        path: DATA_DIR,
-        directory: Directory.Data,
+        path: STORAGE_DIR_PATH,
+        directory: DIRECTORY,
         recursive: true,
       });
     } catch (err: unknown) {
@@ -132,7 +147,7 @@ export class KeyedFilesystemStorage<T> extends KeyedStorage<T> {
     try {
       await Filesystem.deleteFile({
         path: filePath(this.key),
-        directory: Directory.Data,
+        directory: DIRECTORY,
       });
     } catch (err: unknown) {
       if (isNotFoundError(err)) {
