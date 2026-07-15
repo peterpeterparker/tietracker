@@ -3,11 +3,11 @@
     "no_description": "Without description"
   },
   "entries": {
-    "title": "Diary",
-    "empty": "No entries registered on {{selectedDate}}.",
-    "label": "Entries registered on {{selectedDate}}.",
+    "title": "Tasks",
+    "empty": "No tasks registered on {{selectedDate}}.",
+    "label": "Tasks registered on {{selectedDate}}.",
     "select_date": "Select another date",
-    "add_task": "Add an entry"
+    "add_task": "Add a task"
   },
   "tracker": {
     "stop": "Stop current task",
@@ -26,8 +26,8 @@
   },
   "delete": {
     "warning": "WARNING",
-    "message": "This entry has been billed. Are you sure you want to delete it?",
-    "confirm": "Are you sure you want to delete this entry?",
+    "message": "This task has been billed. Are you sure you want to delete it?",
+    "confirm": "Are you sure you want to delete this task?",
     "delete": "Delete",
     "cancel": "Cancel"
   }
