@@ -28,12 +28,12 @@ test('should export all invoices', async () => {
   await invoicesPage.assertInvoicesContent();
 });
 
-test('should list project invoices', async () => {
+test('should list project invoice', async () => {
   const invoicesPage = getInvoicesPage();
 
   await invoicesPage.gotoInvoices();
 
   await invoicesPage.openInvoiceDetails();
 
-  await invoicesPage.assertProjectInvoicesLoaded();
+  await invoicesPage.assertProjectInvoice();
 });

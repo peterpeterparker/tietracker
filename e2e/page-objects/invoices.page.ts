@@ -59,7 +59,7 @@ export class InvoicesPage extends AppPage {
     compareWorkbooks({actual, expected});
   }
 
-  async assertProjectInvoicesLoaded(): Promise<void> {
+  async assertProjectInvoice(): Promise<void> {
     await this.page.waitForTimeout(1000);
 
     await expect(this.page.locator('body')).not.toContainText(
