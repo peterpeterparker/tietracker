@@ -22,6 +22,9 @@ export const initTestSuite = <T extends AppPage>(
     });
 
     await appPage.goto();
+
+    // Try to reduce Ionic CI flakiness
+    await page.waitForSelector('ion-app.hydrated');
   });
 
   return (): T => appPage;
