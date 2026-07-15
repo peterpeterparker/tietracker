@@ -1,10 +1,9 @@
 import {emitError} from '../utils/utils.events';
 import {isNullish} from '../utils/utils.nullish';
+import {restore} from './workers/restore.worker';
 
 export class RestoreService {
   static #instance: RestoreService;
-
-  #restoreWorker = new Worker('./workers/restore.js');
 
   private constructor() {}
 
@@ -21,21 +20,16 @@ export class RestoreService {
       return;
     }
 
-    this.#restoreWorker.onmessage = async ($event: MessageEvent) => {
-      if ($event.data?.result === 'error') {
-        emitError($event.data.msg);
-      }
+    const result = await restore({zip});
 
-      await done($event.data?.result === 'success');
-    };
+    if (result.status === 'error') {
+      emitError(
+        result.err instanceof Error
+          ? result.err.message
+          : 'Unexpected error while closing invoices',
+      );
+    }
 
-    await this.postMessage(zip);
-  }
-
-  private async postMessage(zip: Blob) {
-    this.#restoreWorker.postMessage({
-      msg: `restore-idb`,
-      zip,
-    });
+    await done(result.status === 'success');
   }
 }

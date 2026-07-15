@@ -1,5 +1,7 @@
 export abstract class Storage {
   abstract entries(): Promise<[string, unknown][]>;
+  abstract clear(): Promise<void>;
+  abstract setMany(entries: [string, unknown][]): Promise<void>;
 }
 
 export abstract class KeyedStorage<T> {
