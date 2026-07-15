@@ -4,14 +4,14 @@ import {DateString} from '../../types/date';
 import {Task} from '../../types/task';
 import {i18nExportLabels} from '../../utils/utils.export';
 import {isNullish, nonNullish} from '../../utils/utils.nullish';
-import {IdbStorage, KeyedIdbStorage} from '../storages/idb.storage';
+import {FilesystemStorage, KeyedFilesystemStorage} from '../storages/filesystem.storage';
 import {loadClients, loadProjects} from './utils/utils';
 import {backupToExcel} from './utils/utils.excel';
 import {convertTasks, ExportableInvoices} from './utils/utils.export';
 import {WorkerClients, WorkerProjects} from './utils/utils.types';
 
 export const backupZip = async (): Promise<Option<Blob>> => {
-  const storage = new IdbStorage();
+  const storage = new FilesystemStorage();
   const entries = await storage.entries();
 
   if (isNullish(entries) || entries.length <= 0) {
@@ -39,7 +39,7 @@ interface BackupExcelWorkerParams {
 }
 
 export const backupExcel = async (params: BackupExcelWorkerParams): Promise<Option<Blob>> => {
-  const storage = new KeyedIdbStorage<DateString[]>({key: 'invoices'});
+  const storage = new KeyedFilesystemStorage<DateString[]>({key: 'invoices'});
   const invoices = await storage.get();
 
   if (isNullish(invoices) || invoices.length <= 0) {
@@ -111,7 +111,7 @@ const backupInvoice = async ({
   projects: WorkerProjects;
   clients: WorkerClients;
 }): Promise<Option<ExportableInvoices>> => {
-  const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${invoice}`});
+  const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${invoice}`});
   const tasks = await storage.get();
 
   if (isNullish(tasks) || tasks.length <= 0) {

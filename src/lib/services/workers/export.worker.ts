@@ -5,7 +5,7 @@ import {ProjectId} from '../../types/project';
 import {Task} from '../../types/task';
 import {i18nExportLabels} from '../../utils/utils.export';
 import {isNullish, nonNullish} from '../../utils/utils.nullish';
-import {KeyedIdbStorage} from '../storages/idb.storage';
+import {KeyedFilesystemStorage} from '../storages/filesystem.storage';
 import {loadProjects} from './utils/utils';
 import {updateBudget} from './utils/utils.budget';
 import {exportToExcel} from './utils/utils.excel';
@@ -118,7 +118,7 @@ const exportInvoice = async ({
   projects: WorkerProjects;
   filterProjectId: ProjectId;
 }): Promise<Option<ExportableInvoices>> => {
-  const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${invoice}`});
+  const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${invoice}`});
   const tasks = await storage.get();
 
   if (isNullish(tasks) || tasks.length <= 0) {
@@ -154,7 +154,7 @@ const billInvoices = async ({
       return;
     }
 
-    const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${invoice}`});
+    const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${invoice}`});
     const tasks = await storage.get();
 
     if (isNullish(tasks) || tasks.length <= 0) {

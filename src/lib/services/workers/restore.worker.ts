@@ -1,12 +1,12 @@
 import JSZip from 'jszip';
 import {Result} from '../../utils/utils.fn';
 import {nonNullish} from '../../utils/utils.nullish';
-import {IdbStorage} from '../storages/idb.storage';
+import {FilesystemStorage} from '../storages/filesystem.storage';
 
 export const restore = async (args: {zip: Blob}): Promise<Result<undefined>> => {
   try {
-    await cleanIdb();
-    await restoreIdb(args);
+    await cleanStorage();
+    await restoreStorage(args);
 
     return {status: 'success', result: undefined};
   } catch (err: unknown) {
@@ -14,7 +14,7 @@ export const restore = async (args: {zip: Blob}): Promise<Result<undefined>> => 
   }
 };
 
-const restoreIdb = async ({zip: data}: {zip: Blob}): Promise<void> => {
+const restoreStorage = async ({zip: data}: {zip: Blob}): Promise<void> => {
   const zip = new JSZip();
 
   const contents = await zip.loadAsync(data);
@@ -33,11 +33,11 @@ const restoreIdb = async ({zip: data}: {zip: Blob}): Promise<void> => {
     }
   }
 
-  const storage = new IdbStorage();
+  const storage = new FilesystemStorage();
   await storage.setMany(dbKeysData);
 };
 
-const cleanIdb = async () => {
-  const storage = new IdbStorage();
+const cleanStorage = async () => {
+  const storage = new FilesystemStorage();
   await storage.clear();
 };

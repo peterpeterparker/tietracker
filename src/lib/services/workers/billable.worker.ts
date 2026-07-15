@@ -6,12 +6,12 @@ import {ProjectId} from '../../types/project';
 import {Task} from '../../types/task';
 import {Result} from '../../utils/utils.fn';
 import {isNullish, nonNullish} from '../../utils/utils.nullish';
-import {KeyedIdbStorage} from '../storages/idb.storage';
+import {KeyedFilesystemStorage} from '../storages/filesystem.storage';
 import {loadClients, loadProjects} from './utils/utils';
 import {WorkerClients, WorkerProjects} from './utils/utils.types';
 
 export const listProjectsInvoices = async (): Promise<Invoice[]> => {
-  const storage = new KeyedIdbStorage<DateString[]>({key: 'invoices'});
+  const storage = new KeyedFilesystemStorage<DateString[]>({key: 'invoices'});
   const invoices = await storage.get();
 
   return await listInvoices({invoices, filterProjectId: null});
@@ -49,7 +49,7 @@ export const closeInvoices = async ({
 };
 
 const removeInvoicesForPeriod = async ({selectedInvoices}: {selectedInvoices: DateString[]}) => {
-  const storage = new KeyedIdbStorage<DateString[]>({key: 'invoices'});
+  const storage = new KeyedFilesystemStorage<DateString[]>({key: 'invoices'});
   const invoices = await storage.get();
 
   const filterInvoices = (invoices ?? []).filter((invoice) => !selectedInvoices.includes(invoice));
@@ -64,7 +64,7 @@ const findInvoicesForPeriod = async ({
   from: Date;
   to: Date;
 }): Promise<Option<DateString[]>> => {
-  const storage = new KeyedIdbStorage<DateString[]>({key: 'invoices'});
+  const storage = new KeyedFilesystemStorage<DateString[]>({key: 'invoices'});
   const invoices = await storage.get();
 
   return invoices?.filter((invoice) => {
@@ -82,7 +82,7 @@ const findInvoicesForPeriod = async ({
 };
 
 const hasOpenInvoices = async ({invoice}: {invoice: DateString}): Promise<boolean> => {
-  const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${invoice}`});
+  const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${invoice}`});
   const tasks = await storage.get();
 
   if (isNullish(tasks) || tasks.length <= 0) {
@@ -171,7 +171,7 @@ const buildProject = async ({
   clients: WorkerClients;
   filterProjectId: Nullable<ProjectId>;
 }): Promise<Option<ProjectsWithInvoice>> => {
-  const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${invoice}`});
+  const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${invoice}`});
   const tasks = await storage.get();
 
   if (isNullish(tasks) || tasks.length <= 0) {

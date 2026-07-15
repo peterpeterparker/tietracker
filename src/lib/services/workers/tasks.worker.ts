@@ -4,7 +4,7 @@ import {TaskItem} from '../../store/interfaces/task.item';
 import {DateString} from '../../types/date';
 import {Task} from '../../types/task';
 import {isNullish, nonNullish} from '../../utils/utils.nullish';
-import {KeyedIdbStorage} from '../storages/idb.storage';
+import {KeyedFilesystemStorage} from '../storages/filesystem.storage';
 import {loadClients, loadProjects} from './utils/utils';
 import {WorkerClients, WorkerProjects} from './utils/utils.types';
 
@@ -39,7 +39,7 @@ const listTasksForDay = async ({
   clients: WorkerClients;
   day: DateString;
 }): Promise<TaskItem[]> => {
-  const storage = new KeyedIdbStorage<Task[]>({key: `tasks-${day}`});
+  const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${day}`});
   const tasks = await storage.get();
 
   if (isNullish(tasks) || tasks.length <= 0) {

@@ -1,11 +1,11 @@
 import {Client} from '../../../types/client';
 import {Project, ProjectData, ProjectId} from '../../../types/project';
 import {isNullish, nonNullish} from '../../../utils/utils.nullish';
-import {KeyedIdbStorage} from '../../storages/idb.storage';
+import {KeyedFilesystemStorage} from '../../storages/filesystem.storage';
 import {WorkerClients, WorkerProjects} from './utils.types';
 
 export const loadClients = async (): Promise<Option<WorkerClients>> => {
-  const storage = new KeyedIdbStorage<Client[]>({key: 'clients'});
+  const storage = new KeyedFilesystemStorage<Client[]>({key: 'clients'});
   const values = await storage.get();
 
   if (isNullish(values) || values.length <= 0) {
@@ -26,7 +26,7 @@ export const loadClients = async (): Promise<Option<WorkerClients>> => {
 };
 
 export const loadProjects = async (): Promise<Option<WorkerProjects>> => {
-  const storage = new KeyedIdbStorage<Project[]>({key: 'projects'});
+  const storage = new KeyedFilesystemStorage<Project[]>({key: 'projects'});
   const values = await storage.get();
 
   if (isNullish(values) || values.length <= 0) {
