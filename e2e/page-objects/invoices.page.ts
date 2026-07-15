@@ -13,9 +13,11 @@ export class InvoicesPage extends AppPage {
     await this.open(testIds.nav.invoices);
   }
 
-  async exportInvoice(): Promise<void> {
+  async openInvoiceDetails(): Promise<void> {
     await this.open(testIds.invoices.open);
+  }
 
+  async exportInvoice(): Promise<void> {
     await expect(this.page.getByTestId(testIds.invoices.exportInvoice)).toBeVisible(
       TIMEOUT_AVERAGE,
     );
@@ -55,5 +57,21 @@ export class InvoicesPage extends AppPage {
     const expected = await readWorkbook({filePath: fixturePath});
 
     compareWorkbooks({actual, expected});
+  }
+
+  async assertProjectInvoicesLoaded(): Promise<void> {
+    await this.page.waitForTimeout(1000);
+
+    await expect(this.page.locator('body')).not.toContainText(
+      'For the selected period nothing can be billed.',
+    );
+
+    await expect(this.page.locator('body')).not.toContainText(
+      'For the selected period 1 648,67 CHF can be billed, i.e. 82h 26min or 17 % of the maximal budget.',
+    );
+
+    await expect(this.page.locator('body')).not.toContainText(
+      '10 188,67 CHF will have been invoiced.',
+    );
   }
 }
