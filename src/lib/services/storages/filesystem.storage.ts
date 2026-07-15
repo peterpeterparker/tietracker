@@ -1,7 +1,7 @@
-import {Directory, Encoding, FileInfo, Filesystem, PluginError} from '@capacitor/filesystem';
-import {KeyedStorage, Storage} from './storage';
-import {nonNullish} from '../../utils/utils.nullish';
 import {Capacitor} from '@capacitor/core';
+import {Directory, Encoding, FileInfo, Filesystem, PluginError} from '@capacitor/filesystem';
+import {nonNullish} from '../../utils/utils.nullish';
+import {KeyedStorage, Storage} from './storage';
 
 const DATA_DIR = 'tietracker';
 
@@ -10,14 +10,14 @@ const filePath = (key: string): string => `${DATA_DIR}/${key}.json`;
 // https://capacitorjs.com/docs/apis/filesystem#errors
 const FILE_NOT_FOUND_ERROR_CODE = 'OS-PLUG-FILE-0008';
 
-const isPluginError = (err: unknown): err is PluginError => nonNullish(err) &&
+const isPluginError = (err: unknown): err is PluginError =>
+  nonNullish(err) &&
   typeof err === 'object' &&
   'code' in err &&
   typeof (err as PluginError).code === 'string';
 
 const isNotFoundError = (err: unknown): boolean =>
   !Capacitor.isNativePlatform() || (isPluginError(err) && err.code === FILE_NOT_FOUND_ERROR_CODE);
-
 
 const get = async <T>(key: string): Promise<Option<T>> => {
   try {
@@ -143,4 +143,3 @@ export class KeyedFilesystemStorage<T> extends KeyedStorage<T> {
     }
   }
 }
-
