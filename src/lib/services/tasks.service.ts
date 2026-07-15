@@ -8,6 +8,7 @@ import {
 } from 'date-fns';
 import {v4 as uuid} from 'uuid';
 import {TaskInProgress, TaskInProgressData} from '../store/interfaces/task.inprogress';
+import {TaskItem} from '../store/interfaces/task.item';
 import type {DateString} from '../types/date';
 import type {Project} from '../types/project';
 import type {Settings} from '../types/settings';
@@ -15,11 +16,10 @@ import type {Task, TaskData} from '../types/task';
 import {isNullish, nonNullish} from '../utils/utils.nullish';
 import {ServiceWithInvoices} from './_service';
 import {KeyedIdbStorage} from './storages/idb.storage';
+import {listTasks} from './workers/tasks.worker';
 
 export class TasksService extends ServiceWithInvoices<TaskInProgress> {
   static #instance: TasksService;
-
-  #tasksWorker = new Worker('./workers/tasks.js');
 
   private constructor() {
     super({key: 'task-in-progress'});
@@ -185,14 +185,15 @@ export class TasksService extends ServiceWithInvoices<TaskInProgress> {
     await storage.set(tasks);
   }
 
-  async list(updateStateFunction: Function, forDate: Date): Promise<void> {
-    this.#tasksWorker.onmessage = ($event: MessageEvent) => {
-      if (nonNullish($event?.data)) {
-        updateStateFunction($event.data, forDate);
-      }
-    };
+  async list(
+    updateStateFunction: (data: TaskItem[], forDate: Date) => void,
+    forDate: Date,
+  ): Promise<void> {
+    const day = lightFormat(forDate, 'yyyy-MM-dd');
 
-    this.#tasksWorker.postMessage({msg: 'listTasks', day: lightFormat(forDate, 'yyyy-MM-dd')});
+    const data = await listTasks({day: day as DateString});
+
+    updateStateFunction(data, forDate);
   }
 
   /**
