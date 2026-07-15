@@ -13,6 +13,8 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {testIds} from '../../lib/tests/test-ids.constants';
+import {testId} from '../../lib/tests/test.utils';
 import {Project} from '../../lib/types/project';
 import {Settings as SettingsModel} from '../../lib/types/settings';
 import {Task} from '../../lib/types/task';
@@ -58,7 +60,7 @@ const Projects: React.FC<Props> = (props: Props) => {
     }
 
     return (
-      <div className={styles.projects}>
+      <div className={styles.projects} {...testId(testIds.home.projects)}>
         <div>
           {projects.map((project: Project) => {
             const colorContrast = contrast(
