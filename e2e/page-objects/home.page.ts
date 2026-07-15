@@ -32,8 +32,17 @@ export class HomePage extends AppPage {
   }
 
   async assertScreenshot(): Promise<void> {
-    await expect(this.page).toHaveScreenshot({
-      fullPage: true,
-    });
+    await this.page.waitForTimeout(1000);
+
+    await expect(this.page.getByTestId(testIds.home.summary)).toBeVisible();
+    await expect(this.page.getByTestId(testIds.home.summary)).toHaveScreenshot('home-summary.png');
+
+    await expect(this.page.getByTestId(testIds.home.projects)).toBeVisible();
+    await expect(this.page.getByTestId(testIds.home.projects)).toHaveScreenshot(
+      'home-projects.png',
+    );
+
+    await expect(this.page.getByTestId(testIds.home.tasks)).toBeVisible();
+    await expect(this.page.getByTestId(testIds.home.tasks)).toHaveScreenshot('home-tasks.png');
   }
 }

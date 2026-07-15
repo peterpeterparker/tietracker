@@ -6,6 +6,8 @@ import {Invoice} from '../../lib/store/interfaces/invoice';
 import {Summary as SummaryData} from '../../lib/store/interfaces/summary';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {testIds} from '../../lib/tests/test-ids.constants';
+import {testId} from '../../lib/tests/test.utils';
 import {Settings} from '../../lib/types/settings';
 import {formatCurrency} from '../../lib/utils/utils.currency';
 import {formatTime} from '../../lib/utils/utils.time';
@@ -54,7 +56,7 @@ const Summary: React.FC<Props> = (props: Props) => {
   }, [invoices]);
 
   return (
-    <div className="ion-padding-end">
+    <div className="ion-padding-end" {...testId(testIds.home.summary)}>
       <IonModal
         isOpen={showHistory !== undefined}
         onDidDismiss={() => setShowHistory(undefined)}
