@@ -65,18 +65,16 @@ export class HomePage extends AppPage {
 
   async assertSummaryScreenshot(): Promise<void> {
     await expect(this.page.getByTestId(testIds.home.summary)).toBeVisible();
-    await expect(this.page.getByTestId(testIds.home.summary)).toHaveScreenshot('home-summary.png');
+    await expect(this.page.getByTestId(testIds.home.summary)).toHaveScreenshot();
   }
 
   async assertProjectsScreenshot(): Promise<void> {
     await expect(this.page.getByTestId(testIds.home.projects)).toBeVisible();
-    await expect(this.page.getByTestId(testIds.home.projects)).toHaveScreenshot(
-      'home-projects.png',
-    );
+    await expect(this.page.getByTestId(testIds.home.projects)).toHaveScreenshot();
   }
 
   async assertTasksScreenshot(): Promise<void> {
     await expect(this.page.getByTestId(testIds.home.tasks)).toBeVisible();
-    await expect(this.page.getByTestId(testIds.home.tasks)).toHaveScreenshot('home-tasks.png');
+    await expect(this.page.getByTestId(testIds.home.tasks)).toHaveScreenshot();
   }
 }

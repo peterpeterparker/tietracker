@@ -1,4 +1,4 @@
-type TestCTAType = 'btn' | 'link' | 'input';
+type TestCTAType = 'btn' | 'link' | 'input' | 'checkbox';
 type TestDisplayType = 'cards';
 
 type TestAction = string;

@@ -29,6 +29,14 @@ export class InvoicesPage extends AppPage {
     await download.saveAs(this.#DOWNLOAD_INVOICE_PATH);
   }
 
+  async billInvoice(): Promise<void> {
+    await this.click(testIds.invoices.closeInvoice);
+
+    await this.exportInvoice();
+
+    await expect(this.page.locator('body')).toContainText('No clients can be billed.');
+  }
+
   async backupInvoices(): Promise<void> {
     await expect(this.page.getByTestId(testIds.invoices.backupInvoices)).toBeVisible(
       TIMEOUT_AVERAGE,
