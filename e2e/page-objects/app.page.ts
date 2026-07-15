@@ -46,6 +46,8 @@ export abstract class AppPage {
 
   async closeModal(): Promise<void> {
     await this.click(testIds.header.close);
+
+    await this.waitForAnimation();
   }
 
   async waitForAnimation(): Promise<void> {

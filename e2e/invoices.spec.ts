@@ -36,4 +36,16 @@ test('should list project invoice', async () => {
   await invoicesPage.openInvoiceDetails();
 
   await invoicesPage.assertProjectInvoice();
+
+  await invoicesPage.closeModal();
+});
+
+test('should set invoice as billed', async () => {
+  const invoicesPage = getInvoicesPage();
+
+  await invoicesPage.gotoInvoices();
+
+  await invoicesPage.openInvoiceDetails();
+
+  await invoicesPage.billInvoice();
 });

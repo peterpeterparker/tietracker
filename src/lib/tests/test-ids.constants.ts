@@ -18,6 +18,7 @@ export const testIds = {
     open: 'btn-open-export',
     exportInvoice: 'btn-export-invoice',
     backupInvoices: 'btn-backup-invoices',
+    closeInvoice: 'checkbox-bill-invoice',
   },
   more: {
     openBackup: 'btn-open-backup',
