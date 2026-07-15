@@ -33,4 +33,12 @@ export const testIds = {
     openSelectDescription: 'btn-open-select-description',
     submit: 'btn-add-entry-submit',
   },
+  clients: {
+    openCreateClient: 'btn-open-create-client',
+    clientName: 'input-client-name',
+    projectName: 'input-project-name',
+    rate: 'input-rate',
+    color: 'input-color',
+    submit: 'btn-create-client-submit',
+  },
 } as const satisfies TestIds;

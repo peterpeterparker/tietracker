@@ -17,6 +17,8 @@ import Projects from '../../components/projects/Projects';
 import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
 import {RootState} from '../../lib/store/reducers';
+import {testIds} from '../../lib/tests/test-ids.constants';
+import {testId} from '../../lib/tests/test.utils';
 import {Client} from '../../lib/types/client';
 import CreateClientModal from '../../modals/client/CreateClientModal';
 import ClientsModal from '../../modals/clients/ClientsModal';
@@ -102,7 +104,8 @@ const Home: React.FC<RouteComponentProps> = (props) => {
         color="medium"
         size="small"
         style={loading ? {visibility: 'hidden', opacity: 0} : undefined}
-        aria-label={t('add.client')}>
+        aria-label={t('add.client')}
+        {...testId(testIds.clients.openCreateClient)}>
         {empty ? t('add.start') : t('add.client')}
       </IonButton>
     );

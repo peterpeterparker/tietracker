@@ -22,6 +22,8 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
+import {testIds} from '../../lib/tests/test-ids.constants';
+import {testId} from '../../lib/tests/test.utils';
 import {Client, ClientData} from '../../lib/types/client';
 import {ProjectData} from '../../lib/types/project';
 import {Settings} from '../../lib/types/settings';
@@ -356,7 +358,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   input-mode="text"
                   onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) => {
                     handleClientNameInput($event);
-                  }}></IonInput>
+                  }}
+                  {...testId(testIds.clients.clientName)}></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title ion-margin-top">
@@ -374,6 +377,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                     outline: '0',
                     padding: '0',
                   }}
+                  {...testId(testIds.clients.color)}
                 />
               </IonItem>
 
@@ -391,7 +395,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
                     handleProjectNameInput($event)
                   }
-                  onIonChange={() => validateProject()}></IonInput>
+                  onIonChange={() => validateProject()}
+                  {...testId(testIds.clients.projectName)}></IonInput>
               </IonItem>
 
               <IonItem disabled={!validClientName} className="item-title">
@@ -406,7 +411,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                   input-mode="text"
                   onIonInput={($event: IonInputCustomEvent<InputInputEventDetail>) =>
                     handleProjectRateInput($event)
-                  }></IonInput>
+                  }
+                  {...testId(testIds.clients.rate)}></IonInput>
               </IonItem>
 
               {renderBudget()}
@@ -427,7 +433,8 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
                     '--background-activated': colorContrast,
                     '--color-activated': color,
                   } as CSSProperties
-                }>
+                }
+                {...testId(testIds.clients.submit)}>
                 <IonLabel>{t('common:actions.submit')}</IonLabel>
               </IonButton>
 
