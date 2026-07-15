@@ -8,11 +8,11 @@
   "history": {
     "daily": {
       "title": "Day History",
-      "empty": "No entries recorded."
+      "empty": "No tasks recorded."
     },
     "weekly": {
       "title": "Week History",
-      "empty": "No entries recorded."
+      "empty": "No tasks recorded."
     }
   }
 }
