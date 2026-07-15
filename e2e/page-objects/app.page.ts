@@ -48,6 +48,10 @@ export abstract class AppPage {
     await this.click(testIds.header.close);
   }
 
+  async waitForAnimation(): Promise<void> {
+    await this.page.waitForTimeout(1000);
+  }
+
   async restore(): Promise<void> {
     await this.open(testIds.nav.more);
 

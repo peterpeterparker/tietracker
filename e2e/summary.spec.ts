@@ -7,11 +7,13 @@ const getHomePage = initTestSuite(HomePage);
 test('should compute summary', async () => {
   const homePage = getHomePage();
 
-  await homePage.restore(); // We need a client and project
-
   await homePage.gotoHome();
+
+  await homePage.createClient();
 
   await homePage.addManualInvoice();
 
-  await homePage.assertScreenshot();
+  await homePage.waitForAnimation();
+
+  await homePage.assertScreenshots();
 });
