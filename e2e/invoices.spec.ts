@@ -11,6 +11,8 @@ test('should export an invoice', async () => {
 
   await invoicesPage.gotoInvoices();
 
+  await invoicesPage.openInvoiceDetails();
+
   await invoicesPage.exportInvoice();
 
   await invoicesPage.assertInvoiceContent();
@@ -24,4 +26,14 @@ test('should export all invoices', async () => {
   await invoicesPage.backupInvoices();
 
   await invoicesPage.assertInvoicesContent();
+});
+
+test('should list project invoice', async () => {
+  const invoicesPage = getInvoicesPage();
+
+  await invoicesPage.gotoInvoices();
+
+  await invoicesPage.openInvoiceDetails();
+
+  await invoicesPage.assertProjectInvoice();
 });

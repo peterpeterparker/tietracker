@@ -9,6 +9,11 @@ export const testIds = {
   header: {
     close: 'btn-header-close',
   },
+  home: {
+    summary: 'cards-home-summary',
+    projects: 'cards-home-projects',
+    tasks: 'cards-home-tasks',
+  },
   invoices: {
     open: 'btn-open-export',
     exportInvoice: 'btn-export-invoice',
