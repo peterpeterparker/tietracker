@@ -9,7 +9,7 @@ import {KeyedIdbStorage} from '../storages/idb.storage';
 import {loadProjects} from './utils/utils';
 import {updateBudget} from './utils/utils.budget';
 import {exportToExcel} from './utils/utils.excel';
-import {convertTasks, ExportableInvoice, ExportableInvoices} from './utils/utils.export';
+import {convertTasks, ExportableInvoices} from './utils/utils.export';
 import type {WorkerProjects} from './utils/utils.types';
 
 interface ExportWorkerParams {
@@ -24,6 +24,7 @@ interface ExportWorkerParams {
 
 export const exportInvoices = async ({
   invoice,
+  invoices,
   bill,
   ...rest
 }: ExportWorkerParams): Promise<Option<Blob>> => {
@@ -36,6 +37,7 @@ export const exportInvoices = async ({
   const results = await exportProjectsInvoices({
     projects,
     invoice,
+    invoices,
     ...rest,
   });
 
@@ -49,7 +51,7 @@ export const exportInvoices = async ({
 
   // We set all invoices as billed regardless if they contain or not tasks
   await billInvoices({
-    invoices: results.invoices,
+    invoices,
     filterProjectId,
     bill,
   });
@@ -144,11 +146,10 @@ const billInvoices = async ({
   filterProjectId,
   bill,
 }: {
-  invoices: Option<ExportableInvoices>;
   filterProjectId: ProjectId;
   bill: boolean;
-}) => {
-  const billInvoice = async (invoice: ExportableInvoice) => {
+} & Pick<ExportWorkerParams, 'invoices'>) => {
+  const billInvoice = async (invoice: DateString) => {
     if (!bill) {
       return;
     }
