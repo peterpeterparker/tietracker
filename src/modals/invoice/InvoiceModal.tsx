@@ -33,7 +33,7 @@ import {budgetRatio} from '../../lib/utils/utils.budget';
 import {contrast} from '../../lib/utils/utils.color';
 import {formatCurrency} from '../../lib/utils/utils.currency';
 import {emitError} from '../../lib/utils/utils.events';
-import {isNullish} from '../../lib/utils/utils.nullish';
+import {isNullish, nonNullish} from '../../lib/utils/utils.nullish';
 import {pickerColor} from '../../lib/utils/utils.picker';
 import {formatTime} from '../../lib/utils/utils.time';
 
@@ -185,9 +185,9 @@ const InvoiceModal: React.FC<Props> = (props) => {
     }
 
     await InvoicesService.getInstance().listProjectInvoice(
-      (data: Invoice) => {
+      (data: Option<Invoice>) => {
         setBillable(
-          data !== undefined
+          nonNullish(data)
             ? {
                 billable: data.billable,
                 hours: data.hours,

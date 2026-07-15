@@ -1,9 +1,11 @@
 import {compareAsc, compareDesc, parse} from 'date-fns';
+import {Invoice} from '../store/interfaces/invoice';
 import {DateString} from '../types/date';
 import {interval} from '../utils/utils.date';
 import {emitError} from '../utils/utils.events';
-import {isNullish, nonNullish} from '../utils/utils.nullish';
+import {isNullish} from '../utils/utils.nullish';
 import {Service} from './_service';
+import {closeInvoices, listProjectInvoice, listProjectsInvoices} from './workers/billable.worker';
 
 export interface InvoicesPeriod {
   from: Date;
@@ -12,8 +14,6 @@ export interface InvoicesPeriod {
 
 export class InvoicesService extends Service<DateString[]> {
   static #instance: InvoicesService;
-
-  #invoicesWorker = new Worker('./workers/billable.js');
 
   private constructor() {
     super({key: 'invoices'});
@@ -26,18 +26,13 @@ export class InvoicesService extends Service<DateString[]> {
     return InvoicesService.#instance;
   }
 
-  async listProjectsInvoices(updateStateFunction: Function): Promise<void> {
-    this.#invoicesWorker.onmessage = ($event: MessageEvent) => {
-      if (nonNullish($event?.data)) {
-        updateStateFunction($event.data);
-      }
-    };
-
-    this.#invoicesWorker.postMessage({msg: 'listProjectsInvoices'});
+  async listProjectsInvoices(updateStateFunction: (data: Invoice[]) => void): Promise<void> {
+    const data = await listProjectsInvoices();
+    updateStateFunction(data);
   }
 
   async listProjectInvoice(
-    updateStateFunction: Function,
+    updateStateFunction: (data: Option<Invoice>) => void,
     projectId: string,
     from: Date,
     to: Date,
@@ -48,17 +43,12 @@ export class InvoicesService extends Service<DateString[]> {
       return;
     }
 
-    this.#invoicesWorker.onmessage = ($event: MessageEvent) => {
-      if (nonNullish($event?.data)) {
-        updateStateFunction($event.data.length > 0 ? $event.data[0] : undefined);
-      }
-    };
-
-    this.#invoicesWorker.postMessage({
-      msg: 'listProjectInvoice',
-      invoices: invoices,
-      projectId: projectId,
+    const data = await listProjectInvoice({
+      invoices: invoices as DateString[],
+      projectId,
     });
+
+    updateStateFunction(data);
   }
 
   async closeInvoices({
@@ -70,18 +60,17 @@ export class InvoicesService extends Service<DateString[]> {
     to: Date;
     done: (success: boolean) => Promise<void>;
   }) {
-    this.#invoicesWorker.onmessage = async ($event: MessageEvent) => {
-      if ($event.data?.result === 'error') {
-        emitError($event.data.msg);
-      }
+    const result = await closeInvoices({from, to});
 
-      await done($event.data?.result === 'success');
-    };
+    if (result.status === 'error') {
+      emitError(
+        result.err instanceof Error
+          ? result.err.message
+          : 'Unexpected error while closing invoices',
+      );
+    }
 
-    this.#invoicesWorker.postMessage({
-      msg: `close-invoices`,
-      data: {from, to},
-    });
+    await done(result.status === 'success');
   }
 
   async period(): Promise<Option<InvoicesPeriod>> {
