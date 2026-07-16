@@ -1,13 +1,14 @@
 import {DateString} from '../types/date';
 import {ProjectId} from '../types/project';
 import {KeyedIdbStorage} from './storages/idb.storage';
+import {KeyedPreferenceStorage} from './storages/preferences.storage';
 import {KeyedStorage} from './storages/storage';
 
 export abstract class Service<T> {
   readonly #storage: KeyedStorage<T>;
 
-  protected constructor({key}: {key: string}) {
-    this.#storage = new KeyedIdbStorage<T>({key});
+  protected constructor({key, storage}: {key: string; storage: KeyedStorage<T>}) {
+    this.#storage = storage;
   }
 
   get(): Promise<Option<T>> {
