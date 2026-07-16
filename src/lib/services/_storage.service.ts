@@ -3,7 +3,7 @@ import {ProjectId} from '../types/project';
 import {KeyedFilesystemStorage} from './storages/filesystem.storage';
 import {KeyedStorage} from './storages/storage';
 
-export abstract class Service<T> {
+export abstract class StorageService<T> {
   readonly #storage: KeyedStorage<T>;
 
   protected constructor({key}: {key: string}) {
@@ -23,7 +23,7 @@ export abstract class Service<T> {
   }
 }
 
-export abstract class ServiceWithInvoices<T> extends Service<T> {
+export abstract class StorageServiceWithInvoices<T> extends StorageService<T> {
   readonly #invoicesStorage: KeyedStorage<DateString[]>;
 
   protected constructor(args: {key: string}) {
@@ -41,7 +41,7 @@ export abstract class ServiceWithInvoices<T> extends Service<T> {
   }
 }
 
-export abstract class ServiceWithActiveProjects<T> extends Service<T> {
+export abstract class StorageServiceWithActiveProjects<T> extends StorageService<T> {
   readonly #activeProjectsStorage: KeyedStorage<ProjectId[]>;
 
   protected constructor(args: {key: string}) {

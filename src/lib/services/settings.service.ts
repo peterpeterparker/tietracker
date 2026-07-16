@@ -1,6 +1,6 @@
 import type {Settings} from '../types/settings';
 import {isNullish} from '../utils/utils.nullish';
-import {Service} from './_service';
+import {StorageService} from './_storage.service';
 
 // Source MIT: https://github.com/xsolla/currency-format
 export interface Currency {
@@ -18,7 +18,7 @@ export interface Currencies {
   [currency: string]: Currency;
 }
 
-export class SettingsService extends Service<Settings> {
+export class SettingsService extends StorageService<Settings> {
   static #instance: SettingsService;
 
   private constructor() {
