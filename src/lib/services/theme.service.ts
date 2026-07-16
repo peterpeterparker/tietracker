@@ -1,12 +1,16 @@
-import {get, set} from 'idb-keyval';
 import {isNullish, nonNullish} from '../utils/utils.nullish';
+import {PreferencesService} from './_preference.service';
 
-export class ThemeService {
+type DarkTheme = Option<boolean>;
+
+export class ThemeService extends PreferencesService<DarkTheme> {
   static #instance: ThemeService;
 
-  #darkTheme: Option<boolean> = undefined;
+  #darkTheme: DarkTheme = undefined;
 
-  private constructor() {}
+  private constructor() {
+    super({key: 'dark_mode'});
+  }
 
   static getInstance() {
     if (isNullish(ThemeService.#instance)) {
@@ -33,7 +37,7 @@ export class ThemeService {
     head?.children?.namedItem('theme-color')?.setAttribute('content', dark ? '#230f29' : '#fff');
 
     try {
-      await set('dark_mode', dark);
+      await this.set(dark);
     } catch (err) {
       // We ignore this error. In worst case scenario, the application will be displayed in another theme after next refresh.
     }
@@ -47,7 +51,7 @@ export class ThemeService {
 
   async initDarkModePreference(): Promise<boolean> {
     try {
-      const savedDarkModePreference = await get<boolean>('dark_mode');
+      const savedDarkModePreference = await this.get();
 
       // If user already specified once a preference, we use that as default
       if (nonNullish(savedDarkModePreference)) {

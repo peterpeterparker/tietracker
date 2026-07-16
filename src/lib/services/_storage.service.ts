@@ -1,25 +1,12 @@
 import {DateString} from '../types/date';
 import {ProjectId} from '../types/project';
+import {Service} from './_service';
 import {KeyedIdbStorage} from './storages/idb.storage';
 import {KeyedStorage} from './storages/storage';
 
-export abstract class StorageService<T> {
-  readonly #storage: KeyedStorage<T>;
-
+export abstract class StorageService<T> extends Service<T> {
   protected constructor({key}: {key: string}) {
-    this.#storage = new KeyedIdbStorage<T>({key});
-  }
-
-  get(): Promise<Option<T>> {
-    return this.#storage.get();
-  }
-
-  async set(value: T): Promise<void> {
-    await this.#storage.set(value);
-  }
-
-  async del(): Promise<void> {
-    await this.#storage.del();
+    super({storage: new KeyedIdbStorage<T>({key})});
   }
 }
 
