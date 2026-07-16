@@ -147,7 +147,10 @@ export class FilesystemStorage extends Storage {
   }
 
   override async setMany(entries: [string, unknown][]): Promise<void> {
-    await Promise.all(entries.map(([key, value]) => set(key, value)));
+    // Sequential set instead of promises to reduce stress in case the target directory has to be created
+    for (const [key, value] of entries) {
+      await set(key, value);
+    }
   }
 }
 
