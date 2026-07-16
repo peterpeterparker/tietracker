@@ -3,7 +3,7 @@ import {Summary, SummaryDay} from '../../store/interfaces/summary';
 import {Project, ProjectDataRate, ProjectId} from '../../types/project';
 import {Task} from '../../types/task';
 import {isNullish} from '../../utils/utils.nullish';
-import {KeyedIdbStorage} from '../storages/idb.storage';
+import {KeyedFilesystemStorage} from '../storages/filesystem.storage';
 
 const EMPTY_SUMMARY: Summary = {
   days: [],
@@ -32,7 +32,7 @@ export const computeSummary = async ({days}: {days: Date[]}): Promise<Summary> =
 type ProjectsRate = Record<ProjectId, ProjectDataRate>;
 
 const loadProjectsRate = async (): Promise<Option<ProjectsRate>> => {
-  const storage = new KeyedIdbStorage<Project[]>({key: 'projects'});
+  const storage = new KeyedFilesystemStorage<Project[]>({key: 'projects'});
   const projects = await storage.get();
 
   if (isNullish(projects) || projects.length <= 0) {
@@ -102,7 +102,7 @@ const computeDaySum = async ({
     day.getMonth() + 1 < 10 ? `0${day.getMonth() + 1}` : `${day.getMonth() + 1}`;
   const dayFormatted = day.getDate() < 10 ? `0${day.getDate()}` : `${day.getDate()}`;
 
-  const storage = new KeyedIdbStorage<Task[]>({
+  const storage = new KeyedFilesystemStorage<Task[]>({
     key: `tasks-${yearFormatted}-${monthFormatted}-${dayFormatted}`,
   });
   const tasks = await storage.get();

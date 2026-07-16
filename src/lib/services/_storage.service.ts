@@ -1,12 +1,12 @@
 import {DateString} from '../types/date';
 import {ProjectId} from '../types/project';
 import {Service} from './_service';
-import {KeyedIdbStorage} from './storages/idb.storage';
+import {KeyedFilesystemStorage} from './storages/filesystem.storage';
 import {KeyedStorage} from './storages/storage';
 
 export abstract class StorageService<T> extends Service<T> {
   protected constructor({key}: {key: string}) {
-    super({storage: new KeyedIdbStorage<T>({key})});
+    super({storage: new KeyedFilesystemStorage<T>({key})});
   }
 }
 
@@ -16,7 +16,7 @@ export abstract class StorageServiceWithInvoices<T> extends StorageService<T> {
   protected constructor(args: {key: string}) {
     super(args);
 
-    this.#invoicesStorage = new KeyedIdbStorage<DateString[]>({key: 'invoices'});
+    this.#invoicesStorage = new KeyedFilesystemStorage<DateString[]>({key: 'invoices'});
   }
 
   getInvoices(): Promise<Option<DateString[]>> {
@@ -34,7 +34,7 @@ export abstract class StorageServiceWithActiveProjects<T> extends StorageService
   protected constructor(args: {key: string}) {
     super(args);
 
-    this.#activeProjectsStorage = new KeyedIdbStorage<ProjectId[]>({key: 'active-projects'});
+    this.#activeProjectsStorage = new KeyedFilesystemStorage<ProjectId[]>({key: 'active-projects'});
   }
 
   getActiveProjects(): Promise<Option<ProjectId[]>> {

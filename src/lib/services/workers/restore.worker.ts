@@ -2,7 +2,7 @@ import JSZip from 'jszip';
 import {PREFERENCES_KEYS} from '../../constants';
 import {Result} from '../../utils/utils.fn';
 import {nonNullish} from '../../utils/utils.nullish';
-import {IdbStorage} from '../storages/idb.storage';
+import {FilesystemStorage} from '../storages/filesystem.storage';
 import {PreferencesStorage} from '../storages/preferences.storage';
 
 export const restore = async (args: {zip: Blob}): Promise<Result<undefined>> => {
@@ -46,7 +46,7 @@ const restoreIdb = async ({zip: data}: {zip: Blob}): Promise<void> => {
   }
 
   if (storageEntries.length > 0) {
-    const storage = new IdbStorage();
+    const storage = new FilesystemStorage();
     await storage.setMany(storageEntries);
   }
 
@@ -57,7 +57,7 @@ const restoreIdb = async ({zip: data}: {zip: Blob}): Promise<void> => {
 };
 
 const cleanIdb = async () => {
-  const storage = new IdbStorage();
+  const storage = new FilesystemStorage();
   await storage.clear();
 
   const preferences = new PreferencesStorage();
