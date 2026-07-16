@@ -49,14 +49,16 @@ const Tasks: React.FC<Props> = (props: Props) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <div className="ion-padding-end ion-padding-top" {...testId(testIds.home.tasks)}>
+      <div className="ion-padding-end ion-padding-top">
         <h1>{t('entries.title')}</h1>
 
         {renderActions()}
 
         {renderTasksInfo()}
 
-        <IonList className="ion-no-padding">{renderTasksItems()}</IonList>
+        <IonList className="ion-no-padding" {...testId(testIds.home.tasks)}>
+          {renderTasksItems()}
+        </IonList>
       </div>
     </LocalizationProvider>
   );
