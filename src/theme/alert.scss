@@ -4,7 +4,7 @@ body.dark {
     --ion-color-step-850: var(--ion-text-color);
     --ion-text-color: white;
     --ion-color-primary: white;
-    --background: var(--ion-background-color);
+    --background: var(--ion-color-summary);
 
     h2[class*="alert-sub-title"] {
       color: white;
