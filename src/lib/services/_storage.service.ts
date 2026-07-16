@@ -1,3 +1,4 @@
+import {KEYS} from '../constants';
 import {DateString} from '../types/date';
 import {ProjectId} from '../types/project';
 import {Service} from './_service';
@@ -16,7 +17,9 @@ export abstract class StorageServiceWithInvoices<T> extends StorageService<T> {
   protected constructor(args: {key: string}) {
     super(args);
 
-    this.#invoicesStorage = new KeyedFilesystemStorage<DateString[]>({key: 'invoices'});
+    this.#invoicesStorage = new KeyedFilesystemStorage<DateString[]>({
+      key: KEYS.filesystem.invoices,
+    });
   }
 
   getInvoices(): Promise<Option<DateString[]>> {

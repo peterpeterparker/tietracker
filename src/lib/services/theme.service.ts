@@ -1,3 +1,4 @@
+import {KEYS} from '../constants';
 import {isNullish, nonNullish} from '../utils/utils.nullish';
 import {PreferencesService} from './_preferences.service';
 
@@ -9,7 +10,7 @@ export class ThemeService extends PreferencesService<DarkTheme> {
   #darkTheme: DarkTheme = undefined;
 
   private constructor() {
-    super({key: 'dark_mode'});
+    super({key: KEYS.preferences.theme});
   }
 
   static getInstance() {

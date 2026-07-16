@@ -1,4 +1,5 @@
 import {compareAsc, compareDesc, parse} from 'date-fns';
+import {KEYS} from '../constants';
 import {Invoice} from '../store/interfaces/invoice';
 import {DateString} from '../types/date';
 import {interval} from '../utils/utils.date';
@@ -16,7 +17,7 @@ export class InvoicesService extends StorageService<DateString[]> {
   static #instance: InvoicesService;
 
   private constructor() {
-    super({key: 'invoices'});
+    super({key: KEYS.filesystem.invoices});
   }
 
   static getInstance() {

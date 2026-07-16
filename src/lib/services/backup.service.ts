@@ -2,6 +2,7 @@ import {File, IWriteOptions} from '@awesome-cordova-plugins/file';
 import {isPlatform} from '@ionic/react';
 import {differenceInWeeks, format} from 'date-fns';
 import i18next from 'i18next';
+import {KEYS} from '../constants';
 import {isTest} from '../env';
 import type {DateIsoString, DateString} from '../types/date';
 import type {Settings} from '../types/settings';
@@ -22,7 +23,7 @@ export class BackupService extends PreferencesService<DateIsoString> {
   static #instance: BackupService;
 
   private constructor() {
-    super({key: 'backup'});
+    super({key: KEYS.preferences.backup});
   }
 
   static getInstance() {
@@ -34,7 +35,7 @@ export class BackupService extends PreferencesService<DateIsoString> {
 
   async needBackup(): Promise<boolean> {
     try {
-      const invoicesStorage = new KeyedIdbStorage<DateString[]>({key: 'invoices'});
+      const invoicesStorage = new KeyedIdbStorage<DateString[]>({key: KEYS.filesystem.invoices});
       const invoices = await invoicesStorage.get();
 
       if (isNullish(invoices) || invoices.length <= 0) {

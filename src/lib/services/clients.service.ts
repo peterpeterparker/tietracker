@@ -1,5 +1,5 @@
 import {v4 as uuid} from 'uuid';
-import {CLIENT_COLOR_FALLBACK} from '../constants';
+import {CLIENT_COLOR_FALLBACK, KEYS} from '../constants';
 import type {Client, ClientData} from '../types/client';
 import {isEmptyString, isNullish} from '../utils/utils.nullish';
 import {StorageService} from './_storage.service';
@@ -8,7 +8,7 @@ export class ClientsService extends StorageService<Client[]> {
   static #instance: ClientsService;
 
   private constructor() {
-    super({key: 'clients'});
+    super({key: KEYS.filesystem.clients});
   }
 
   static getInstance() {

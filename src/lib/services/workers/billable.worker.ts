@@ -1,5 +1,5 @@
 import {differenceInMilliseconds, isAfter, isBefore, isSameDay, startOfDay} from 'date-fns';
-import {CLIENT_COLOR_FALLBACK} from '../../constants';
+import {CLIENT_COLOR_FALLBACK, KEYS} from '../../constants';
 import {Invoice} from '../../store/interfaces/invoice';
 import {DateString} from '../../types/date';
 import {ProjectId} from '../../types/project';
@@ -11,7 +11,7 @@ import {loadClients, loadProjects} from './utils/utils';
 import {WorkerClients, WorkerProjects} from './utils/utils.types';
 
 export const listProjectsInvoices = async (): Promise<Invoice[]> => {
-  const storage = new KeyedFilesystemStorage<DateString[]>({key: 'invoices'});
+  const storage = new KeyedFilesystemStorage<DateString[]>({key: KEYS.filesystem.invoices});
   const invoices = await storage.get();
 
   return await listInvoices({invoices, filterProjectId: null});
@@ -49,7 +49,7 @@ export const closeInvoices = async ({
 };
 
 const removeInvoicesForPeriod = async ({selectedInvoices}: {selectedInvoices: DateString[]}) => {
-  const storage = new KeyedFilesystemStorage<DateString[]>({key: 'invoices'});
+  const storage = new KeyedFilesystemStorage<DateString[]>({key: KEYS.filesystem.invoices});
   const invoices = await storage.get();
 
   const filterInvoices = (invoices ?? []).filter((invoice) => !selectedInvoices.includes(invoice));
@@ -64,7 +64,7 @@ const findInvoicesForPeriod = async ({
   from: Date;
   to: Date;
 }): Promise<Option<DateString[]>> => {
-  const storage = new KeyedFilesystemStorage<DateString[]>({key: 'invoices'});
+  const storage = new KeyedFilesystemStorage<DateString[]>({key: KEYS.filesystem.invoices});
   const invoices = await storage.get();
 
   return invoices?.filter((invoice) => {
