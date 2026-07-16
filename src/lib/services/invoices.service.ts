@@ -4,7 +4,7 @@ import {DateString} from '../types/date';
 import {interval} from '../utils/utils.date';
 import {emitError} from '../utils/utils.events';
 import {isNullish} from '../utils/utils.nullish';
-import {Service} from './_service';
+import {StorageService} from './_storage.service';
 import {closeInvoices, listProjectInvoice, listProjectsInvoices} from './workers/billable.worker';
 
 export interface InvoicesPeriod {
@@ -12,7 +12,7 @@ export interface InvoicesPeriod {
   to: Date;
 }
 
-export class InvoicesService extends Service<DateString[]> {
+export class InvoicesService extends StorageService<DateString[]> {
   static #instance: InvoicesService;
 
   private constructor() {
