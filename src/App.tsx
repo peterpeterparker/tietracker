@@ -3,6 +3,7 @@ import {
   IonApp,
   IonIcon,
   IonLabel,
+  IonLoading,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
@@ -11,7 +12,7 @@ import {
 import {IonReactRouter} from '@ionic/react-router';
 import {card, ellipsisHorizontal} from 'ionicons/icons';
 import React, {useEffect, useState} from 'react';
-import {Translation} from 'react-i18next';
+import {Translation, useTranslation} from 'react-i18next';
 import {Redirect, Route} from 'react-router-dom';
 import Invoices from './pages/invoices/Invoices';
 import Settings from './pages/settings/Settings';
@@ -37,9 +38,11 @@ import {createTheme, ThemeProvider} from '@mui/material';
 import BackupAlert from './alerts/backup/BackupAlert';
 import {ErrorToast} from './alerts/error/ErrorToast';
 import './lib/helpers/i18n';
+import {MigrateService} from './lib/services/migrate.service';
 import {rootConnector, RootProps} from './lib/store/thunks/index.thunks';
 import {testIds} from './lib/tests/test-ids.constants';
 import {testId} from './lib/tests/test.utils';
+import {emitError} from './lib/utils/utils.events';
 import {initAllData} from './lib/utils/utils.store';
 import TrackTaskModal from './modals/task/track/TrackTaskModal';
 import About from './pages/about/About';
@@ -81,11 +84,18 @@ const App: React.FC<RootProps> = (props: RootProps) => {
   const [selectedTab, setSelectedTab] = useState<string>('home');
   const [backup, setBackup] = useState<boolean>(false);
 
+  // TODO: to be removed
+  const [migrating, setMigrating] = useState<boolean>(false);
+
+  const {t} = useTranslation(['common']);
+
   async function init() {
     // Init theme first
     await props.initTheme();
 
     await SplashScreen.hide();
+
+    await migrateIdbToFilesystem();
 
     await initAllData(props);
   }
@@ -110,6 +120,20 @@ const App: React.FC<RootProps> = (props: RootProps) => {
       setSelectedTab(selected ? selected : 'home');
     }
   }
+
+  const migrateIdbToFilesystem = async () => {
+    const result = await new MigrateService().migrateIdbToFilesystem({
+      onMigrate: (status) => {
+        setMigrating(status === 'start');
+      },
+    });
+
+    if (result.status === 'success') {
+      return;
+    }
+
+    emitError(result.err);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -165,6 +189,8 @@ const App: React.FC<RootProps> = (props: RootProps) => {
         <TrackTaskModal></TrackTaskModal>
 
         {backup ? <BackupAlert></BackupAlert> : undefined}
+
+        <IonLoading isOpen={migrating} message={t('common:actions.preparing')} />
 
         <ErrorToast />
       </IonApp>
