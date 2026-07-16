@@ -1,11 +1,11 @@
-import {KeyedStorage} from './storage';
 import {Preferences} from '@capacitor/preferences';
 import {nonNullish} from '../../utils/utils.nullish';
+import {KeyedStorage} from './storage';
 
-export class KeyedPreferenceStorage<T> extends KeyedStorage<T> {
+export class KeyedPreferencesStorage<T> extends KeyedStorage<T> {
   override async get(): Promise<Option<T>> {
     const {value} = await Preferences.get({key: this.key});
-    return nonNullish(value) ? JSON.parse(value) as T : undefined;
+    return nonNullish(value) ? (JSON.parse(value) as T) : undefined;
   }
 
   override async set(value: T): Promise<void> {
