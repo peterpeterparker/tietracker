@@ -3,18 +3,18 @@ import {Result, safeExec} from '../utils/utils.fn';
 import {nonNullish} from '../utils/utils.nullish';
 import {FilesystemStorage} from './storages/filesystem.storage';
 import {IdbStorage} from './storages/idb.storage';
-import {KeyedPreferencesStorage} from './storages/preferences.storage';
+import {PreferencesStorage} from './storages/preferences.storage';
 
 const MIGRATION_FLAG_KEY = 'migrate-idb-to-filesystem';
 
 type MigrateIdbToFilesystemResult =
   | Result<undefined>
   | {status: 'skipped'}
-  | {status: 'settings_error'; err: unknown}
+  | {status: 'preferences_error'; err: unknown}
   | {status: 'clear_error'; err: unknown};
 
 type MigrateIdbToFilesystemStatus =
-  'skipped' | 'success' | 'success_with_settings_error' | 'success_with_clear_error' | 'error';
+  'skipped' | 'success' | 'success_with_preferences_error' | 'success_with_clear_error' | 'error';
 
 /**
  * TODO: to be removed in a future version
@@ -52,8 +52,8 @@ export class MigrateService {
       case 'success':
         await this.saveMigrateStatus({status: 'success'});
         return;
-      case 'settings_error':
-        await this.saveMigrateStatus({status: 'success_with_settings_error'});
+      case 'preferences_error':
+        await this.saveMigrateStatus({status: 'success_with_preferences_error'});
         break;
       case 'clear_error':
         await this.saveMigrateStatus({status: 'success_with_clear_error'});
@@ -108,16 +108,12 @@ export class MigrateService {
     }
 
     try {
-      const settingsEntry = preferencesEntries.find(([key]) => key === 'settings');
-
-      if (nonNullish(settingsEntry)) {
-        const [_, settingsValue] = settingsEntry;
-
-        const preferencesStorage = new KeyedPreferencesStorage({key: 'settings'});
-        await preferencesStorage.set(settingsValue);
+      if (preferencesEntries.length > 0) {
+        const preferencesStorage = new PreferencesStorage();
+        await preferencesStorage.setMany(preferencesEntries);
       }
     } catch (err: unknown) {
-      return {status: 'settings_error', err};
+      return {status: 'preferences_error', err};
     }
 
     try {
