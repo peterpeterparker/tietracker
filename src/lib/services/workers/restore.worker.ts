@@ -36,7 +36,7 @@ const restoreIdb = async ({zip: data}: {zip: Blob}): Promise<void> => {
         preferencesEntries.push([
           key,
           filename === 'backup.json'
-            ? new Date(Date.parse(JSON.parse(content))).toISOString()
+            ? new Date(JSON.parse(content)).toISOString()
             : JSON.parse(content),
         ]);
       } else {
