@@ -1,6 +1,25 @@
+:root {
+  ion-loading {
+    --background: transparent;
+
+    --backdrop-opacity: 0.5;
+
+    .loading-wrapper {
+      box-shadow: none;
+    }
+  }
+}
+
+body:not(.dark) {
+  ion-loading {
+    --ion-backdrop-color: var(--ion-color-primary-contrast);
+  }
+}
+
 body.dark {
   ion-loading {
-    --background: var(--ion-color-light);
+    --background: transparent;
     color: white;
+    --spinner-color: var(--ion-color-primary-contrast);
   }
 }

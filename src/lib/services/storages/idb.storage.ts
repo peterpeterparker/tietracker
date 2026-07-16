@@ -1,6 +1,9 @@
 import {clear, del, entries, get, set, setMany} from 'idb-keyval';
 import {KeyedStorage, Storage} from './storage';
 
+/**
+ * @deprecated use FilesystemStorage
+ */
 export class IdbStorage extends Storage {
   override entries(): Promise<[string, unknown][]> {
     return entries();
@@ -15,6 +18,9 @@ export class IdbStorage extends Storage {
   }
 }
 
+/**
+ * @deprecated use KeyedFilesystemStorage
+ */
 export class KeyedIdbStorage<T> extends KeyedStorage<T> {
   override get(): Promise<Option<T>> {
     return get<T>(this.key);
