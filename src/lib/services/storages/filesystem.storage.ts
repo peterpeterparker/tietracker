@@ -24,6 +24,7 @@ const filePath = (key: string): string => `${STORAGE_DIR_PATH}/${key}.json`;
 
 // https://capacitorjs.com/docs/apis/filesystem#errors
 const FILE_NOT_FOUND_ERROR_CODE = 'OS-PLUG-FILE-0008';
+const DIRECTORY_ALREADY_EXISTS_ERROR_CODE = 'OS-PLUG-FILE-0010';
 
 const isPluginError = (err: unknown): err is PluginError =>
   nonNullish(err) &&
@@ -33,6 +34,10 @@ const isPluginError = (err: unknown): err is PluginError =>
 
 const isNotFoundError = (err: unknown): boolean =>
   !Capacitor.isNativePlatform() || (isPluginError(err) && err.code === FILE_NOT_FOUND_ERROR_CODE);
+
+const isDirectoryAlreadyExistsError = (err: unknown): boolean =>
+  !Capacitor.isNativePlatform() ||
+  (isPluginError(err) && err.code === DIRECTORY_ALREADY_EXISTS_ERROR_CODE);
 
 const get = async <T>(key: string): Promise<Option<T>> => {
   try {
@@ -47,7 +52,7 @@ const get = async <T>(key: string): Promise<Option<T>> => {
     return JSON.parse(text) as T;
   } catch (err: unknown) {
     if (isNotFoundError(err)) {
-      return;
+      return undefined;
     }
 
     throw err;
@@ -55,6 +60,22 @@ const get = async <T>(key: string): Promise<Option<T>> => {
 };
 
 const ensureDataDirExists = async (): Promise<void> => {
+  const createDataDir = async () => {
+    try {
+      await Filesystem.mkdir({
+        path: STORAGE_DIR_PATH,
+        directory: DIRECTORY,
+        recursive: true,
+      });
+    } catch (err: unknown) {
+      if (isDirectoryAlreadyExistsError(err)) {
+        return;
+      }
+
+      throw err;
+    }
+  };
+
   try {
     await Filesystem.stat({
       path: STORAGE_DIR_PATH,
@@ -62,11 +83,7 @@ const ensureDataDirExists = async (): Promise<void> => {
     });
   } catch {
     // stat rejects if the path does not exist yet.
-    await Filesystem.mkdir({
-      path: STORAGE_DIR_PATH,
-      directory: DIRECTORY,
-      recursive: true,
-    });
+    await createDataDir();
   }
 };
 
