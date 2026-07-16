@@ -2,9 +2,9 @@ import {v4 as uuid} from 'uuid';
 import {CLIENT_COLOR_FALLBACK} from '../constants';
 import type {Client, ClientData} from '../types/client';
 import {isEmptyString, isNullish} from '../utils/utils.nullish';
-import {Service} from './_service';
+import {StorageService} from './_storage.service';
 
-export class ClientsService extends Service<Client[]> {
+export class ClientsService extends StorageService<Client[]> {
   static #instance: ClientsService;
 
   private constructor() {
