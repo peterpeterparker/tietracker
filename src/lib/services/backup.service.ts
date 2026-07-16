@@ -3,7 +3,7 @@ import {isPlatform} from '@ionic/react';
 import {differenceInWeeks, format} from 'date-fns';
 import i18next from 'i18next';
 import {isTest} from '../env';
-import {DateIsoString, DateString} from '../types/date';
+import type {DateIsoString, DateString} from '../types/date';
 import type {Settings} from '../types/settings';
 import {exportLabels} from '../utils/utils.export';
 import {
