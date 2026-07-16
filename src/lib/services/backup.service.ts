@@ -3,6 +3,7 @@ import {isPlatform} from '@ionic/react';
 import {differenceInWeeks, format} from 'date-fns';
 import i18next from 'i18next';
 import {isTest} from '../env';
+import {DateIsoString, DateString} from '../types/date';
 import type {Settings} from '../types/settings';
 import {exportLabels} from '../utils/utils.export';
 import {
@@ -13,10 +14,11 @@ import {
   writeFile,
 } from '../utils/utils.filesystem';
 import {isNullish, nonNullish} from '../utils/utils.nullish';
-import {StorageServiceWithInvoices} from './_storage.service';
+import {PreferencesService} from './_preferences.service';
+import {KeyedIdbStorage} from './storages/idb.storage';
 import {backupExcel, backupZip} from './workers/backup.worker';
 
-export class BackupService extends StorageServiceWithInvoices<Date> {
+export class BackupService extends PreferencesService<DateIsoString> {
   static #instance: BackupService;
 
   private constructor() {
@@ -32,7 +34,8 @@ export class BackupService extends StorageServiceWithInvoices<Date> {
 
   async needBackup(): Promise<boolean> {
     try {
-      const invoices = await this.getInvoices();
+      const invoicesStorage = new KeyedIdbStorage<DateString[]>({key: 'invoices'});
+      const invoices = await invoicesStorage.get();
 
       if (isNullish(invoices) || invoices.length <= 0) {
         return false;
@@ -40,7 +43,7 @@ export class BackupService extends StorageServiceWithInvoices<Date> {
 
       const lastBackup = await this.get();
 
-      if (nonNullish(lastBackup) && differenceInWeeks(new Date(), lastBackup) > 0) {
+      if (nonNullish(lastBackup) && differenceInWeeks(new Date(), new Date(lastBackup)) > 0) {
         return true;
       }
 
@@ -51,7 +54,7 @@ export class BackupService extends StorageServiceWithInvoices<Date> {
   }
 
   async setBackup() {
-    await this.set(new Date());
+    await this.set(new Date().toISOString());
   }
 
   async backup(type: 'excel' | 'idb', settings: Settings) {
