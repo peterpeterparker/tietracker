@@ -1,5 +1,5 @@
 import {isNullish, nonNullish} from '../utils/utils.nullish';
-import {PreferencesService} from './_preference.service';
+import {PreferencesService} from './_preferences.service';
 
 type DarkTheme = Option<boolean>;
 

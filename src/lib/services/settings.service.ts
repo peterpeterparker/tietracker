@@ -1,6 +1,6 @@
 import type {Settings} from '../types/settings';
 import {isNullish} from '../utils/utils.nullish';
-import {PreferencesService} from './_preference.service';
+import {PreferencesService} from './_preferences.service';
 
 // Source MIT: https://github.com/xsolla/currency-format
 export interface Currency {
