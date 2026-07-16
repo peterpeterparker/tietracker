@@ -7,6 +7,7 @@ import {
   subMinutes,
 } from 'date-fns';
 import {v4 as uuid} from 'uuid';
+import {KEYS} from '../constants';
 import {TaskInProgress, TaskInProgressData} from '../store/interfaces/task.inprogress';
 import {TaskItem} from '../store/interfaces/task.item';
 import type {DateString} from '../types/date';
@@ -22,7 +23,7 @@ export class TasksService extends StorageServiceWithInvoices<TaskInProgress> {
   static #instance: TasksService;
 
   private constructor() {
-    super({key: 'task-in-progress'});
+    super({key: KEYS.filesystem.taskInProgress});
   }
 
   static getInstance() {

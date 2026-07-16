@@ -1,3 +1,4 @@
+import {KEYS} from '../../../constants';
 import {Project, ProjectId} from '../../../types/project';
 import {isNullish, nonNullish} from '../../../utils/utils.nullish';
 import {KeyedFilesystemStorage} from '../../storages/filesystem.storage';
@@ -16,7 +17,7 @@ export const updateBudget = async ({
     return;
   }
 
-  const storage = new KeyedFilesystemStorage<Project[]>({key: 'projects'});
+  const storage = new KeyedFilesystemStorage<Project[]>({key: KEYS.filesystem.projects});
   const projects = await storage.get();
 
   if (isNullish(projects)) {

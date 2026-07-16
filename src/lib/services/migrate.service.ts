@@ -1,11 +1,10 @@
 import {Preferences} from '@capacitor/preferences';
+import {KEYS, PREFERENCES_KEYS} from '../constants';
 import {Result, safeExec} from '../utils/utils.fn';
 import {nonNullish} from '../utils/utils.nullish';
 import {FilesystemStorage} from './storages/filesystem.storage';
 import {IdbStorage} from './storages/idb.storage';
 import {PreferencesStorage} from './storages/preferences.storage';
-
-const MIGRATION_FLAG_KEY = 'migrate-idb-to-filesystem';
 
 type MigrateIdbToFilesystemResult =
   | Result<undefined>
@@ -33,7 +32,7 @@ export class MigrateService {
   }: {
     onMigrate: (status: 'start' | 'end') => void;
   }): Promise<void> {
-    const {value} = await Preferences.get({key: MIGRATION_FLAG_KEY});
+    const {value} = await Preferences.get({key: KEYS.preferences.migrateIdbToFilesystem});
 
     if (nonNullish(value)) {
       return;
@@ -66,7 +65,7 @@ export class MigrateService {
   }
 
   async saveMigrateStatus({status: value}: {status: MigrateIdbToFilesystemStatus}): Promise<void> {
-    await Preferences.set({key: MIGRATION_FLAG_KEY, value});
+    await Preferences.set({key: KEYS.preferences.migrateIdbToFilesystem, value});
   }
 
   async migrate(): Promise<MigrateIdbToFilesystemResult> {
@@ -77,8 +76,6 @@ export class MigrateService {
     if (entries.length <= 0) {
       return {status: 'skipped'};
     }
-
-    const PREFERENCES_KEYS = ['dark_mode', 'settings'];
 
     const [storageEntries, preferencesEntries] = entries.reduce<
       [[string, unknown][], [string, unknown][]]

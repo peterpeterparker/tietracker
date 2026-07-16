@@ -1,4 +1,5 @@
 import {differenceInMilliseconds} from 'date-fns';
+import {KEYS} from '../../constants';
 import {Summary, SummaryDay} from '../../store/interfaces/summary';
 import {Project, ProjectDataRate, ProjectId} from '../../types/project';
 import {Task} from '../../types/task';
@@ -32,7 +33,7 @@ export const computeSummary = async ({days}: {days: Date[]}): Promise<Summary> =
 type ProjectsRate = Record<ProjectId, ProjectDataRate>;
 
 const loadProjectsRate = async (): Promise<Option<ProjectsRate>> => {
-  const storage = new KeyedFilesystemStorage<Project[]>({key: 'projects'});
+  const storage = new KeyedFilesystemStorage<Project[]>({key: KEYS.filesystem.projects});
   const projects = await storage.get();
 
   if (isNullish(projects) || projects.length <= 0) {

@@ -1,4 +1,5 @@
 import JSZip from 'jszip';
+import {KEYS} from '../../constants';
 import type {Currency} from '../../types/currency';
 import {DateString} from '../../types/date';
 import {Task} from '../../types/task';
@@ -45,7 +46,7 @@ interface BackupExcelWorkerParams {
 }
 
 export const backupExcel = async (params: BackupExcelWorkerParams): Promise<Option<Blob>> => {
-  const storage = new KeyedFilesystemStorage<DateString[]>({key: 'invoices'});
+  const storage = new KeyedFilesystemStorage<DateString[]>({key: KEYS.filesystem.invoices});
   const invoices = await storage.get();
 
   if (isNullish(invoices) || invoices.length <= 0) {

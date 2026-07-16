@@ -1,4 +1,5 @@
 import {v4 as uuid} from 'uuid';
+import {KEYS} from '../constants';
 import type {Client} from '../types/client';
 import {Project, ProjectData} from '../types/project';
 import {isEmptyString, isNullish} from '../utils/utils.nullish';
@@ -8,7 +9,7 @@ export class ProjectsService extends StorageServiceWithActiveProjects<Project[]>
   static #instance: ProjectsService;
 
   private constructor() {
-    super({key: 'projects'});
+    super({key: KEYS.filesystem.projects});
   }
 
   static getInstance() {

@@ -1,3 +1,4 @@
+import {KEYS} from '../constants';
 import type {Settings} from '../types/settings';
 import {isNullish} from '../utils/utils.nullish';
 import {PreferencesService} from './_preferences.service';
@@ -22,7 +23,7 @@ export class SettingsService extends PreferencesService<Settings> {
   static #instance: SettingsService;
 
   private constructor() {
-    super({key: 'settings'});
+    super({key: KEYS.preferences.settings});
   }
 
   static getInstance() {
