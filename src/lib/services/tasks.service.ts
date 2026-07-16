@@ -14,11 +14,11 @@ import type {Project} from '../types/project';
 import type {Settings} from '../types/settings';
 import type {Task, TaskData} from '../types/task';
 import {isNullish, nonNullish} from '../utils/utils.nullish';
-import {ServiceWithInvoices} from './_service';
+import {StorageServiceWithInvoices} from './_storage.service';
 import {KeyedIdbStorage} from './storages/idb.storage';
 import {listTasks} from './workers/tasks.worker';
 
-export class TasksService extends ServiceWithInvoices<TaskInProgress> {
+export class TasksService extends StorageServiceWithInvoices<TaskInProgress> {
   static #instance: TasksService;
 
   private constructor() {

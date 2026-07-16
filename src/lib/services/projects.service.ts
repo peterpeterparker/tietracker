@@ -2,9 +2,9 @@ import {v4 as uuid} from 'uuid';
 import type {Client} from '../types/client';
 import {Project, ProjectData} from '../types/project';
 import {isEmptyString, isNullish} from '../utils/utils.nullish';
-import {ServiceWithActiveProjects} from './_service';
+import {StorageServiceWithActiveProjects} from './_storage.service';
 
-export class ProjectsService extends ServiceWithActiveProjects<Project[]> {
+export class ProjectsService extends StorageServiceWithActiveProjects<Project[]> {
   static #instance: ProjectsService;
 
   private constructor() {

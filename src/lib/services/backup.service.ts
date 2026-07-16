@@ -13,10 +13,10 @@ import {
   writeFile,
 } from '../utils/utils.filesystem';
 import {isNullish, nonNullish} from '../utils/utils.nullish';
-import {ServiceWithInvoices} from './_service';
+import {StorageServiceWithInvoices} from './_storage.service';
 import {backupExcel, backupZip} from './workers/backup.worker';
 
-export class BackupService extends ServiceWithInvoices<Date> {
+export class BackupService extends StorageServiceWithInvoices<Date> {
   static #instance: BackupService;
 
   private constructor() {
