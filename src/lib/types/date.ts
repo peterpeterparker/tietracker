@@ -7,3 +7,5 @@ type MM = `0${oneToNine}` | `1${0 | 1 | 2}`;
 type DD = `${0}${oneToNine}` | `${1 | 2}${zeroToNine}` | `3${0 | 1}`;
 
 export type DateString = `${YYYY}-${MM}-${DD}`;
+
+export type DateIsoString = string;

@@ -5,6 +5,7 @@ import {Task} from '../../types/task';
 import {i18nExportLabels} from '../../utils/utils.export';
 import {isNullish, nonNullish} from '../../utils/utils.nullish';
 import {FilesystemStorage, KeyedFilesystemStorage} from '../storages/filesystem.storage';
+import {PreferencesStorage} from '../storages/preferences.storage';
 import {loadClients, loadProjects} from './utils/utils';
 import {backupToExcel} from './utils/utils.excel';
 import {convertTasks, ExportableInvoices} from './utils/utils.export';
@@ -12,9 +13,14 @@ import {WorkerClients, WorkerProjects} from './utils/utils.types';
 
 export const backupZip = async (): Promise<Option<Blob>> => {
   const storage = new FilesystemStorage();
-  const entries = await storage.entries();
+  const storageEntries = await storage.entries();
 
-  if (isNullish(entries) || entries.length <= 0) {
+  const preferences = new PreferencesStorage();
+  const preferencesEntries = await preferences.entries();
+
+  const entries = [...(storageEntries ?? []), ...(preferencesEntries ?? [])];
+
+  if (entries.length <= 0) {
     return undefined;
   }
 
