@@ -17,7 +17,6 @@ import {Translation, useTranslation} from 'react-i18next';
 import {Redirect, Route} from 'react-router-dom';
 import BackupAlert from './alerts/backup/BackupAlert';
 import {ErrorToast} from './alerts/error/ErrorToast';
-import {isNotNativePlatform, isSafari} from './lib/env';
 import './lib/helpers/i18n';
 import {MigrateService} from './lib/services/migrate.service';
 import {rootConnector, RootProps} from './lib/store/thunks/index.thunks';
@@ -107,9 +106,7 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
       initSelectedTab();
 
-      // Mobile app uses Filesystem and Chrome/Firefox do not delete periodically IDB
-      // in case of inactivity, unlike Safari
-      setBackup(isNotNativePlatform() && isSafari());
+      setBackup(true);
     })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
