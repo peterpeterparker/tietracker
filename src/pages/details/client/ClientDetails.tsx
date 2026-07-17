@@ -67,7 +67,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     (async () => {
       setSaving(false);
 
-      const client: Client | undefined = await ClientsService.getInstance().find(
+      const client: Client | undefined = await ClientsService.create(settings).find(
         props.match.params.id,
       );
       setClient(client);
@@ -81,9 +81,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
   });
 
   async function loadProjects() {
-    const projects: Project[] | undefined = await ProjectsService.getInstance().listForClient(
-      props.match.params.id,
-    );
+    const projects = await ProjectsService.create(settings).listForClient(props.match.params.id);
     setProjects(projects);
   }
 
@@ -120,9 +118,9 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     setSaving(true);
 
     try {
-      await ClientsService.getInstance().update(client);
+      await ClientsService.create(settings).update(client);
 
-      await ProjectsService.getInstance().updateForClient(client);
+      await ProjectsService.create(settings).updateForClient(client);
 
       await updateStore();
 
@@ -136,10 +134,10 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
   }
 
   async function updateStore() {
-    await props.initClients();
-    await props.initActiveProjects();
-    await props.listTasks(props.taskItemsSelectedDate);
-    await props.listProjectsInvoices();
+    await props.initClients({settings});
+    await props.initActiveProjects({settings});
+    await props.listTasks({forDate: props.taskItemsSelectedDate, settings});
+    await props.listProjectsInvoices({settings});
     await props.computeSummary();
   }
 

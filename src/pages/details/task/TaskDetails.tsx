@@ -23,10 +23,12 @@ import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {isSameDay, parse} from 'date-fns';
 import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
 import {RouteComponentProps} from 'react-router';
 import {ClientsService} from '../../../lib/services/clients.service';
 import {ProjectsService} from '../../../lib/services/projects.service';
 import {TasksService} from '../../../lib/services/tasks.service';
+import {RootState} from '../../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../../lib/store/thunks/index.thunks';
 import {Client} from '../../../lib/types/client';
 import type {DateString} from '../../../lib/types/date';
@@ -69,6 +71,8 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
   const [showAlertDelete, setShowAlertDelete] = useState(false);
 
+  const settings = useSelector(({settings: {settings}}: RootState) => settings);
+
   useEffect(() => {
     const selectedDay: Date = parse(props.match.params.day, 'yyyy-MM-dd', new Date());
 
@@ -94,7 +98,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
       setSaving(false);
       setLoading(true);
 
-      const task = await TasksService.getInstance().find(
+      const task = await TasksService.create(settings).find(
         props.match.params.id,
         props.match.params.day,
       );
@@ -105,14 +109,10 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
         setTo(toDateObj(task.data.to));
         setDescription(task.data.description);
 
-        const project: Project | undefined = await ProjectsService.getInstance().find(
-          task.data.project_id,
-        );
+        const project = await ProjectsService.create(settings).find(task.data.project_id);
         setProject(project);
 
-        const client: Client | undefined = await ClientsService.getInstance().find(
-          task.data.client_id,
-        );
+        const client = await ClientsService.create(settings).find(task.data.client_id);
         setClient(client);
       } else {
         setFrom(undefined);
@@ -146,7 +146,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
         delete taskToUpdate.data['description'];
       }
 
-      await TasksService.getInstance().update(task, props.match.params.day);
+      await TasksService.create(settings).update(task, props.match.params.day);
 
       await updateStore();
 
@@ -193,7 +193,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     setSaving(true);
 
     try {
-      await TasksService.getInstance().delete(task, props.match.params.day);
+      await TasksService.create(settings).delete(task, props.match.params.day);
 
       await updateStore();
 
@@ -219,8 +219,8 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
   async function updateStore() {
     await props.computeSummary();
-    await props.listTasks(props.taskItemsSelectedDate);
-    await props.listProjectsInvoices();
+    await props.listTasks({forDate: props.taskItemsSelectedDate, settings});
+    await props.listProjectsInvoices({settings});
   }
 
   function onDescriptionChange($event: IonInputCustomEvent<InputInputEventDetail>) {

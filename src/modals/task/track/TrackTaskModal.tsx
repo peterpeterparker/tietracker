@@ -44,11 +44,11 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
   async function stopTask() {
     setFreeze(true);
 
-    await props.stopTask(1500, settings.roundTime);
+    await props.stopTask({delayDispatch: 1500, roundTime: settings.roundTime, settings});
 
     await props.computeSummary();
-    await props.listTasks(props.taskItemsSelectedDate);
-    await props.listProjectsInvoices();
+    await props.listTasks({forDate: props.taskItemsSelectedDate, settings});
+    await props.listProjectsInvoices({settings});
 
     setTimeout(() => {
       setFreeze(false);
@@ -70,7 +70,7 @@ const TrackTaskModal: React.FC<RootProps> = (props: RootProps) => {
       task.data.description = $event.detail.value;
     }
 
-    await props.updateTask(task);
+    await props.updateTask({task, settings});
   }
 
   return (

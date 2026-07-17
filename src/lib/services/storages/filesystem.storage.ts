@@ -7,10 +7,10 @@ const DEFAULT_DIRECTORY: Directory = Directory.Library;
 export class FilesystemStorage extends Storage {
   readonly #directory: Directory;
 
-  constructor({directory}: {directory: Directory} = {directory: DEFAULT_DIRECTORY}) {
+  constructor({directory}: {directory?: Directory}) {
     super();
 
-    this.#directory = directory;
+    this.#directory = directory ?? DEFAULT_DIRECTORY;
   }
 
   override async entries(): Promise<[string, unknown][]> {

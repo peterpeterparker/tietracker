@@ -1,10 +1,10 @@
 import {NotificationsService} from '../../services/notifications.service';
 import {TasksService} from '../../services/tasks.service';
 import {Project} from '../../types/project';
-import {Settings} from '../../types/settings';
 import {TaskData} from '../../types/task';
 import {TaskInProgress} from '../interfaces/task.inprogress';
 import {TaskItem} from '../interfaces/task.item';
+import {WithSettings} from '../types/store.types';
 import {
   CREATE_TASK,
   INIT_TASK,
@@ -15,9 +15,12 @@ import {
 } from '../types/tasks.types';
 import {RootThunkResult} from './types.thunks';
 
-export function startTask(project: Project, settings: Settings): RootThunkResult<Promise<void>> {
-  return async (dispatch, getState) => {
-    const task = await TasksService.getInstance().start(project, settings);
+export function startTask({
+  project,
+  settings,
+}: {project: Project} & WithSettings): RootThunkResult<Promise<void>> {
+  return async (dispatch, _getState) => {
+    const task = await TasksService.create(settings).start(project, settings);
 
     await NotificationsService.getInstance().schedule(project, settings);
 
@@ -25,20 +28,27 @@ export function startTask(project: Project, settings: Settings): RootThunkResult
   };
 }
 
-export function updateTask(data: TaskInProgress): RootThunkResult<Promise<void>> {
-  return async (dispatch, getState) => {
-    const task = await TasksService.getInstance().updateTaskInProgress(data);
+export function updateTask({
+  task: data,
+  settings,
+}: {task: TaskInProgress} & WithSettings): RootThunkResult<Promise<void>> {
+  return async (dispatch, _getState) => {
+    const task = await TasksService.create(settings).updateTaskInProgress(data);
 
     dispatch({type: UPDATE_TASK, payload: task});
   };
 }
 
-export function stopTask(
-  delayDispatch: number = 0,
-  roundTime: number,
-): RootThunkResult<Promise<void>> {
-  return async (dispatch, getState) => {
-    await TasksService.getInstance().stop(roundTime);
+export function stopTask({
+  delayDispatch = 0,
+  roundTime,
+  settings,
+}: {
+  delayDispatch?: number;
+  roundTime: number;
+} & WithSettings): RootThunkResult<Promise<void>> {
+  return async (dispatch, _getState) => {
+    await TasksService.create(settings).stop(roundTime);
 
     await NotificationsService.getInstance().cancel();
 
@@ -48,25 +58,32 @@ export function stopTask(
   };
 }
 
-export function createTask(taskData: TaskData, roundTime: number): RootThunkResult<Promise<void>> {
-  return async (dispatch, getState) => {
-    await TasksService.getInstance().create(taskData, roundTime);
+export function createTask({
+  taskData,
+  roundTime,
+  settings,
+}: {taskData: TaskData; roundTime: number} & WithSettings): RootThunkResult<Promise<void>> {
+  return async (dispatch, _getState) => {
+    await TasksService.create(settings).create(taskData, roundTime);
 
     dispatch({type: CREATE_TASK});
   };
 }
 
-export function initTask(): RootThunkResult<Promise<void>> {
-  return async (dispatch, getState) => {
-    const task = await TasksService.getInstance().current();
+export function initTask({settings}: WithSettings): RootThunkResult<Promise<void>> {
+  return async (dispatch, _getState) => {
+    const task = await TasksService.create(settings).current();
 
     dispatch({type: INIT_TASK, payload: task});
   };
 }
 
-export function listTasks(forDate: Date): RootThunkResult<Promise<void>> {
-  return async (dispatch, getState) => {
-    await TasksService.getInstance().list((data: TaskItem[], forDate: Date) => {
+export function listTasks({
+  forDate,
+  settings,
+}: {forDate: Date} & WithSettings): RootThunkResult<Promise<void>> {
+  return async (dispatch, _getState) => {
+    await TasksService.create(settings).list((data: TaskItem[], forDate: Date) => {
       dispatch({
         type: LIST_TASKS,
         payload: {

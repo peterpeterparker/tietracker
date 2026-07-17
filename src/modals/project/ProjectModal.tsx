@@ -79,7 +79,9 @@ const ProjectModal: React.FC<Props> = (props) => {
   }, [props.action]);
 
   async function loadProject() {
-    const project: Project | undefined = await ProjectsService.getInstance().find(props.projectId);
+    const project: Project | undefined = await ProjectsService.create(settings).find(
+      props.projectId,
+    );
 
     setProject(project);
 
@@ -207,7 +209,7 @@ const ProjectModal: React.FC<Props> = (props) => {
       },
     };
 
-    await ProjectsService.getInstance().create(props.client, data);
+    await ProjectsService.create(settings).create(props.client, data);
   }
 
   async function updateProject() {
@@ -239,10 +241,11 @@ const ProjectModal: React.FC<Props> = (props) => {
       };
     }
 
-    await ProjectsService.getInstance().update(projectToUpdate);
+    const service = ProjectsService.create(settings);
+    await service.update(projectToUpdate);
 
     if (projectToUpdate.data.disabled) {
-      await ProjectsService.getInstance().deleteActiveProject(projectToUpdate);
+      await service.deleteActiveProject(projectToUpdate);
     }
   }
 
