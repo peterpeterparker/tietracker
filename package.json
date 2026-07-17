@@ -99,5 +99,8 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/peterpeterparker/tietracker.git"
+  },
+  "overrides": {
+    "uuid": "^14.0.1"
   }
 }
