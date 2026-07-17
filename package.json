@@ -101,6 +101,8 @@
     "url": "git://github.com/peterpeterparker/tietracker.git"
   },
   "overrides": {
-    "uuid": "^14.0.1"
+    "exceljs": {
+      "uuid": "^11.1.1"
+    }
   }
 }
