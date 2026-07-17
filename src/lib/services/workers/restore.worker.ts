@@ -7,8 +7,8 @@ import {PreferencesStorage} from '../storages/preferences.storage';
 
 export const restore = async (args: {zip: Blob}): Promise<Result<undefined>> => {
   try {
-    await cleanIdb();
-    await restoreIdb(args);
+    await clear();
+    await restoreData(args);
 
     return {status: 'success', result: undefined};
   } catch (err: unknown) {
@@ -16,7 +16,7 @@ export const restore = async (args: {zip: Blob}): Promise<Result<undefined>> => 
   }
 };
 
-const restoreIdb = async ({zip: data}: {zip: Blob}): Promise<void> => {
+const restoreData = async ({zip: data}: {zip: Blob}): Promise<void> => {
   const zip = new JSZip();
 
   const contents = await zip.loadAsync(data);
@@ -56,7 +56,7 @@ const restoreIdb = async ({zip: data}: {zip: Blob}): Promise<void> => {
   }
 };
 
-const cleanIdb = async () => {
+const clear = async () => {
   const storage = new FilesystemStorage();
   await storage.clear();
 
