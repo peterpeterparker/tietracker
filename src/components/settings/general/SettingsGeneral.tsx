@@ -123,7 +123,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
   }
 
   function renderICloudSync() {
-    if (!isNotIOS()) {
+    if (isNotIOS()) {
       return undefined;
     }
 
