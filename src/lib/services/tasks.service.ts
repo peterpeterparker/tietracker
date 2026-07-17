@@ -20,8 +20,12 @@ import {KeyedFilesystemStorage} from './storages/filesystem.storage';
 import {listTasks} from './workers/tasks.worker';
 
 export class TasksService extends StorageServiceWithInvoices<TaskInProgress> {
+  #tasksSettings: Pick<Settings, 'iOS'>;
+
   private constructor(args: Pick<Settings, 'iOS'>) {
     super({...args, key: KEYS.filesystem.taskInProgress});
+
+    this.#tasksSettings = args;
   }
 
   static create(args: Pick<Settings, 'iOS'>) {
@@ -187,7 +191,7 @@ export class TasksService extends StorageServiceWithInvoices<TaskInProgress> {
   ): Promise<void> {
     const day = lightFormat(forDate, 'yyyy-MM-dd');
 
-    const data = await listTasks({day: day as DateString});
+    const data = await listTasks({day: day as DateString, settings: this.#tasksSettings});
 
     updateStateFunction(data, forDate);
   }

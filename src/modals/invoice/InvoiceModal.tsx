@@ -120,40 +120,34 @@ const InvoiceModal: React.FC<Props> = (props) => {
     setInProgress(true);
 
     const download = async () => {
-      await ExportService.getInstance().exportDownload(
-        props.invoice as Invoice,
+      await ExportService.getInstance().exportDownload({
+        invoice: props.invoice as Invoice,
         from,
         to,
-        settings.currency,
-        settings.vat,
         bill,
-        settings.signature,
-      );
+        settings,
+      });
     };
     try {
       if (isTest()) {
         // Playwright does not support File System API?
         await download();
       } else if (isPlatform('hybrid')) {
-        await ExportService.getInstance().exportMobileFileSystem(
-          props.invoice,
+        await ExportService.getInstance().exportMobileFileSystem({
+          invoice: props.invoice,
           from,
           to,
-          settings.currency,
-          settings.vat,
           bill,
-          settings.signature,
-        );
+          settings,
+        });
       } else if ('showSaveFilePicker' in window) {
-        await ExportService.getInstance().exportNativeFileSystem(
-          props.invoice,
+        await ExportService.getInstance().exportNativeFileSystem({
+          invoice: props.invoice,
           from,
           to,
-          settings.currency,
-          settings.vat,
           bill,
-          settings.signature,
-        );
+          settings,
+        });
       } else {
         await download();
       }

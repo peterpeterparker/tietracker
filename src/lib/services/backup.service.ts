@@ -148,7 +148,7 @@ export class BackupService extends PreferencesService<DateIsoString> {
 
     const backup = async () => {
       if (type === 'excel') {
-        return await backupExcel(params);
+        return await backupExcel({...params, settings});
       }
 
       return await backupZip({settings});

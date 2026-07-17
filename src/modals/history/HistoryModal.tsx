@@ -57,7 +57,7 @@ const HistoryModal: React.FC<Props> = ({type, closeAction}) => {
         setResults(mapDays({days: data.days, ranges: pastDays}));
       };
 
-      await SummaryService.getInstance().compute({updateFn, days: pastDays});
+      await SummaryService.getInstance().compute({updateFn, days: pastDays, settings});
       return;
     }
 
@@ -68,7 +68,7 @@ const HistoryModal: React.FC<Props> = ({type, closeAction}) => {
       setResults(mapWeeks({days: data.days, weekRanges}));
     };
 
-    await SummaryService.getInstance().compute({updateFn, days: allDays});
+    await SummaryService.getInstance().compute({updateFn, days: allDays, settings});
   };
 
   useEffect(() => {

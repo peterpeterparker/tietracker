@@ -2,8 +2,8 @@ import {File, IWriteOptions} from '@awesome-cordova-plugins/file';
 import {format} from 'date-fns';
 import i18next from 'i18next';
 import {Invoice} from '../store/interfaces/invoice';
-import type {Currency} from '../types/currency';
 import {DateString} from '../types/date';
+import {Settings} from '../types/settings';
 import {interval} from '../utils/utils.date';
 import {exportLabels} from '../utils/utils.export';
 import {
@@ -28,15 +28,19 @@ export class ExportService {
     return ExportService.#instance;
   }
 
-  async exportNativeFileSystem(
-    invoice: Invoice,
-    from: Date | undefined,
-    to: Date | undefined,
-    currency: Currency,
-    vat: number | undefined,
-    bill: boolean,
-    signature: string | undefined,
-  ): Promise<void> {
+  async exportNativeFileSystem({
+    invoice,
+    from,
+    to,
+    bill,
+    settings,
+  }: {
+    invoice: Invoice;
+    from: Date | undefined;
+    to: Date | undefined;
+    bill: boolean;
+    settings: Settings;
+  }): Promise<void> {
     if (isNullish(invoice?.project_id)) {
       throw new Error('No invoice data.');
     }
@@ -60,23 +64,25 @@ export class ExportService {
     await this.export({
       invoice,
       invoices: invoices as DateString[],
-      currency,
-      vat,
       bill,
-      signature,
+      settings,
       exportFn,
     });
   }
 
-  async exportDownload(
-    invoice: Invoice,
-    from: Date | undefined,
-    to: Date | undefined,
-    currency: Currency,
-    vat: number | undefined,
-    bill: boolean,
-    signature: string | undefined,
-  ): Promise<void> {
+  async exportDownload({
+    invoice,
+    from,
+    to,
+    bill,
+    settings,
+  }: {
+    invoice: Invoice;
+    from: Date | undefined;
+    to: Date | undefined;
+    bill: boolean;
+    settings: Settings;
+  }): Promise<void> {
     if (isNullish(invoice?.project_id)) {
       throw new Error('No invoice data.');
     }
@@ -96,23 +102,25 @@ export class ExportService {
     await this.export({
       invoice,
       invoices: invoices as DateString[],
-      currency,
-      vat,
       bill,
-      signature,
+      settings,
       exportFn,
     });
   }
 
-  async exportMobileFileSystem(
-    invoice: Invoice,
-    from: Date | undefined,
-    to: Date | undefined,
-    currency: Currency,
-    vat: number | undefined,
-    bill: boolean,
-    signature: string | undefined,
-  ): Promise<void> {
+  async exportMobileFileSystem({
+    invoice,
+    from,
+    to,
+    bill,
+    settings,
+  }: {
+    invoice: Invoice;
+    from: Date | undefined;
+    to: Date | undefined;
+    bill: boolean;
+    settings: Settings;
+  }): Promise<void> {
     if (isNullish(invoice?.project_id)) {
       throw new Error('No invoice data.');
     }
@@ -141,10 +149,8 @@ export class ExportService {
     await this.export({
       invoice,
       invoices: invoices as DateString[],
-      currency,
-      vat,
       bill,
-      signature,
+      settings,
       exportFn,
     });
   }
@@ -171,10 +177,8 @@ export class ExportService {
   }: {
     invoice: Invoice;
     invoices: DateString[];
-    currency: Currency;
-    vat: number | undefined;
     bill: boolean;
-    signature: string | undefined;
+    settings: Settings;
     exportFn: (blob: Blob) => Promise<void>;
   }) {
     await i18next.loadNamespaces('export');
