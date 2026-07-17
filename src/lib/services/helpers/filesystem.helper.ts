@@ -7,8 +7,8 @@ import {
   type ReadFileOptions,
   type WriteFileOptions,
 } from '@capacitor/filesystem';
-import {isNotNativePlatform} from '../../../env';
-import {nonNullish} from '../../../utils/utils.nullish';
+import {isNotNativePlatform} from '../../env';
+import {nonNullish} from '../../utils/utils.nullish';
 
 const ENCODING: Pick<ReadFileOptions, 'encoding'> | Pick<WriteFileOptions, 'encoding'> = {
   encoding: Encoding.UTF8,
