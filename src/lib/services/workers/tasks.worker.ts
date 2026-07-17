@@ -23,7 +23,6 @@ export const listTasks = async ({
     return [];
   }
 
-
   const clients = await loadClients({settings});
 
   if (isNullish(clients)) {
