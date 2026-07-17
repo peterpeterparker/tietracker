@@ -10,12 +10,33 @@ import {
   IonTabs,
 } from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
+import {createTheme, ThemeProvider} from '@mui/material';
 import {card, ellipsisHorizontal} from 'ionicons/icons';
 import React, {useEffect, useState} from 'react';
 import {Translation, useTranslation} from 'react-i18next';
 import {Redirect, Route} from 'react-router-dom';
+import BackupAlert from './alerts/backup/BackupAlert';
+import {ErrorToast} from './alerts/error/ErrorToast';
+import {isNotNativePlatform, isSafari} from './lib/env';
+import './lib/helpers/i18n';
+import {MigrateService} from './lib/services/migrate.service';
+import {rootConnector, RootProps} from './lib/store/thunks/index.thunks';
+import {testIds} from './lib/tests/test-ids.constants';
+import {testId} from './lib/tests/test.utils';
+import {emitError} from './lib/utils/utils.events';
+import {initAllData} from './lib/utils/utils.store';
+import TrackTaskModal from './modals/task/track/TrackTaskModal';
+import About from './pages/about/About';
+import Backup from './pages/backup/Backup';
+import ClientDetails from './pages/details/client/ClientDetails';
+import TaskDetails from './pages/details/task/TaskDetails';
+import Home from './pages/home/Home';
 import Invoices from './pages/invoices/Invoices';
+import {More} from './pages/more/More';
+import Period from './pages/period/Period';
+import Privacy from './pages/privacy/Privacy';
 import Settings from './pages/settings/Settings';
+import Terms from './pages/terms/Terms';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,27 +55,6 @@ import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 
 /* Theme variables */
-import {createTheme, ThemeProvider} from '@mui/material';
-import BackupAlert from './alerts/backup/BackupAlert';
-import {ErrorToast} from './alerts/error/ErrorToast';
-import {isNotNativePlatform, isSafari} from './lib/env';
-import './lib/helpers/i18n';
-import {MigrateService} from './lib/services/migrate.service';
-import {rootConnector, RootProps} from './lib/store/thunks/index.thunks';
-import {testIds} from './lib/tests/test-ids.constants';
-import {testId} from './lib/tests/test.utils';
-import {emitError} from './lib/utils/utils.events';
-import {initAllData} from './lib/utils/utils.store';
-import TrackTaskModal from './modals/task/track/TrackTaskModal';
-import About from './pages/about/About';
-import Backup from './pages/backup/Backup';
-import ClientDetails from './pages/details/client/ClientDetails';
-import TaskDetails from './pages/details/task/TaskDetails';
-import Home from './pages/home/Home';
-import {More} from './pages/more/More';
-import Period from './pages/period/Period';
-import Privacy from './pages/privacy/Privacy';
-import Terms from './pages/terms/Terms';
 import './theme/alert.scss';
 import './theme/button.scss';
 import './theme/card.scss';
