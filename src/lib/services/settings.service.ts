@@ -65,7 +65,7 @@ export class SettingsService extends PreferencesService<Settings> {
       roundTime: 5,
       descriptions: ['Development', 'Meeting', 'Test', 'Communication', 'Release'],
       notifications: true,
-      backup: true,
+      backup: false,
       created_at: now.getTime(),
       updated_at: now.getTime(),
     };
