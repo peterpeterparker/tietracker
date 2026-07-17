@@ -1,4 +1,5 @@
 import {KEYS} from '../constants';
+import {isNotNativePlatform, isSafari} from '../env';
 import type {Settings} from '../types/settings';
 import {isNullish} from '../utils/utils.nullish';
 import {PreferencesService} from './_preferences.service';
@@ -65,7 +66,7 @@ export class SettingsService extends PreferencesService<Settings> {
       roundTime: 5,
       descriptions: ['Development', 'Meeting', 'Test', 'Communication', 'Release'],
       notifications: true,
-      backup: false,
+      backup: isNotNativePlatform() && isSafari(),
       created_at: now.getTime(),
       updated_at: now.getTime(),
     };
