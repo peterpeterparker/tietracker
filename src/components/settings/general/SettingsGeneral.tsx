@@ -11,8 +11,10 @@ import {
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
+import {isNotIOS} from '../../../lib/env';
 import {RootState} from '../../../lib/store/reducers';
 import {Settings} from '../../../lib/types/settings';
+import {isNullish} from '../../../lib/utils/utils.nullish';
 
 export interface SettingsGeneralProps {
   settings: Settings;
@@ -26,12 +28,14 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
 
   const [notificationsOn, setNotificationsOn] = useState<boolean | undefined>(undefined);
   const [backup, setBackup] = useState<boolean | undefined>(undefined);
+  const [iCloudSync, setICloudSync] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
     setNotificationsOn(
       props.settings.notifications !== undefined ? props.settings.notifications : false,
     );
     setBackup(props.settings.backup !== undefined ? props.settings.backup : true);
+    setICloudSync(props.settings.iOS?.iCloudSync !== false);
   }, [props.settings]);
 
   const darkTheme: boolean | undefined = useSelector((state: RootState) => {
@@ -50,6 +54,12 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
   function toggleBackup() {
     props.settings.backup = !props.settings.backup;
     setBackup(!backup);
+  }
+
+  function toggleICloudSync() {
+    props.settings.iOS =
+      isNullish(iCloudSync) || iCloudSync === true ? {iCloudSync: false} : undefined;
+    setICloudSync(props.settings.iOS?.iCloudSync !== false);
   }
 
   function onSignatureInput($event: IonInputCustomEvent<InputInputEventDetail>) {
@@ -81,6 +91,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
 
       {renderNotifications()}
       {renderBackup()}
+      {renderICloudSync()}
       {renderSignature()}
     </IonList>
   );
@@ -106,6 +117,32 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
             mode="md"
             color="medium"
             onClick={() => toggleNotifications()}></IonToggle>
+        </IonItem>
+      </>
+    );
+  }
+
+  function renderICloudSync() {
+    if (!isNotIOS()) {
+      return undefined;
+    }
+
+    return (
+      <>
+        <IonItem className="item-title">
+          <IonLabel>{t('general.icloud.title')}</IonLabel>
+        </IonItem>
+
+        <IonItem className="item-input item-radio with-padding">
+          <IonLabel style={{flex: 1}}>
+            <span>{iCloudSync !== false ? t('general.icloud.on') : t('general.icloud.off')}</span>
+          </IonLabel>
+          <IonToggle
+            slot="end"
+            checked={iCloudSync}
+            mode="md"
+            color="medium"
+            onClick={() => toggleICloudSync()}></IonToggle>
         </IonItem>
       </>
     );
