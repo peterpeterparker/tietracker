@@ -11,9 +11,13 @@ import {loadClients, loadProjects} from './utils/utils';
 import {backupToExcel} from './utils/utils.excel';
 import {convertTasks, ExportableInvoices} from './utils/utils.export';
 import {WorkerClients, WorkerProjects} from './utils/utils.types';
+import type {Settings} from '../../types/settings';
+import {directory} from '../helpers/settings.helper';
 
-export const backupZip = async (): Promise<Option<Blob>> => {
-  const storage = new FilesystemStorage();
+export const backupZip = async ({settings}: {settings: Settings}): Promise<Option<Blob>> => {
+  const storage = new FilesystemStorage({
+    ...directory(settings)
+  });
   const storageEntries = await storage.entries();
 
   const preferences = new PreferencesStorage();

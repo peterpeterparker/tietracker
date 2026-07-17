@@ -128,7 +128,7 @@ export class BackupService extends PreferencesService<DateIsoString> {
 
   private async backupAndExport({
     type,
-    settings: {currency, vat, signature},
+    settings,
     backupFn,
   }: {
     type: 'excel' | 'idb';
@@ -136,6 +136,8 @@ export class BackupService extends PreferencesService<DateIsoString> {
     backupFn: (blob: Blob) => Promise<void>;
   }) {
     await i18next.loadNamespaces('export');
+
+    const {currency, vat, signature} = settings;
 
     const params = {
       currency: currency,
@@ -149,7 +151,7 @@ export class BackupService extends PreferencesService<DateIsoString> {
         return await backupExcel(params);
       }
 
-      return await backupZip();
+      return await backupZip({settings});
     };
 
     const result = await backup();
