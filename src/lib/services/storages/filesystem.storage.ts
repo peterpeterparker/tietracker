@@ -7,9 +7,9 @@ import {
   type ReadFileOptions,
   type WriteFileOptions,
 } from '@capacitor/filesystem';
+import {isNotNativePlatform} from '../../env';
 import {nonNullish} from '../../utils/utils.nullish';
 import {KeyedStorage, Storage} from './storage';
-import {isNotNativePlatform} from '../../env';
 
 // TODO: option Directory.Library or Directory.LibraryNoCloud
 const DIRECTORY: Directory = Directory.Library;

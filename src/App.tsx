@@ -37,6 +37,7 @@ import '@ionic/react/css/text-transformation.css';
 import {createTheme, ThemeProvider} from '@mui/material';
 import BackupAlert from './alerts/backup/BackupAlert';
 import {ErrorToast} from './alerts/error/ErrorToast';
+import {isNotNativePlatform, isSafari} from './lib/env';
 import './lib/helpers/i18n';
 import {MigrateService} from './lib/services/migrate.service';
 import {rootConnector, RootProps} from './lib/store/thunks/index.thunks';
@@ -73,7 +74,6 @@ import './theme/spinner.scss';
 import './theme/tabs.scss';
 import './theme/toolbar.scss';
 import './theme/variables.scss';
-import {isNotNativePlatform, isSafari} from './lib/env';
 
 const theme = createTheme({
   typography: {
