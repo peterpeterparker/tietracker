@@ -1,5 +1,5 @@
 import {Directory} from '@capacitor/filesystem';
-import {clear, del, get, listFiles, set} from './helpers/filesystem.helper';
+import {clear, del, get, listFiles, set} from '../helpers/filesystem.helper';
 import {KeyedStorage, Storage} from './storage';
 
 const DEFAULT_DIRECTORY: Directory = Directory.Library;
