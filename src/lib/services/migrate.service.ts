@@ -2,6 +2,7 @@ import {Preferences} from '@capacitor/preferences';
 import {KEYS, PREFERENCES_KEYS} from '../constants';
 import {Result, safeExec} from '../utils/utils.fn';
 import {nonNullish} from '../utils/utils.nullish';
+import {directory} from './helpers/settings.helper';
 import {FilesystemStorage} from './storages/filesystem.storage';
 import {IdbStorage} from './storages/idb.storage';
 import {PreferencesStorage} from './storages/preferences.storage';
@@ -97,7 +98,8 @@ export class MigrateService {
 
     try {
       if (storageEntries.length > 0) {
-        const filesystemStorage = new FilesystemStorage();
+        // For the migration we default to the iOS options which uses Directory.Library aka with iCloud
+        const filesystemStorage = new FilesystemStorage({...directory({iOS: undefined})});
         await filesystemStorage.setMany(storageEntries);
       }
     } catch (err: unknown) {
