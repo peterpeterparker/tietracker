@@ -1,10 +1,9 @@
-import {Directory} from '@capacitor/filesystem';
 import {KEYS} from '../constants';
 import {DateString} from '../types/date';
 import {ProjectId} from '../types/project';
 import {Settings} from '../types/settings';
-import {nonNullish} from '../utils/utils.nullish';
 import {Service} from './_service';
+import {directory} from './helpers/settings.helper';
 import {KeyedFilesystemStorage} from './storages/filesystem.storage';
 import {KeyedStorage} from './storages/storage';
 
@@ -13,17 +12,9 @@ export abstract class StorageService<T> extends Service<T> {
     super({
       storage: new KeyedFilesystemStorage<T>({
         key,
-        ...StorageService.directory({iOS}),
+        ...directory({iOS}),
       }),
     });
-  }
-
-  protected static directory({iOS}: Pick<Settings, 'iOS'>): {directory?: Directory} {
-    return {
-      ...(nonNullish(iOS) && {
-        directory: iOS.iCloudSync ? Directory.Library : Directory.LibraryNoCloud,
-      }),
-    };
   }
 }
 
@@ -35,7 +26,7 @@ export abstract class StorageServiceWithInvoices<T> extends StorageService<T> {
 
     this.#invoicesStorage = new KeyedFilesystemStorage<DateString[]>({
       key: KEYS.filesystem.invoices,
-      ...StorageService.directory({iOS}),
+      ...directory({iOS}),
     });
   }
 
@@ -56,7 +47,7 @@ export abstract class StorageServiceWithActiveProjects<T> extends StorageService
 
     this.#activeProjectsStorage = new KeyedFilesystemStorage<ProjectId[]>({
       key: 'active-projects',
-      ...StorageService.directory({iOS}),
+      ...directory({iOS}),
     });
   }
 
