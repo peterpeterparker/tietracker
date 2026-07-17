@@ -24,6 +24,11 @@
       "title": "Backup",
       "on": "Once a week",
       "off": "Never"
+    },
+    "icloud": {
+      "title": "iCloud Sync",
+      "on": "On",
+      "off": "Off"
     }
   },
   "templates": {

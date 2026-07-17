@@ -7,3 +7,7 @@ export const isNotTest = (): boolean => !isTest();
 export const isNotNativePlatform = (): boolean => !Capacitor.isNativePlatform();
 
 export const isSafari = (): boolean => /apple/i.test(navigator.vendor);
+
+const isIOS = (): boolean => Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios';
+
+export const isNotIOS = (): boolean => !isIOS();
