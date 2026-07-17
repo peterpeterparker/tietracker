@@ -120,7 +120,7 @@ const SettingsGeneral: React.FC<SettingsGeneralProps> = (props) => {
 
         <IonItem className="item-input item-radio with-padding">
           <IonLabel style={{flex: 1}}>
-            {backup ? t('general.backup.on') : t('general.backup.off')}
+            <span>{backup ? t('general.backup.on') : t('general.backup.off')}</span>
           </IonLabel>
           <IonToggle
             slot="end"
