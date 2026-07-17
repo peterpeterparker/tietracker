@@ -73,6 +73,7 @@ import './theme/spinner.scss';
 import './theme/tabs.scss';
 import './theme/toolbar.scss';
 import './theme/variables.scss';
+import {isNotNativePlatform, isSafari} from './lib/env';
 
 const theme = createTheme({
   typography: {
@@ -106,7 +107,9 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
       initSelectedTab();
 
-      setBackup(true);
+      // Mobile app uses Filesystem and Chrome/Firefox do not delete periodically IDB
+      // in case of inactivity, unlike Safari
+      setBackup(isNotNativePlatform() && isSafari());
     })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

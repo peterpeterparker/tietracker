@@ -1,4 +1,3 @@
-import {Capacitor} from '@capacitor/core';
 import {
   Directory,
   Encoding,
@@ -10,6 +9,7 @@ import {
 } from '@capacitor/filesystem';
 import {nonNullish} from '../../utils/utils.nullish';
 import {KeyedStorage, Storage} from './storage';
+import {isNotNativePlatform} from '../../env';
 
 // TODO: option Directory.Library or Directory.LibraryNoCloud
 const DIRECTORY: Directory = Directory.Library;
@@ -33,11 +33,10 @@ const isPluginError = (err: unknown): err is PluginError =>
   typeof (err as PluginError).code === 'string';
 
 const isNotFoundError = (err: unknown): boolean =>
-  !Capacitor.isNativePlatform() || (isPluginError(err) && err.code === FILE_NOT_FOUND_ERROR_CODE);
+  isNotNativePlatform() || (isPluginError(err) && err.code === FILE_NOT_FOUND_ERROR_CODE);
 
 const isDirectoryAlreadyExistsError = (err: unknown): boolean =>
-  !Capacitor.isNativePlatform() ||
-  (isPluginError(err) && err.code === DIRECTORY_ALREADY_EXISTS_ERROR_CODE);
+  isNotNativePlatform() || (isPluginError(err) && err.code === DIRECTORY_ALREADY_EXISTS_ERROR_CODE);
 
 const get = async <T>(key: string): Promise<Option<T>> => {
   try {
