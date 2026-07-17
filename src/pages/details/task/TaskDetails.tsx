@@ -218,9 +218,11 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
   }
 
   async function updateStore() {
-    await props.computeSummary();
-    await props.listTasks({forDate: props.taskItemsSelectedDate, settings});
-    await props.listProjectsInvoices({settings});
+    const args = {settings};
+
+    await props.computeSummary(args);
+    await props.listTasks({forDate: props.taskItemsSelectedDate, ...args});
+    await props.listProjectsInvoices(args);
   }
 
   function onDescriptionChange($event: IonInputCustomEvent<InputInputEventDetail>) {

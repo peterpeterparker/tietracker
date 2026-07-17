@@ -15,8 +15,12 @@ export interface InvoicesPeriod {
 }
 
 export class InvoicesService extends StorageService<DateString[]> {
+  #invoicesSettings: Pick<Settings, 'iOS'>;
+
   private constructor(args: Pick<Settings, 'iOS'>) {
     super({...args, key: KEYS.filesystem.invoices});
+
+    this.#invoicesSettings = args;
   }
 
   static create(args: Pick<Settings, 'iOS'>) {
@@ -24,7 +28,7 @@ export class InvoicesService extends StorageService<DateString[]> {
   }
 
   async listProjectsInvoices(updateStateFunction: (data: Invoice[]) => void): Promise<void> {
-    const data = await listProjectsInvoices();
+    const data = await listProjectsInvoices({settings: this.#invoicesSettings});
     updateStateFunction(data);
   }
 
@@ -43,6 +47,7 @@ export class InvoicesService extends StorageService<DateString[]> {
     const data = await listProjectInvoice({
       invoices: invoices as DateString[],
       projectId,
+      settings: this.#invoicesSettings,
     });
 
     updateStateFunction(data);
@@ -57,7 +62,7 @@ export class InvoicesService extends StorageService<DateString[]> {
     to: Date;
     done: (success: boolean) => Promise<void>;
   }) {
-    const result = await closeInvoices({from, to});
+    const result = await closeInvoices({from, to, settings: this.#invoicesSettings});
 
     if (result.status === 'error') {
       emitError(

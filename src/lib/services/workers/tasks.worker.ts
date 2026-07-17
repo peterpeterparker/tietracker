@@ -2,26 +2,34 @@ import {differenceInMilliseconds} from 'date-fns';
 import {CLIENT_COLOR_FALLBACK} from '../../constants';
 import {TaskItem} from '../../store/interfaces/task.item';
 import {DateString} from '../../types/date';
+import {Settings} from '../../types/settings';
 import {Task} from '../../types/task';
 import {isNullish, nonNullish} from '../../utils/utils.nullish';
+import {directory} from '../helpers/settings.helper';
 import {KeyedFilesystemStorage} from '../storages/filesystem.storage';
 import {loadClients, loadProjects} from './utils/utils';
 import {WorkerClients, WorkerProjects} from './utils/utils.types';
 
-export const listTasks = async ({day}: {day: DateString}) => {
-  const projects = await loadProjects();
+export const listTasks = async ({
+  day,
+  settings,
+}: {
+  day: DateString;
+  settings: Pick<Settings, 'iOS'>;
+}) => {
+  const projects = await loadProjects({settings});
 
   if (isNullish(projects)) {
     return [];
   }
 
-  const clients = await loadClients();
+  const clients = await loadClients({settings});
 
   if (isNullish(clients)) {
     return [];
   }
 
-  const tasks = await listTasksForDay({projects, clients, day});
+  const tasks = await listTasksForDay({projects, clients, day, settings});
 
   tasks.sort((a, b) => {
     return new Date(b.data.from).getTime() - new Date(a.data.from).getTime();
@@ -34,12 +42,14 @@ const listTasksForDay = async ({
   projects,
   day,
   clients,
+  settings,
 }: {
   projects: WorkerProjects;
   clients: WorkerClients;
   day: DateString;
+  settings: Pick<Settings, 'iOS'>;
 }): Promise<TaskItem[]> => {
-  const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${day}`});
+  const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${day}`, ...directory(settings)});
   const tasks = await storage.get();
 
   if (isNullish(tasks) || tasks.length <= 0) {

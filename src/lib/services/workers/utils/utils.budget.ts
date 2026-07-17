@@ -1,6 +1,8 @@
 import {KEYS} from '../../../constants';
 import {Project, ProjectId} from '../../../types/project';
+import {Settings} from '../../../types/settings';
 import {isNullish, nonNullish} from '../../../utils/utils.nullish';
+import {directory} from '../../helpers/settings.helper';
 import {KeyedFilesystemStorage} from '../../storages/filesystem.storage';
 import {ExportableInvoices} from './utils.export';
 
@@ -8,16 +10,21 @@ export const updateBudget = async ({
   invoices,
   filterProjectId,
   bill,
+  settings,
 }: {
   invoices: Option<ExportableInvoices>;
   filterProjectId: ProjectId;
   bill: boolean;
+  settings: Pick<Settings, 'iOS'>;
 }) => {
   if (!bill) {
     return;
   }
 
-  const storage = new KeyedFilesystemStorage<Project[]>({key: KEYS.filesystem.projects});
+  const storage = new KeyedFilesystemStorage<Project[]>({
+    key: KEYS.filesystem.projects,
+    ...directory(settings),
+  });
   const projects = await storage.get();
 
   if (isNullish(projects)) {

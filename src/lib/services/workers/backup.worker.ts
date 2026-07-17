@@ -47,35 +47,43 @@ interface BackupExcelWorkerParams {
   vat: number | undefined;
   signature: string | undefined;
   i18n: i18nExportLabels;
+  settings: Settings;
 }
 
-export const backupExcel = async (params: BackupExcelWorkerParams): Promise<Option<Blob>> => {
-  const storage = new KeyedFilesystemStorage<DateString[]>({key: KEYS.filesystem.invoices});
+export const backupExcel = async ({
+  settings,
+  ...params
+}: BackupExcelWorkerParams): Promise<Option<Blob>> => {
+  const storage = new KeyedFilesystemStorage<DateString[]>({
+    key: KEYS.filesystem.invoices,
+    ...directory(settings),
+  });
   const invoices = await storage.get();
 
   if (isNullish(invoices) || invoices.length <= 0) {
     return undefined;
   }
 
-  const projects = await loadProjects();
+  const projects = await loadProjects({settings});
 
   if (isNullish(projects)) {
     return undefined;
   }
 
-  const clients = await loadClients();
+  const clients = await loadClients({settings});
 
   if (isNullish(clients)) {
     return undefined;
   }
 
-  return await backupInvoices({...params, clients, projects, invoices});
+  return await backupInvoices({...params, clients, projects, invoices, settings});
 };
 
 async function backupInvoices({
   invoices,
   projects,
   clients,
+  settings,
   ...rest
 }: BackupExcelWorkerParams & {
   invoices: DateString[];
@@ -85,7 +93,7 @@ async function backupInvoices({
   const promises: Promise<Option<ExportableInvoices>>[] = [];
 
   invoices.forEach((invoice) => {
-    promises.push(backupInvoice({invoice, projects, clients}));
+    promises.push(backupInvoice({invoice, projects, clients, settings}));
   });
 
   const allInvoices = await Promise.all(promises);
@@ -117,12 +125,17 @@ const backupInvoice = async ({
   invoice,
   projects,
   clients,
+  settings,
 }: {
   invoice: DateString;
   projects: WorkerProjects;
   clients: WorkerClients;
+  settings: Settings;
 }): Promise<Option<ExportableInvoices>> => {
-  const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${invoice}`});
+  const storage = new KeyedFilesystemStorage<Task[]>({
+    key: `tasks-${invoice}`,
+    ...directory(settings),
+  });
   const tasks = await storage.get();
 
   if (isNullish(tasks) || tasks.length <= 0) {

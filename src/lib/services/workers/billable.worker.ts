@@ -3,34 +3,44 @@ import {CLIENT_COLOR_FALLBACK, KEYS} from '../../constants';
 import {Invoice} from '../../store/interfaces/invoice';
 import {DateString} from '../../types/date';
 import {ProjectId} from '../../types/project';
+import {Settings} from '../../types/settings';
 import {Task} from '../../types/task';
 import {Result} from '../../utils/utils.fn';
 import {isNullish, nonNullish} from '../../utils/utils.nullish';
+import {directory} from '../helpers/settings.helper';
 import {KeyedFilesystemStorage} from '../storages/filesystem.storage';
 import {loadClients, loadProjects} from './utils/utils';
 import {WorkerClients, WorkerProjects} from './utils/utils.types';
 
-export const listProjectsInvoices = async (): Promise<Invoice[]> => {
-  const storage = new KeyedFilesystemStorage<DateString[]>({key: KEYS.filesystem.invoices});
+export const listProjectsInvoices = async ({
+  settings,
+}: {
+  settings: Pick<Settings, 'iOS'>;
+}): Promise<Invoice[]> => {
+  const storage = new KeyedFilesystemStorage<DateString[]>({
+    key: KEYS.filesystem.invoices,
+    ...directory(settings),
+  });
   const invoices = await storage.get();
 
-  return await listInvoices({invoices, filterProjectId: null});
+  return await listInvoices({settings, invoices, filterProjectId: null});
 };
 
 export const closeInvoices = async ({
-  from,
-  to,
+  settings,
+  ...rest
 }: {
   from: Date;
   to: Date;
+  settings: Pick<Settings, 'iOS'>;
 }): Promise<Result<undefined>> => {
-  const selectedInvoices = await findInvoicesForPeriod({from, to});
+  const selectedInvoices = await findInvoicesForPeriod({settings, ...rest});
 
   if (isNullish(selectedInvoices) || selectedInvoices.length <= 0) {
     return {status: 'error', err: new Error('No period to close.')};
   }
 
-  const checkInvoices = selectedInvoices.map((invoice) => hasOpenInvoices({invoice}));
+  const checkInvoices = selectedInvoices.map((invoice) => hasOpenInvoices({invoice, settings}));
   const checks = await Promise.all(checkInvoices);
 
   const hasOpenInvoice = checks.find((check) => check === true);
@@ -43,13 +53,22 @@ export const closeInvoices = async ({
     };
   }
 
-  await removeInvoicesForPeriod({selectedInvoices});
+  await removeInvoicesForPeriod({selectedInvoices, settings});
 
   return {status: 'success', result: undefined};
 };
 
-const removeInvoicesForPeriod = async ({selectedInvoices}: {selectedInvoices: DateString[]}) => {
-  const storage = new KeyedFilesystemStorage<DateString[]>({key: KEYS.filesystem.invoices});
+const removeInvoicesForPeriod = async ({
+  selectedInvoices,
+  settings,
+}: {
+  selectedInvoices: DateString[];
+  settings: Pick<Settings, 'iOS'>;
+}) => {
+  const storage = new KeyedFilesystemStorage<DateString[]>({
+    key: KEYS.filesystem.invoices,
+    ...directory(settings),
+  });
   const invoices = await storage.get();
 
   const filterInvoices = (invoices ?? []).filter((invoice) => !selectedInvoices.includes(invoice));
@@ -60,11 +79,16 @@ const removeInvoicesForPeriod = async ({selectedInvoices}: {selectedInvoices: Da
 const findInvoicesForPeriod = async ({
   from,
   to,
+  settings,
 }: {
   from: Date;
   to: Date;
+  settings: Pick<Settings, 'iOS'>;
 }): Promise<Option<DateString[]>> => {
-  const storage = new KeyedFilesystemStorage<DateString[]>({key: KEYS.filesystem.invoices});
+  const storage = new KeyedFilesystemStorage<DateString[]>({
+    key: KEYS.filesystem.invoices,
+    ...directory(settings),
+  });
   const invoices = await storage.get();
 
   return invoices?.filter((invoice) => {
@@ -81,8 +105,17 @@ const findInvoicesForPeriod = async ({
   });
 };
 
-const hasOpenInvoices = async ({invoice}: {invoice: DateString}): Promise<boolean> => {
-  const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${invoice}`});
+const hasOpenInvoices = async ({
+  invoice,
+  settings,
+}: {
+  invoice: DateString;
+  settings: Pick<Settings, 'iOS'>;
+}): Promise<boolean> => {
+  const storage = new KeyedFilesystemStorage<Task[]>({
+    key: `tasks-${invoice}`,
+    ...directory(settings),
+  });
   const tasks = await storage.get();
 
   if (isNullish(tasks) || tasks.length <= 0) {
@@ -97,34 +130,37 @@ const hasOpenInvoices = async ({invoice}: {invoice: DateString}): Promise<boolea
 };
 
 export const listProjectInvoice = async ({
-  invoices,
   projectId,
+  ...rest
 }: {
   invoices: Option<DateString[]>;
   projectId: ProjectId;
+  settings: Pick<Settings, 'iOS'>;
 }): Promise<Option<Invoice>> => {
-  const [invoice] = await listInvoices({invoices, filterProjectId: projectId});
+  const [invoice] = await listInvoices({...rest, filterProjectId: projectId});
   return invoice;
 };
 
 const listInvoices = async ({
   invoices,
   filterProjectId,
+  settings,
 }: {
   invoices: Option<DateString[]>;
   filterProjectId: Nullable<ProjectId>;
+  settings: Pick<Settings, 'iOS'>;
 }): Promise<Invoice[]> => {
   if (isNullish(invoices) || invoices.length <= 0) {
     return [];
   }
 
-  const projects = await loadProjects();
+  const projects = await loadProjects({settings});
 
   if (isNullish(projects)) {
     return [];
   }
 
-  const clients = await loadClients();
+  const clients = await loadClients({settings});
 
   if (isNullish(clients)) {
     return [];
@@ -135,6 +171,7 @@ const listInvoices = async ({
     projects,
     clients,
     filterProjectId,
+    settings,
   });
 
   return reduceAllProjects({projectsWithInvoices});
@@ -148,6 +185,7 @@ async function listBillableProjects({
   projects: WorkerProjects;
   clients: WorkerClients;
   filterProjectId: Nullable<ProjectId>;
+  settings: Pick<Settings, 'iOS'>;
 }): Promise<Option<ProjectsWithInvoice>[]> {
   const promises: Promise<Option<ProjectsWithInvoice>>[] = [];
 
@@ -165,13 +203,18 @@ const buildProject = async ({
   projects,
   clients,
   filterProjectId,
+  settings,
 }: {
   invoice: DateString;
   projects: WorkerProjects;
   clients: WorkerClients;
   filterProjectId: Nullable<ProjectId>;
+  settings: Pick<Settings, 'iOS'>;
 }): Promise<Option<ProjectsWithInvoice>> => {
-  const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${invoice}`});
+  const storage = new KeyedFilesystemStorage<Task[]>({
+    key: `tasks-${invoice}`,
+    ...directory(settings),
+  });
   const tasks = await storage.get();
 
   if (isNullish(tasks) || tasks.length <= 0) {

@@ -1,5 +1,6 @@
 import {eachDayOfInterval, endOfWeek, startOfWeek} from 'date-fns';
 import {Summary} from '../store/interfaces/summary';
+import {Settings} from '../types/settings';
 import {isNullish} from '../utils/utils.nullish';
 import {computeSummary} from './workers/summary.worker';
 
@@ -18,12 +19,15 @@ export class SummaryService {
   async compute({
     updateFn,
     days,
+    settings,
   }: {
     updateFn: (data: Summary) => void;
     days?: Date[];
+    settings: Pick<Settings, 'iOS'>;
   }): Promise<void> {
     const summary = await computeSummary({
       days: days ?? this.#week(),
+      settings,
     });
 
     updateFn(summary);

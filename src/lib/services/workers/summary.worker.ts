@@ -2,8 +2,10 @@ import {differenceInMilliseconds} from 'date-fns';
 import {KEYS} from '../../constants';
 import {Summary, SummaryDay} from '../../store/interfaces/summary';
 import {Project, ProjectDataRate, ProjectId} from '../../types/project';
+import {Settings} from '../../types/settings';
 import {Task} from '../../types/task';
 import {isNullish} from '../../utils/utils.nullish';
+import {directory} from '../helpers/settings.helper';
 import {KeyedFilesystemStorage} from '../storages/filesystem.storage';
 
 const EMPTY_SUMMARY: Summary = {
@@ -20,8 +22,14 @@ const EMPTY_SUMMARY: Summary = {
   },
 };
 
-export const computeSummary = async ({days}: {days: Date[]}): Promise<Summary> => {
-  const projects = await loadProjectsRate();
+export const computeSummary = async ({
+  days,
+  settings,
+}: {
+  days: Date[];
+  settings: Pick<Settings, 'iOS'>;
+}): Promise<Summary> => {
+  const projects = await loadProjectsRate({settings});
 
   if (isNullish(projects)) {
     return EMPTY_SUMMARY;
@@ -32,8 +40,15 @@ export const computeSummary = async ({days}: {days: Date[]}): Promise<Summary> =
 
 type ProjectsRate = Record<ProjectId, ProjectDataRate>;
 
-const loadProjectsRate = async (): Promise<Option<ProjectsRate>> => {
-  const storage = new KeyedFilesystemStorage<Project[]>({key: KEYS.filesystem.projects});
+const loadProjectsRate = async ({
+  settings,
+}: {
+  settings: Pick<Settings, 'iOS'>;
+}): Promise<Option<ProjectsRate>> => {
+  const storage = new KeyedFilesystemStorage<Project[]>({
+    key: KEYS.filesystem.projects,
+    ...directory(settings),
+  });
   const projects = await storage.get();
 
   if (isNullish(projects) || projects.length <= 0) {
