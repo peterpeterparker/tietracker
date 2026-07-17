@@ -6,29 +6,41 @@ import {
   INIT_ACTIVE_PROJECTS,
   UPDATE_ACTIVE_PROJECTS,
 } from '../types/projects.types';
+import {WithSettings} from '../types/store.types';
 import {RootThunkResult} from './types.thunks';
 
-export function createProject(client: Client, data: ProjectData): RootThunkResult<Promise<void>> {
-  return async (dispatch, getState) => {
-    const project: Project = await ProjectsService.getInstance().create(client, data);
+export function createProject({
+  client,
+  data,
+  settings,
+}: {client: Client; data: ProjectData} & WithSettings): RootThunkResult<Promise<void>> {
+  return async (dispatch, _getState) => {
+    const project: Project = await ProjectsService.create(settings).create(client, data);
 
     dispatch({type: CREATE_PROJECT, payload: project});
   };
 }
 
-export function initActiveProjects(): RootThunkResult<Promise<void>> {
-  return async (dispatch, getState) => {
-    const projects: Project[] = await ProjectsService.getInstance().list();
+export function initActiveProjects({settings}: WithSettings): RootThunkResult<Promise<void>> {
+  return async (dispatch, _getState) => {
+    const projects: Project[] = await ProjectsService.create(settings).list();
 
     dispatch({type: INIT_ACTIVE_PROJECTS, payload: projects});
   };
 }
 
-export function updateActiveProject(project: Project): RootThunkResult<Promise<void>> {
-  return async (dispatch, getState) => {
-    await ProjectsService.getInstance().updateActiveProject(project);
+export function updateActiveProject({
+  project,
+  settings,
+}: {
+  project: Project;
+} & WithSettings): RootThunkResult<Promise<void>> {
+  return async (dispatch, _getState) => {
+    const service = ProjectsService.create(settings);
 
-    const projects: Project[] = await ProjectsService.getInstance().list();
+    await service.updateActiveProject(project);
+
+    const projects = await service.list();
 
     dispatch({type: UPDATE_ACTIVE_PROJECTS, payload: projects});
   };

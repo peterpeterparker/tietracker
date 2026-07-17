@@ -1,18 +1,21 @@
 import {RootProps} from '../store/thunks/index.thunks';
 
 export const initAllData = async (props: RootProps) => {
-  // Init main data if a task is on going
-  await props.initTask();
-  await props.initSettings();
+  // Load settings
+  const settings = await props.initSettings();
+  const initArgs = {settings};
+
+  // Init main data first if a task is on going
+  await props.initTask(initArgs);
 
   // Everything else in parallel
   const promises = [];
 
-  promises.push(props.initClients());
+  promises.push(props.initClients(initArgs));
   promises.push(props.initActiveProjects());
   promises.push(props.computeSummary());
-  promises.push(props.listTasks(new Date()));
-  promises.push(props.listProjectsInvoices());
+  promises.push(props.listTasks({...initArgs, forDate: new Date()}));
+  promises.push(props.listProjectsInvoices(initArgs));
 
   await Promise.all(promises);
 };

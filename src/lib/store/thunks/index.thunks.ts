@@ -7,6 +7,7 @@ import {Settings} from '../../types/settings';
 import {TaskData} from '../../types/task';
 import {TaskInProgress} from '../interfaces/task.inprogress';
 import {RootState} from '../reducers';
+import type {WithSettings} from '../types/store.types';
 import {createClient, initClients} from './clients.thunks';
 import {listProjectsInvoices} from './invoices.thunks';
 import {createProject, initActiveProjects, updateActiveProject} from './projects.thunks';
@@ -30,25 +31,28 @@ const mapState = (state: RootState) => ({
 });
 
 const mapDispatch = (dispatch: RootThunkDispatch) => ({
-  createClient: (data: ClientData) => dispatch(createClient(data)),
-  initClients: () => dispatch(initClients()),
+  createClient: (args: {data: ClientData} & WithSettings) => dispatch(createClient(args)),
+  initClients: (args: WithSettings) => dispatch(initClients(args)),
 
-  createProject: (client: Client, data: ProjectData) => dispatch(createProject(client, data)),
-  initActiveProjects: () => dispatch(initActiveProjects()),
-  updateActiveProject: (project: Project) => dispatch(updateActiveProject(project)),
+  createProject: (args: {client: Client; data: ProjectData} & WithSettings) =>
+    dispatch(createProject(args)),
+  initActiveProjects: (args: WithSettings) => dispatch(initActiveProjects(args)),
+  updateActiveProject: (args: {project: Project} & WithSettings) =>
+    dispatch(updateActiveProject(args)),
 
-  startTask: (project: Project, settings: Settings) => dispatch(startTask(project, settings)),
-  updateTask: (task: TaskInProgress) => dispatch(updateTask(task)),
-  stopTask: (delayDispatch: number = 0, roundTime: number) =>
-    dispatch(stopTask(delayDispatch, roundTime)),
-  initTask: () => dispatch(initTask()),
-  createTask: (taskData: TaskData, roundTime: number) => dispatch(createTask(taskData, roundTime)),
+  startTask: (args: {project: Project} & WithSettings) => dispatch(startTask(args)),
+  updateTask: (args: {task: TaskInProgress} & WithSettings) => dispatch(updateTask(args)),
+  stopTask: (args: {delayDispatch?: number; roundTime: number} & WithSettings) =>
+    dispatch(stopTask(args)),
+  initTask: (args: WithSettings) => dispatch(initTask(args)),
+  createTask: (args: {taskData: TaskData; roundTime: number} & WithSettings) =>
+    dispatch(createTask(args)),
 
   computeSummary: () => dispatch(computeSummary()),
 
-  listTasks: (forDate: Date) => dispatch(listTasks(forDate)),
+  listTasks: (args: {forDate: Date} & WithSettings) => dispatch(listTasks(args)),
 
-  listProjectsInvoices: () => dispatch(listProjectsInvoices()),
+  listProjectsInvoices: (args: WithSettings) => dispatch(listProjectsInvoices(args)),
 
   initSettings: () => dispatch(initSettings()),
   updateSettings: (settings: Settings) => dispatch(updateSettings(settings)),

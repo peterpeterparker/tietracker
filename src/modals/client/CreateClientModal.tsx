@@ -24,7 +24,7 @@ import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
 import {testIds} from '../../lib/tests/test-ids.constants';
 import {testId} from '../../lib/tests/test.utils';
-import {Client, ClientData} from '../../lib/types/client';
+import {ClientData} from '../../lib/types/client';
 import {ProjectData} from '../../lib/types/project';
 import {Settings} from '../../lib/types/settings';
 import {contrast} from '../../lib/utils/utils.color';
@@ -240,7 +240,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     }
 
     try {
-      const persistedClient: Client = await props.createClient(clientData);
+      const persistedClient = await props.createClient({data: clientData, settings});
 
       if (
         !persistedClient ||
@@ -255,7 +255,7 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
         return;
       }
 
-      await props.createProject(persistedClient, projectData);
+      await props.createProject({client: persistedClient, data: projectData, settings});
 
       await props.closeAction();
 

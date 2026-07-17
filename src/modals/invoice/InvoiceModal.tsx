@@ -22,7 +22,7 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {isTest} from '../../lib/env';
 import {ExportService} from '../../lib/services/export.service';
-import {InvoicesPeriod, InvoicesService} from '../../lib/services/invoices.service';
+import {InvoicesService} from '../../lib/services/invoices.service';
 import {Invoice} from '../../lib/store/interfaces/invoice';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
@@ -92,7 +92,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
   async function init() {
     if (props.invoice) {
-      const period: InvoicesPeriod | undefined = await InvoicesService.getInstance().period();
+      const period = await InvoicesService.create(settings).period();
 
       setFrom(period ? period.from : undefined);
       setTo(period ? period.to : undefined);
@@ -160,7 +160,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
 
       if (bill) {
         setTimeout(async () => {
-          await props.listProjectsInvoices();
+          await props.listProjectsInvoices({settings});
 
           props.closeAction();
 
@@ -184,7 +184,7 @@ const InvoiceModal: React.FC<Props> = (props) => {
       return;
     }
 
-    await InvoicesService.getInstance().listProjectInvoice(
+    await InvoicesService.create(settings).listProjectInvoice(
       (data: Option<Invoice>) => {
         setBillable(
           nonNullish(data)

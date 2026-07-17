@@ -19,13 +19,17 @@ import {isBefore} from 'date-fns';
 import {chevronBackOutline} from 'ionicons/icons';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
 import Loading from '../../components/loading/Loading';
 import {InvoicesPeriod, InvoicesService} from '../../lib/services/invoices.service';
+import {RootState} from '../../lib/store/reducers';
 import {format} from '../../lib/utils/utils.date';
 import styles from './Period.module.scss';
 
 const Period: React.FC = () => {
   const {t} = useTranslation(['period', 'common', 'invoices']);
+
+  const settings = useSelector(({settings: {settings}}: RootState) => settings);
 
   const [period, setPeriod] = useState<InvoicesPeriod | undefined>(undefined);
 
@@ -52,7 +56,7 @@ const Period: React.FC = () => {
   }, [from, to]);
 
   const initPeriod = async () => {
-    const period: InvoicesPeriod | undefined = await InvoicesService.getInstance().period();
+    const period = await InvoicesService.create(settings).period();
     setPeriod(period);
   };
 
@@ -71,7 +75,7 @@ const Period: React.FC = () => {
           handler: async () => {
             setProcessing(true);
 
-            await InvoicesService.getInstance().closeInvoices({from, to, done});
+            await InvoicesService.create(settings).closeInvoices({from, to, done});
           },
         },
       ],

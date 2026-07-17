@@ -2,21 +2,17 @@ import {v4 as uuid} from 'uuid';
 import {KEYS} from '../constants';
 import type {Client} from '../types/client';
 import {Project, ProjectData} from '../types/project';
+import type {Settings} from '../types/settings';
 import {isEmptyString, isNullish} from '../utils/utils.nullish';
 import {StorageServiceWithActiveProjects} from './_storage.service';
 
 export class ProjectsService extends StorageServiceWithActiveProjects<Project[]> {
-  static #instance: ProjectsService;
-
-  private constructor() {
-    super({key: KEYS.filesystem.projects});
+  private constructor(args: Pick<Settings, 'iOS'>) {
+    super({...args, key: KEYS.filesystem.projects});
   }
 
-  static getInstance() {
-    if (isNullish(ProjectsService.#instance)) {
-      ProjectsService.#instance = new ProjectsService();
-    }
-    return ProjectsService.#instance;
+  static create(args: Pick<Settings, 'iOS'>) {
+    return new ProjectsService(args);
   }
 
   async create(client: Option<Client>, data: ProjectData): Promise<Project> {

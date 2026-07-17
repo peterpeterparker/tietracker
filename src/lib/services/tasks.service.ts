@@ -20,17 +20,12 @@ import {KeyedFilesystemStorage} from './storages/filesystem.storage';
 import {listTasks} from './workers/tasks.worker';
 
 export class TasksService extends StorageServiceWithInvoices<TaskInProgress> {
-  static #instance: TasksService;
-
-  private constructor() {
-    super({key: KEYS.filesystem.taskInProgress});
+  private constructor(args: Pick<Settings, 'iOS'>) {
+    super({...args, key: KEYS.filesystem.taskInProgress});
   }
 
-  static getInstance() {
-    if (isNullish(TasksService.#instance)) {
-      TasksService.#instance = new TasksService();
-    }
-    return TasksService.#instance;
+  static create(args: Pick<Settings, 'iOS'>) {
+    return new TasksService(args);
   }
 
   async start(project: Project, settings: Settings): Promise<TaskInProgress> {

@@ -37,11 +37,11 @@ const Projects: React.FC<Props> = (props: Props) => {
   async function startStopTask(project: Project) {
     // TODO catch error
     if (task && task !== undefined) {
-      await props.stopTask(0, settings.roundTime);
+      await props.stopTask({delayDispatch: 0, roundTime: settings.roundTime, settings});
     } else {
-      await props.startTask(project, settings);
+      await props.startTask({project, settings});
 
-      await props.updateActiveProject(project);
+      await props.updateActiveProject({project, settings});
     }
   }
 

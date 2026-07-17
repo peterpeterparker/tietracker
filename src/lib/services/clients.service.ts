@@ -1,22 +1,20 @@
 import {v4 as uuid} from 'uuid';
 import {CLIENT_COLOR_FALLBACK, KEYS} from '../constants';
 import type {Client, ClientData} from '../types/client';
+import {Settings} from '../types/settings';
 import {isEmptyString, isNullish} from '../utils/utils.nullish';
 import {StorageService} from './_storage.service';
 
 export class ClientsService extends StorageService<Client[]> {
-  static #instance: ClientsService;
-
-  private constructor() {
-    super({key: KEYS.filesystem.clients});
+  private constructor(args: Pick<Settings, 'iOS'>) {
+    super({
+      ...args,
+      key: KEYS.filesystem.clients,
+    });
   }
 
-  static getInstance() {
-    if (isNullish(ClientsService.#instance)) {
-      ClientsService.#instance = new ClientsService();
-    }
-
-    return ClientsService.#instance;
+  static create(args: Pick<Settings, 'iOS'>) {
+    return new ClientsService(args);
   }
 
   async create(data: ClientData): Promise<Client> {

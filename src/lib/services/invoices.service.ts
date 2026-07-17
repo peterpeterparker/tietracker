@@ -2,6 +2,7 @@ import {compareAsc, compareDesc, parse} from 'date-fns';
 import {KEYS} from '../constants';
 import {Invoice} from '../store/interfaces/invoice';
 import {DateString} from '../types/date';
+import {Settings} from '../types/settings';
 import {interval} from '../utils/utils.date';
 import {emitError} from '../utils/utils.events';
 import {isNullish} from '../utils/utils.nullish';
@@ -14,17 +15,12 @@ export interface InvoicesPeriod {
 }
 
 export class InvoicesService extends StorageService<DateString[]> {
-  static #instance: InvoicesService;
-
-  private constructor() {
-    super({key: KEYS.filesystem.invoices});
+  private constructor(args: Pick<Settings, 'iOS'>) {
+    super({...args, key: KEYS.filesystem.invoices});
   }
 
-  static getInstance() {
-    if (isNullish(InvoicesService.#instance)) {
-      InvoicesService.#instance = new InvoicesService();
-    }
-    return InvoicesService.#instance;
+  static create(args: Pick<Settings, 'iOS'>) {
+    return new InvoicesService(args);
   }
 
   async listProjectsInvoices(updateStateFunction: (data: Invoice[]) => void): Promise<void> {

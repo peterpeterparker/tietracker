@@ -22,6 +22,8 @@ interface Props extends RootProps {
 const Tasks: React.FC<Props> = (props: Props) => {
   const {t} = useTranslation('tasks');
 
+  const settings = useSelector(({settings: {settings}}: RootState) => settings);
+
   const tasks: TaskItemStore[] | undefined = useSelector(
     (state: RootState) => state.tasks.taskItems,
   );
@@ -43,7 +45,7 @@ const Tasks: React.FC<Props> = (props: Props) => {
 
   async function selectDate(day: Date | null) {
     if (day) {
-      await props.listTasks(day);
+      await props.listTasks({forDate: day, settings});
     }
   }
 
