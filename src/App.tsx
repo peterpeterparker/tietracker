@@ -37,6 +37,7 @@ import '@ionic/react/css/text-transformation.css';
 import {createTheme, ThemeProvider} from '@mui/material';
 import BackupAlert from './alerts/backup/BackupAlert';
 import {ErrorToast} from './alerts/error/ErrorToast';
+import {isNotNativePlatform, isSafari} from './lib/env';
 import './lib/helpers/i18n';
 import {MigrateService} from './lib/services/migrate.service';
 import {rootConnector, RootProps} from './lib/store/thunks/index.thunks';
@@ -106,7 +107,9 @@ const App: React.FC<RootProps> = (props: RootProps) => {
 
       initSelectedTab();
 
-      setBackup(true);
+      // Mobile app uses Filesystem and Chrome/Firefox do not delete periodically IDB
+      // in case of inactivity, unlike Safari
+      setBackup(isNotNativePlatform() && isSafari());
     })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
