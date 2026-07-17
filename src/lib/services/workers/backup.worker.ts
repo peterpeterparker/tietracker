@@ -2,21 +2,21 @@ import JSZip from 'jszip';
 import {KEYS} from '../../constants';
 import type {Currency} from '../../types/currency';
 import {DateString} from '../../types/date';
+import type {Settings} from '../../types/settings';
 import {Task} from '../../types/task';
 import {i18nExportLabels} from '../../utils/utils.export';
 import {isNullish, nonNullish} from '../../utils/utils.nullish';
+import {directory} from '../helpers/settings.helper';
 import {FilesystemStorage, KeyedFilesystemStorage} from '../storages/filesystem.storage';
 import {PreferencesStorage} from '../storages/preferences.storage';
 import {loadClients, loadProjects} from './utils/utils';
 import {backupToExcel} from './utils/utils.excel';
 import {convertTasks, ExportableInvoices} from './utils/utils.export';
 import {WorkerClients, WorkerProjects} from './utils/utils.types';
-import type {Settings} from '../../types/settings';
-import {directory} from '../helpers/settings.helper';
 
 export const backupZip = async ({settings}: {settings: Settings}): Promise<Option<Blob>> => {
   const storage = new FilesystemStorage({
-    ...directory(settings)
+    ...directory(settings),
   });
   const storageEntries = await storage.entries();
 
