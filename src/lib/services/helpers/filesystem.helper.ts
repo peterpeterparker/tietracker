@@ -10,9 +10,6 @@ import {
 import {isNotNativePlatform} from '../../env';
 import {nonNullish} from '../../utils/utils.nullish';
 
-// TODO: option Directory.Library or Directory.LibraryNoCloud
-const DIRECTORY: Directory = Directory.Library;
-
 const ENCODING: Pick<ReadFileOptions, 'encoding'> | Pick<WriteFileOptions, 'encoding'> = {
   encoding: Encoding.UTF8,
 };
@@ -37,12 +34,18 @@ const isNotFoundError = (err: unknown): boolean =>
 const isDirectoryAlreadyExistsError = (err: unknown): boolean =>
   isNotNativePlatform() || (isPluginError(err) && err.code === DIRECTORY_ALREADY_EXISTS_ERROR_CODE);
 
-export const get = async <T>({key}: {key: string}): Promise<Option<T>> => {
+export const get = async <T>({
+  key,
+  directory,
+}: {
+  key: string;
+  directory: Directory;
+}): Promise<Option<T>> => {
   try {
     const {data} = await Filesystem.readFile({
       ...ENCODING,
       path: filePath(key),
-      directory: DIRECTORY,
+      directory,
     });
 
     const text = data instanceof Blob ? await data.text() : data;
@@ -57,12 +60,12 @@ export const get = async <T>({key}: {key: string}): Promise<Option<T>> => {
   }
 };
 
-export const ensureDataDirExists = async (): Promise<void> => {
+export const ensureDataDirExists = async ({directory}: {directory: Directory}): Promise<void> => {
   const createDataDir = async () => {
     try {
       await Filesystem.mkdir({
         path: STORAGE_DIR_PATH,
-        directory: DIRECTORY,
+        directory,
         recursive: true,
       });
     } catch (err: unknown) {
@@ -77,7 +80,7 @@ export const ensureDataDirExists = async (): Promise<void> => {
   try {
     await Filesystem.stat({
       path: STORAGE_DIR_PATH,
-      directory: DIRECTORY,
+      directory,
     });
   } catch {
     // stat rejects if the path does not exist yet.
@@ -85,22 +88,34 @@ export const ensureDataDirExists = async (): Promise<void> => {
   }
 };
 
-export const set = async ({key, value}: {key: string; value: unknown}): Promise<void> => {
-  await ensureDataDirExists();
+export const set = async ({
+  key,
+  value,
+  directory,
+}: {
+  key: string;
+  value: unknown;
+  directory: Directory;
+}): Promise<void> => {
+  await ensureDataDirExists({directory});
 
   await Filesystem.writeFile({
     ...ENCODING,
     path: filePath(key),
-    directory: DIRECTORY,
+    directory,
     data: JSON.stringify(value),
   });
 };
 
-export const listFiles = async (): Promise<{files: FileInfo[]}> => {
+export const listFiles = async ({
+  directory,
+}: {
+  directory: Directory;
+}): Promise<{files: FileInfo[]}> => {
   try {
     return await Filesystem.readdir({
       path: STORAGE_DIR_PATH,
-      directory: DIRECTORY,
+      directory,
     });
   } catch (err: unknown) {
     if (isNotFoundError(err)) {
@@ -111,11 +126,11 @@ export const listFiles = async (): Promise<{files: FileInfo[]}> => {
   }
 };
 
-export const clear = async (): Promise<void> => {
+export const clear = async ({directory}: {directory: Directory}): Promise<void> => {
   try {
     await Filesystem.rmdir({
       path: STORAGE_DIR_PATH,
-      directory: DIRECTORY,
+      directory,
       recursive: true,
     });
   } catch (err: unknown) {
@@ -127,11 +142,11 @@ export const clear = async (): Promise<void> => {
   }
 };
 
-export const del = async ({key}: {key: string}): Promise<void> => {
+export const del = async ({key, directory}: {key: string; directory: Directory}): Promise<void> => {
   try {
     await Filesystem.deleteFile({
       path: filePath(key),
-      directory: DIRECTORY,
+      directory,
     });
   } catch (err: unknown) {
     if (isNotFoundError(err)) {
