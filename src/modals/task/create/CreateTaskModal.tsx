@@ -72,11 +72,13 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
       created_at: now,
     };
 
-    await props.createTask({taskData, roundTime: 0, settings});
+    const args = {settings};
 
-    await props.computeSummary();
-    await props.listTasks({forDate: props.taskItemsSelectedDate, settings});
-    await props.listProjectsInvoices({settings});
+    await props.createTask({taskData, roundTime: 0, ...args});
+
+    await props.computeSummary(args);
+    await props.listTasks({forDate: props.taskItemsSelectedDate, ...args});
+    await props.listProjectsInvoices(args);
 
     await props.closeAction();
 

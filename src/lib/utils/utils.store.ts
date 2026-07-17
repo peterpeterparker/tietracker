@@ -13,7 +13,7 @@ export const initAllData = async (props: RootProps) => {
 
   promises.push(props.initClients(initArgs));
   promises.push(props.initActiveProjects(initArgs));
-  promises.push(props.computeSummary());
+  promises.push(props.computeSummary(initArgs));
   promises.push(props.listTasks({...initArgs, forDate: new Date()}));
   promises.push(props.listProjectsInvoices(initArgs));
 

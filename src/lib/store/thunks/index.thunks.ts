@@ -48,7 +48,7 @@ const mapDispatch = (dispatch: RootThunkDispatch) => ({
   createTask: (args: {taskData: TaskData; roundTime: number} & WithSettings) =>
     dispatch(createTask(args)),
 
-  computeSummary: () => dispatch(computeSummary()),
+  computeSummary: (args: WithSettings) => dispatch(computeSummary(args)),
 
   listTasks: (args: {forDate: Date} & WithSettings) => dispatch(listTasks(args)),
 

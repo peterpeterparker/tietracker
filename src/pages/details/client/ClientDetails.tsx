@@ -134,11 +134,13 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
   }
 
   async function updateStore() {
-    await props.initClients({settings});
-    await props.initActiveProjects({settings});
-    await props.listTasks({forDate: props.taskItemsSelectedDate, settings});
-    await props.listProjectsInvoices({settings});
-    await props.computeSummary();
+    const args = {settings};
+
+    await props.initClients(args);
+    await props.initActiveProjects(args);
+    await props.listTasks({forDate: props.taskItemsSelectedDate, ...args});
+    await props.listProjectsInvoices(args);
+    await props.computeSummary(args);
   }
 
   async function closeProjectModal(refresh: boolean) {

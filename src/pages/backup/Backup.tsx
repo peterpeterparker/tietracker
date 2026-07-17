@@ -67,7 +67,7 @@ const Backup: React.FC<RootProps> = (props) => {
           handler: async () => {
             setProcessing(true);
 
-            await RestoreService.getInstance().restore({zip: file, done});
+            await RestoreService.getInstance().restore({zip: file, settings, done});
           },
         },
       ],
