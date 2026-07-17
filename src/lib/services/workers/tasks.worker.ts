@@ -15,7 +15,6 @@ export const listTasks = async ({day}: {day: DateString}) => {
     return [];
   }
 
-
   const clients = await loadClients();
 
   if (isNullish(clients)) {
