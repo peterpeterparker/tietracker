@@ -1,4 +1,4 @@
-import {clear, del, get, listFiles, set} from './helpers/filesystem.helper';
+import {clear, del, get, listFiles, set} from '../helpers/filesystem.helper';
 import {KeyedStorage, Storage} from './storage';
 
 export class FilesystemStorage extends Storage {
