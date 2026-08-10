@@ -19,7 +19,7 @@ export class ICloudService {
   }: {
     currentSettings: Settings;
     updateSettingsFn: (settings: Settings) => Promise<void>;
-    done: () => void;
+    done: (success: boolean) => Promise<void>;
   }) {
     const targetSettings: Settings = {
       ...currentSettings,
@@ -40,7 +40,7 @@ export class ICloudService {
           : 'Unexpected error while migrating the iCloud sync directory',
       );
 
-      done();
+      await done(false);
       return;
     }
 
@@ -59,8 +59,11 @@ export class ICloudService {
     if (saveResult.status === 'error') {
       emitError(saveResult.err);
       console.error(saveResult.err);
+
+      await done(false);
+      return;
     }
 
-    done();
+    await done(true);
   }
 }

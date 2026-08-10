@@ -55,10 +55,18 @@ const Backup: React.FC<RootProps> = (props) => {
   const history = useHistory();
 
   const [iCloudSync, setICloudSync] = useState<boolean | undefined>(undefined);
+  const [disableICloudSync, setDisableICloudSync] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
     setICloudSync(props.settings.iOS?.iCloudSync !== false);
   }, [props.settings]);
+
+  useEffect(() => {
+    setDisableICloudSync(
+      ([undefined, true].includes(props.settings.iOS?.iCloudSync) && iCloudSync) ||
+        (props.settings.iOS?.iCloudSync === false && !iCloudSync),
+    );
+  }, [iCloudSync, props.settings]);
 
   async function doBackup() {
     try {
@@ -74,7 +82,7 @@ const Backup: React.FC<RootProps> = (props) => {
     await ICloudService.create().migrate({
       currentSettings: settings,
       updateSettingsFn: props.updateSettings,
-      done: () => setProcessing(false),
+      done,
     });
   }
 
@@ -134,9 +142,7 @@ const Backup: React.FC<RootProps> = (props) => {
   }
 
   function toggleICloudSync() {
-    props.settings.iOS =
-      isNullish(iCloudSync) || iCloudSync === true ? {iCloudSync: false} : undefined;
-    setICloudSync(props.settings.iOS?.iCloudSync !== false);
+    setICloudSync(!iCloudSync);
   }
 
   return (
@@ -199,6 +205,7 @@ const Backup: React.FC<RootProps> = (props) => {
           type="button"
           color="button"
           onClick={migrateICloudSync}
+          disabled={disableICloudSync}
           style={{marginTop: '8px'}}>
           <IonLabel>{t('icloud:migrate')}</IonLabel>
         </IonButton>
