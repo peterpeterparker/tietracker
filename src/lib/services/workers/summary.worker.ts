@@ -35,7 +35,7 @@ export const computeSummary = async ({
     return EMPTY_SUMMARY;
   }
 
-  return await computeSum({projects, days});
+  return await computeSum({projects, days, settings});
 };
 
 type ProjectsRate = Record<ProjectId, ProjectDataRate>;
@@ -66,12 +66,14 @@ const loadProjectsRate = async ({
 const computeSum = async ({
   days,
   projects,
+  settings
 }: {
   projects: ProjectsRate;
   days: Date[];
+  settings: Pick<Settings, 'iOS'>;
 }): Promise<Summary> => {
   const promises = days.map((day) => {
-    return computeDaySum({day, projects});
+    return computeDaySum({day, projects, settings});
   });
 
   const daily = await Promise.all(promises);
@@ -109,9 +111,11 @@ const computeSum = async ({
 const computeDaySum = async ({
   day,
   projects,
+  settings
 }: {
   projects: ProjectsRate;
   day: Date;
+  settings: Pick<Settings, 'iOS'>;
 }): Promise<SummaryDay> => {
   const yearFormatted = day.getFullYear();
   const monthFormatted =
@@ -120,6 +124,7 @@ const computeDaySum = async ({
 
   const storage = new KeyedFilesystemStorage<Task[]>({
     key: `tasks-${yearFormatted}-${monthFormatted}-${dayFormatted}`,
+    ...directory(settings),
   });
   const tasks = await storage.get();
 

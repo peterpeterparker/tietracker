@@ -18,6 +18,7 @@ import {isNullish, nonNullish} from '../utils/utils.nullish';
 import {StorageServiceWithInvoices} from './_storage.service';
 import {KeyedFilesystemStorage} from './storages/filesystem.storage';
 import {listTasks} from './workers/tasks.worker';
+import {directory} from './helpers/settings.helper';
 
 export class TasksService extends StorageServiceWithInvoices<TaskInProgress> {
   #tasksSettings: Pick<Settings, 'iOS'>;
@@ -172,7 +173,10 @@ export class TasksService extends StorageServiceWithInvoices<TaskInProgress> {
 
     const storeDate = lightFormat(task.data.from, 'yyyy-MM-dd');
 
-    const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${storeDate}`});
+    const storage = new KeyedFilesystemStorage<Task[]>({
+      key: `tasks-${storeDate}`,
+      ...directory(this.#tasksSettings),
+    });
 
     let tasks = await storage.get();
 
@@ -223,7 +227,10 @@ export class TasksService extends StorageServiceWithInvoices<TaskInProgress> {
 
     tasks[index] = taskToPersist;
 
-    const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${day}`});
+    const storage = new KeyedFilesystemStorage<Task[]>({
+      key: `tasks-${day}`,
+      ...directory(this.#tasksSettings),
+    });
     await storage.set(tasks);
 
     await this.addTaskToInvoices(day);
@@ -244,12 +251,18 @@ export class TasksService extends StorageServiceWithInvoices<TaskInProgress> {
 
     tasks.splice(index, 1);
 
-    const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${day}`});
+    const storage = new KeyedFilesystemStorage<Task[]>({
+      key: `tasks-${day}`,
+      ...directory(this.#tasksSettings),
+    });
     await storage.set(tasks);
   }
 
   private async load(day: DateString): Promise<Task[]> {
-    const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${day}`});
+    const storage = new KeyedFilesystemStorage<Task[]>({
+      key: `tasks-${day}`,
+      ...directory(this.#tasksSettings),
+    });
     const tasks = await storage.get();
 
     if (isNullish(tasks) || tasks.length <= 0) {
@@ -264,7 +277,10 @@ export class TasksService extends StorageServiceWithInvoices<TaskInProgress> {
       return undefined;
     }
 
-    const storage = new KeyedFilesystemStorage<Task[]>({key: `tasks-${day}`});
+    const storage = new KeyedFilesystemStorage<Task[]>({
+      key: `tasks-${day}`,
+      ...directory(this.#tasksSettings),
+    });
     const tasks = await storage.get();
 
     if (isNullish(tasks) || tasks.length <= 0) {
