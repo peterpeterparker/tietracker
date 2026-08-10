@@ -3,18 +3,22 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon,
+  IonIcon, IonItem,
   IonLabel,
   IonPage,
+  IonSegment,
+  IonSegmentButton,
+  IonSpinner, IonToggle,
   IonToolbar,
-  useIonAlert,
+  useIonAlert
 } from '@ionic/react';
 import {chevronBackOutline} from 'ionicons/icons';
-import React, {createRef, RefObject, useState} from 'react';
+import React, {createRef, RefObject, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router';
 import Loading from '../../components/loading/Loading';
+import {isIOS} from '../../lib/env';
 import {BackupService} from '../../lib/services/backup.service';
 import {RestoreService} from '../../lib/services/restore.service';
 import {RootState} from '../../lib/store/reducers';
@@ -23,8 +27,14 @@ import {testIds} from '../../lib/tests/test-ids.constants';
 import {testId} from '../../lib/tests/test.utils';
 import {Settings} from '../../lib/types/settings';
 import {emitError} from '../../lib/utils/utils.events';
+import {isNullish} from '../../lib/utils/utils.nullish';
 import {initAllData} from '../../lib/utils/utils.store';
 import styles from './Backup.module.scss';
+
+enum BackupCategory {
+  ICLOUD = 'icloud',
+  MANUAL = 'manual',
+}
 
 const Backup: React.FC<RootProps> = (props) => {
   const {t} = useTranslation(['backup', 'common']);
@@ -35,9 +45,19 @@ const Backup: React.FC<RootProps> = (props) => {
 
   const settings: Settings = useSelector((state: RootState) => state.settings.settings);
 
+  const [category, setCategory] = useState<BackupCategory>(
+    isIOS() ? BackupCategory.ICLOUD : BackupCategory.MANUAL,
+  );
+
   const [present] = useIonAlert();
 
   const history = useHistory();
+
+  const [iCloudSync, setICloudSync] = useState<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    setICloudSync(props.settings.iOS?.iCloudSync !== false);
+  }, [props.settings]);
 
   async function doBackup() {
     try {
@@ -96,6 +116,18 @@ const Backup: React.FC<RootProps> = (props) => {
     inputRef.current.click();
   }
 
+  function selectCategory($event: CustomEvent) {
+    if ($event && $event.detail) {
+      setCategory($event.detail.value);
+    }
+  }
+
+  function toggleICloudSync() {
+    props.settings.iOS =
+      isNullish(iCloudSync) || iCloudSync === true ? {iCloudSync: false} : undefined;
+    setICloudSync(props.settings.iOS?.iCloudSync !== false);
+  }
+
   return (
     <IonPage>
       <IonContent>
@@ -108,17 +140,50 @@ const Backup: React.FC<RootProps> = (props) => {
                 </IonButton>
               </IonButtons>
             </IonToolbar>
+            {isIOS() && <IonToolbar className="title">{renderBackupCategory()}</IonToolbar>}
           </IonHeader>
 
-          <p className={`${styles.text} ion-padding-top`}>{t('backup:text')}</p>
-
-          <p>{t('backup:example')}</p>
-
-          <div className={`actions ${styles.actions}`}>{renderActions()}</div>
+          {renderContent()}
         </main>
       </IonContent>
     </IonPage>
   );
+
+  function renderContent() {
+    if (isNullish(settings)) {
+      return (
+        <div className="spinner">
+          <IonSpinner color="primary"></IonSpinner>
+        </div>
+      );
+    }
+
+    if (category === BackupCategory.ICLOUD) {
+      return renderICloudSync();
+    }
+
+    return renderManualBackup();
+  }
+
+  function renderManualBackup() {
+    return (
+      <>
+        <p className={`${styles.text} ion-padding-top`}>{t('backup:text')}</p>
+
+        <p>{t('backup:example')}</p>
+
+        <div className={`actions ${styles.actions}`}>{renderActions()}</div>
+      </>
+    );
+  }
+
+  function renderICloudSave() {
+    if (processing) {
+      return <Loading></Loading>;
+    }
+
+    // TODO
+  }
 
   function renderActions() {
     if (processing) {
@@ -148,6 +213,54 @@ const Backup: React.FC<RootProps> = (props) => {
           className={styles.input}
           {...testId(testIds.backup.restore)}
         />
+      </>
+    );
+  }
+
+  function renderBackupCategory() {
+    if (!settings || settings === undefined) {
+      return undefined;
+    }
+
+    return (
+      <IonSegment
+        mode="md"
+        class="ion-padding-bottom"
+        value={category}
+        onIonChange={($event: CustomEvent) => selectCategory($event)}>
+        <IonSegmentButton value={BackupCategory.ICLOUD} mode="md">
+          <IonLabel>{t('backup:segments.icloud')}</IonLabel>
+        </IonSegmentButton>
+        <IonSegmentButton value={BackupCategory.MANUAL} mode="md">
+          <IonLabel>{t('backup:segments.manual')}</IonLabel>
+        </IonSegmentButton>
+      </IonSegment>
+    );
+  }
+
+
+  function renderICloudSync() {
+    return (
+      <>
+        <p className={`${styles.text} ion-padding-top`}>{t('backup:icloud.description')}</p>
+
+        <IonItem className="item-title">
+          <IonLabel>{t('backup:icloud.title')}</IonLabel>
+        </IonItem>
+
+        <IonItem className="item-input item-radio with-padding">
+          <IonLabel style={{flex: 1}}>
+            <span>{iCloudSync !== false ? t('backup:icloud.on') : t('backup:icloud.off')}</span>
+          </IonLabel>
+          <IonToggle
+            slot="end"
+            checked={iCloudSync}
+            mode="md"
+            color="medium"
+            onClick={() => toggleICloudSync()}></IonToggle>
+        </IonItem>
+
+        <div className={`actions ion-padding-top ${styles.actions}`}>{renderActions()}</div>
       </>
     );
   }
