@@ -8,7 +8,7 @@ import {
   IonPage,
   IonToolbar,
 } from '@ionic/react';
-import {checkmark, chevronBackOutline, globeOutline, logoGithub, logoTwitter} from 'ionicons/icons';
+import {chevronBackOutline} from 'ionicons/icons';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import styles from './About.module.scss';
@@ -43,70 +43,40 @@ const About: React.FC = () => {
             </IonToolbar>
           </IonHeader>
 
-          <h1>Features</h1>
+          <h1 className="ion-padding-top">Data</h1>
 
           <p>
-            <IonLabel>Track your productivity and billable hours.</IonLabel>
+            <IonLabel>
+              Your data lives on your device or browser. There is no server or remote database.
+            </IonLabel>
           </p>
-
-          <ul className={styles.list}>
-            <li>
-              <IonIcon icon={checkmark} className={styles.icon} /> Simple work hours tracking
-            </li>
-            <li>
-              <IonIcon icon={checkmark} className={styles.icon} /> Assign time to clients and
-              projects
-            </li>
-            <li>
-              <IonIcon icon={checkmark} className={styles.icon} /> Define budget per projects
-            </li>
-            <li>
-              <IonIcon icon={checkmark} className={styles.icon} /> Mark entries as charges
-            </li>
-          </ul>
-
-          <h1 className="ion-padding-top">Reporting</h1>
 
           <p>
-            <IonLabel>Yet not exhaustive but effective reporting.</IonLabel>
+            <IonLabel>No analytics nor tracking - even anonymous - are implemented.</IonLabel>
           </p>
 
-          <ul className={styles.list}>
-            <li>
-              <IonIcon icon={checkmark} className={styles.icon} /> Weekly work summary
-            </li>
-            <li>
-              <IonIcon icon={checkmark} className={styles.icon} /> Daily list of entries
-            </li>
-            <li>
-              <IonIcon icon={checkmark} className={styles.icon} /> Export open invoices to XLSX
-              timesheets (Excel, LibreOffice, Numbers, etc) and PDF
-            </li>
-          </ul>
+          <p>
+            <IonLabel>
+              On iOS, iCloud sync is used by default, so your data carries over when you switch to a
+              new phone. This can be disabled. On other devices, use manual backup and restore to
+              move your data yourself.
+            </IonLabel>
+          </p>
 
           <h1 className="ion-padding-top">Open Source</h1>
 
           <p>
             <IonLabel>
-              Tie Tracker is open source and published under the AGPL v3 (or later) licence. Its
+              Tie Tracker is open source and published under the AGPL v3 (or later) license. Its
               code is available on{' '}
               <a
                 href="http://github.com/peterpeterparker/tietracker"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.github}>
-                GitHub <IonIcon md={logoGithub} ios={logoGithub} area-label="Github"></IonIcon>
+                GitHub
               </a>
               .
-            </IonLabel>
-          </p>
-
-          <h1 className="ion-padding-top">Data</h1>
-
-          <p>
-            <IonLabel>
-              It works offline, data are saved on your device. No analytics nor tracking are
-              implemented.
             </IonLabel>
           </p>
 
@@ -114,31 +84,13 @@ const About: React.FC = () => {
 
           <p>
             <IonLabel>
-              Got a question or, a project which requires a freelance web developer? Reach me out on{' '}
-              <a href="https://twitter.com/daviddalbusco" target="_blank" rel="noopener noreferrer">
-                Twitter
-              </a>{' '}
-              or{' '}
+              Got a question, or a project that needs a freelance web developer? Reach me on{' '}
               <a href="https://daviddalbusco.com" target="_blank" rel="noopener noreferrer">
-                website
+                my website
               </a>
               .
             </IonLabel>
           </p>
-
-          <div className={styles.social}>
-            <a href="https://daviddalbusco.com" target="_blank" rel="noopener noreferrer">
-              <IonIcon icon={globeOutline} area-label="Personal blog and website"></IonIcon>
-            </a>
-
-            <a href="https://twitter.com/daviddalbusco" target="_blank" rel="noopener noreferrer">
-              <IonIcon md={logoTwitter} ios={logoTwitter} area-label="Twitter"></IonIcon>
-            </a>
-
-            <a href="http://github.com/peterpeterparker" target="_blank" rel="noopener noreferrer">
-              <IonIcon md={logoGithub} ios={logoGithub} area-label="Github"></IonIcon>
-            </a>
-          </div>
 
           <p className={styles.terms}>
             <IonLabel>
