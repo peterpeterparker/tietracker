@@ -3,14 +3,16 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
-  IonIcon, IonItem,
+  IonIcon,
+  IonItem,
   IonLabel,
   IonPage,
   IonSegment,
   IonSegmentButton,
-  IonSpinner, IonToggle,
+  IonSpinner,
+  IonToggle,
   IonToolbar,
-  useIonAlert
+  useIonAlert,
 } from '@ionic/react';
 import {chevronBackOutline} from 'ionicons/icons';
 import React, {createRef, RefObject, useEffect, useState} from 'react';
@@ -20,6 +22,7 @@ import {useHistory} from 'react-router';
 import Loading from '../../components/loading/Loading';
 import {isIOS} from '../../lib/env';
 import {BackupService} from '../../lib/services/backup.service';
+import {ICloudService} from '../../lib/services/icloud.service';
 import {RestoreService} from '../../lib/services/restore.service';
 import {RootState} from '../../lib/store/reducers';
 import {rootConnector, RootProps} from '../../lib/store/thunks/index.thunks';
@@ -30,7 +33,6 @@ import {emitError} from '../../lib/utils/utils.events';
 import {isNullish} from '../../lib/utils/utils.nullish';
 import {initAllData} from '../../lib/utils/utils.store';
 import styles from './Backup.module.scss';
-import {ICloudService} from '../../lib/services/icloud.service';
 
 enum BackupCategory {
   ICLOUD = 'icloud',
@@ -265,7 +267,6 @@ const Backup: React.FC<RootProps> = (props) => {
       </IonSegment>
     );
   }
-
 
   function renderICloudSync() {
     return (

@@ -11,10 +11,8 @@ import {
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {isNotIOS} from '../../../lib/env';
 import {RootState} from '../../../lib/store/reducers';
 import {Settings} from '../../../lib/types/settings';
-import {isNullish} from '../../../lib/utils/utils.nullish';
 
 export interface SettingsGeneralProps {
   settings: Settings;

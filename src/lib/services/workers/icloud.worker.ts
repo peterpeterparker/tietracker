@@ -5,7 +5,7 @@ import {FilesystemStorage} from '../storages/filesystem.storage';
 
 export const migrateIOSDirectory = async ({
   currentSettings,
-  targetSettings
+  targetSettings,
 }: {
   currentSettings: Pick<Settings, 'iOS'>;
   targetSettings: Pick<Settings, 'iOS'>;
@@ -57,7 +57,11 @@ const copyEntries = async ({
   }
 };
 
-const clearSourceEntries = async ({sourceStorage}: {sourceStorage: FilesystemStorage}): Promise<Result<undefined>> => {
+const clearSourceEntries = async ({
+  sourceStorage,
+}: {
+  sourceStorage: FilesystemStorage;
+}): Promise<Result<undefined>> => {
   try {
     // Finally clear source directory
     await sourceStorage.clear();
