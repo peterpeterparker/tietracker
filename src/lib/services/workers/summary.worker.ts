@@ -66,7 +66,7 @@ const loadProjectsRate = async ({
 const computeSum = async ({
   days,
   projects,
-  settings
+  settings,
 }: {
   projects: ProjectsRate;
   days: Date[];
@@ -111,7 +111,7 @@ const computeSum = async ({
 const computeDaySum = async ({
   day,
   projects,
-  settings
+  settings,
 }: {
   projects: ProjectsRate;
   day: Date;

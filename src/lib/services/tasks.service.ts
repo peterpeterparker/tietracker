@@ -16,9 +16,9 @@ import type {Settings} from '../types/settings';
 import type {Task, TaskData} from '../types/task';
 import {isNullish, nonNullish} from '../utils/utils.nullish';
 import {StorageServiceWithInvoices} from './_storage.service';
+import {directory} from './helpers/settings.helper';
 import {KeyedFilesystemStorage} from './storages/filesystem.storage';
 import {listTasks} from './workers/tasks.worker';
-import {directory} from './helpers/settings.helper';
 
 export class TasksService extends StorageServiceWithInvoices<TaskInProgress> {
   #tasksSettings: Pick<Settings, 'iOS'>;
