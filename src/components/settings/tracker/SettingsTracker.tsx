@@ -32,7 +32,6 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
       return;
     }
 
-    // eslint-disable-next-line react-hooks/immutability
     props.settings.currency = currency;
 
     setShowPopover(false);
@@ -43,7 +42,6 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
       return;
     }
 
-    // eslint-disable-next-line react-hooks/immutability
     props.settings.roundTime = $event.detail.value;
   }
 
@@ -55,7 +53,6 @@ const SettingsTracker: React.FC<SettingsGeneralProps> = (props) => {
     const input: string = ($event.target as InputTargetEvent).value;
 
     if (!input || input === undefined || input === '') {
-      // eslint-disable-next-line react-hooks/immutability
       delete props.settings['vat'];
     } else {
       props.settings.vat = parseFloat(($event.target as InputTargetEvent).value);

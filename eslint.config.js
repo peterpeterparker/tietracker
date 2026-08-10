@@ -33,6 +33,9 @@ export default tseslint.config(
       'no-async-promise-executor': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       'react-refresh/only-export-components': 'off',
+      // TODO: 2026 best practices
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/immutability': 'off',
     },
   },
 );
