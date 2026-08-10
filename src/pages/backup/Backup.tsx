@@ -30,6 +30,7 @@ import {emitError} from '../../lib/utils/utils.events';
 import {isNullish} from '../../lib/utils/utils.nullish';
 import {initAllData} from '../../lib/utils/utils.store';
 import styles from './Backup.module.scss';
+import {ICloudService} from '../../lib/services/icloud.service';
 
 enum BackupCategory {
   ICLOUD = 'icloud',
@@ -37,7 +38,7 @@ enum BackupCategory {
 }
 
 const Backup: React.FC<RootProps> = (props) => {
-  const {t} = useTranslation(['backup', 'common']);
+  const {t} = useTranslation(['backup', 'common', 'icloud']);
 
   const [processing, setProcessing] = useState<boolean>(false);
 
@@ -65,6 +66,16 @@ const Backup: React.FC<RootProps> = (props) => {
     } catch (err) {
       emitError(err);
     }
+  }
+
+  async function migrateICloudSync() {
+    setProcessing(true);
+
+    await ICloudService.create().migrate({
+      currentSettings: settings,
+      updateSettingsFn: props.updateSettings,
+      done: () => setProcessing(false),
+    });
   }
 
   async function onInputChange() {
@@ -172,20 +183,30 @@ const Backup: React.FC<RootProps> = (props) => {
 
         <p>{t('backup:example')}</p>
 
-        <div className={`actions ${styles.actions}`}>{renderActions()}</div>
+        <div className={`actions ${styles.actions}`}>{renderManualActions()}</div>
       </>
     );
   }
 
-  function renderICloudSave() {
+  function renderIOSActions() {
     if (processing) {
       return <Loading></Loading>;
     }
 
-    // TODO
+    return (
+      <>
+        <IonButton
+          type="button"
+          color="button"
+          onClick={migrateICloudSync}
+          style={{marginTop: '8px'}}>
+          <IonLabel>{t('icloud:migrate')}</IonLabel>
+        </IonButton>
+      </>
+    );
   }
 
-  function renderActions() {
+  function renderManualActions() {
     if (processing) {
       return <Loading></Loading>;
     }
@@ -242,15 +263,15 @@ const Backup: React.FC<RootProps> = (props) => {
   function renderICloudSync() {
     return (
       <>
-        <p className={`${styles.text} ion-padding-top`}>{t('backup:icloud.description')}</p>
+        <p className={`${styles.text} ion-padding-top`}>{t('icloud:description')}</p>
 
         <IonItem className="item-title">
-          <IonLabel>{t('backup:icloud.title')}</IonLabel>
+          <IonLabel>{t('icloud:title')}</IonLabel>
         </IonItem>
 
         <IonItem className="item-input item-radio with-padding">
           <IonLabel style={{flex: 1}}>
-            <span>{iCloudSync !== false ? t('backup:icloud.on') : t('backup:icloud.off')}</span>
+            <span>{iCloudSync !== false ? t('icloud:on') : t('icloud:off')}</span>
           </IonLabel>
           <IonToggle
             slot="end"
@@ -260,7 +281,7 @@ const Backup: React.FC<RootProps> = (props) => {
             onClick={() => toggleICloudSync()}></IonToggle>
         </IonItem>
 
-        <div className={`actions ion-padding-top ${styles.actions}`}>{renderActions()}</div>
+        <div className={`actions ion-padding-top ${styles.actions}`}>{renderIOSActions()}</div>
       </>
     );
   }

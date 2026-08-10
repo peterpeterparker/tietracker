@@ -1,0 +1,7 @@
+{
+  "title": "iCloud Sync",
+  "description": "Automatically keep your data in sync across your devices using the same iCloud account.",
+  "on": "On",
+  "off": "Off",
+  "migrate": "Migrate"
+}
