@@ -20,6 +20,7 @@ import {close} from 'ionicons/icons';
 import React, {CSSProperties, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
+import {DatePickerTheme} from '../../components/date-picker/DatePickerTheme';
 import {isTest} from '../../lib/env';
 import {ExportService} from '../../lib/services/export.service';
 import {InvoicesService} from '../../lib/services/invoices.service';
@@ -340,20 +341,22 @@ const InvoiceModal: React.FC<Props> = (props) => {
           </IonItem>
 
           <IonItem className="item-input">
-            <MobileDatePicker
-              value={from}
-              onChange={(date: Date | null) => setFrom(date as Date)}
-              format="yyyy/MM/dd"
-              slotProps={{
-                inputAdornment: {
-                  position: 'end',
-                },
-                openPickerIcon: () => <CalendarMonth />,
-                dialog: {
-                  disableEnforceFocus: true,
-                },
-              }}
-            />
+            <DatePickerTheme>
+              <MobileDatePicker
+                value={from}
+                onChange={(date: Date | null) => setFrom(date as Date)}
+                format="yyyy/MM/dd"
+                slotProps={{
+                  inputAdornment: {
+                    position: 'end',
+                  },
+                  openPickerIcon: () => <CalendarMonth />,
+                  dialog: {
+                    disableEnforceFocus: true,
+                  },
+                }}
+              />
+            </DatePickerTheme>
           </IonItem>
 
           <IonItem className="item-title">
@@ -361,20 +364,22 @@ const InvoiceModal: React.FC<Props> = (props) => {
           </IonItem>
 
           <IonItem className="item-input">
-            <MobileDatePicker
-              value={to}
-              onChange={(date: Date | null) => setTo(date as Date)}
-              format="yyyy/MM/dd"
-              slotProps={{
-                inputAdornment: {
-                  position: 'end',
-                },
-                openPickerIcon: () => <CalendarMonth />,
-                dialog: {
-                  disableEnforceFocus: true,
-                },
-              }}
-            />
+            <DatePickerTheme>
+              <MobileDatePicker
+                value={to}
+                onChange={(date: Date | null) => setTo(date as Date)}
+                format="yyyy/MM/dd"
+                slotProps={{
+                  inputAdornment: {
+                    position: 'end',
+                  },
+                  openPickerIcon: () => <CalendarMonth />,
+                  dialog: {
+                    disableEnforceFocus: true,
+                  },
+                }}
+              />
+            </DatePickerTheme>
           </IonItem>
 
           <IonItem className="item-title">

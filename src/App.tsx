@@ -59,7 +59,6 @@ import './theme/button.scss';
 import './theme/card.scss';
 import './theme/checkbox-toggle.scss';
 import './theme/content.scss';
-import './theme/datetime.picker.scss';
 import './theme/fonts.scss';
 import './theme/header.scss';
 import './theme/input.scss';

@@ -12,6 +12,7 @@ import {testIds} from '../../lib/tests/test-ids.constants';
 import {testId} from '../../lib/tests/test.utils';
 import {Project} from '../../lib/types/project';
 import {format} from '../../lib/utils/utils.date';
+import {DatePickerTheme} from '../date-picker/DatePickerTheme';
 import TaskItem from '../taskitem/TaskItem';
 import styles from './Tasks.module.scss';
 
@@ -116,16 +117,18 @@ const Tasks: React.FC<Props> = (props: Props) => {
           dangerouslySetInnerHTML={{__html: t(label, {selectedDate: format(selecteDay)})}}></p>
 
         <div className={styles.picker}>
-          <MobileDatePicker
-            value={selecteDay}
-            onChange={selectDate}
-            format="yyyy/MM/dd"
-            slotProps={{
-              dialog: {
-                disableEnforceFocus: true,
-              },
-            }}
-          />
+          <DatePickerTheme>
+            <MobileDatePicker
+              value={selecteDay}
+              onChange={selectDate}
+              format="yyyy/MM/dd"
+              slotProps={{
+                dialog: {
+                  disableEnforceFocus: true,
+                },
+              }}
+            />
+          </DatePickerTheme>
         </div>
       </>
     );

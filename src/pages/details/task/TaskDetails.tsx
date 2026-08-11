@@ -25,6 +25,7 @@ import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState}
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {RouteComponentProps} from 'react-router';
+import {DatePickerTheme} from '../../../components/date-picker/DatePickerTheme';
 import {ClientsService} from '../../../lib/services/clients.service';
 import {ProjectsService} from '../../../lib/services/projects.service';
 import {TasksService} from '../../../lib/services/tasks.service';
@@ -296,23 +297,25 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
           </IonItem>
 
           <IonItem className="item-input" button={false} detail={false}>
-            <MobileDateTimePicker
-              value={from}
-              onChange={(date: Date | null) => setFrom(date as Date)}
-              ampm={false}
-              format="yyyy/MM/dd HH:mm"
-              slotProps={{
-                textField: {
-                  'aria-label': t('tasks:details.from'),
-                },
-                tabs: {
-                  hidden: true,
-                },
-                dialog: {
-                  disableEnforceFocus: true,
-                },
-              }}
-            />
+            <DatePickerTheme>
+              <MobileDateTimePicker
+                value={from}
+                onChange={(date: Date | null) => setFrom(date as Date)}
+                ampm={false}
+                format="yyyy/MM/dd HH:mm"
+                slotProps={{
+                  textField: {
+                    'aria-label': t('tasks:details.from'),
+                  },
+                  tabs: {
+                    hidden: true,
+                  },
+                  dialog: {
+                    disableEnforceFocus: true,
+                  },
+                }}
+              />
+            </DatePickerTheme>
           </IonItem>
 
           <IonItem className="item-title">
@@ -320,23 +323,25 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
           </IonItem>
 
           <IonItem className="item-input" button={false} detail={false}>
-            <MobileDateTimePicker
-              value={to}
-              onChange={(date: Date | null) => setTo(date as Date)}
-              ampm={false}
-              format="yyyy/MM/dd HH:mm"
-              slotProps={{
-                textField: {
-                  'aria-label': t('tasks:details.to'),
-                },
-                tabs: {
-                  hidden: true,
-                },
-                dialog: {
-                  disableEnforceFocus: true,
-                },
-              }}
-            />
+            <DatePickerTheme>
+              <MobileDateTimePicker
+                value={to}
+                onChange={(date: Date | null) => setTo(date as Date)}
+                ampm={false}
+                format="yyyy/MM/dd HH:mm"
+                slotProps={{
+                  textField: {
+                    'aria-label': t('tasks:details.to'),
+                  },
+                  tabs: {
+                    hidden: true,
+                  },
+                  dialog: {
+                    disableEnforceFocus: true,
+                  },
+                }}
+              />
+            </DatePickerTheme>
           </IonItem>
         </IonList>
 

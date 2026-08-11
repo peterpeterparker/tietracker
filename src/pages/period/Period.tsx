@@ -20,6 +20,7 @@ import {chevronBackOutline} from 'ionicons/icons';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
+import {DatePickerTheme} from '../../components/date-picker/DatePickerTheme';
 import Loading from '../../components/loading/Loading';
 import {InvoicesPeriod, InvoicesService} from '../../lib/services/invoices.service';
 import {RootState} from '../../lib/store/reducers';
@@ -148,20 +149,22 @@ const Period: React.FC = () => {
           </IonItem>
 
           <IonItem className="item-input">
-            <MobileDatePicker
-              value={from}
-              onChange={(date: Date | null) => setFrom(date as Date)}
-              format="yyyy/MM/dd"
-              slotProps={{
-                inputAdornment: {
-                  position: 'end',
-                },
-                openPickerIcon: () => <CalendarMonth />,
-                dialog: {
-                  disableEnforceFocus: true,
-                },
-              }}
-            />
+            <DatePickerTheme>
+              <MobileDatePicker
+                value={from}
+                onChange={(date: Date | null) => setFrom(date as Date)}
+                format="yyyy/MM/dd"
+                slotProps={{
+                  inputAdornment: {
+                    position: 'end',
+                  },
+                  openPickerIcon: () => <CalendarMonth />,
+                  dialog: {
+                    disableEnforceFocus: true,
+                  },
+                }}
+              />
+            </DatePickerTheme>
           </IonItem>
 
           <IonItem className="item-title">
@@ -169,20 +172,22 @@ const Period: React.FC = () => {
           </IonItem>
 
           <IonItem className="item-input">
-            <DatePicker
-              value={to}
-              onChange={(date: Date | null) => setTo(date as Date)}
-              format="yyyy/MM/dd"
-              slotProps={{
-                inputAdornment: {
-                  position: 'end',
-                },
-                openPickerIcon: () => <CalendarMonth />,
-                dialog: {
-                  disableEnforceFocus: true,
-                },
-              }}
-            />
+            <DatePickerTheme>
+              <DatePicker
+                value={to}
+                onChange={(date: Date | null) => setTo(date as Date)}
+                format="yyyy/MM/dd"
+                slotProps={{
+                  inputAdornment: {
+                    position: 'end',
+                  },
+                  openPickerIcon: () => <CalendarMonth />,
+                  dialog: {
+                    disableEnforceFocus: true,
+                  },
+                }}
+              />
+            </DatePickerTheme>
           </IonItem>
         </IonList>
       </>
