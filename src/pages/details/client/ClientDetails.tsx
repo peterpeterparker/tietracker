@@ -75,7 +75,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
 
       setLoading(false);
     })();
-  });
+  }, [id]);
 
   async function loadProjects() {
     const projects = await ProjectsService.create(settings).listForClient(id);

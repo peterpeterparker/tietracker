@@ -120,7 +120,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
 
       setLoading(false);
     })();
-  });
+  }, [id, day]);
 
   async function handleSubmit($event: FormEvent<HTMLFormElement>) {
     $event.preventDefault();
