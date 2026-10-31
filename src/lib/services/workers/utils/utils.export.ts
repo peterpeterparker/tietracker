@@ -26,11 +26,15 @@ export const convertTasks = ({
     const rate = projects[task.data.project_id].rate;
     const billable = rate && rate.hourly > 0 ? hours * rate.hourly : 0;
 
-    // #47: ExcelJS timezone workaround
+    // #47: ExcelJS timezone workaround.
+    // #317: Use the offset at the task's start, to consider the time zone of the task
+    // rather than the one at the export date (e.g. after a switch to winter time).
+    // Use the same offset for both ends to avoid a negative duration if a task is
+    // recorded exactly when the time changes.
     const fromDate = new Date(task.data.from);
-    const toDate = new Date(task.data.to ?? Date.now());
-    const from = addMinutes(fromDate, -fromDate.getTimezoneOffset());
-    const to = addMinutes(toDate, -toDate.getTimezoneOffset());
+    const utcOffsetMinutes = -fromDate.getTimezoneOffset();
+    const from = addMinutes(fromDate, utcOffsetMinutes);
+    const to = addMinutes(new Date(task.data.to ?? Date.now()), utcOffsetMinutes);
 
     const result = [
       task.data.description ? task.data.description : '',
