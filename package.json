@@ -15,7 +15,6 @@
     "postinstall": "jetifier",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "cap:ios": "npx cap add ios --packagemanager CocoaPods",
     "e2e": "NODE_ENV=development playwright test",
     "e2e:ci": "playwright test --reporter=html",
     "e2e:snapshots": "playwright test --update-snapshots --reporter=list",
