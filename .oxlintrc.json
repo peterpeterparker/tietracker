@@ -1,0 +1,39 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "import", "react"],
+  "ignorePatterns": ["dist", "android", "ios", "test-results", "tmp"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "caughtErrorsIgnorePattern": "^_",
+        "ignoreRestSiblings": true,
+        "fix": {
+          "imports": "safe-fix",
+          "variables": "off"
+        }
+      }
+    ],
+    "import/extensions": [
+      "error",
+      "never",
+      {
+        "astro": "always",
+        "json": "always",
+        "css": "always",
+        "scss": "always",
+        "svg": "always",
+        "html": "always"
+      }
+    ]
+  },
+  "env": {
+    "builtin": true
+  }
+}
