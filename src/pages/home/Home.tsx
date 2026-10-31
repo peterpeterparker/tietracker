@@ -12,7 +12,7 @@ import {search} from 'ionicons/icons';
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {RouteComponentProps} from 'react-router';
+import {useNavigate} from 'react-router';
 import Projects from '../../components/projects/Projects';
 import Summary from '../../components/summary/Summary';
 import Tasks from '../../components/tasks/Tasks';
@@ -25,8 +25,10 @@ import ClientsModal from '../../modals/clients/ClientsModal';
 import CreateTaskModal from '../../modals/task/create/CreateTaskModal';
 import styles from './Home.module.scss';
 
-const Home: React.FC<RouteComponentProps> = (props) => {
+const Home: React.FC = () => {
   const {t} = useTranslation('home');
+
+  const navigate = useNavigate();
 
   const clients: Client[] | undefined = useSelector((state: RootState) => state.clients.clients);
 
@@ -38,7 +40,7 @@ const Home: React.FC<RouteComponentProps> = (props) => {
     setShowModalClients(false);
 
     if ($event && $event.detail && $event.detail.data) {
-      props.history.push(`/client/${$event.detail.data}`);
+      navigate(`/client/${$event.detail.data}`);
     }
   }
 

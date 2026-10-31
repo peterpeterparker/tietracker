@@ -163,7 +163,7 @@ const Settings: React.FC<RootProps> = (props) => {
     return (
       <IonSegment
         mode="md"
-        class="ion-padding-bottom"
+        className="ion-padding-bottom"
         value={category}
         onIonChange={($event: CustomEvent) => selectCategory($event)}>
         <IonSegmentButton value={SettingsCategory.GENERAL} mode="md">

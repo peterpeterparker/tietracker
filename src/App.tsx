@@ -14,7 +14,7 @@ import {createTheme, ThemeProvider} from '@mui/material';
 import {card, ellipsisHorizontal} from 'ionicons/icons';
 import React, {useEffect, useState} from 'react';
 import {Translation, useTranslation} from 'react-i18next';
-import {Redirect, Route} from 'react-router-dom';
+import {Navigate, Route} from 'react-router-dom';
 import BackupAlert from './alerts/backup/BackupAlert';
 import {ErrorToast} from './alerts/error/ErrorToast';
 import './lib/helpers/i18n';
@@ -140,22 +140,22 @@ const App: React.FC<RootProps> = (props: RootProps) => {
         <IonReactRouter>
           <IonTabs onIonTabsDidChange={($event) => setSelectedTab($event.detail.tab)}>
             <IonRouterOutlet>
-              <Route path="/home" component={Home} />
-              <Route path="/invoices" component={Invoices} exact={true} />
-              <Route path="/more" component={More} exact={true} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/invoices" element={<Invoices />} />
+              <Route path="/more" element={<More />} />
 
-              <Route path="/settings" component={Settings} exact={true} />
-              <Route path="/backup" component={Backup} exact={true} />
-              <Route path="/about" component={About} exact={true} />
-              <Route path="/period" component={Period} exact={true} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/backup" element={<Backup />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/period" element={<Period />} />
 
-              <Route path="/terms" component={Terms} exact={true} />
-              <Route path="/privacy" component={Privacy} exact={true} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
 
-              <Route path="/client/:id" component={ClientDetails} />
-              <Route path="/task/:day/:id" component={TaskDetails} />
+              <Route path="/client/:id" element={<ClientDetails />} />
+              <Route path="/task/:day/:id" element={<TaskDetails />} />
 
-              <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
+              <Route path="/" element={<Navigate to="/home" replace />} />
             </IonRouterOutlet>
 
             <IonTabBar slot="bottom">
