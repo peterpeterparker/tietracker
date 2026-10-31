@@ -22,7 +22,7 @@ import {lockClosed, lockOpen, stopwatchOutline} from 'ionicons/icons';
 import React, {CSSProperties, FormEvent, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {RouteComponentProps} from 'react-router';
+import {useNavigate, useParams} from 'react-router';
 import Budget from '../../../components/budget/Budget';
 import {ClientsService} from '../../../lib/services/clients.service';
 import {ProjectsService} from '../../../lib/services/projects.service';
@@ -37,14 +37,13 @@ import {emitError} from '../../../lib/utils/utils.events';
 import ProjectModal, {ProjectModalAction} from '../../../modals/project/ProjectModal';
 import styles from './ClientDetails.module.scss';
 
-interface ClientDetailsProps extends RouteComponentProps<{
-  id: string;
-}> {}
-
-type Props = RootProps & ClientDetailsProps;
+type Props = RootProps;
 
 const ClientDetails: React.FC<Props> = (props: Props) => {
   const {t} = useTranslation(['projects', 'common', 'clients']);
+
+  const {id} = useParams<{id: string}>() as {id: string};
+  const navigate = useNavigate();
 
   const [client, setClient] = useState<Client | undefined>(undefined);
   const [color, setColor] = useState<string | undefined>(undefined);
@@ -67,9 +66,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
     (async () => {
       setSaving(false);
 
-      const client: Client | undefined = await ClientsService.create(settings).find(
-        props.match.params.id,
-      );
+      const client: Client | undefined = await ClientsService.create(settings).find(id);
       setClient(client);
 
       await loadProjects();
@@ -81,7 +78,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
   });
 
   async function loadProjects() {
-    const projects = await ProjectsService.create(settings).listForClient(props.match.params.id);
+    const projects = await ProjectsService.create(settings).listForClient(id);
     setProjects(projects);
   }
 
@@ -159,7 +156,7 @@ const ClientDetails: React.FC<Props> = (props: Props) => {
   }
 
   function goBack() {
-    props.history.push('/home');
+    navigate('/home');
   }
 
   return <IonPage>{renderContent()}</IonPage>;

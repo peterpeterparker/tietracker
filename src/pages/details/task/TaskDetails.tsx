@@ -24,7 +24,7 @@ import {isSameDay, parse} from 'date-fns';
 import React, {CSSProperties, FormEvent, RefObject, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {RouteComponentProps} from 'react-router';
+import {useNavigate, useParams} from 'react-router';
 import {DatePickerTheme} from '../../../components/date-picker/DatePickerTheme';
 import {ClientsService} from '../../../lib/services/clients.service';
 import {ProjectsService} from '../../../lib/services/projects.service';
@@ -40,15 +40,13 @@ import {toDateObj} from '../../../lib/utils/utils.date';
 import {emitError} from '../../../lib/utils/utils.events';
 import {pickerColor} from '../../../lib/utils/utils.picker';
 
-interface TaskDetailsProps extends RouteComponentProps<{
-  day: DateString;
-  id: string;
-}> {}
-
-type Props = RootProps & TaskDetailsProps;
+type Props = RootProps;
 
 const TaskDetails: React.FC<Props> = (props: Props) => {
   const {t} = useTranslation(['tasks', 'common']);
+
+  const {day, id} = useParams<{day: DateString; id: string}>() as {day: DateString; id: string};
+  const navigate = useNavigate();
 
   const [presentAlert] = useIonAlert();
 
@@ -75,10 +73,10 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
   const settings = useSelector(({settings: {settings}}: RootState) => settings);
 
   useEffect(() => {
-    const selectedDay: Date = parse(props.match.params.day, 'yyyy-MM-dd', new Date());
+    const selectedDay: Date = parse(day, 'yyyy-MM-dd', new Date());
 
     setValidFrom(from !== undefined && isSameDay(selectedDay, from));
-  }, [from, props.match.params.day]);
+  }, [from, day]);
 
   useEffect(() => {
     setDisableActions(
@@ -99,10 +97,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
       setSaving(false);
       setLoading(true);
 
-      const task = await TasksService.create(settings).find(
-        props.match.params.id,
-        props.match.params.day,
-      );
+      const task = await TasksService.create(settings).find(id, day);
       setTask(task);
 
       if (task && task.data) {
@@ -147,7 +142,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
         delete taskToUpdate.data['description'];
       }
 
-      await TasksService.create(settings).update(task, props.match.params.day);
+      await TasksService.create(settings).update(task, day);
 
       await updateStore();
 
@@ -194,7 +189,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     setSaving(true);
 
     try {
-      await TasksService.create(settings).delete(task, props.match.params.day);
+      await TasksService.create(settings).delete(task, day);
 
       await updateStore();
 
@@ -208,13 +203,13 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
   }
 
   function goBack() {
-    // HACK: For an unknow reason, if I use history.push, if user select another task after redirect, parameters are not going to be reflected in RouteComponentProps
+    // HACK: For an unknow reason, if I use history.push, if user select another task after redirect, parameters are not going to be reflected in the route params
     if (headerRef && headerRef.current) {
       const backButton: HTMLElement = headerRef.current.querySelector('ion-back-button');
       backButton.click();
     } else {
       // In worst case, still better than no redirect in case of delete
-      props.history.push('/home');
+      navigate('/home');
     }
   }
 

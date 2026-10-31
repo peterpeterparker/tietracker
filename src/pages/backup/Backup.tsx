@@ -18,7 +18,7 @@ import {chevronBackOutline} from 'ionicons/icons';
 import React, {createRef, RefObject, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
-import {useHistory} from 'react-router';
+import {useNavigate} from 'react-router';
 import Loading from '../../components/loading/Loading';
 import {isIOS} from '../../lib/env';
 import {BackupService} from '../../lib/services/backup.service';
@@ -54,7 +54,7 @@ const Backup: React.FC<RootProps> = (props) => {
 
   const [present] = useIonAlert();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [iCloudSync, setICloudSync] = useState<boolean | undefined>(undefined);
   const [disableICloudSync, setDisableICloudSync] = useState<boolean | undefined>(undefined);
@@ -126,7 +126,7 @@ const Backup: React.FC<RootProps> = (props) => {
 
     await initAllData(props);
 
-    history.push('/');
+    navigate('/');
   };
 
   function openFileDialog() {
@@ -253,7 +253,7 @@ const Backup: React.FC<RootProps> = (props) => {
     return (
       <IonSegment
         mode="md"
-        class="ion-padding-bottom"
+        className="ion-padding-bottom"
         value={category}
         onIonChange={($event: CustomEvent) => selectCategory($event)}>
         <IonSegmentButton value={BackupCategory.ICLOUD} mode="md">
