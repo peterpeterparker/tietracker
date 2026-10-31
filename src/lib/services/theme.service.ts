@@ -39,7 +39,7 @@ export class ThemeService extends PreferencesService<DarkTheme> {
 
     try {
       await this.set(dark);
-    } catch (err) {
+    } catch (_err) {
       // We ignore this error. In worst case scenario, the application will be displayed in another theme after next refresh.
     }
   }

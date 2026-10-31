@@ -77,12 +77,6 @@ const CreateClientModal: React.FC<Props> = (props: Props) => {
     setValidClientName(data !== undefined && data.name !== undefined && data.name.length >= 3);
   }
 
-  function validateClientName() {
-    setValidClientName(
-      clientData !== undefined && clientData.name !== undefined && clientData.name.length >= 3,
-    );
-  }
-
   function handleColorChange($event: React.ChangeEvent<HTMLInputElement>) {
     if (!clientDataRef.current) {
       return;

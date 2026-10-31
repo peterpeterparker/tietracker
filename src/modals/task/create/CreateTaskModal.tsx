@@ -38,8 +38,8 @@ const CreateTaskModal: React.FC<Props> = (props: Props) => {
 
   const [project, setProject] = useState<Project | undefined>(undefined);
   const [description, setDescription] = useState<string | undefined>(undefined);
-  const [from, setFrom] = useState<Date>(new Date());
-  const [to, setTo] = useState<Date>(new Date());
+  const [from, setFrom] = useState<Date>(() => new Date());
+  const [to, setTo] = useState<Date>(() => new Date());
 
   const projects: Project[] | undefined = useSelector(
     (state: RootState) => state.activeProjects.projects,

@@ -8,7 +8,7 @@ export function createClient({
   data,
   settings,
 }: {data: ClientData} & WithSettings): RootThunkResult<Promise<Client>> {
-  return async (dispatch, getState) => {
+  return async (dispatch, _getState) => {
     const client = await ClientsService.create(settings).create(data);
 
     dispatch({type: CREATE_CLIENT, payload: client});
@@ -18,7 +18,7 @@ export function createClient({
 }
 
 export function initClients({settings}: WithSettings): RootThunkResult<Promise<void>> {
-  return async (dispatch, getState) => {
+  return async (dispatch, _getState) => {
     const clients: Client[] = await ClientsService.create(settings).list();
 
     dispatch({type: INIT_CLIENTS, payload: clients});

@@ -161,8 +161,8 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
     }
 
     const confirm = async (): Promise<{action: 'confirmed' | 'cancelled'}> => {
-      return new Promise<{action: 'confirmed' | 'cancelled'}>(async (resolve) => {
-        await presentAlert({
+      return new Promise<{action: 'confirmed' | 'cancelled'}>((resolve, reject) => {
+        presentAlert({
           message: t('tasks:delete.confirm'),
           buttons: [
             {
@@ -176,7 +176,7 @@ const TaskDetails: React.FC<Props> = (props: Props) => {
               handler: () => resolve({action: 'confirmed'}),
             },
           ],
-        });
+        }).catch(reject);
       });
     };
 
