@@ -33,10 +33,7 @@ const About: React.FC = () => {
                 <p>
                   <IonLabel className={styles.introLabel}>
                     <strong>Tie Tracker</strong> - A local-first time tracking app{' '}
-                    <span aria-label="stopwatch" role="img">
-                      ⏱
-                    </span>
-                    ️
+                    <span aria-hidden="true">⏱️</span>
                   </IonLabel>
                 </p>
               </div>
