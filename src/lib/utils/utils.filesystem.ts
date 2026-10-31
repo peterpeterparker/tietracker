@@ -41,42 +41,30 @@ export async function writeFile(
   await writer.close();
 }
 
-export function getMobileDir(): Promise<DirectoryEntry> {
-  return new Promise<DirectoryEntry>(async (resolve, reject) => {
-    try {
-      const rootDir: DirectoryEntry = await File.resolveDirectoryUrl(
-        isPlatform('ios') ? File.syncedDataDirectory : File.dataDirectory,
-      );
+export async function getMobileDir(): Promise<DirectoryEntry> {
+  const rootDir: DirectoryEntry = await File.resolveDirectoryUrl(
+    isPlatform('ios') ? File.syncedDataDirectory : File.dataDirectory,
+  );
 
-      rootDir.getDirectory(
-        'tietracker',
-        {create: true},
-        (newDir: DirectoryEntry) => {
-          resolve(newDir);
-        },
-        (err) => {
-          reject(new Error('Directory not found or not created.'));
-        },
-      );
-    } catch (e) {
-      reject(e);
-    }
+  return new Promise<DirectoryEntry>((resolve, reject) => {
+    rootDir.getDirectory(
+      'tietracker',
+      {create: true},
+      (newDir: DirectoryEntry) => {
+        resolve(newDir);
+      },
+      (_err) => {
+        reject(new Error('Directory not found or not created.'));
+      },
+    );
   });
 }
 
-export function shareMobile(subject: string, path: string, filename: string): Promise<void> {
-  return new Promise<void>(async (resolve, reject) => {
-    try {
-      await SocialSharing.shareWithOptions({
-        subject,
-        files: [`${path}/${filename}`],
-        chooserTitle: 'Pick an app',
-      });
-
-      resolve();
-    } catch (err) {
-      reject(err);
-    }
+export async function shareMobile(subject: string, path: string, filename: string): Promise<void> {
+  await SocialSharing.shareWithOptions({
+    subject,
+    files: [`${path}/${filename}`],
+    chooserTitle: 'Pick an app',
   });
 }
 

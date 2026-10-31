@@ -20,6 +20,8 @@
         }
       }
     ],
+    "react/set-state-in-effect": "off",
+    "react/immutability": "off",
     "import/extensions": [
       "error",
       "never",

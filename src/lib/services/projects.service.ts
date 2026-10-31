@@ -195,6 +195,6 @@ export class ProjectsService extends StorageServiceWithActiveProjects<Project[]>
       return;
     }
 
-    await this.setActiveProjects([...projects.filter((id) => id !== project.id)]);
+    await this.setActiveProjects(projects.filter((id) => id !== project.id));
   }
 }

@@ -166,19 +166,19 @@ const App: React.FC<RootProps> = (props: RootProps) => {
                   <IonIcon src="/assets/icon/logo-grey.svg" aria-label="Tie Tracker logo" />
                 )}
                 <Translation ns="common">
-                  {(t, {i18n}) => <IonLabel>{t('navigation.home')}</IonLabel>}
+                  {(t) => <IonLabel>{t('navigation.home')}</IonLabel>}
                 </Translation>
               </IonTabButton>
               <IonTabButton tab="invoices" href="/invoices" {...testId(testIds.nav.invoices)}>
                 <IonIcon icon={card} />
                 <Translation ns="common">
-                  {(t, {i18n}) => <IonLabel>{t('navigation.invoices')}</IonLabel>}
+                  {(t) => <IonLabel>{t('navigation.invoices')}</IonLabel>}
                 </Translation>
               </IonTabButton>
               <IonTabButton tab="more" href="/more" {...testId(testIds.nav.more)}>
                 <IonIcon icon={ellipsisHorizontal} />
                 <Translation ns="common">
-                  {(t, {i18n}) => <IonLabel>{t('navigation.more')}</IonLabel>}
+                  {(t) => <IonLabel>{t('navigation.more')}</IonLabel>}
                 </Translation>
               </IonTabButton>
             </IonTabBar>
