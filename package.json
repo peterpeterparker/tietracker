@@ -23,10 +23,10 @@
     "e2e:playwright:install": "playwright install chromium --with-deps"
   },
   "dependencies": {
-    "@awesome-cordova-plugins/core": "^9.4.0",
-    "@awesome-cordova-plugins/file": "^9.4.0",
-    "@awesome-cordova-plugins/local-notifications": "^9.4.0",
-    "@awesome-cordova-plugins/social-sharing": "^9.4.0",
+    "@awesome-cordova-plugins/core": "^9.7.0",
+    "@awesome-cordova-plugins/file": "^9.7.0",
+    "@awesome-cordova-plugins/local-notifications": "^9.7.0",
+    "@awesome-cordova-plugins/social-sharing": "^9.7.0",
     "@capacitor/android": "^8.6.0",
     "@capacitor/core": "^8.6.0",
     "@capacitor/filesystem": "^8.1.5",
