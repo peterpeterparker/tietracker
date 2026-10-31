@@ -27,9 +27,10 @@ export const convertTasks = ({
     const billable = rate && rate.hourly > 0 ? hours * rate.hourly : 0;
 
     // #47: ExcelJS timezone workaround
-    const utcOffsetMinutes = -new Date().getTimezoneOffset();
-    const from = addMinutes(new Date(task.data.from), utcOffsetMinutes);
-    const to = addMinutes(new Date(task.data.to ?? Date.now()), utcOffsetMinutes);
+    const fromDate = new Date(task.data.from);
+    const toDate = new Date(task.data.to ?? Date.now());
+    const from = addMinutes(fromDate, -fromDate.getTimezoneOffset());
+    const to = addMinutes(toDate, -toDate.getTimezoneOffset());
 
     const result = [
       task.data.description ? task.data.description : '',
