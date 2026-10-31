@@ -67,5 +67,7 @@ export abstract class AppPage {
       TIMEOUT_AVERAGE,
     );
     await this.#page.getByTestId(testIds.backup.restoreConfirm).click();
+
+    await expect(this.#page).toHaveURL(/\/home$/, TIMEOUT_AVERAGE);
   }
 }
